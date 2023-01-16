@@ -1,0 +1,15 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+import eu.europa.ted.eforms.sdk.analysis.ValidationResult;
+import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
+
+rule "Notice type uses existing field"
+when
+  /noticeTypes[ $ntf: this ]
+  $fieldId: String() from $ntf.fieldsIds
+  not (exists /fields[ id == $fieldId ])
+then
+  results.add(new ValidationResult($ntf, "Field " + $fieldId + " does not exist", ValidationStatusEnum.ERROR));
+end
