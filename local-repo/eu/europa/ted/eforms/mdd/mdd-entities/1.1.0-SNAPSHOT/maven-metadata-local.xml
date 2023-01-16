@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>eu.europa.ted.eforms.mdd</groupId>
+  <artifactId>mdd-entities</artifactId>
+  <versioning>
+    <lastUpdated>20230116163531</lastUpdated>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.1.0-SNAPSHOT</value>
+        <updated>20230116163531</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.1.0-SNAPSHOT</value>
+        <updated>20230116163531</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+  <version>1.1.0-SNAPSHOT</version>
+</metadata>
