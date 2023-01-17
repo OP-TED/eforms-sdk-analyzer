@@ -9,12 +9,13 @@
 
   <name>eforms-sdk-analyzer</name>
 
-  <repositories>
+  <distributionManagement>
     <repository>
-      <id>local-repo</id>
-      <url>file://${project.basedir}/local-repo</url>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/OP-TED/eforms-sdk-analyzer</url>
     </repository>
-  </repositories>
+  </distributionManagement>
 
   <properties>
     <finalName>${project.artifactId}-${project.version}</finalName>
@@ -219,6 +220,13 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>local-repo</id>
+      <url>file://${project.basedir}/local-repo</url>
+    </repository>
+  </repositories>
 
   <build>
     <finalName>${finalName}</finalName>
