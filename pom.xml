@@ -144,44 +144,53 @@
     <dependency>
       <groupId>eu.europa.ted.eforms</groupId>
       <artifactId>eforms-core-java</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>eu.europa.ted.eforms.mdd</groupId>
       <artifactId>mdd-entities</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <!-- Apache Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <!-- Drools -->
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-ruleunits-engine</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-model-compiler</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <!-- Jackson -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -193,6 +202,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <!-- Other -->
@@ -209,10 +219,12 @@
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.jooq</groupId>
       <artifactId>jooq</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
