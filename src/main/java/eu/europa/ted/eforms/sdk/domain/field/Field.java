@@ -1,6 +1,7 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
@@ -19,7 +20,7 @@ import lombok.Data;
  */
 @Data
 @JsonPropertyOrder({"id", "parentNodeId", "name", "btId", "xpathAbsolute", "xpathRelative", "type",
-    "idSchemes", "idScheme", "legalType", "maxLength", "description", "privacy", "repeatable",
+    "presetValue", "idSchemes", "idScheme", "legalType", "maxLength", "description", "privacy", "repeatable",
     "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList", "inChangeNotice",
     "inContinueProcedure", "assert"})
 public class Field {
@@ -36,6 +37,7 @@ public class Field {
   private String xpathRelative;
 
   private String type;
+  private String presetValue;
 
   private List<String> idSchemes;
   private String idScheme;
