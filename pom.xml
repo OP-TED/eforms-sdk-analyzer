@@ -43,8 +43,8 @@
     <version.slf4j>2.0.3</version.slf4j>
 
     <!-- Versions - Plugins -->
-    <compiler.plugin.version>3.10.1</compiler.plugin.version>
-    <shade.plugin.version>3.3.0</shade.plugin.version>
+    <version.compiler.version>3.10.1</version.compiler.version>
+    <version.compiler.plugin>3.3.0</version.compiler.plugin>
   </properties>
 
   <dependencyManagement>
@@ -249,12 +249,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>${compiler.plugin.version}</version>
+          <version>${version.compiler.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>${shade.plugin.version}</version>
+          <version>${version.compiler.plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.kie</groupId>
