@@ -1,2 +1,3 @@
-# eforms-sdk-analyzer
-Application for statis analysis of eForms SDK contents.
+# eForms SDK Analyzer
+
+Application for static analysis of the content of the eForms SDK.
