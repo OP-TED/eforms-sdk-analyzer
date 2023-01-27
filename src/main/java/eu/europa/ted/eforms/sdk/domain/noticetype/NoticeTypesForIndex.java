@@ -3,7 +3,6 @@ package eu.europa.ted.eforms.sdk.domain.noticetype;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import eu.europa.ec.mdd.generated.tables.pojos.DocumentType;
 import eu.europa.ted.eforms.sdk.domain.EFormsTrackableEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

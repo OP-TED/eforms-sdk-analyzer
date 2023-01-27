@@ -22,7 +22,7 @@ import lombok.Data;
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 @JsonPropertyOrder({"id", "contentType", "nodeId", "displayType", "description", "_label",
     "valueSource", "_idScheme", "_idSchemes", "_identifierFieldId", "readOnly", "_repeatable",
-    "hidden", "collapsed", "content"})
+    "_presetValue", "hidden", "collapsed", "content"})
 public class NoticeTypeContent {
   /**
    * Unique identifier.
@@ -65,6 +65,9 @@ public class NoticeTypeContent {
    */
   private boolean hidden;
 
+  @JsonProperty("_presetValue")
+  private String presetValue;
+  
   /**
    * For the UI logic. Read only form inputs.
    */
