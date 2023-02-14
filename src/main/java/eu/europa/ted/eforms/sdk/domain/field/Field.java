@@ -20,9 +20,9 @@ import lombok.Data;
  */
 @Data
 @JsonPropertyOrder({"id", "parentNodeId", "name", "btId", "xpathAbsolute", "xpathRelative", "type",
-    "presetValue", "idSchemes", "idScheme", "legalType", "maxLength", "description", "privacy", "repeatable",
-    "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList", "inChangeNotice",
-    "inContinueProcedure", "assert"})
+    "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength", "description",
+    "privacy", "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList",
+    "inChangeNotice", "inContinueProcedure", "assert"})
 public class Field {
   private String id;
 
@@ -41,6 +41,7 @@ public class Field {
 
   private List<String> idSchemes;
   private String idScheme;
+  private String schemeName;
 
   private String legalType;
   private Integer maxLength;
