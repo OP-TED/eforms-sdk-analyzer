@@ -21,7 +21,7 @@ import lombok.Data;
 @Data
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 @JsonPropertyOrder({"id", "contentType", "nodeId", "displayType", "description", "_label",
-    "valueSource", "_idScheme", "_idSchemes", "_identifierFieldId", "readOnly", "_repeatable",
+    "valueSource", "_idScheme", "_idSchemes", "_schemeName", "_identifierFieldId", "readOnly", "_repeatable",
     "_presetValue", "hidden", "collapsed", "content"})
 public class NoticeTypeContent {
   /**
@@ -112,6 +112,9 @@ public class NoticeTypeContent {
    */
   @JsonProperty("_idSchemes")
   private final List<String> idSchemes = new ArrayList<>();
+
+  @JsonProperty("_schemeName")
+  private String schemeName;
 
   /**
    * For convenience. Set later by child.
