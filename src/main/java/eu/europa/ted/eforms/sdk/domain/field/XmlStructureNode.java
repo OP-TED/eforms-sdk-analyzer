@@ -38,6 +38,8 @@ public class XmlStructureNode {
    */
   private String identifierFieldId;
 
+  private String captionFieldId;
+
   /**
    * Since TEDEFO-1090. TEDEFO-1111. Can be null.
    */
