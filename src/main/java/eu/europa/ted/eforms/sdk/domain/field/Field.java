@@ -20,7 +20,7 @@ import lombok.Data;
  */
 @Data
 @JsonPropertyOrder({"id", "parentNodeId", "name", "btId", "xpathAbsolute", "xpathRelative", "type",
-    "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength", "description",
+    "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength",
     "privacy", "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList",
     "inChangeNotice", "inContinueProcedure", "assert"})
 public class Field {
@@ -45,7 +45,6 @@ public class Field {
 
   private String legalType;
   private Integer maxLength;
-  private String description;
 
   /**
    * Related to TEDEFO-219.
