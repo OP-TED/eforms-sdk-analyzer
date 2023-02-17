@@ -122,6 +122,9 @@ public class NoticeTypeContent {
   @JsonProperty("_identifierFieldId")
   private String identifierFieldId;
 
+  @JsonProperty("_captionFieldId")
+  private String captionFieldId;
+
   public NoticeTypeContentType getContentTypeEnum() {
     return contentType;
   }
