@@ -33,7 +33,7 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
     <version.eforms-core-java>1.0.0</version.eforms-core-java>
-    <version.mdd-entities>1.6.0-SNAPSHOT</version.mdd-entities>
+    <version.mdd-entities>1.6.0</version.mdd-entities>
 
     <!-- Version - Third-party libraries -->
     <version.commons-collections4>4.4</version.commons-collections4>
@@ -241,8 +241,12 @@
 
   <repositories>
     <repository>
-      <id>local-repo</id>
-      <url>file://${project.basedir}/local-repo</url>
+      <id>op-ted-github_mdd-entities</id>
+      <name>OP-TED GitHub Packages - eForms Metadata Entities</name>
+      <url>https://maven.pkg.github.com/OP-TED/eforms-metadata-entities/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
 
