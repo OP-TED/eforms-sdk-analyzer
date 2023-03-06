@@ -10,8 +10,6 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
@@ -22,7 +20,7 @@ import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeSdk;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
 
 public class SdkLoader {
-  private static final Logger logger = LoggerFactory.getLogger(FactsLoader.class);
+  private static final Logger logger = LoggerFactory.getLogger(SdkLoader.class);
 
   private final Path sdkRoot;
   private final ObjectMapper objectMapper;
@@ -40,26 +38,25 @@ public class SdkLoader {
   private ObjectMapper createObjectMapper() {
     logger.debug("Initialising object mapper");
 
-    final ObjectMapper objectMapper = new ObjectMapper();
+    final ObjectMapper om = new ObjectMapper();
 
-    objectMapper.findAndRegisterModules();
+    om.findAndRegisterModules();
 
-    objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
     // https://fasterxml.github.io/jackson-annotations/javadoc/2.7/com/fasterxml/jackson/annotation/JsonInclude.Include.html
 
     // Value that indicates that only properties with non-null values are to be included.
-    objectMapper.setSerializationInclusion(Include.NON_NULL);
+    om.setSerializationInclusion(Include.NON_NULL);
 
     // Value that indicates that only properties with null value, or what is considered empty, are
     // not to be included.
-    objectMapper.setSerializationInclusion(Include.NON_EMPTY);
+    om.setSerializationInclusion(Include.NON_EMPTY);
 
-    return objectMapper;
+    return om;
   }
 
-  private <T> T loadJsonFile(Class<T> clazz, Path jsonFilePath)
-      throws StreamReadException, DatabindException, IOException {
+  private <T> T loadJsonFile(Class<T> clazz, Path jsonFilePath) throws IOException {
     logger.debug("Loading contents of type [{} from JSON file [{}]", clazz.getName(), jsonFilePath);
 
     Validate.isTrue(Files.isRegularFile(jsonFilePath),
@@ -74,14 +71,12 @@ public class SdkLoader {
     return result;
   }
 
-  public FieldsAndNodes getFieldsAndNodes()
-      throws StreamReadException, DatabindException, IOException {
+  public FieldsAndNodes getFieldsAndNodes() throws IOException {
     return loadJsonFile(FieldsAndNodes.class,
         Path.of(sdkRoot.toString(), SdkResource.FIELDS_JSON.getPath().toString()));
   }
 
-  public List<NoticeType> getNoticeTypes()
-      throws StreamReadException, DatabindException, IOException {
+  public List<NoticeType> getNoticeTypes() throws IOException {
     List<NoticeType> result = new ArrayList<>();
 
     NoticeTypesForIndex noticeTypesForIndex = getNoticeTypesForIndex();
@@ -94,14 +89,12 @@ public class SdkLoader {
     return result;
   }
 
-  public NoticeTypesForIndex getNoticeTypesForIndex()
-      throws StreamReadException, DatabindException, IOException {
+  public NoticeTypesForIndex getNoticeTypesForIndex() throws IOException {
     return loadJsonFile(NoticeTypesForIndex.class,
         Path.of(sdkRoot.toString(), SdkResource.NOTICE_TYPES_JSON.getPath().toString()));
   }
 
-  public NoticeTypeSdk getNoticeTypeSdk(String noticeId, Path sdkRoot)
-      throws StreamReadException, DatabindException, IOException {
+  public NoticeTypeSdk getNoticeTypeSdk(String noticeId, Path sdkRoot) throws IOException {
     return loadJsonFile(NoticeTypeSdk.class,
         Path.of(sdkRoot.toString(), SdkResource.NOTICE_TYPES.getPath().toString(),
             MessageFormat.format("{0}.json", noticeId)));

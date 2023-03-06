@@ -13,8 +13,7 @@ public class SdkAnalyzer {
 
   private SdkAnalyzer() {}
 
-  public static int analyze(Path sdkRoot)
-      throws IOException, InstantiationException, ClassNotFoundException {
+  public static int analyze(Path sdkRoot) throws IOException {
     logger.info("Analyzing SDK under folder [{}]", sdkRoot);
 
     FactsLoader factsLoader = new FactsLoader(sdkRoot);

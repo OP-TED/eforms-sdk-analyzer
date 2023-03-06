@@ -7,8 +7,6 @@ import org.drools.ruleunits.api.DataSource;
 import org.drools.ruleunits.api.DataStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
@@ -28,8 +26,7 @@ public class FactsLoader {
     sdkLoader = new SdkLoader(sdkRoot);
   }
 
-  public DataStore<FieldFact> loadFields()
-      throws StreamReadException, DatabindException, IOException {
+  public DataStore<FieldFact> loadFields() throws IOException {
     logger.debug("Creating facts datastore for fields");
 
     FieldsAndNodes fieldsAndNodes = sdkLoader.getFieldsAndNodes();
@@ -42,8 +39,7 @@ public class FactsLoader {
     return datastore;
   }
 
-  public DataStore<NoticeTypeFact> loadNoticeTypes()
-      throws StreamReadException, DatabindException, IOException {
+  public DataStore<NoticeTypeFact> loadNoticeTypes() throws IOException {
     logger.debug("Creating facts datastore for notice types");
 
     List<NoticeType> noticeTypes = sdkLoader.getNoticeTypes();

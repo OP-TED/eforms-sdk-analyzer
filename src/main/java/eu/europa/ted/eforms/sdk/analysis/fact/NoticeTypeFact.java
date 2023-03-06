@@ -23,7 +23,7 @@ public class NoticeTypeFact implements SdkComponentFact<String> {
     return noticeType.getMetadata().stream()
         .filter((NoticeTypeContent content) -> NoticeTypeContentType.FIELD == content
             .getContentTypeEnum())
-        .map((NoticeTypeContent content) -> content.getId())
+        .map(NoticeTypeContent::getId)
         .collect(Collectors.toSet());
   }
 
