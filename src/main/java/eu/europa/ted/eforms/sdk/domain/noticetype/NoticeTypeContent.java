@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.stream.Stream;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import eu.europa.ted.eforms.sdk.domain.util.EnumHelper;
 import lombok.Data;
 
 /**

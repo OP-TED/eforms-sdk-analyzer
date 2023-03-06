@@ -3,7 +3,7 @@ package eu.europa.ted.eforms.sdk.domain.field;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ec.mdd.generated.enums.FieldPrivacyCode;
-import eu.europa.ted.eforms.sdk.domain.util.EnumHelper;
+import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import lombok.Data;
 
 @Data

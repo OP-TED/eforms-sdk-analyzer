@@ -1,4 +1,4 @@
-package eu.europa.ted.eforms.sdk.domain.util;
+package eu.europa.ted.eforms.sdk.util;
 
 import java.text.MessageFormat;
 import java.util.Optional;
