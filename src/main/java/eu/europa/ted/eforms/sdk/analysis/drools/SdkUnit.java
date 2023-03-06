@@ -1,37 +1,43 @@
 package eu.europa.ted.eforms.sdk.analysis.drools;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.drools.ruleunits.api.DataSource;
 import org.drools.ruleunits.api.DataStore;
-import org.drools.ruleunits.api.RuleUnitData;
-import eu.europa.ted.eforms.sdk.analysis.ValidationResult;
+import org.kie.api.definition.rule.Rule;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
+import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
-public class SdkUnit implements RuleUnitData {
-  private final DataStore<FieldFact> fields;
-  private final DataStore<NoticeTypeFact> noticeTypes;
+public class SdkUnit implements RuleUnit {
+  private DataStore<FieldFact> fields;
+  private DataStore<NoticeTypeFact> noticeTypes;
 
-  private final Set<ValidationResult> results = new HashSet<>(); // Global variable to store
-  // validations results
+  // Global variable to store validations results
+  private final Set<ValidationResult> results = new HashSet<>();
 
-  public SdkUnit() {
-    this(DataSource.createStore(), DataSource.createStore());
-  }
+  private final List<Rule> firedRules = new ArrayList<>();
 
-  public SdkUnit(DataStore<FieldFact> fields, DataStore<NoticeTypeFact> noticeTypes) {
+  public SdkUnit() {}
+
+  public SdkUnit setFields(DataStore<FieldFact> fields) {
     this.fields = fields;
-    this.noticeTypes = noticeTypes;
+    return this;
   }
 
   public DataStore<FieldFact> getFields() {
     return fields;
+  }
+
+  public SdkUnit setNoticeTypes(DataStore<NoticeTypeFact> noticeTypes) {
+    this.noticeTypes = noticeTypes;
+    return this;
   }
 
   public DataStore<NoticeTypeFact> getNoticeTypes() {
@@ -68,5 +74,16 @@ public class SdkUnit implements RuleUnitData {
 
   public boolean hasErrors() {
     return ArrayUtils.isNotEmpty(getErrors());
+  }
+
+  @Override
+  public List<Rule> getFiredRules() {
+    return firedRules;
+  }
+
+  @Override
+  public SdkUnit addFiredRule(Rule rule) {
+    firedRules.add(rule);
+    return this;
   }
 }
