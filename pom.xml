@@ -38,10 +38,11 @@
     <!-- Version - Third-party libraries -->
     <version.commons-collections4>4.4</version.commons-collections4>
     <version.commons-lang3>3.12.0</version.commons-lang3>
+    <version.cucumber>7.11.1</version.cucumber>
     <version.drools>8.32.0.Final</version.drools>
     <version.jackson>2.14.1</version.jackson>
     <version.jooq>3.14.15</version.jooq>
-    <version.junit>5.7.2</version.junit>
+    <version.junit>5.9.2</version.junit>
     <version.logback>1.4.4</version.logback>
     <version.lombok>1.18.24</version.lombok>
     <version.picocli>4.6.3</version.picocli>
@@ -78,6 +79,15 @@
         <version>${version.commons-lang3}</version>
       </dependency>
 
+      <!-- Cucumber -->
+      <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-bom</artifactId>
+        <version>${version.cucumber}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
       <!-- Drools -->
       <dependency>
         <groupId>org.drools</groupId>
@@ -107,6 +117,15 @@
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
         <version>${version.jackson}</version>
+      </dependency>
+
+      <!-- JUnit -->
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${version.junit}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
 
       <!-- SLF4J -->
@@ -170,6 +189,18 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- Cucumber -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit-platform-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Drools -->
     <dependency>
       <groupId>org.drools</groupId>
@@ -202,6 +233,24 @@
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
       <scope>runtime</scope>
+    </dependency>
+
+
+    <!-- JUnit -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-suite</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <!-- SLF4J -->
