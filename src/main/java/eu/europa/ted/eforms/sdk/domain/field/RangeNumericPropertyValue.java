@@ -1,12 +1,15 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
  * TEDEFO-546: Implements a range / interval constraint value.
  */
 @Data
-public class RangeNumericPropertyValue {
+public class RangeNumericPropertyValue implements Serializable {
+  private static final long serialVersionUID = -5361635853614332303L;
+
   /**
    * Since TEDEFO-354. String used because we may need to use references later on. Nullable.
    *

@@ -10,4 +10,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class RangeNumericProperty
     extends AbstractFieldProperty<RangeNumericConstraint, RangeNumericPropertyValue> {
+  private static final long serialVersionUID = 4028295904390541920L;
 }

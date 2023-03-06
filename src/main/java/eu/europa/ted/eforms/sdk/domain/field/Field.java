@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,7 +24,9 @@ import lombok.Data;
     "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength",
     "privacy", "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList",
     "inChangeNotice", "inContinueProcedure", "assert"})
-public class Field {
+public class Field implements Serializable {
+  private static final long serialVersionUID = -1387933500392516298L;
+
   private String id;
 
   /**

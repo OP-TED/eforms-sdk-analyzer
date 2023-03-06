@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -14,7 +15,10 @@ import lombok.Data;
  */
 @Data
 @JsonPropertyOrder({"value", "severity", "message", "constraints"})
-public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V> {
+public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V extends Serializable>
+    implements Serializable {
+  private static final long serialVersionUID = 1342908486390503189L;
+
   /**
    * The generic default value, acts as fallback when no constraint value matches.
    */

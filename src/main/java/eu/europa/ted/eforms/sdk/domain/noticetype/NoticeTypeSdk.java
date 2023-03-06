@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 public class NoticeTypeSdk extends EFormsTrackableEntity {
+  private static final long serialVersionUID = 7181276451291968975L;
 
   private String noticeId;
   private final List<NoticeTypeContent> metadata = new ArrayList<>();

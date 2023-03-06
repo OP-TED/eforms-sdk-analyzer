@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -7,7 +8,9 @@ import lombok.Data;
  * string.
  */
 @Data
-public class ChangeableOrCpPropertyValue {
+public class ChangeableOrCpPropertyValue implements Serializable {
+  private static final long serialVersionUID = 2643730327470961465L;
+
   private Boolean canAdd;
   private Boolean canModify;
   private Boolean canRemove;

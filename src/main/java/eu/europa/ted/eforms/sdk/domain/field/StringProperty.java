@@ -9,5 +9,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class StringProperty extends AbstractFieldProperty<StringConstraint, String> {
+public class StringProperty extends AbstractFieldProperty<StringConstraint, String>{
+  private static final long serialVersionUID = 3758614977387886822L;
 }

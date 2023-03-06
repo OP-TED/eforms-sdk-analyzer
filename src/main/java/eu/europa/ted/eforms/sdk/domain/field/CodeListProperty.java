@@ -9,5 +9,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CodeListProperty
-    extends AbstractFieldProperty<CodeListConstraint, CodeListPropertyValue> {
+    extends AbstractFieldProperty<CodeListConstraint, CodeListPropertyValue>  {
+  private static final long serialVersionUID = 7500997293090091589L;
 }

@@ -9,5 +9,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ChangeableOrCpProperty
-    extends AbstractFieldProperty<ChangeableOrCpConstraint, ChangeableOrCpPropertyValue> {
+    extends AbstractFieldProperty<ChangeableOrCpConstraint, ChangeableOrCpPropertyValue>  {
+  private static final long serialVersionUID = 616792313852516536L;
 }

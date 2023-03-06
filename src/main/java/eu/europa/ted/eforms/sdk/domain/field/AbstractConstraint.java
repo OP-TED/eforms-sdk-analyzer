@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -10,7 +11,9 @@ import lombok.Data;
  */
 @Data
 @JsonPropertyOrder({"noticeTypes", "condition", "value", "severity", "message"})
-public abstract class AbstractConstraint<V> {
+public abstract class AbstractConstraint<V extends Serializable> implements Serializable {
+  private static final long serialVersionUID = -3977225324375780808L;
+
   private final List<String> noticeTypes = new ArrayList<>();
 
   private String condition;

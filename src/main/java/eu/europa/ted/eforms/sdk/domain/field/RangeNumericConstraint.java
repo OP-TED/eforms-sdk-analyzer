@@ -9,4 +9,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class RangeNumericConstraint extends AbstractConstraint<RangeNumericPropertyValue> {
+  private static final long serialVersionUID = 1680104080794991783L;
 }

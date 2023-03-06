@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.noticetype;
 
+import java.io.Serializable;
 import java.util.List;
 import eu.europa.ec.mdd.generated.enums.NoticeFormType;
 import eu.europa.ec.mdd.generated.enums.NoticeLegalBasis;
@@ -8,7 +9,9 @@ import eu.europa.ted.eforms.sdk.domain.MetadataDatabase;
 import lombok.Data;
 
 @Data
-public class NoticeType {
+public class NoticeType implements Serializable {
+  private static final long serialVersionUID = 2166698175017975952L;
+
   private final NoticeSubTypeForIndex noticeSubTypeForIndex;
   private final NoticeTypeSdk noticeTypeSdk;
 

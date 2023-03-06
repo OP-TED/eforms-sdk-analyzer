@@ -10,4 +10,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ChangeableOrCpConstraint extends AbstractConstraint<ChangeableOrCpPropertyValue> {
+  private static final long serialVersionUID = -744501890079104911L;
 }

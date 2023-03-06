@@ -13,6 +13,8 @@ import lombok.EqualsAndHashCode;
 @JsonPropertyOrder({"ublVersion", "sdkVersion", "metadataDatabase", "noticeSubTypes",
     "documentTypes"})
 public class NoticeTypesForIndex extends EFormsTrackableEntity {
+  private static final long serialVersionUID = -6549601786048458875L;
+
   private final List<DocumentType> documentTypes = new ArrayList<>();
 
   private final List<NoticeSubTypeForIndex> noticeSubTypes = new ArrayList<>();

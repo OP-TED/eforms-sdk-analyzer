@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import eu.europa.ec.mdd.generated.enums.CodeListType;
 import lombok.Data;
 
@@ -7,7 +8,9 @@ import lombok.Data;
  * TEDEFO-546: Implements a codelist constraint value.
  */
 @Data
-public class CodeListPropertyValue {
+public class CodeListPropertyValue implements Serializable {
+  private static final long serialVersionUID = -4115119604626820302L;
+
   /**
    * The code list id.
    */

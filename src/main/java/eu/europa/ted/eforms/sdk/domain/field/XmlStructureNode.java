@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -11,7 +12,9 @@ import lombok.Data;
  * </p>
  */
 @Data
-public class XmlStructureNode {
+public class XmlStructureNode implements Serializable {
+  private static final long serialVersionUID = 8566153444257534770L;
+
   private String id;
 
   /**

@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ec.mdd.generated.enums.FieldPrivacyCode;
 import eu.europa.ted.eforms.sdk.domain.util.EnumHelper;
@@ -8,7 +9,9 @@ import lombok.Data;
 @Data
 @JsonPropertyOrder({"code", "unpublishedFieldId", "reasonCodeFieldId", "reasonDescriptionFieldId",
     "publicationDateFieldId"})
-public class FieldPrivacy {
+public class FieldPrivacy implements Serializable {
+  private static final long serialVersionUID = -1318408566061305451L;
+
   private FieldPrivacyCode code;
 
   private String unpublishedFieldId;

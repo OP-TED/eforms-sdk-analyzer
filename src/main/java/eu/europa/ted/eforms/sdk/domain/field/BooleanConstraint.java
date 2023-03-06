@@ -9,4 +9,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BooleanConstraint extends AbstractConstraint<Boolean> {
+  private static final long serialVersionUID = 9027962446099162029L;
 }

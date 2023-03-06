@@ -15,6 +15,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @JsonPropertyOrder({"ublVersion", "sdkVersion", "metadataDatabase", "xmlStructure", "fields"})
 public class FieldsAndNodes extends EFormsTrackableEntity {
+  private static final long serialVersionUID = 148801586584043714L;
+
   /**
    * TEDEFO-552: node list (aka sections).
    */

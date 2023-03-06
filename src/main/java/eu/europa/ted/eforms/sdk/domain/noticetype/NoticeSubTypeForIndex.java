@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.domain.noticetype;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +14,9 @@ import lombok.Data;
 @Data
 @JsonPropertyOrder({"documentType", "legalBasis", "formType", "type", "description", "subTypeId",
     "_label", "viewTemplateIds"})
-public class NoticeSubTypeForIndex {
+public class NoticeSubTypeForIndex implements Serializable {
+  private static final long serialVersionUID = 4324353708410064216L;
+
   private String documentType;
   private NoticeLegalBasis legalBasis;
   private NoticeFormType formType;
