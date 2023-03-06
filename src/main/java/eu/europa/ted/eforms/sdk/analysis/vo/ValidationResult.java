@@ -1,6 +1,7 @@
-package eu.europa.ted.eforms.sdk.analysis;
+package eu.europa.ted.eforms.sdk.analysis.vo;
 
 import java.text.MessageFormat;
+import eu.europa.ted.eforms.sdk.analysis.Identifiable;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.SdkComponentFact;
 

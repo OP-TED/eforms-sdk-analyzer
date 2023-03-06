@@ -2,7 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
-import eu.europa.ted.eforms.sdk.analysis.ValidationResult;
+import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 
 rule "Notice type uses existing field"
