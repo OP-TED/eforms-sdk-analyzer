@@ -5,11 +5,18 @@ unit SdkUnit;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 
-rule "Notice type uses existing field"
+// TEDEFO-1813: Check the sdkVersion in the header of every file in the folder.
+rule "Every notice type has SDK version"
 when
-  /noticeTypes[ $ntf: this ]
-  $fieldId: String() from $ntf.fieldsIds
-  not (exists /fields[ id == $fieldId ])
+  /noticeTypes[ $nt: this, sdkVersion == null || sdkVersion.trim.empty ]
 then
-  results.add(new ValidationResult($ntf, "Field " + $fieldId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($nt, "Undefined SDK version", ValidationStatusEnum.ERROR));
+end
+
+// TEDEFO-1813: Check the sdkVersion in the header of every file in the folder.
+rule "Notice types index has SDK version"
+when
+  /noticeTypesIndex[ $nti: this, sdkVersion == null || sdkVersion.trim.empty ]
+then
+  results.add(new ValidationResult($nti, "Undefined SDK version", ValidationStatusEnum.ERROR));
 end

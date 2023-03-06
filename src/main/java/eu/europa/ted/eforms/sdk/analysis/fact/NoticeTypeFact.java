@@ -19,6 +19,10 @@ public class NoticeTypeFact implements SdkComponentFact<String> {
     this.noticeType = noticeType;
   }
 
+  public String getSdkVersion() {
+    return noticeType.getSdkVersion();
+  }
+
   public Set<String> getMetadataFieldsIds() {
     return noticeType.getMetadata().stream()
         .filter((NoticeTypeContent content) -> NoticeTypeContentType.FIELD == content

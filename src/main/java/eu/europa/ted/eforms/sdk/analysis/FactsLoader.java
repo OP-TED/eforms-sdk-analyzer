@@ -9,9 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
+import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
 
 public class FactsLoader {
   private static final Logger logger = LoggerFactory.getLogger(FactsLoader.class);
@@ -48,6 +50,18 @@ public class FactsLoader {
 
     noticeTypes.forEach(
         (NoticeType noticeType) -> datastore.add(new NoticeTypeFact(noticeType)));
+
+    return datastore;
+  }
+
+  public DataStore<NoticeTypesIndexFact> loadNoticeTypesIndex() throws IOException {
+    logger.debug("Creating facts datastore for notice types index");
+
+    NoticeTypesForIndex noticeTypesIndex = sdkLoader.getNoticeTypesForIndex();
+
+    final DataStore<NoticeTypesIndexFact> datastore = DataSource.createStore();
+
+    datastore.add(new NoticeTypesIndexFact(noticeTypesIndex));
 
     return datastore;
   }

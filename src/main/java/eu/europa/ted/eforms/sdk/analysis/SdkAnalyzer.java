@@ -21,7 +21,8 @@ public class SdkAnalyzer {
     logger.debug("Creating RuleUnit");
     SdkUnit sdkUnit = new SdkUnit()
         .setFields(factsLoader.loadFields())
-        .setNoticeTypes(factsLoader.loadNoticeTypes());
+        .setNoticeTypes(factsLoader.loadNoticeTypes())
+        .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex());
 
     RulesRunner.execute(sdkUnit);
 
