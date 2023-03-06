@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,8 +76,8 @@ public class SdkLoader {
         Path.of(sdkRoot.toString(), SdkResource.FIELDS_JSON.getPath().toString()));
   }
 
-  public List<NoticeType> getNoticeTypes() throws IOException {
-    List<NoticeType> result = new ArrayList<>();
+  public Set<NoticeType> getNoticeTypes() throws IOException {
+    Set<NoticeType> result = new HashSet<>();
 
     NoticeTypesForIndex noticeTypesForIndex = getNoticeTypesForIndex();
 

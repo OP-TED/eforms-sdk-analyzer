@@ -2,7 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Set;
 import org.drools.ruleunits.api.DataSource;
 import org.drools.ruleunits.api.DataStore;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class FactsLoader {
   public DataStore<NoticeTypeFact> loadNoticeTypes() throws IOException {
     logger.debug("Creating facts datastore for notice types");
 
-    List<NoticeType> noticeTypes = sdkLoader.getNoticeTypes();
+    Set<NoticeType> noticeTypes = sdkLoader.getNoticeTypes();
 
     final DataStore<NoticeTypeFact> datastore = DataSource.createStore();
 
