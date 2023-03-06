@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.analysis;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,12 +60,13 @@ public class SdkLoader {
   private <T> T loadJsonFile(Class<T> clazz, Path jsonFilePath) throws IOException {
     logger.debug("Loading contents of type [{} from JSON file [{}]", clazz.getName(), jsonFilePath);
 
-    Validate.isTrue(Files.isRegularFile(jsonFilePath),
-        MessageFormat.format("JSON file [{0}] does not exist", jsonFilePath));
+    if (!Files.isRegularFile(jsonFilePath)) {
+      throw new FileNotFoundException(jsonFilePath.toString());
+    }
 
     logger.debug("Getting data from JSON file [{}]", jsonFilePath);
 
-    T result = objectMapper.readValue(jsonFilePath.toFile(), clazz);
+    final T result = objectMapper.readValue(jsonFilePath.toFile(), clazz);
     Validate.notNull(result,
         MessageFormat.format("No data was loaded from JSON file [{0}]", jsonFilePath));
 
@@ -77,9 +79,9 @@ public class SdkLoader {
   }
 
   public Set<NoticeType> getNoticeTypes() throws IOException {
-    Set<NoticeType> result = new HashSet<>();
+    final Set<NoticeType> result = new HashSet<>();
 
-    NoticeTypesForIndex noticeTypesForIndex = getNoticeTypesForIndex();
+    final NoticeTypesForIndex noticeTypesForIndex = getNoticeTypesForIndex();
 
     for (NoticeSubTypeForIndex noticeSubType : noticeTypesForIndex.getNoticeSubTypes()) {
       result.add(
