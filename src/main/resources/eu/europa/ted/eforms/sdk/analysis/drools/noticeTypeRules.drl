@@ -20,3 +20,13 @@ when
 then
   results.add(new ValidationResult($nti, "Undefined SDK version", ValidationStatusEnum.ERROR));
 end
+
+// TEDEFO-1815: Check that the labels referenced in the notice-types.json file actually exist.
+rule "Notice types index references existing labels"
+when
+  /noticeTypesIndex[ $nti: this ]
+  $labelId: String() from $nti.labelIds
+  not (exists /labels[ id == $labelId ])
+then
+  results.add(new ValidationResult($nti, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end

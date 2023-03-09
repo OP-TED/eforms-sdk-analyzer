@@ -3,13 +3,18 @@ package eu.europa.ted.eforms.sdk.analysis;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 import org.drools.ruleunits.api.DataSource;
 import org.drools.ruleunits.api.DataStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
+import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
@@ -62,6 +67,19 @@ public class FactsLoader {
     final DataStore<NoticeTypesIndexFact> datastore = DataSource.createStore();
 
     datastore.add(new NoticeTypesIndexFact(noticeTypesIndex));
+
+    return datastore;
+  }
+
+  public DataStore<LabelFact> loadLabels()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    logger.debug("Creating facts datastore for labels");
+
+    Set<Label> labels = sdkLoader.getLabels();
+
+    final DataStore<LabelFact> datastore = DataSource.createStore();
+
+    labels.forEach((Label label) -> datastore.add(new LabelFact(label)));
 
     return datastore;
   }

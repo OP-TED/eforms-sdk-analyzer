@@ -10,7 +10,10 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 import org.kie.api.definition.rule.Rule;
+import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
 import eu.europa.ted.eforms.sdk.analysis.drools.RulesRunner;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
@@ -61,6 +64,13 @@ public class NoticeTypeValidationSteps {
   public void i_load_the_notice_types_index() throws IOException {
     FactsLoader factsLoader = new FactsLoader(testsFolder);
     sdkUnit.setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex());
+  }
+
+  @When("I load all labels")
+  public void i_load_all_labels()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    FactsLoader factsLoader = new FactsLoader(testsFolder);
+    sdkUnit.setLabels(factsLoader.loadLabels());
   }
 
   @When("I execute validation")

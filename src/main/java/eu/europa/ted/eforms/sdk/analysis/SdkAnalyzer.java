@@ -2,9 +2,12 @@ package eu.europa.ted.eforms.sdk.analysis;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.drools.RulesRunner;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
 
@@ -13,7 +16,7 @@ public class SdkAnalyzer {
 
   private SdkAnalyzer() {}
 
-  public static int analyze(Path sdkRoot) throws IOException {
+  public static int analyze(Path sdkRoot) throws IOException, JAXBException, SAXException, ParserConfigurationException {
     logger.info("Analyzing SDK under folder [{}]", sdkRoot);
 
     FactsLoader factsLoader = new FactsLoader(sdkRoot);
@@ -22,7 +25,8 @@ public class SdkAnalyzer {
     SdkUnit sdkUnit = new SdkUnit()
         .setFields(factsLoader.loadFields())
         .setNoticeTypes(factsLoader.loadNoticeTypes())
-        .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex());
+        .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
+        .setLabels(factsLoader.loadLabels());
 
     RulesRunner.execute(sdkUnit);
 
