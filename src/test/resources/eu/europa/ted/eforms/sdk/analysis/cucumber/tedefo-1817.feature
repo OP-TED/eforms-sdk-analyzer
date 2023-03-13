@@ -1,5 +1,5 @@
 @tedefo-1817
-Feature: Notice Types - Document types validation
+Feature: Notice Types Index - Document types validation
   TEDEFO-1817: The documentType of every noticeSubType exists in the documentTypes section of the notice types index
   Test files under under "src/test/resources/eforms-sdk-tests/tedefo-1817"
 

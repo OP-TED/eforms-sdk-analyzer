@@ -1,5 +1,5 @@
 @tedefo-1814
-Feature: Notice Types - Notice type files validation
+Feature: Notice Types Index - Notice type files validation
   TEDEFO-1814: A JSON file should exist for each noticeSubType in notice-types.json
   with a one-to-one correspondence.
   Test files under under "src/test/resources/eforms-sdk-tests/tedefo-1814"

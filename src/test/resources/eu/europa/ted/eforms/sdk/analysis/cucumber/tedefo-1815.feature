@@ -1,5 +1,5 @@
 @tedefo-1815
-Feature: Notice Types - Labels validation
+Feature: Notice Types Index - Labels validation
   TEDEFO-1815: Τhe labels referenced in the notice-types.json file should exist
   Test files under under "src/test/resources/eforms-sdk-tests/tedefo-1815"
 
