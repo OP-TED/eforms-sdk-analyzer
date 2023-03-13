@@ -15,6 +15,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 public class SdkUnit implements RuleUnit {
@@ -22,6 +23,7 @@ public class SdkUnit implements RuleUnit {
   private DataStore<NoticeTypeFact> noticeTypes;
   private DataStore<NoticeTypesIndexFact> noticeTypesIndex;
   private DataStore<LabelFact> labels;
+  private DataStore<ViewTemplateFact> viewTemplates;
 
   // Global variable to store validations results
   private final Set<ValidationResult> results = new HashSet<>();
@@ -64,6 +66,15 @@ public class SdkUnit implements RuleUnit {
 
   public DataStore<LabelFact> getLabels() {
     return labels;
+  }
+
+  public SdkUnit setViewTemplates(DataStore<ViewTemplateFact> viewTemplates) {
+    this.viewTemplates = viewTemplates;
+    return this;
+  }
+
+  public DataStore<ViewTemplateFact> getViewTemplates() {
+    return viewTemplates;
   }
 
   public Set<ValidationResult> getResults() {

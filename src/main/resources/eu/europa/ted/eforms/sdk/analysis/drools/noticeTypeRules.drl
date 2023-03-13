@@ -30,3 +30,13 @@ when
 then
   results.add(new ValidationResult($nti, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
 end
+
+// TEDEFO-1816: Check that the view templates referenced in the notice-types.json file actually exist.
+rule "Notice types index references existing view templates"
+when
+  /noticeTypesIndex[ $nti: this ]
+  $viewTemplateId: String() from $nti.viewTemplateIds
+  not (exists /viewTemplates[ id == $viewTemplateId ])
+then
+  results.add(new ValidationResult($nti, "Referenced view template " + $viewTemplateId + " does not exist", ValidationStatusEnum.ERROR));
+end

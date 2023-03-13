@@ -1,0 +1,21 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.6.0",
+  "metadataDatabase" : {
+    "version" : "1.5.29",
+    "createdOn" : "2023-01-24T11:03:12"
+  },
+  "viewTemplates" : [ {
+    "id" : "1",
+    "filename" : "1.efx",
+    "description" : "Default",
+    "_noticeSubtypeIds" : [ "1" ],
+    "_label" : "view|name|1"
+  }, {
+    "id" : "2",
+    "filename" : "2.efx",
+    "description" : "Default",
+    "_noticeSubtypeIds" : [ "2" ],
+    "_label" : "view|name|2"
+  } ]
+}

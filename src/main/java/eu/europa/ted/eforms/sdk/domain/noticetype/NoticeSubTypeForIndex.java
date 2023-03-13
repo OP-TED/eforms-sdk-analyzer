@@ -33,6 +33,10 @@ public class NoticeSubTypeForIndex implements Serializable {
     return labelId;
   }
 
+  public List<String> getViewTemplateIds() {
+    return viewTemplateIds;
+  }
+
   public NoticeLegalBasis getLegalBasisEnum() {
     return legalBasis;
   }

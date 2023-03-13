@@ -12,10 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 import org.kie.api.definition.rule.Rule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
-import eu.europa.ted.eforms.sdk.analysis.drools.RulesRunner;
+import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzer;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -23,6 +26,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class NoticeTypeValidationSteps {
+  private static final Logger logger = LoggerFactory.getLogger(NoticeTypeValidationSteps.class);
+
   private Path testsFolder;
 
   private SdkUnit sdkUnit;
@@ -32,7 +37,8 @@ public class NoticeTypeValidationSteps {
 
   @Given("A {string} folder with {string} files")
   public void a_folder_with_files(String testsFolder, String filesValidity)
-      throws URISyntaxException {
+      throws URISyntaxException, IOException, JAXBException, SAXException,
+      ParserConfigurationException {
     this.testsFolder = Path.of(getClass()
         .getResource(MessageFormat.format("/eforms-sdk-tests/{0}/{1}", testsFolder, filesValidity))
         .toURI());
@@ -47,8 +53,7 @@ public class NoticeTypeValidationSteps {
 
   @When("I load all notice types")
   public void i_load_all_notice_types() throws IOException {
-    FactsLoader factsLoader = new FactsLoader(testsFolder);
-    sdkUnit.setNoticeTypes(factsLoader.loadNoticeTypes());
+    sdkUnit.setNoticeTypes(new FactsLoader(testsFolder).loadNoticeTypes());
   }
 
   @When("I load all notice types storing the exception")
@@ -73,9 +78,29 @@ public class NoticeTypeValidationSteps {
     sdkUnit.setLabels(factsLoader.loadLabels());
   }
 
+  @When("I load the view templates index")
+  public void i_load_the_view_templates_index()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    FactsLoader factsLoader = new FactsLoader(testsFolder);
+    sdkUnit.setViewTemplates(factsLoader.loadViewTemplates());
+  }
+
   @When("I execute validation")
-  public void i_execute_validation() {
-    sdkUnit = RulesRunner.execute(sdkUnit, testedRules.toArray(String[]::new));
+  public void i_execute_validation()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    SdkAnalyzer.fireRules(sdkUnit, testedRules.toArray(String[]::new));
+
+    logger.info("Rules fired: {}", sdkUnit.getFiredRules());
+
+    if (sdkUnit.hasWarnings()) {
+      logger.warn("Validation warnings:\n{}",
+          StringUtils.join(sdkUnit.getWarnings(), '\n'));
+    }
+
+    if (sdkUnit.hasErrors()) {
+      logger.error("Validation errors:\n{}",
+          StringUtils.join(sdkUnit.getErrors(), '\n'));
+    }
   }
 
   @Then("No rules should have been fired")

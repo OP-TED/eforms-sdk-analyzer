@@ -27,6 +27,8 @@ import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeSdk;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
+import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
+import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplatesIndex;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties.Entry;
 import eu.europa.ted.eforms.sdk.util.XmlParser;
@@ -149,5 +151,14 @@ public class SdkLoader {
     return getTranslations().stream()
         .flatMap((Translation translation) -> translation.getLabels().keySet().stream())
         .collect(Collectors.toSet());
+  }
+
+  public TedefoViewTemplatesIndex getViewTemplatesIndex() throws IOException {
+    return loadJsonFile(TedefoViewTemplatesIndex.class,
+        Path.of(sdkRoot.toString(), SdkResource.VIEW_TEMPLATES_JSON.getPath().toString()));
+  }
+
+  public Set<TedefoViewTemplateIndex> getViewTemplates() throws IOException {
+    return new HashSet<>(getViewTemplatesIndex().getViewTemplates());
   }
 }

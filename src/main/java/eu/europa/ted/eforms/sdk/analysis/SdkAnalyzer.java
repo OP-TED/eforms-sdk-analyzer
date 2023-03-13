@@ -16,7 +16,8 @@ public class SdkAnalyzer {
 
   private SdkAnalyzer() {}
 
-  public static int analyze(Path sdkRoot) throws IOException, JAXBException, SAXException, ParserConfigurationException {
+  public static int analyze(Path sdkRoot)
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
     logger.info("Analyzing SDK under folder [{}]", sdkRoot);
 
     FactsLoader factsLoader = new FactsLoader(sdkRoot);
@@ -26,9 +27,10 @@ public class SdkAnalyzer {
         .setFields(factsLoader.loadFields())
         .setNoticeTypes(factsLoader.loadNoticeTypes())
         .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
-        .setLabels(factsLoader.loadLabels());
+        .setLabels(factsLoader.loadLabels())
+        .setViewTemplates(factsLoader.loadViewTemplates());
 
-    RulesRunner.execute(sdkUnit);
+    fireAllRules(sdkUnit);
 
     if (sdkUnit.hasWarnings()) {
       logger.warn("Validation warnings:\n{}", StringUtils.join(sdkUnit.getWarnings(), '\n'));
@@ -39,5 +41,15 @@ public class SdkAnalyzer {
     }
 
     return sdkUnit.hasErrors() ? 1 : 0;
+  }
+
+  public static SdkUnit fireAllRules(SdkUnit sdkUnit) {
+    return fireRules(sdkUnit);
+  }
+
+  public static SdkUnit fireRules(SdkUnit sdkUnit, String... rules) {
+    RulesRunner.execute(sdkUnit, rules);
+
+    return sdkUnit;
   }
 }
