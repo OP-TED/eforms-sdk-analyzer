@@ -18,4 +18,8 @@ public class DocumentType implements Serializable {
   public String getId() {
     return id;
   }
+
+  public String getSchemaLocation() {
+    return schemaLocation;
+  }
 }

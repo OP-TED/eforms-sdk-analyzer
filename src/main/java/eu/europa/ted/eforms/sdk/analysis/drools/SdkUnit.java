@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.analysis.drools;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -20,6 +21,8 @@ import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 public class SdkUnit implements RuleUnit {
+  private Path sdkRoot;
+
   private DataStore<FieldFact> fields;
   private DataStore<NoticeTypeFact> noticeTypes;
   private DataStore<NoticeTypesIndexFact> noticeTypesIndex;
@@ -33,6 +36,15 @@ public class SdkUnit implements RuleUnit {
   private final List<Rule> firedRules = new ArrayList<>();
 
   public SdkUnit() {}
+
+  public Path getSdkRoot() {
+    return sdkRoot;
+  }
+
+  public SdkUnit setSdkRoot(Path sdkRoot) {
+    this.sdkRoot = sdkRoot;
+    return this;
+  }
 
   public SdkUnit setFields(DataStore<FieldFact> fields) {
     this.fields = fields;

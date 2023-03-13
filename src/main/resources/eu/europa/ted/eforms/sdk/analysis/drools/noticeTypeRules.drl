@@ -6,6 +6,7 @@ import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
+import java.nio.file.Files;
 
 // TEDEFO-1813: Check the sdkVersion in the header of every file in the folder.
 rule "Every notice type has SDK version"
@@ -43,7 +44,7 @@ then
   results.add(new ValidationResult($nti, "Referenced view template " + $viewTemplateId + " does not exist", ValidationStatusEnum.ERROR));
 end
 
-// TEDEFO-1817: Check that the documentType of every noticeSubType exists in the documentTypes section (at the end of the notice-types.json)
+// TEDEFO-1817: Check that the documentType of every noticeSubType exists in the documentTypes section (at the end of the notice-types.json).
 rule "Notice sub types reference existing document types"
 when
   /noticeTypesIndex[ $nti: this ]
@@ -51,4 +52,12 @@ when
   not (exists /documentTypes[ id == $documentTypeId ])
 then
   results.add(new ValidationResult($nti, "Referenced document type " + $documentTypeId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+// TEDEFO-1818: For every documentType check that the schemaLocation exists in the SDK.
+rule "Document types use existing schemaLocation"
+when
+  /documentTypes[ $dt: this, $schemaLocation: schemaLocation, !schemaLocationExists(sdkRoot) ]
+then
+  results.add(new ValidationResult($dt, "Referenced document type " + $schemaLocation + " does not exist", ValidationStatusEnum.ERROR));
 end

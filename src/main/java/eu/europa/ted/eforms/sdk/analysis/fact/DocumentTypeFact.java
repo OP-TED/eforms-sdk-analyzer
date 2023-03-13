@@ -1,5 +1,9 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
 import lombok.Data;
 
@@ -11,6 +15,16 @@ public class DocumentTypeFact implements SdkComponentFact<String> {
 
   public DocumentTypeFact(DocumentType documentType) {
     this.documentType = documentType;
+  }
+
+  public String getSchemaLocation() {
+    return documentType.getSchemaLocation();
+  }
+
+  public boolean schemaLocationExists(Path sdkRoot) {
+    return Files
+        .exists(Path.of(Optional.ofNullable(sdkRoot).orElse(Path.of(StringUtils.EMPTY)).toString(),
+            documentType.getSchemaLocation()));
   }
 
   @Override
