@@ -1,0 +1,405 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.6.0",
+  "metadataDatabase" : {
+    "version" : "1.5.67",
+    "createdOn" : "2023-02-16T14:19:14"
+  },
+  "noticeId" : "1",
+  "metadata" : [ {
+    "id" : "BT-02-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Type",
+    "_label" : "field|name|BT-02-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-03-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Form Type",
+    "_label" : "field|name|BT-03-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-701-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Identifier",
+    "_label" : "field|name|BT-701-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-757-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Version",
+    "_label" : "field|name|BT-757-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-702(a)-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Official Language",
+    "_label" : "field|name|BT-702(a)-notice",
+    "hidden" : true
+  }, {
+    "id" : "BT-702(b)-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Official Language",
+    "_label" : "field|name|BT-702(b)-notice",
+    "_repeatable" : true,
+    "hidden" : true
+  }, {
+    "id" : "BT-05(a)-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Dispatch Date",
+    "_label" : "field|name|BT-05(a)-notice",
+    "_presetValue" : "{NOW}",
+    "hidden" : true
+  }, {
+    "id" : "BT-05(b)-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Dispatch Time",
+    "_label" : "field|name|BT-05(b)-notice",
+    "_presetValue" : "{NOW}",
+    "hidden" : true
+  }, {
+    "id" : "BT-738-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Preferred Publication Date",
+    "_label" : "field|name|BT-738-notice",
+    "hidden" : true
+  }, {
+    "id" : "OPT-001-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "UBL version ID (UBL)",
+    "_label" : "field|name|OPT-001-notice",
+    "hidden" : true
+  }, {
+    "id" : "OPT-002-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Customization ID (UBL)",
+    "_label" : "field|name|OPT-002-notice",
+    "readOnly" : true
+  }, {
+    "id" : "OPP-070-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Subtype",
+    "_label" : "field|name|OPP-070-notice",
+    "readOnly" : true
+  }, {
+    "id" : "OPP-010-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Publication Number",
+    "_label" : "field|name|OPP-010-notice",
+    "hidden" : true
+  }, {
+    "id" : "OPP-011-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "OJEU Identifier",
+    "_label" : "field|name|OPP-011-notice",
+    "hidden" : true
+  }, {
+    "id" : "OPP-012-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "OJEU Publication Date",
+    "_label" : "field|name|OPP-012-notice",
+    "hidden" : true
+  } ],
+  "content" : [ {
+    "id" : "GR-Buyer",
+    "contentType" : "group",
+    "displayType" : "SECTION",
+    "description" : "Contracting Party and Provider related Information",
+    "_label" : "group|name|GR-Buyer",
+    "content" : [ {
+      "id" : "GR-ContractingAuthority",
+      "contentType" : "group",
+      "nodeId" : "ND-ContractingParty",
+      "displayType" : "GROUP",
+      "description" : "Contracting Party related Information (URL, Legal Type, Contracting Type, Activity, …)",
+      "_label" : "group|name|ND-ContractingParty",
+      "_repeatable" : true,
+      "content" : [ {
+        "id" : "GR-ContractingAuthority-Buyer",
+        "contentType" : "group",
+        "displayType" : "GROUP",
+        "description" : "Contracting Party related Information (URL, Legal Type, Contracting Type, Activity, …)",
+        "_label" : "group|name|GR-ContractingAuthority-Buyer",
+        "content" : [ {
+          "id" : "OPT-300-Procedure-Buyer",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Buyer Technical Identifier Reference",
+          "_label" : "field|name|OPT-300-Procedure-Buyer",
+          "_idSchemes" : [ "ORG" ]
+        }, {
+          "id" : "BT-11-Procedure-Buyer",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Buyer Legal Type",
+          "_label" : "field|name|BT-11-Procedure-Buyer"
+        }, {
+          "id" : "BT-10-Procedure-Buyer",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Activity Authority",
+          "_label" : "field|name|BT-10-Procedure-Buyer"
+        }, {
+          "id" : "BT-508-Procedure-Buyer",
+          "contentType" : "field",
+          "displayType" : "TEXTBOX",
+          "description" : "Buyer Profile URL",
+          "_label" : "field|name|BT-508-Procedure-Buyer"
+        } ]
+      }, {
+        "id" : "GR-Procedure-SProvider",
+        "contentType" : "group",
+        "nodeId" : "ND-ServiceProviderParty",
+        "displayType" : "GROUP",
+        "description" : "Provided Service (code) and Provider (Reference to Organization)",
+        "_label" : "group|name|ND-ServiceProviderParty",
+        "_repeatable" : true,
+        "content" : [ {
+          "id" : "OPT-300-Procedure-SProvider",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Service Provider Technical Identifier Reference",
+          "_label" : "field|name|OPT-300-Procedure-SProvider",
+          "_idSchemes" : [ "ORG" ]
+        }, {
+          "id" : "OPT-030-Procedure-SProvider",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Provided Service Type",
+          "_label" : "field|name|OPT-030-Procedure-SProvider"
+        } ]
+      } ]
+    } ]
+  }, {
+    "id" : "GR-Procedure",
+    "contentType" : "group",
+    "displayType" : "SECTION",
+    "description" : "Procedure",
+    "_label" : "group|name|GR-Procedure",
+    "content" : [ {
+      "id" : "GR-Procedure-Purpose",
+      "contentType" : "group",
+      "displayType" : "SECTION",
+      "description" : "Purpose",
+      "_label" : "group|name|GR-Procedure-Purpose",
+      "content" : [ {
+        "id" : "GR-Procedure-MainLegalBasis",
+        "contentType" : "group",
+        "displayType" : "GROUP",
+        "description" : "Main Legal Basis",
+        "_label" : "group|name|GR-Procedure-MainLegalBasis",
+        "content" : [ {
+          "id" : "BT-01-notice",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Procedure Legal Basis",
+          "_label" : "field|name|BT-01-notice"
+        } ]
+      }, {
+        "id" : "GR-Procedure-LocalLegalBasisWithID",
+        "contentType" : "group",
+        "nodeId" : "ND-LocalLegalBasisWithID",
+        "displayType" : "GROUP",
+        "description" : "Legislation impacting the procurement and for which an ID is known",
+        "_label" : "group|name|ND-LocalLegalBasisWithID",
+        "_repeatable" : true,
+        "content" : [ {
+          "id" : "BT-01(c)-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTBOX",
+          "description" : "Procedure Legal Basis (ID)",
+          "_label" : "field|name|BT-01(c)-Procedure"
+        }, {
+          "id" : "BT-01(d)-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Procedure Legal Basis (Description)",
+          "_label" : "field|name|BT-01(d)-Procedure"
+        } ]
+      }, {
+        "id" : "GR-Procedure-Description",
+        "contentType" : "group",
+        "displayType" : "GROUP",
+        "description" : "Description",
+        "_label" : "group|name|GR-Procedure-Description",
+        "content" : [ {
+          "id" : "BT-22-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTBOX",
+          "description" : "Internal Identifier",
+          "_label" : "field|name|BT-22-Procedure"
+        }, {
+          "id" : "BT-21-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Title",
+          "_label" : "field|name|BT-21-Procedure"
+        }, {
+          "id" : "BT-24-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Description",
+          "_label" : "field|name|BT-24-Procedure"
+        }, {
+          "id" : "BT-23-Procedure",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Main Nature",
+          "_label" : "field|name|BT-23-Procedure"
+        }, {
+          "id" : "BT-531-Procedure",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Additional Nature (different from Main)",
+          "_label" : "field|name|BT-531-Procedure",
+          "_repeatable" : true
+        } ]
+      }, {
+        "id" : "GR-Procedure-Scope",
+        "contentType" : "group",
+        "displayType" : "GROUP",
+        "description" : "Scope",
+        "_label" : "group|name|GR-Procedure-Scope",
+        "content" : [ {
+          "id" : "GR-Procedure-Scope-MainClassification",
+          "contentType" : "group",
+          "displayType" : "GROUP",
+          "description" : "Main Classification",
+          "_label" : "group|name|GR-Procedure-Scope-MainClassification",
+          "content" : [ {
+            "id" : "BT-26(m)-Procedure",
+            "contentType" : "field",
+            "displayType" : "COMBOBOX",
+            "description" : "Classification Type (e.g. CPV)",
+            "_label" : "field|name|BT-26(m)-Procedure"
+          }, {
+            "id" : "BT-262-Procedure",
+            "contentType" : "field",
+            "displayType" : "COMBOBOX",
+            "description" : "Main Classification Code",
+            "_label" : "field|name|BT-262-Procedure"
+          } ]
+        }, {
+          "id" : "GR-Procedure-Scope-AdditionalClassification",
+          "contentType" : "group",
+          "nodeId" : "ND-ProcedureAdditionalCommodityClassification",
+          "displayType" : "GROUP",
+          "description" : "Classification for the Additional Commodity of the Procedure",
+          "_label" : "group|name|ND-ProcedureAdditionalCommodityClassification",
+          "_repeatable" : true,
+          "content" : [ {
+            "id" : "BT-26(a)-Procedure",
+            "contentType" : "field",
+            "displayType" : "COMBOBOX",
+            "description" : "Classification Type (e.g. CPV)",
+            "_label" : "field|name|BT-26(a)-Procedure"
+          }, {
+            "id" : "BT-263-Procedure",
+            "contentType" : "field",
+            "displayType" : "COMBOBOX",
+            "description" : "Additional Classification Code",
+            "_label" : "field|name|BT-263-Procedure"
+          } ]
+        } ]
+      }, {
+        "id" : "GR-Procedure-PlaceOfPerformance",
+        "contentType" : "group",
+        "nodeId" : "ND-ProcedurePlacePerformanceAdditionalInformation",
+        "displayType" : "GROUP",
+        "description" : "Additional Information about the location where the Procurement, for the Procedure as a whole, should take place",
+        "_label" : "group|name|ND-ProcedurePlacePerformanceAdditionalInformation",
+        "_repeatable" : true,
+        "content" : [ {
+          "id" : "BT-5101(a)-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Place Performance Street",
+          "_label" : "field|name|BT-5101(a)-Procedure"
+        }, {
+          "id" : "BT-5101(b)-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Place Performance Streetline 1",
+          "_label" : "field|name|BT-5101(b)-Procedure"
+        }, {
+          "id" : "BT-5101(c)-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Place Performance Streetline 2",
+          "_label" : "field|name|BT-5101(c)-Procedure"
+        }, {
+          "id" : "BT-5131-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Place Performance City",
+          "_label" : "field|name|BT-5131-Procedure"
+        }, {
+          "id" : "BT-5121-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Place Performance Post Code",
+          "_label" : "field|name|BT-5121-Procedure"
+        }, {
+          "id" : "BT-5071-Procedure",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Place Performance Country Subdivision",
+          "_label" : "field|name|BT-5071-Procedure"
+        }, {
+          "id" : "BT-5141-Procedure",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Place Performance Country Code",
+          "_label" : "field|name|BT-5141-Procedure"
+        }, {
+          "id" : "BT-727-Procedure",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Place Performance Services Other",
+          "_label" : "field|name|BT-727-Procedure"
+        }, {
+          "id" : "BT-728-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Place Performance Additional Information",
+          "_label" : "field|name|BT-728-Procedure"
+        } ]
+      } ]
+    }, {
+      "id" : "GR-Procedure-Procedure-subsection",
+      "contentType" : "group",
+      "displayType" : "SECTION",
+      "description" : "Procedure",
+      "_label" : "group|name|GR-Procedure-Procedure-subsection",
+      "content" : [ {
+        "id" : "GR-Procedure-AdditionalInformation",
+        "contentType" : "group",
+        "displayType" : "GROUP",
+        "description" : "Additional Information",
+        "_label" : "group|name|GR-Procedure-AdditionalInformation",
+        "content" : [ {
+          "id" : "BT-300-Procedure",
+          "contentType" : "field",
+          "displayType" : "TEXTAREA",
+          "description" : "Additional Information",
+          "_label" : "field|name|BT-300-Procedure"
+        } ]
+      } ]
+    } ]
+  } ]
+}
