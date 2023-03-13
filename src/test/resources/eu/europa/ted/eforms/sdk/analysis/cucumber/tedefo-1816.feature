@@ -1,5 +1,5 @@
 @tedefo-1816
-Feature: Notice Types - View templates validation
+Feature: Notice Types Index - View templates validation
   TEDEFO-1816: Τhe view templates referenced in the notice-types.json file should exist
   Test files under under "src/test/resources/eforms-sdk-tests/tedefo-1816"
 
