@@ -1,7 +1,6 @@
 @tedefo-1818
-Feature: Notice Types - Document types schemaLocation validation
-For every documentType check that the schemaLocation exists in the SDK.
-  TEDEFO-1818: The schemaLocation of every documentType should exist in the SDK.
+Feature: Notice Types Index - Document types schemaLocation validation
+  TEDEFO-1818: The schemaLocation of every document type should exist in the SDK.
   Test files under under "src/test/resources/eforms-sdk-tests/tedefo-1818"
 
   Background:

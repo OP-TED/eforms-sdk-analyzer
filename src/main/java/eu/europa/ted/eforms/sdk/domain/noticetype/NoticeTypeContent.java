@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.stream.Stream;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import lombok.Data;
 
 /**
@@ -21,7 +21,8 @@ import lombok.Data;
 @Data
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 @JsonPropertyOrder({"id", "contentType", "nodeId", "displayType", "description", "_label",
-    "valueSource", "_idScheme", "_idSchemes", "_schemeName", "_identifierFieldId", "readOnly", "_repeatable",
+    "valueSource", "_idScheme", "_idSchemes", "_schemeName", "_identifierFieldId", "readOnly",
+    "_repeatable",
     "_presetValue", "hidden", "collapsed", "content"})
 public class NoticeTypeContent {
   /**
@@ -67,7 +68,7 @@ public class NoticeTypeContent {
 
   @JsonProperty("_presetValue")
   private String presetValue;
-  
+
   /**
    * For the UI logic. Read only form inputs.
    */
@@ -148,10 +149,15 @@ public class NoticeTypeContent {
   public Stream<NoticeTypeContent> flattened() {
     return Stream.concat(
         Stream.of(this),
-        content.stream().flatMap(NoticeTypeContent::flattened));
+        content.stream()
+            .flatMap(NoticeTypeContent::flattened));
   }
 
   public String getId() {
     return id;
+  }
+
+  public String getLabel() {
+    return label;
   }
 }

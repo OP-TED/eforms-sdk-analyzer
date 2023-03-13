@@ -61,3 +61,13 @@ when
 then
   results.add(new ValidationResult($dt, "Referenced document type " + $schemaLocation + " does not exist", ValidationStatusEnum.ERROR));
 end
+
+// TEDEFO-1819: For every <noticeSubtype>.json file: Check that all referenced labels exist.
+rule "Notice sub types reference existing labels"
+when
+  /noticeTypes[ $nt: this ]
+  $labelId: String() from $nt.labelIds
+  not (exists /labels[ id == $labelId ])
+then
+  results.add(new ValidationResult($nt, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end
