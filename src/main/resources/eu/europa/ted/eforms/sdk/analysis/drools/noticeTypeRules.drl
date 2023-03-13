@@ -2,6 +2,8 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
+import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
+import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 
@@ -39,4 +41,14 @@ when
   not (exists /viewTemplates[ id == $viewTemplateId ])
 then
   results.add(new ValidationResult($nti, "Referenced view template " + $viewTemplateId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+// TEDEFO-1817: Check that the documentType of every noticeSubType exists in the documentTypes section (at the end of the notice-types.json)
+rule "Notice sub types reference existing document types"
+when
+  /noticeTypesIndex[ $nti: this ]
+  NoticeSubTypeForIndex( $documentTypeId: documentType ) from $nti.getNoticeSubTypes
+  not (exists /documentTypes[ id == $documentTypeId ])
+then
+  results.add(new ValidationResult($nti, "Referenced document type " + $documentTypeId + " does not exist", ValidationStatusEnum.ERROR));
 end

@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.StringUtils;
@@ -67,22 +68,24 @@ public class NoticeTypeValidationSteps {
 
   @When("I load the notice types index")
   public void i_load_the_notice_types_index() throws IOException {
-    FactsLoader factsLoader = new FactsLoader(testsFolder);
-    sdkUnit.setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex());
+    sdkUnit.setNoticeTypesIndex(new FactsLoader(testsFolder).loadNoticeTypesIndex());
   }
 
   @When("I load all labels")
   public void i_load_all_labels()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    FactsLoader factsLoader = new FactsLoader(testsFolder);
-    sdkUnit.setLabels(factsLoader.loadLabels());
+    sdkUnit.setLabels(new FactsLoader(testsFolder).loadLabels());
   }
 
   @When("I load the view templates index")
   public void i_load_the_view_templates_index()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    FactsLoader factsLoader = new FactsLoader(testsFolder);
-    sdkUnit.setViewTemplates(factsLoader.loadViewTemplates());
+    sdkUnit.setViewTemplates(new FactsLoader(testsFolder).loadViewTemplates());
+  }
+
+  @When("I load all document types")
+  public void i_load_all_document_types() throws IOException {
+    sdkUnit.setDocumentTypes(new FactsLoader(testsFolder).loadDocumentTypes());
   }
 
   @When("I execute validation")
@@ -90,7 +93,8 @@ public class NoticeTypeValidationSteps {
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
     SdkAnalyzer.fireRules(sdkUnit, testedRules.toArray(String[]::new));
 
-    logger.info("Rules fired: {}", sdkUnit.getFiredRules());
+    logger.info("Rules fired: {}",
+        sdkUnit.getFiredRules().stream().map(Rule::getName).collect(Collectors.toSet()));
 
     if (sdkUnit.hasWarnings()) {
       logger.warn("Validation warnings:\n{}",

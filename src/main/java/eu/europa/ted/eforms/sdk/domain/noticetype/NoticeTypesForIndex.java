@@ -22,4 +22,8 @@ public class NoticeTypesForIndex extends EFormsTrackableEntity {
   public List<NoticeSubTypeForIndex> getNoticeSubTypes() {
     return noticeSubTypes;
   }
+
+  public List<DocumentType> getDocumentTypes() {
+    return documentTypes;
+  }
 }

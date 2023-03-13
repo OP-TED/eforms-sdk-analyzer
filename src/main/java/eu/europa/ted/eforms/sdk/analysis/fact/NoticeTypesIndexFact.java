@@ -1,8 +1,10 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
+import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
 import lombok.Data;
@@ -32,6 +34,14 @@ public class NoticeTypesIndexFact implements SdkComponentFact<String> {
         .flatMap(
             (NoticeSubTypeForIndex noticeSubType) -> noticeSubType.getViewTemplateIds().stream())
         .collect(Collectors.toSet());
+  }
+
+  public List<NoticeSubTypeForIndex> getNoticeSubTypes() {
+    return noticeTypesForIndex.getNoticeSubTypes();
+  }
+
+  public List<DocumentType> getDocumentTypes() {
+    return noticeTypesForIndex.getDocumentTypes();
   }
 
   @Override

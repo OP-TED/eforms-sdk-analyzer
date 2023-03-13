@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.drools.ruleunits.api.DataStore;
 import org.kie.api.definition.rule.Rule;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
+import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
@@ -24,6 +25,7 @@ public class SdkUnit implements RuleUnit {
   private DataStore<NoticeTypesIndexFact> noticeTypesIndex;
   private DataStore<LabelFact> labels;
   private DataStore<ViewTemplateFact> viewTemplates;
+  private DataStore<DocumentTypeFact> documentTypes;
 
   // Global variable to store validations results
   private final Set<ValidationResult> results = new HashSet<>();
@@ -75,6 +77,15 @@ public class SdkUnit implements RuleUnit {
 
   public DataStore<ViewTemplateFact> getViewTemplates() {
     return viewTemplates;
+  }
+
+  public DataStore<DocumentTypeFact> getDocumentTypes() {
+    return documentTypes;
+  }
+
+  public SdkUnit setDocumentTypes(DataStore<DocumentTypeFact> documentTypes) {
+    this.documentTypes = documentTypes;
+    return this;
   }
 
   public Set<ValidationResult> getResults() {

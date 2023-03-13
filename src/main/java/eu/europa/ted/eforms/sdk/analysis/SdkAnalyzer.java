@@ -28,7 +28,8 @@ public class SdkAnalyzer {
         .setNoticeTypes(factsLoader.loadNoticeTypes())
         .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
         .setLabels(factsLoader.loadLabels())
-        .setViewTemplates(factsLoader.loadViewTemplates());
+        .setViewTemplates(factsLoader.loadViewTemplates())
+        .setDocumentTypes(factsLoader.loadDocumentTypes());
 
     fireAllRules(sdkUnit);
 
