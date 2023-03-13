@@ -44,7 +44,8 @@ public class NoticeTypeValidationSteps {
         .getResource(MessageFormat.format("/eforms-sdk-tests/{0}/{1}", testsFolder, filesValidity))
         .toURI());
 
-    sdkUnit = new SdkUnit();
+    sdkUnit = new SdkUnit()
+        .setSdkRoot(this.testsFolder);
   }
 
   @Given("The following rules")

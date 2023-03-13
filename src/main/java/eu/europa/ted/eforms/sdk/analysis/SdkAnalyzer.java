@@ -24,12 +24,13 @@ public class SdkAnalyzer {
 
     logger.debug("Creating RuleUnit");
     SdkUnit sdkUnit = new SdkUnit()
+        .setSdkRoot(sdkRoot)
+        .setDocumentTypes(factsLoader.loadDocumentTypes())
         .setFields(factsLoader.loadFields())
         .setNoticeTypes(factsLoader.loadNoticeTypes())
         .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
         .setLabels(factsLoader.loadLabels())
-        .setViewTemplates(factsLoader.loadViewTemplates())
-        .setDocumentTypes(factsLoader.loadDocumentTypes());
+        .setViewTemplates(factsLoader.loadViewTemplates());
 
     fireAllRules(sdkUnit);
 
