@@ -89,6 +89,11 @@ public class NoticeTypeValidationSteps {
     sdkUnit.setDocumentTypes(new FactsLoader(testsFolder).loadDocumentTypes());
   }
 
+  @When("I load all fields")
+  public void i_load_all_fields() throws IOException {
+    sdkUnit.setFields(new FactsLoader(testsFolder).loadFields());
+  }
+
   @When("I execute validation")
   public void i_execute_validation()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {

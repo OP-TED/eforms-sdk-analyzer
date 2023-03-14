@@ -31,7 +31,7 @@ public class NoticeTypeFact implements SdkComponentFact<String> {
         .collect(Collectors.toSet());
   }
 
-  public Set<String> getContentFieldsIds() {
+  public Set<String> getContentFieldIds() {
     return noticeType.getContent()
         .stream()
         .flatMap(NoticeTypeContent::flattened)
@@ -41,8 +41,8 @@ public class NoticeTypeFact implements SdkComponentFact<String> {
         .collect(Collectors.toSet());
   }
 
-  public Set<String> getFieldsIds() {
-    return new HashSet<>(CollectionUtils.union(getMetadataFieldsIds(), getContentFieldsIds()));
+  public Set<String> getFieldIds() {
+    return new HashSet<>(CollectionUtils.union(getMetadataFieldsIds(), getContentFieldIds()));
   }
 
   public Set<String> getLabelIds() {

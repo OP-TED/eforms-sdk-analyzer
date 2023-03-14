@@ -71,3 +71,13 @@ when
 then
   results.add(new ValidationResult($nt, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
 end
+
+// TEDEFO-1820: For every <noticeSubtype>.json file: Check that any entry with contentType="field", has a corresponding field inside fields/fields.json
+rule "Notice sub types reference existing fields"
+when
+  /noticeTypes[ $nt: this ]
+  $fieldId: String() from $nt.fieldIds
+  not (exists /fields[ id == $fieldId ])
+then
+  results.add(new ValidationResult($nt, "Referenced field " + $fieldId + " does not exist", ValidationStatusEnum.ERROR));
+end
