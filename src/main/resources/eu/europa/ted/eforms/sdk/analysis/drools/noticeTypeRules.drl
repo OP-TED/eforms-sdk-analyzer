@@ -4,6 +4,7 @@ unit SdkUnit;
 
 import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
+import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContent;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import java.nio.file.Files;
@@ -80,4 +81,37 @@ when
   not (exists /fields[ id == $fieldId ])
 then
   results.add(new ValidationResult($nt, "Referenced field " + $fieldId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+// TEDEFO-1821:
+//  For every <noticeSubtype>.json file:
+//    If a group is _repeatable then: 
+//      It should have a nodeId property 
+//      The node corresponding to the nodeId should exist in fields.json 
+//      This node should be repeatable 
+//      The first repeatable parent of the node should be associated with the first repeatable parent of the group 
+rule "Every repeatable group of notice sub types has a nodeId"
+when
+  /noticeTypes[ $nt: this ]
+  NoticeTypeContent($contentId: id, repeatable == true, nodeId == null) from $nt.groups
+then
+  results.add(new ValidationResult($nt, "Repeatable group " + $contentId + " does not have a nodeId", ValidationStatusEnum.ERROR));
+end
+
+rule "Every repeatable group of notice sub types references an existing repeatable node"
+when
+  /noticeTypes[ $nt: this ]
+  NoticeTypeContent($contentId: id, repeatable == true, $referencedNodeId: nodeId) from $nt.groups
+  not (exists /nodes[ id == $referencedNodeId && repeatable == true ])
+then
+  results.add(new ValidationResult($nt, "Repeatable group " + $contentId + " references node " + $referencedNodeId + " which does not exist or is not repeatable", ValidationStatusEnum.ERROR));
+end
+
+rule "The first repeatable parent of a node is associated with the first repeatable parent of the referencing group"
+when
+  /noticeTypes[ $nt: this ]
+  NoticeTypeContent($contentId: id, $firstRepeatableGroupParent: firstRepeatableParent, repeatable == true, $referencedNodeId: nodeId) from $nt.groups
+  not (exists /nodes[ id == $referencedNodeId && repeatable == true && firstRepeatableParent.id == $firstRepeatableGroupParent.nodeId ])
+then
+  results.add(new ValidationResult($nt, "Repeatable group " + $contentId + " references node " + $referencedNodeId + " with a mismatching first repeatable parent", ValidationStatusEnum.ERROR));
 end

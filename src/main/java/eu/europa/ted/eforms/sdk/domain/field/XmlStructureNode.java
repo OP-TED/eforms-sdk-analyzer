@@ -22,6 +22,8 @@ public class XmlStructureNode implements Serializable {
    */
   private String parentId;
 
+  private XmlStructureNode parent;
+
   /**
    * Human readable name.
    */
@@ -52,4 +54,24 @@ public class XmlStructureNode implements Serializable {
    * Since TEDEFO-1090. TEDEFO-1111. Can be null.
    */
   private ChangeableOrCpProperty inContinueProcedure;
+
+  public String getId() {
+    return id;
+  }
+
+  public String getParentId() {
+    return parentId;
+  }
+
+  public XmlStructureNode getParent() {
+    return parent;
+  }
+
+  public void setParent(XmlStructureNode parent) {
+    this.parent = parent;
+  }
+
+  public boolean isRepeatable() {
+    return repeatable;
+  }
 }

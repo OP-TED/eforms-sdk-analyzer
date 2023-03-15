@@ -7,10 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,7 @@ import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.Language;
 import eu.europa.ted.eforms.sdk.domain.Translation;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
+import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeSdk;
@@ -87,8 +90,27 @@ public class SdkLoader {
   }
 
   public FieldsAndNodes getFieldsAndNodes() throws IOException {
-    return loadJsonFile(FieldsAndNodes.class,
+    FieldsAndNodes fieldsAndNodes = loadJsonFile(FieldsAndNodes.class,
         Path.of(sdkRoot.toString(), SdkResource.FIELDS_JSON.getPath().toString()));
+
+    fieldsAndNodes.getNodes().forEach((XmlStructureNode node) -> {
+      if (StringUtils.isNotEmpty(node.getParentId())) {
+        node.setParent(fieldsAndNodes.getNodes().stream()
+            .filter((XmlStructureNode n) -> n.getId().equals(node.getParentId()))
+            .collect(Collectors.collectingAndThen(
+                Collectors.toList(),
+                (List<XmlStructureNode> l) -> {
+                  if (l.size() != 1) {
+                    throw new IllegalArgumentException(MessageFormat.format(
+                        "Could not find parent node with id [{0}] for node with id [{1}]",
+                        node.getParentId(), node.getId()));
+                  }
+                  return l.get(0);
+                })));
+      }
+    });
+
+    return fieldsAndNodes;
   }
 
   public Set<NoticeType> getNoticeTypes() throws IOException {

@@ -24,6 +24,10 @@ public class FieldsAndNodes extends EFormsTrackableEntity {
 
   private final List<Field> fields = new ArrayList<>();
 
+  public List<XmlStructureNode> getNodes() {
+    return xmlStructure;
+  }
+
   public List<Field> getFields() {
     return fields;
   }

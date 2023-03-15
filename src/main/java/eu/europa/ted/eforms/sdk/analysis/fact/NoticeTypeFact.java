@@ -53,6 +53,15 @@ public class NoticeTypeFact implements SdkComponentFact<String> {
         .collect(Collectors.toSet());
   }
 
+  public Set<NoticeTypeContent> getGroups() {
+    return noticeType.getContent()
+        .stream()
+        .flatMap(NoticeTypeContent::flattened)
+        .filter((NoticeTypeContent content) -> NoticeTypeContentType.GROUP == content
+            .getContentTypeEnum())
+        .collect(Collectors.toSet());
+  }
+
   @Override
   public String getId() {
     return noticeType.getNoticeId();

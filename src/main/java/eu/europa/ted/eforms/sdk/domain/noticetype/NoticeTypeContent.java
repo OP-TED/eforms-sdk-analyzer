@@ -3,12 +3,14 @@ package eu.europa.ted.eforms.sdk.domain.noticetype;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Domain object to represent items of the SDK notice type for JSON in Java. This is not for the top
@@ -94,12 +96,11 @@ public class NoticeTypeContent {
    * List of child content (same type), it can be an empty list if there are no children. This is
    * where recursion happens.
    */
-  private final List<NoticeTypeContent> content = new ArrayList<>();
+  private List<NoticeTypeContent> content = new ArrayList<>();
 
-  /**
-   * This is for internal algorithms only.
-   */
-  private String parentId;
+  @EqualsAndHashCode.Exclude
+  @ToStringExclude
+  private NoticeTypeContent parent;
 
   /**
    * See TEDEFO-1047. We provide this for convenience. Equivalent to TEDEN2 instanceList or
@@ -153,11 +154,51 @@ public class NoticeTypeContent {
             .flatMap(NoticeTypeContent::flattened));
   }
 
+  public void setContent(List<NoticeTypeContent> content) {
+    if (content != null) {
+      content.forEach((NoticeTypeContent c) -> c.setParent(this));
+    }
+
+    this.content = content;
+  }
+
+  public NoticeTypeContent getFirstRepeatableParent() {
+    NoticeTypeContent result = new NoticeTypeContent();
+    NoticeTypeContent currentContent = parent;
+
+    while (currentContent != null) {
+      if (currentContent.isRepeatable()) {
+        result = currentContent;
+      }
+
+      currentContent = currentContent.getParent();
+    }
+
+    return result;
+  }
+
   public String getId() {
     return id;
   }
 
+  public String getNodeId() {
+    return nodeId;
+  }
+
+  public boolean isRepeatable() {
+    return repeatable;
+  }
+
   public String getLabel() {
     return label;
+  }
+
+  public NoticeTypeContent getParent() {
+    return parent;
+  }
+
+  public NoticeTypeContent setParent(NoticeTypeContent parent) {
+    this.parent = parent;
+    return this;
   }
 }

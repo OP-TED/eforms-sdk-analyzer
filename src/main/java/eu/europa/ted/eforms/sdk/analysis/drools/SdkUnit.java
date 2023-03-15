@@ -15,6 +15,7 @@ import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
@@ -24,6 +25,7 @@ public class SdkUnit implements RuleUnit {
   private Path sdkRoot;
 
   private DataStore<FieldFact> fields;
+  private DataStore<NodeFact> nodes;
   private DataStore<NoticeTypeFact> noticeTypes;
   private DataStore<NoticeTypesIndexFact> noticeTypesIndex;
   private DataStore<LabelFact> labels;
@@ -53,6 +55,15 @@ public class SdkUnit implements RuleUnit {
 
   public DataStore<FieldFact> getFields() {
     return fields;
+  }
+
+  public SdkUnit setNodes(DataStore<NodeFact> nodes) {
+    this.nodes = nodes;
+    return this;
+  }
+
+  public DataStore<NodeFact> getNodes() {
+    return nodes;
   }
 
   public SdkUnit setNoticeTypes(DataStore<NoticeTypeFact> noticeTypes) {

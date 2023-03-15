@@ -94,6 +94,11 @@ public class NoticeTypeValidationSteps {
     sdkUnit.setFields(new FactsLoader(testsFolder).loadFields());
   }
 
+  @When("I load all nodes")
+  public void i_load_all_nodes() throws IOException {
+    sdkUnit.setNodes(new FactsLoader(testsFolder).loadNodes());
+  }
+
   @When("I execute validation")
   public void i_execute_validation()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
