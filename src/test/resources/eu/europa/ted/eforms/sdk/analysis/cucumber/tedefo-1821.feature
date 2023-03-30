@@ -8,7 +8,7 @@ Feature: Notice Types - Repeatable groups validation
     Given The following rules
       | Every repeatable group of notice sub types has a nodeId |
       | Every repeatable group of notice sub types references an existing repeatable node |
-      | The first repeatable ancestor of a node is associated with the first repeatable ancestor of the referencing group |
+      | The first repeatable ancestor of a repeatable node is associated with the first repeatable ancestor of the referencing repeatable group |
 
   Scenario: All repeatable groups are valid
     Given A "tedefo-1821" folder with "valid" files
@@ -22,4 +22,4 @@ Feature: Notice Types - Repeatable groups validation
     When I load all notice types
     And I load all nodes
     And I execute validation
-    Then I should get 11 validation errors
+    Then I should get 8 validation errors
