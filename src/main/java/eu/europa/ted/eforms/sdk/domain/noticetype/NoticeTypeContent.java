@@ -162,12 +162,21 @@ public class NoticeTypeContent {
     this.content = content;
   }
 
+  public NoticeTypeContent getFirstRepeatableAncestorGroup() {
+    return getFirstRepeatableAncestor(NoticeTypeContentType.GROUP);
+  }
+
   public NoticeTypeContent getFirstRepeatableAncestor() {
-    NoticeTypeContent result = new NoticeTypeContent();
+    return getFirstRepeatableAncestor(null);
+  }
+
+  public NoticeTypeContent getFirstRepeatableAncestor(NoticeTypeContentType type) {
+    NoticeTypeContent result = null;
     NoticeTypeContent currentContent = parent;
 
     while (currentContent != null) {
-      if (currentContent.isRepeatable()) {
+      if (currentContent.isRepeatable()
+          && (type == null || currentContent.getContentType() == type.getLiteral())) {
         result = currentContent;
       }
 

@@ -1,6 +1,8 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
+import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 import lombok.Data;
 
 @Data
@@ -11,6 +13,24 @@ public class FieldFact implements SdkComponentFact<String> {
 
   public FieldFact(Field field) {
     this.field = field;
+  }
+
+  public boolean hasAncestor(String ancestorNodeId) {
+    if (StringUtils.isBlank(ancestorNodeId)) {
+      return false;
+    }
+
+    XmlStructureNode currentAncestor = field.getParentNode();
+
+    while (currentAncestor != null) {
+      if (currentAncestor.getId().equals(ancestorNodeId)) {
+        return true;
+      }
+
+      currentAncestor = currentAncestor.getParent();
+    }
+
+    return false;
   }
 
   @Override

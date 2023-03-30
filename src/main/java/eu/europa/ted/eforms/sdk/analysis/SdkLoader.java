@@ -24,6 +24,7 @@ import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.Language;
 import eu.europa.ted.eforms.sdk.domain.Translation;
+import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
@@ -89,24 +90,38 @@ public class SdkLoader {
     return result;
   }
 
+  private XmlStructureNode findNode(String nodeId, List<XmlStructureNode> nodes) {
+    if (nodes == null) {
+      return null;
+    }
+
+    return nodes.stream()
+        .filter((XmlStructureNode n) -> n.getId().equals(nodeId))
+        .collect(Collectors.collectingAndThen(
+            Collectors.toList(),
+            (List<XmlStructureNode> l) -> {
+              if (l.size() != 1) {
+                throw new IllegalArgumentException(
+                    MessageFormat.format("Could not find node with id [{0}]", nodeId));
+              }
+
+              return l.get(0);
+            }));
+  }
+
   public FieldsAndNodes getFieldsAndNodes() throws IOException {
     FieldsAndNodes fieldsAndNodes = loadJsonFile(FieldsAndNodes.class,
         Path.of(sdkRoot.toString(), SdkResource.FIELDS_JSON.getPath().toString()));
 
     fieldsAndNodes.getNodes().forEach((XmlStructureNode node) -> {
       if (StringUtils.isNotEmpty(node.getParentId())) {
-        node.setParent(fieldsAndNodes.getNodes().stream()
-            .filter((XmlStructureNode n) -> n.getId().equals(node.getParentId()))
-            .collect(Collectors.collectingAndThen(
-                Collectors.toList(),
-                (List<XmlStructureNode> l) -> {
-                  if (l.size() != 1) {
-                    throw new IllegalArgumentException(MessageFormat.format(
-                        "Could not find parent node with id [{0}] for node with id [{1}]",
-                        node.getParentId(), node.getId()));
-                  }
-                  return l.get(0);
-                })));
+        node.setParent(findNode(node.getParentId(), fieldsAndNodes.getNodes()));
+      }
+    });
+
+    fieldsAndNodes.getFields().forEach((Field field) -> {
+      if (StringUtils.isNotEmpty(field.getParentNodeId())) {
+        field.setParentNode(findNode(field.getParentNodeId(), fieldsAndNodes.getNodes()));
       }
     });
 
