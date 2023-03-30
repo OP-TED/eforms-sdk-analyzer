@@ -162,7 +162,7 @@ public class NoticeTypeContent {
     this.content = content;
   }
 
-  public NoticeTypeContent getFirstRepeatableParent() {
+  public NoticeTypeContent getFirstRepeatableAncestor() {
     NoticeTypeContent result = new NoticeTypeContent();
     NoticeTypeContent currentContent = parent;
 
