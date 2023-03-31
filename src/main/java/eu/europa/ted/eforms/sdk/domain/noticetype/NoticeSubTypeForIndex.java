@@ -20,7 +20,7 @@ public class NoticeSubTypeForIndex implements Serializable {
   private String documentType;
   private NoticeLegalBasis legalBasis;
   private String formType;
-  private NoticeNoticeType type;
+  private String type;
   private String description;
   private String subTypeId;
 
@@ -53,16 +53,8 @@ public class NoticeSubTypeForIndex implements Serializable {
     return formType;
   }
 
-  public NoticeNoticeType getTypeEnum() {
-    return type;
-  }
-
   public String getType() {
-    return type != null ? type.getLiteral() : null;
-  }
-
-  public void setType(final String code) {
-    this.type = EnumHelper.getEnum(NoticeNoticeType.class, code);
+    return type;
   }
 
   public String getDocumentType() {

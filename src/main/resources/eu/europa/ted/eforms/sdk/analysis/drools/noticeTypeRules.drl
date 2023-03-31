@@ -159,3 +159,13 @@ when
 then
   results.add(new ValidationResult($nti, "Notice sub type " + $subTypeId + " references formType " + $formType + " which is not part of the \"form-types\" codelist", ValidationStatusEnum.ERROR));
 end
+
+// TEDEFO-1843: In notice-types.json check that all values of the "type" property are part of the 'notice-type" codelist
+rule "All type values are part of the notice-type codelist"
+when
+  /noticeTypesIndex[ $nti: this ];
+  /codelists[ $noticeTypeCodes: codes, id == "notice-type" ]
+  NoticeSubTypeForIndex($subTypeId: subTypeId, $type: type, $noticeTypeCodes not contains type) from $nti.noticeSubTypes
+then
+  results.add(new ValidationResult($nti, "Notice sub type " + $subTypeId + " references type " + $type + " which is not part of the \"notice-type\" codelist", ValidationStatusEnum.ERROR));
+end

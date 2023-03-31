@@ -32,8 +32,8 @@ public class NoticeType implements Serializable {
     return noticeSubTypeForIndex.getFormType();
   }
 
-  public NoticeNoticeType getType() {
-    return noticeSubTypeForIndex.getTypeEnum();
+  public String getType() {
+    return noticeSubTypeForIndex.getType();
   }
 
   public String getDescription() {
