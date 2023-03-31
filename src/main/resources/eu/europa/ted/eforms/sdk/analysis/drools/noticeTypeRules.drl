@@ -2,13 +2,13 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
+import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContent;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContentType;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
-import java.nio.file.Files;
 
 // TEDEFO-1813: Check the sdkVersion in the header of every file in the folder.
 rule "Every notice type has SDK version"
@@ -149,3 +149,13 @@ rule "Notice sub type is not unconditionally forbidden for any field"
  then
   results.add(new ValidationResult($nt, "Notice sub type " + $noticeTypeId + " is listed in the unconditional forbidden constraint of field " + $fieldId, ValidationStatusEnum.ERROR));
  end
+
+// TEDEFO-1842: In notice-types.json check that all values of the "formType" property are part of the 'form-type" codelist
+rule "All formType values are part of the form-type codelist"
+when
+  /noticeTypesIndex[ $nti: this ];
+  /codelists[ $formTypeCodes: codes, id == "form-type" ]
+  NoticeSubTypeForIndex($subTypeId: subTypeId, $formType: formType, $formTypeCodes not contains formType) from $nti.noticeSubTypes
+then
+  results.add(new ValidationResult($nti, "Notice sub type " + $subTypeId + " references formType " + $formType + " which is not part of the \"form-types\" codelist", ValidationStatusEnum.ERROR));
+end

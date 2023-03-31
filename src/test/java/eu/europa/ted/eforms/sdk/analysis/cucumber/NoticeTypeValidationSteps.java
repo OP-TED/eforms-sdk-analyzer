@@ -99,6 +99,12 @@ public class NoticeTypeValidationSteps {
     sdkUnit.setNodes(new FactsLoader(testsFolder).loadNodes());
   }
 
+  @When("I load all codelists")
+  public void i_load_all_codelists()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    sdkUnit.setCodelists(new FactsLoader(testsFolder).loadCodelists());
+  }
+
   @When("I execute validation")
   public void i_execute_validation()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {

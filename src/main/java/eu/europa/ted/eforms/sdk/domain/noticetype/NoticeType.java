@@ -28,8 +28,8 @@ public class NoticeType implements Serializable {
     return noticeSubTypeForIndex.getLegalBasisEnum();
   }
 
-  public NoticeFormType getFormType() {
-    return noticeSubTypeForIndex.getFormTypeEnum();
+  public String getFormType() {
+    return noticeSubTypeForIndex.getFormType();
   }
 
   public NoticeNoticeType getType() {

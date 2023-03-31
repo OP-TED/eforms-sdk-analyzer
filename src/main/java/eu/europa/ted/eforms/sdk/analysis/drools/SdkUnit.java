@@ -12,6 +12,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.drools.ruleunits.api.DataStore;
 import org.kie.api.definition.rule.Rule;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
+import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
@@ -24,13 +25,14 @@ import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 public class SdkUnit implements RuleUnit {
   private Path sdkRoot;
 
-  private DataStore<FieldFact> fields;
-  private DataStore<NodeFact> nodes;
-  private DataStore<NoticeTypeFact> noticeTypes;
-  private DataStore<NoticeTypesIndexFact> noticeTypesIndex;
-  private DataStore<LabelFact> labels;
-  private DataStore<ViewTemplateFact> viewTemplates;
+  private DataStore<CodelistFact> codelists;
   private DataStore<DocumentTypeFact> documentTypes;
+  private DataStore<FieldFact> fields;
+  private DataStore<LabelFact> labels;
+  private DataStore<NodeFact> nodes;
+  private DataStore<NoticeTypesIndexFact> noticeTypesIndex;
+  private DataStore<NoticeTypeFact> noticeTypes;
+  private DataStore<ViewTemplateFact> viewTemplates;
 
   // Global variable to store validations results
   private final Set<ValidationResult> results = new HashSet<>();
@@ -48,58 +50,13 @@ public class SdkUnit implements RuleUnit {
     return this;
   }
 
-  public SdkUnit setFields(DataStore<FieldFact> fields) {
-    this.fields = fields;
+  public DataStore<CodelistFact> getCodelists() {
+    return codelists;
+  }
+
+  public SdkUnit setCodelists(DataStore<CodelistFact> codelists) {
+    this.codelists = codelists;
     return this;
-  }
-
-  public DataStore<FieldFact> getFields() {
-    return fields;
-  }
-
-  public SdkUnit setNodes(DataStore<NodeFact> nodes) {
-    this.nodes = nodes;
-    return this;
-  }
-
-  public DataStore<NodeFact> getNodes() {
-    return nodes;
-  }
-
-  public SdkUnit setNoticeTypes(DataStore<NoticeTypeFact> noticeTypes) {
-    this.noticeTypes = noticeTypes;
-    return this;
-  }
-
-  public DataStore<NoticeTypeFact> getNoticeTypes() {
-    return noticeTypes;
-  }
-
-  public SdkUnit setNoticeTypesIndex(DataStore<NoticeTypesIndexFact> noticeTypesIndex) {
-    this.noticeTypesIndex = noticeTypesIndex;
-    return this;
-  }
-
-  public DataStore<NoticeTypesIndexFact> getNoticeTypesIndex() {
-    return noticeTypesIndex;
-  }
-
-  public SdkUnit setLabels(DataStore<LabelFact> labels) {
-    this.labels = labels;
-    return this;
-  }
-
-  public DataStore<LabelFact> getLabels() {
-    return labels;
-  }
-
-  public SdkUnit setViewTemplates(DataStore<ViewTemplateFact> viewTemplates) {
-    this.viewTemplates = viewTemplates;
-    return this;
-  }
-
-  public DataStore<ViewTemplateFact> getViewTemplates() {
-    return viewTemplates;
   }
 
   public DataStore<DocumentTypeFact> getDocumentTypes() {
@@ -108,6 +65,60 @@ public class SdkUnit implements RuleUnit {
 
   public SdkUnit setDocumentTypes(DataStore<DocumentTypeFact> documentTypes) {
     this.documentTypes = documentTypes;
+    return this;
+  }
+
+  public DataStore<FieldFact> getFields() {
+    return fields;
+  }
+
+  public SdkUnit setFields(DataStore<FieldFact> fields) {
+    this.fields = fields;
+    return this;
+  }
+
+  public DataStore<LabelFact> getLabels() {
+    return labels;
+  }
+
+  public SdkUnit setLabels(DataStore<LabelFact> labels) {
+    this.labels = labels;
+    return this;
+  }
+
+  public DataStore<NodeFact> getNodes() {
+    return nodes;
+  }
+
+  public SdkUnit setNodes(DataStore<NodeFact> nodes) {
+    this.nodes = nodes;
+    return this;
+  }
+
+  public DataStore<NoticeTypesIndexFact> getNoticeTypesIndex() {
+    return noticeTypesIndex;
+  }
+
+  public SdkUnit setNoticeTypesIndex(DataStore<NoticeTypesIndexFact> noticeTypesIndex) {
+    this.noticeTypesIndex = noticeTypesIndex;
+    return this;
+  }
+
+  public DataStore<NoticeTypeFact> getNoticeTypes() {
+    return noticeTypes;
+  }
+
+  public SdkUnit setNoticeTypes(DataStore<NoticeTypeFact> noticeTypes) {
+    this.noticeTypes = noticeTypes;
+    return this;
+  }
+
+  public DataStore<ViewTemplateFact> getViewTemplates() {
+    return viewTemplates;
+  }
+
+  public SdkUnit setViewTemplates(DataStore<ViewTemplateFact> viewTemplates) {
+    this.viewTemplates = viewTemplates;
     return this;
   }
 
