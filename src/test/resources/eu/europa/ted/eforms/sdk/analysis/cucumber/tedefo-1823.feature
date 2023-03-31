@@ -13,8 +13,13 @@ Feature: Notice Types - Check for duplicate node ids
     And I execute validation 
     Then I should get 0 validation errors
 
-  Scenario: Some node IDs are duplicated
+  Scenario Outline: Some node IDs are duplicated
     Given A "tedefo-1823" folder with "invalid" files
     When I load all notice types
     And I execute validation 
+    Then Rule "<expected rule>" should have been fired
     Then I should get 4 validation errors
+
+    Examples:
+     | expected rule                                           |
+     | No two notice sub type groups reference the same nodeId |

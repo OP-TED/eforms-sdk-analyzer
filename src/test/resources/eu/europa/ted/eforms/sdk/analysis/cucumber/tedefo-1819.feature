@@ -14,9 +14,14 @@ Feature: Notice Types - Labels validation
     And I execute validation 
     Then I should get 0 validation errors
 
-  Scenario: Some referenced labels do not exist
+  Scenario Outline: Some referenced labels do not exist
     Given A "tedefo-1819" folder with "invalid" files
     When I load all notice types
     And I load all labels
     And I execute validation 
+    Then Rule "<expected rule>" should have been fired
     Then I should get 2 validation errors
+
+    Examples:
+     | expected rule                              |
+     | Notice sub types reference existing labels |

@@ -13,8 +13,13 @@ Feature: Notice Types Index - Document types schemaLocation validation
     And I execute validation 
     Then I should get 0 validation errors
 
-  Scenario: Some schemaLocation do not point to existing files
+  Scenario Outline: Some schemaLocation do not point to existing files
     Given A "tedefo-1818" folder with "invalid" files
     When I load all document types
     And I execute validation 
+    Then Rule "<expected rule>" should have been fired
     Then I should get 4 validation errors
+
+    Examples:
+     | expected rule                              |
+     | Document types use existing schemaLocation |

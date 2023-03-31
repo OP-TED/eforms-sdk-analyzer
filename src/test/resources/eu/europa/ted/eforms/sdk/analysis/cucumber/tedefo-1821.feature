@@ -17,9 +17,16 @@ Feature: Notice Types - Repeatable groups validation
     And I execute validation
     Then I should get 0 validation errors
 
-  Scenario: Some referenced fields do not exist
+  Scenario Outline: Some referenced fields do not exist
     Given A "tedefo-1821" folder with "invalid" files
     When I load all notice types
     And I load all nodes
     And I execute validation
+    Then Rule "<expected rule>" should have been fired
     Then I should get 8 validation errors
+
+    Examples:
+     | expected rule                                                                                                                           |
+     | Every repeatable group of notice sub types has a nodeId                                                                                 |
+     | Every repeatable group of notice sub types references an existing repeatable node                                                       |
+     | The first repeatable ancestor of a repeatable node is associated with the first repeatable ancestor of the referencing repeatable group |

@@ -14,9 +14,14 @@ Feature: Notice Types - Validate field constraints
     And I execute validation 
     Then I should get 0 validation errors
 
-  Scenario: Some notice sub types are listed on their fields\' unconditionally forbidden constraints
+  Scenario Outline: Some notice sub types are listed on their fields\' unconditionally forbidden constraints
     Given A "tedefo-1824" folder with "invalid" files
     When I load all notice types
     When I load all fields
     And I execute validation 
+    Then Rule "<expected rule>" should have been fired
     Then I should get 4 validation errors
+
+    Examples:
+     | expected rule                                                  |
+     | Notice sub type is not unconditionally forbidden for any field |

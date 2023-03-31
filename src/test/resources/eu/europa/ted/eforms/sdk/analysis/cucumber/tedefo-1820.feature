@@ -14,9 +14,14 @@ Feature: Notice Types - Fields validation
     And I execute validation 
     Then I should get 0 validation errors
 
-  Scenario: Some referenced fields do not exist
+  Scenario Outline: Some referenced fields do not exist
     Given A "tedefo-1820" folder with "invalid" files
     When I load all notice types
     And I load all fields
     And I execute validation 
+    Then Rule "<expected rule>" should have been fired
     Then I should get 7 validation errors
+
+    Examples:
+     | expected rule                              |
+     | Notice sub types reference existing fields |
