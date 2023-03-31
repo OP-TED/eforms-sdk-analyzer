@@ -128,3 +128,14 @@ when
 then
   results.add(new ValidationResult($nt, "The first repeatable ancestor group " + $firstRepeatableAncestorGroupId + " of field " + $fieldId + " references node " + $referencedNodeId + " which is not an ancestor of the field", ValidationStatusEnum.ERROR));
 end
+
+// TEDEFO-1823: For every <noticeSubtype>.json file: A nodeId can only appear once (no 2 groups with the same nodeId).
+rule "No two notice sub type groups reference the same nodeId"
+when
+  /noticeTypes[ $nt: this ]
+  NoticeTypeContent($groupId1: id, $referencedNodeId: nodeId, nodeId != null) from $nt.groups
+  NoticeTypeContent($groupId2: id, nodeId == $referencedNodeId, id != $groupId1) from $nt.groups
+  eval($groupId2 != null)
+then
+  results.add(new ValidationResult($nt, "Groups " + $groupId1 + " and " + $groupId2 + " have the same nodeId " + $referencedNodeId, ValidationStatusEnum.ERROR));
+end
