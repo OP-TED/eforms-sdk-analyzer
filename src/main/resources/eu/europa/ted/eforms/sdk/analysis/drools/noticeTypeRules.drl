@@ -139,3 +139,13 @@ when
 then
   results.add(new ValidationResult($nt, "Groups " + $groupId1 + " and " + $groupId2 + " have the same nodeId " + $referencedNodeId, ValidationStatusEnum.ERROR));
 end
+
+// TEDEFO-1824: For every field, check in fields.json that the notice subtype is not listed in the forbidden constraint that has no condition.
+rule "Notice sub type is not unconditionally forbidden for any field"
+ when
+  /noticeTypes[ $nt: this, $noticeTypeId: id ]
+  NoticeTypeContent($fieldId: id) from $nt.fields
+  exists /fields[ id == $fieldId, forbiddenConstraintWithoutCondition !=null && forbiddenConstraintWithoutCondition.noticeTypes contains $noticeTypeId ]
+ then
+  results.add(new ValidationResult($nt, "Notice sub type " + $noticeTypeId + " is listed in the unconditional forbidden constraint of field " + $fieldId, ValidationStatusEnum.ERROR));
+ end

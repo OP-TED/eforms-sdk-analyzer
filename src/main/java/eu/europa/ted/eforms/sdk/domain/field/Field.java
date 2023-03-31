@@ -96,4 +96,8 @@ public class Field implements Serializable {
   public String getId() {
     return id;
   }
+
+  public BooleanProperty getForbidden() {
+    return forbidden;
+  }
 }

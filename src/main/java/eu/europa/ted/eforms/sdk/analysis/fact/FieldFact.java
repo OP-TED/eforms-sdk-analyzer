@@ -1,6 +1,8 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import eu.europa.ted.eforms.sdk.domain.field.BooleanConstraint;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 import lombok.Data;
@@ -31,6 +33,22 @@ public class FieldFact implements SdkComponentFact<String> {
     }
 
     return false;
+  }
+
+  public BooleanConstraint getForbiddenConstraintWithoutCondition() {
+    if (field.getForbidden() != null) {
+      List<BooleanConstraint> constraints = field.getForbidden().getConstraints();
+
+      if (constraints != null) {
+        return constraints.stream()
+            .filter(
+                (BooleanConstraint constraint) -> StringUtils.isBlank(constraint.getCondition()))
+            .findFirst()
+            .orElse(null);
+      }
+    }
+
+    return null;
   }
 
   @Override
