@@ -39,6 +39,8 @@ public class Field implements Serializable {
   private String xpathAbsolute;
   private String xpathRelative;
 
+  private List<XmlElementPosition> xsdSequenceOrder;
+
   private String type;
   private String presetValue;
 

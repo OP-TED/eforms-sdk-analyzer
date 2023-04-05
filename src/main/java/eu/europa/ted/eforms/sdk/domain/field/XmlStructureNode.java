@@ -1,6 +1,8 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -34,6 +36,8 @@ public class XmlStructureNode implements Serializable {
    */
   private String xpathAbsolute;
   private String xpathRelative;
+
+  private List<XmlElementPosition> xsdSequenceOrder;
 
   private boolean repeatable;
 
