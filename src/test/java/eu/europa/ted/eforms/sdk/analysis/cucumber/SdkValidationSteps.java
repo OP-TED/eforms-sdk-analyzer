@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.kie.api.definition.rule.Rule;
 import org.slf4j.Logger;
@@ -26,8 +28,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class NoticeTypeValidationSteps {
-  private static final Logger logger = LoggerFactory.getLogger(NoticeTypeValidationSteps.class);
+public class SdkValidationSteps {
+  private static final Logger logger = LoggerFactory.getLogger(SdkValidationSteps.class);
 
   private Path testsFolder;
 
@@ -99,6 +101,17 @@ public class NoticeTypeValidationSteps {
     sdkUnit.setNodes(new FactsLoader(testsFolder).loadNodes());
   }
 
+  @When("I load all notice examples")
+  public void I_load_all_notice_examples()
+      throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+    sdkUnit.setXmlNotices(new FactsLoader(testsFolder).loadXmlNotices());
+  }
+
+  @When("I load SDK project information")
+  public void I_load_SDK_project_information() throws IOException {
+    sdkUnit.setSdkProject(new FactsLoader(testsFolder).loadSdkProject());
+  }
+
   @When("I execute validation")
   public void i_execute_validation()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
@@ -131,7 +144,7 @@ public class NoticeTypeValidationSteps {
         .isPresent());
   }
 
-  @Then("^I should get (.*) validation errors$")
+  @Then("^I should get (.*) validation errors?$")
   public void i_should_get_validation_errors(int errorsCount) {
     assertEquals(errorsCount, sdkUnit.getErrors().length);
   }
