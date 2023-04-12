@@ -18,7 +18,9 @@ import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.SdkProjectFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 public class SdkUnit implements RuleUnit {
@@ -31,6 +33,8 @@ public class SdkUnit implements RuleUnit {
   private DataStore<LabelFact> labels;
   private DataStore<ViewTemplateFact> viewTemplates;
   private DataStore<DocumentTypeFact> documentTypes;
+  private DataStore<XmlNoticeFact> xmlNotices;
+  private DataStore<SdkProjectFact> sdkProject;
 
   // Global variable to store validations results
   private final Set<ValidationResult> results = new HashSet<>();
@@ -108,6 +112,24 @@ public class SdkUnit implements RuleUnit {
 
   public SdkUnit setDocumentTypes(DataStore<DocumentTypeFact> documentTypes) {
     this.documentTypes = documentTypes;
+    return this;
+  }
+
+  public DataStore<XmlNoticeFact> getXmlNotices() {
+    return xmlNotices;
+  }
+
+  public SdkUnit setXmlNotices(DataStore<XmlNoticeFact> xmlExamples) {
+    this.xmlNotices = xmlExamples;
+    return this;
+  }
+
+  public DataStore<SdkProjectFact> getSdkProject() {
+    return sdkProject;
+  }
+
+  public SdkUnit setSdkProject(DataStore<SdkProjectFact> sdkProject) {
+    this.sdkProject = sdkProject;
     return this;
   }
 

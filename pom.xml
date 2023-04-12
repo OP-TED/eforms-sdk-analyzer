@@ -45,7 +45,9 @@
     <version.junit>5.9.2</version.junit>
     <version.logback>1.4.4</version.logback>
     <version.lombok>1.18.24</version.lombok>
+    <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
+    <version.semver4j>3.1.0</version.semver4j>
     <version.slf4j>2.0.3</version.slf4j>
 
     <!-- Versions - Plugins -->
@@ -160,6 +162,16 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${version.lombok}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-model</artifactId>
+        <version>${version.maven-model}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.vdurmont</groupId>
+        <artifactId>semver4j</artifactId>
+        <version>${version.semver4j}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -285,6 +297,14 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.vdurmont</groupId>
+      <artifactId>semver4j</artifactId>
     </dependency>
   </dependencies>
 
