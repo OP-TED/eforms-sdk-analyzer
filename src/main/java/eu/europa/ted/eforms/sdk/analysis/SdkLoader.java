@@ -35,6 +35,7 @@ import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
 import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplatesIndex;
 import eu.europa.ted.eforms.sdk.domain.xml.CodeList;
+import eu.europa.ted.eforms.sdk.domain.xml.Identification;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties.Entry;
 import eu.europa.ted.eforms.sdk.domain.xml.SimpleCodeList.Row;
@@ -217,7 +218,15 @@ public class SdkLoader {
           codelistXmlPojo = XmlParser.loadXmlFile(CodeList.class, path);
 
           codelist = new Codelist();
-          codelist.setId(path.getFileName().toString().replace(".gc", ""));
+
+          codelist.setId(codelistXmlPojo
+              .getIdentification()
+              .getLongName().stream()
+              .filter((Identification.LongName longName) -> longName.getIdentifier() == null)
+              .findFirst()
+              .get()
+              .getValue());
+
           codelist.setCodes(
               codelistXmlPojo.getSimpleCodeList()
                   .getRow().stream()
