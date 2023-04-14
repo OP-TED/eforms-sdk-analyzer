@@ -19,10 +19,12 @@ import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.SvrlReportFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 import eu.europa.ted.eforms.sdk.domain.Codelist;
 import eu.europa.ted.eforms.sdk.domain.Label;
+import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
@@ -140,6 +142,18 @@ public class FactsLoader {
     sdkLoader.getXmlNotices()
         .forEach((XmlNotice xmlNotice) -> datastore
             .add(new XmlNoticeFact(xmlNotice)));
+
+    return datastore;
+  }
+
+  public DataStore<SvrlReportFact> loadSvrlReports()
+      throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+    logger.debug("Creating facts datastore for SVRL reports examples");
+
+    final DataStore<SvrlReportFact> datastore = DataSource.createStore();
+    sdkLoader.getSvrlReports()
+        .forEach((SvrlReport svrlReport) -> datastore
+            .add(new SvrlReportFact(svrlReport)));
 
     return datastore;
   }
