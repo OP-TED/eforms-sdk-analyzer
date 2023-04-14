@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import eu.europa.ec.mdd.generated.enums.NoticeFormType;
-import eu.europa.ec.mdd.generated.enums.NoticeLegalBasis;
-import eu.europa.ec.mdd.generated.enums.NoticeNoticeType;
+import eu.europa.ted.eforms.sdk.domain.mdd.enums.NoticeLegalBasis;
 import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import lombok.Data;
 

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
 import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContent;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContentType;
+import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
 import lombok.Data;
 
 @Data

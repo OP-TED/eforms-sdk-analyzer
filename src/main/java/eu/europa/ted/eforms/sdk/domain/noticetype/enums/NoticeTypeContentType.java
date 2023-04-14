@@ -1,12 +1,12 @@
-package eu.europa.ted.eforms.sdk.domain.noticetype;
+package eu.europa.ted.eforms.sdk.domain.noticetype.enums;
 
-import org.jooq.EnumType;
+import eu.europa.ted.eforms.sdk.domain.ILiteral;
 
 /**
  * Defines the type of a content, this is about the content data itself and not about how to display
  * it.
  */
-public enum NoticeTypeContentType implements EnumType {
+public enum NoticeTypeContentType implements ILiteral {
   /**
    * This is a form field in the UI.
    */
@@ -23,12 +23,12 @@ public enum NoticeTypeContentType implements EnumType {
     this.literal = literal;
   }
 
+  @Override
   public String getLiteral() {
     return literal;
   }
 
-  @Override
-  public String getName() {
-    return "notice_type_content_type";
-  }
+  // public String getName() {
+  // return "notice_type_content_type";
+  // }
 }

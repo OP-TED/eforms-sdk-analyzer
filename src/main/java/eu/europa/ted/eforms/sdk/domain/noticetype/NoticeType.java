@@ -2,10 +2,8 @@ package eu.europa.ted.eforms.sdk.domain.noticetype;
 
 import java.io.Serializable;
 import java.util.List;
-import eu.europa.ec.mdd.generated.enums.NoticeFormType;
-import eu.europa.ec.mdd.generated.enums.NoticeLegalBasis;
-import eu.europa.ec.mdd.generated.enums.NoticeNoticeType;
 import eu.europa.ted.eforms.sdk.domain.MetadataDatabase;
+import eu.europa.ted.eforms.sdk.domain.mdd.enums.NoticeLegalBasis;
 import lombok.Data;
 
 @Data
