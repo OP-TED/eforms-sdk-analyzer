@@ -17,7 +17,7 @@ public class NodeFact implements SdkComponentFact<String> {
     return node.isRepeatable();
   }
 
-  public XmlStructureNode getFirstRepeatableParent() {
+  public XmlStructureNode getFirstRepeatableAncestor() {
     XmlStructureNode result = new XmlStructureNode();
     XmlStructureNode currentNode = node.getParent();
 

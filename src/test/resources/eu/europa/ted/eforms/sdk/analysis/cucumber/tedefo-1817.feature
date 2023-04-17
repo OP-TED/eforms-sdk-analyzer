@@ -14,9 +14,14 @@ Feature: Notice Types Index - Document types validation
     And I execute validation 
     Then I should get 0 validation errors
 
-  Scenario: Some referenced document types do not exist
+  Scenario Outline: Some referenced document types do not exist
     Given A "tedefo-1817" folder with "invalid" files
     When I load the notice types index
     And I load all document types
-    And I execute validation 
+    And I execute validation
+    Then Rule "<expected rule>" should have been fired
     Then I should get 2 validation errors
+
+    Examples:
+     | expected rule                                      |
+     | Notice sub types reference existing document types |

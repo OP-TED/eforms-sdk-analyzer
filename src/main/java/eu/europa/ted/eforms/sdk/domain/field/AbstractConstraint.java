@@ -14,7 +14,7 @@ import lombok.Data;
 public abstract class AbstractConstraint<V extends Serializable> implements Serializable {
   private static final long serialVersionUID = -3977225324375780808L;
 
-  private final List<String> noticeTypes = new ArrayList<>();
+  private List<String> noticeTypes = new ArrayList<>();
 
   private String condition;
 
@@ -23,4 +23,16 @@ public abstract class AbstractConstraint<V extends Serializable> implements Seri
   private PropertyOrConstraintSeverity severity;
 
   private String message;
+
+  public List<String> getNoticeTypes() {
+    return noticeTypes;
+  }
+
+  public void setNoticeTypes(List<String> noticeTypes) {
+    this.noticeTypes=noticeTypes;
+  }
+
+  public String getCondition() {
+    return condition;
+  }
 }

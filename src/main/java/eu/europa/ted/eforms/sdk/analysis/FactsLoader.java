@@ -12,6 +12,7 @@ import org.drools.ruleunits.api.DataStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
@@ -20,6 +21,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
+import eu.europa.ted.eforms.sdk.domain.Codelist;
 import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
@@ -115,6 +117,17 @@ public class FactsLoader {
     sdkLoader.getNoticeTypesForIndex().getDocumentTypes()
         .forEach((DocumentType documentType) -> datastore
             .add(new DocumentTypeFact(documentType)));
+
+    return datastore;
+  }
+
+  public DataStore<CodelistFact> loadCodelists()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    logger.debug("Creating facts datastore for codelists");
+
+    final DataStore<CodelistFact> datastore = DataSource.createStore();
+    sdkLoader.getCodelists()
+        .forEach((Codelist codelist) -> datastore.add(new CodelistFact(codelist)));
 
     return datastore;
   }

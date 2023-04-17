@@ -33,7 +33,6 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
     <version.eforms-core-java>1.0.0</version.eforms-core-java>
-    <version.mdd-entities>1.7.0-SNAPSHOT</version.mdd-entities>
 
     <!-- Version - Third-party libraries -->
     <version.commons-collections4>4.4</version.commons-collections4>
@@ -41,7 +40,6 @@
     <version.cucumber>7.11.1</version.cucumber>
     <version.drools>8.35.0.Final</version.drools>
     <version.jackson>2.14.1</version.jackson>
-    <version.jooq>3.14.15</version.jooq>
     <version.junit>5.9.2</version.junit>
     <version.logback>1.4.4</version.logback>
     <version.lombok>1.18.24</version.lombok>
@@ -62,11 +60,6 @@
         <groupId>eu.europa.ted.eforms</groupId>
         <artifactId>eforms-core-java</artifactId>
         <version>${version.eforms-core-java}</version>
-      </dependency>
-      <dependency>
-        <groupId>eu.europa.ted.eforms.mdd</groupId>
-        <artifactId>mdd-entities</artifactId>
-        <version>${version.mdd-entities}</version>
       </dependency>
 
       <!-- Apache Commons -->
@@ -154,11 +147,6 @@
         <version>${version.picocli}</version>
       </dependency>
       <dependency>
-        <groupId>org.jooq</groupId>
-        <artifactId>jooq</artifactId>
-        <version>${version.jooq}</version>
-      </dependency>
-      <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${version.lombok}</version>
@@ -181,11 +169,6 @@
     <dependency>
       <groupId>eu.europa.ted.eforms</groupId>
       <artifactId>eforms-core-java</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>eu.europa.ted.eforms.mdd</groupId>
-      <artifactId>mdd-entities</artifactId>
       <optional>true</optional>
     </dependency>
 
@@ -289,11 +272,6 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.jooq</groupId>
-      <artifactId>jooq</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
@@ -307,17 +285,6 @@
       <artifactId>semver4j</artifactId>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>op-ted-github_mdd-entities</id>
-      <name>OP-TED GitHub Packages - eForms Metadata Entities</name>
-      <url>https://maven.pkg.github.com/OP-TED/eforms-metadata-entities/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <build>
     <finalName>${finalName}</finalName>

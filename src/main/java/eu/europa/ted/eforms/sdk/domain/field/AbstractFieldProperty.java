@@ -35,4 +35,8 @@ public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V e
    * The list can be empty but not null.
    */
   private final List<C> constraints = new ArrayList<>();
+
+  public List<C> getConstraints() {
+    return constraints;
+  }
 }

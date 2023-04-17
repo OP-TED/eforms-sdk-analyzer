@@ -102,6 +102,12 @@ public class SdkValidationSteps {
     sdkUnit.setNodes(new FactsLoader(testsFolder).loadNodes());
   }
 
+  @When("I load all codelists")
+  public void i_load_all_codelists()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    sdkUnit.setCodelists(new FactsLoader(testsFolder).loadCodelists());
+  }
+
   @When("I load all notice examples")
   public void I_load_all_notice_examples()
       throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {

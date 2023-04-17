@@ -2,7 +2,6 @@ package eu.europa.ted.eforms.sdk.domain.field;
 
 import java.io.Serializable;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
@@ -33,6 +32,8 @@ public class Field implements Serializable {
    * It can be null if there is no parent.
    */
   private String parentNodeId;
+
+  private XmlStructureNode parentNode;
 
   private String name;
   private String btId;
@@ -80,7 +81,23 @@ public class Field implements Serializable {
   @JsonProperty("assert")
   private StringProperty assertion;
 
+  public String getParentNodeId() {
+    return parentNodeId;
+  }
+
+  public void setParentNode(XmlStructureNode parentNode) {
+    this.parentNode = parentNode;
+  }
+
+  public XmlStructureNode getParentNode() {
+    return parentNode;
+  }
+
   public String getId() {
     return id;
+  }
+
+  public BooleanProperty getForbidden() {
+    return forbidden;
   }
 }

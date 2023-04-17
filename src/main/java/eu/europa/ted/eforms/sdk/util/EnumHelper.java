@@ -4,21 +4,18 @@ import java.text.MessageFormat;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.Validate;
-import org.jooq.EnumType;
+import eu.europa.ted.eforms.sdk.domain.ILiteral;
 
 public class EnumHelper {
   private EnumHelper() {}
 
-  public static String getLiteral(EnumType enumType) {
-    return enumType != null ? enumType.getLiteral() : null;
-  }
 
-  public static <T extends EnumType> T getEnum(final Class<T> enumType,
+  public static <T extends ILiteral> T getEnum(final Class<T> enumType,
       final String literal) {
     Validate.notNull(enumType, "Undefined enum type");
 
     Optional<T> result = Stream.of(enumType.getEnumConstants())
-        .filter((EnumType c) -> c.getLiteral().equals(literal))
+        .filter((ILiteral c) -> c.getLiteral().equals(literal))
         .findFirst();
 
     if (!result.isPresent()) {

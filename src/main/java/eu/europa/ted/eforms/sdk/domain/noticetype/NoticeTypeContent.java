@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
 import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -162,12 +163,21 @@ public class NoticeTypeContent {
     this.content = content;
   }
 
-  public NoticeTypeContent getFirstRepeatableParent() {
-    NoticeTypeContent result = new NoticeTypeContent();
+  public NoticeTypeContent getFirstRepeatableAncestorGroup() {
+    return getFirstRepeatableAncestor(NoticeTypeContentType.GROUP);
+  }
+
+  public NoticeTypeContent getFirstRepeatableAncestor() {
+    return getFirstRepeatableAncestor(null);
+  }
+
+  public NoticeTypeContent getFirstRepeatableAncestor(NoticeTypeContentType type) {
+    NoticeTypeContent result = null;
     NoticeTypeContent currentContent = parent;
 
     while (currentContent != null) {
-      if (currentContent.isRepeatable()) {
+      if (currentContent.isRepeatable()
+          && (type == null || currentContent.getContentType() == type.getLiteral())) {
         result = currentContent;
       }
 

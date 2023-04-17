@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import eu.europa.ec.mdd.generated.enums.NoticeFormType;
-import eu.europa.ec.mdd.generated.enums.NoticeLegalBasis;
-import eu.europa.ec.mdd.generated.enums.NoticeNoticeType;
+import eu.europa.ted.eforms.sdk.domain.mdd.enums.NoticeLegalBasis;
 import eu.europa.ted.eforms.sdk.util.EnumHelper;
 import lombok.Data;
 
@@ -19,8 +17,8 @@ public class NoticeSubTypeForIndex implements Serializable {
 
   private String documentType;
   private NoticeLegalBasis legalBasis;
-  private NoticeFormType formType;
-  private NoticeNoticeType type;
+  private String formType;
+  private String type;
   private String description;
   private String subTypeId;
 
@@ -49,28 +47,12 @@ public class NoticeSubTypeForIndex implements Serializable {
     this.legalBasis = EnumHelper.getEnum(NoticeLegalBasis.class, code);
   }
 
-  public NoticeFormType getFormTypeEnum() {
+  public String getFormType() {
     return formType;
   }
 
-  public String getFormType() {
-    return formType != null ? formType.getLiteral() : null;
-  }
-
-  public void setFormType(final String code) {
-    this.formType = EnumHelper.getEnum(NoticeFormType.class, code);
-  }
-
-  public NoticeNoticeType getTypeEnum() {
-    return type;
-  }
-
   public String getType() {
-    return type != null ? type.getLiteral() : null;
-  }
-
-  public void setType(final String code) {
-    this.type = EnumHelper.getEnum(NoticeNoticeType.class, code);
+    return type;
   }
 
   public String getDocumentType() {
