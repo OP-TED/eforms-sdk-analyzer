@@ -18,7 +18,6 @@ import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
-import eu.europa.ted.eforms.sdk.analysis.fact.SdkProjectFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 import eu.europa.ted.eforms.sdk.domain.Label;
@@ -128,15 +127,6 @@ public class FactsLoader {
     sdkLoader.getXmlNotices()
         .forEach((XmlNotice xmlNotice) -> datastore
             .add(new XmlNoticeFact(xmlNotice)));
-
-    return datastore;
-  }
-
-  public DataStore<SdkProjectFact> loadSdkProject() throws IOException {
-    logger.debug("Creating facts datastore for SDK project information");
-
-    final DataStore<SdkProjectFact> datastore = DataSource.createStore();
-    datastore.add(new SdkProjectFact(sdkLoader.getSdkProject()));
 
     return datastore;
   }

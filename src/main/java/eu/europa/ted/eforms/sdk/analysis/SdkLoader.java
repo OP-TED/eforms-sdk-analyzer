@@ -16,9 +16,6 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -28,7 +25,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.Language;
-import eu.europa.ted.eforms.sdk.domain.SdkProject;
 import eu.europa.ted.eforms.sdk.domain.Translation;
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
@@ -212,19 +208,5 @@ public class SdkLoader {
     }
 
     return result;
-  }
-
-  public SdkProject getSdkProject() throws IOException {
-    MavenXpp3Reader reader = new MavenXpp3Reader();
-    Model model = null;
-    try {
-      model = reader.read(Files.newInputStream(Path.of(sdkRoot.toString(), "pom.xml")));
-    } catch (XmlPullParserException e) {
-      throw new IOException("Error reading pom.xml", e);
-    }
-    
-    SdkProject sdkProject = new SdkProject(model);
-
-    return sdkProject;
   }
 }

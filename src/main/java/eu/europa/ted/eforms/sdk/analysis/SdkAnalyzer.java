@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.drools.RulesRunner;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
+import eu.europa.ted.eforms.sdk.util.SdkMetadataParser;
 
 public class SdkAnalyzer {
   private static final Logger logger = LoggerFactory.getLogger(SdkAnalyzer.class);
@@ -27,6 +28,7 @@ public class SdkAnalyzer {
     logger.debug("Creating RuleUnit");
     SdkUnit sdkUnit = new SdkUnit()
         .setSdkRoot(sdkRoot)
+        .setSdkMetadata(SdkMetadataParser.loadSdkMetadata(sdkRoot))
         .setDocumentTypes(factsLoader.loadDocumentTypes())
         .setFields(factsLoader.loadFields())
         .setNodes(factsLoader.loadNodes())
@@ -34,8 +36,7 @@ public class SdkAnalyzer {
         .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
         .setLabels(factsLoader.loadLabels())
         .setViewTemplates(factsLoader.loadViewTemplates())
-        .setXmlNotices(factsLoader.loadXmlNotices())
-        .setSdkProject(factsLoader.loadSdkProject());
+        .setXmlNotices(factsLoader.loadXmlNotices());
 
     fireAllRules(sdkUnit);
 

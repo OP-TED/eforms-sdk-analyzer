@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
 import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzer;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
+import eu.europa.ted.eforms.sdk.util.SdkMetadataParser;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -107,9 +108,9 @@ public class SdkValidationSteps {
     sdkUnit.setXmlNotices(new FactsLoader(testsFolder).loadXmlNotices());
   }
 
-  @When("I load SDK project information")
-  public void I_load_SDK_project_information() throws IOException {
-    sdkUnit.setSdkProject(new FactsLoader(testsFolder).loadSdkProject());
+  @When("I load SDK metadata")
+  public void I_load_SDK_metadata() throws IOException {
+    sdkUnit.setSdkMetadata(SdkMetadataParser.loadSdkMetadata(testsFolder));
   }
 
   @When("I execute validation")
