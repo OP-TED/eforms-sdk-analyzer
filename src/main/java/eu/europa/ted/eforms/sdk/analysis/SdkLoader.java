@@ -37,7 +37,7 @@ import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplatesIndex;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties.Entry;
-import eu.europa.ted.eforms.sdk.util.XmlNoticeParser;
+import eu.europa.ted.eforms.sdk.util.XmlDataExtractor;
 import eu.europa.ted.eforms.sdk.util.XmlParser;
 
 public class SdkLoader {
@@ -200,7 +200,7 @@ public class SdkLoader {
 
       for (Path path : dirStream) {
         if (!Files.isDirectory(path)) {
-          XmlNotice xmlNotice = XmlNoticeParser.loadXmlNoticeFile(path);
+          XmlNotice xmlNotice = XmlDataExtractor.loadXmlNoticeFile(path);
 
           result.add(xmlNotice);
         }

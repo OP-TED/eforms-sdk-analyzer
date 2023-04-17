@@ -19,12 +19,16 @@ import org.xml.sax.SAXException;
 
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 
-public class XmlNoticeParser {
+/**
+ * Extract some specific information from an XML file, by applying some XPaths.
+ * This for XML files that we do not need or want to load as a whole.
+ */
+public class XmlDataExtractor {
   private static final Logger logger = LoggerFactory.getLogger(XmlParser.class);
 
   private static final String XPATH_CUSTOMIZATIONID = "/*/cbc:CustomizationID/text()";
 
-  private XmlNoticeParser() {}
+  private XmlDataExtractor() {}
   
   public static XmlNotice loadXmlNoticeFile(Path xmlFilePath)
       throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
