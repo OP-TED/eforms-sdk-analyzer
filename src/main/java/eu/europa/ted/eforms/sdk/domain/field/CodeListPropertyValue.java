@@ -1,7 +1,7 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
 import java.io.Serializable;
-import eu.europa.ec.mdd.generated.enums.CodeListType;
+import eu.europa.ted.eforms.sdk.domain.mdd.enums.CodeListType;
 import lombok.Data;
 
 /**

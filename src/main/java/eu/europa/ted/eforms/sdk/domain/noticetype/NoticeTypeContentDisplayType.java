@@ -1,11 +1,11 @@
 package eu.europa.ted.eforms.sdk.domain.noticetype;
 
-import org.jooq.EnumType;
+import eu.europa.ted.eforms.sdk.domain.ILiteral;
 
 /**
  * Defines how to display a content in the user interface.
  */
-public enum NoticeTypeContentDisplayType implements EnumType {
+public enum NoticeTypeContentDisplayType implements ILiteral {
   /**
    * The GROUP display type is used to help the editor. It is not really required as content having
    * one or more children is a group by definition (a container grouping fields).
@@ -48,12 +48,12 @@ public enum NoticeTypeContentDisplayType implements EnumType {
     this.literal = literal;
   }
 
+  @Override
   public String getLiteral() {
     return literal;
   }
 
-  @Override
-  public String getName() {
-    return "notice_type_content_display_type";
-  }
+  // public String getName() {
+  // return "notice_type_content_display_type";
+  // }
 }

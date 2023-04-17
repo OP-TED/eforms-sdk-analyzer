@@ -21,9 +21,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
+import eu.europa.ted.eforms.sdk.domain.Codelist;
 import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.Language;
 import eu.europa.ted.eforms.sdk.domain.Translation;
+import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
@@ -32,8 +34,12 @@ import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeSdk;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
 import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplatesIndex;
+import eu.europa.ted.eforms.sdk.domain.xml.CodeList;
+import eu.europa.ted.eforms.sdk.domain.xml.Identification;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties.Entry;
+import eu.europa.ted.eforms.sdk.domain.xml.SimpleCodeList.Row;
+import eu.europa.ted.eforms.sdk.domain.xml.SimpleCodeList.Row.Value;
 import eu.europa.ted.eforms.sdk.util.XmlParser;
 
 public class SdkLoader {
@@ -89,24 +95,38 @@ public class SdkLoader {
     return result;
   }
 
+  private XmlStructureNode findNode(String nodeId, List<XmlStructureNode> nodes) {
+    if (nodes == null) {
+      return null;
+    }
+
+    return nodes.stream()
+        .filter((XmlStructureNode n) -> n.getId().equals(nodeId))
+        .collect(Collectors.collectingAndThen(
+            Collectors.toList(),
+            (List<XmlStructureNode> l) -> {
+              if (l.size() != 1) {
+                throw new IllegalArgumentException(
+                    MessageFormat.format("Could not find node with id [{0}]", nodeId));
+              }
+
+              return l.get(0);
+            }));
+  }
+
   public FieldsAndNodes getFieldsAndNodes() throws IOException {
     FieldsAndNodes fieldsAndNodes = loadJsonFile(FieldsAndNodes.class,
         Path.of(sdkRoot.toString(), SdkResource.FIELDS_JSON.getPath().toString()));
 
     fieldsAndNodes.getNodes().forEach((XmlStructureNode node) -> {
       if (StringUtils.isNotEmpty(node.getParentId())) {
-        node.setParent(fieldsAndNodes.getNodes().stream()
-            .filter((XmlStructureNode n) -> n.getId().equals(node.getParentId()))
-            .collect(Collectors.collectingAndThen(
-                Collectors.toList(),
-                (List<XmlStructureNode> l) -> {
-                  if (l.size() != 1) {
-                    throw new IllegalArgumentException(MessageFormat.format(
-                        "Could not find parent node with id [{0}] for node with id [{1}]",
-                        node.getParentId(), node.getId()));
-                  }
-                  return l.get(0);
-                })));
+        node.setParent(findNode(node.getParentId(), fieldsAndNodes.getNodes()));
+      }
+    });
+
+    fieldsAndNodes.getFields().forEach((Field field) -> {
+      if (StringUtils.isNotEmpty(field.getParentNodeId())) {
+        field.setParentNode(findNode(field.getParentNodeId(), fieldsAndNodes.getNodes()));
       }
     });
 
@@ -149,13 +169,12 @@ public class SdkLoader {
 
       for (Path path : dirStream) {
         if (!Files.isDirectory(path)) {
-          translation = new Translation();
           translationProperties = XmlParser.loadXmlFile(Properties.class, path);
 
+          translation = new Translation();
           translation.setComment(translationProperties.getComment());
           translation.setLanguage(Language.valueOf(
               path.getFileName().toString().replaceAll("^.*?_(.*?).xml$", "$1").toUpperCase()));
-
           translation.setLabels(translationProperties.getEntry().stream()
               .collect(
                   Collectors.toMap((Entry entry) -> new Label(entry.getKey()), Entry::getValue)));
@@ -182,5 +201,47 @@ public class SdkLoader {
 
   public Set<TedefoViewTemplateIndex> getViewTemplates() throws IOException {
     return new HashSet<>(getViewTemplatesIndex().getViewTemplates());
+  }
+
+  public Set<Codelist> getCodelists()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    final Set<Codelist> result = new HashSet<>();
+
+    Codelist codelist = null;
+    CodeList codelistXmlPojo = null;
+
+    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
+        Path.of(sdkRoot.toString(), SdkResource.CODELISTS.getPath().toString()))) {
+
+      for (Path path : dirStream) {
+        if (!Files.isDirectory(path)) {
+          codelistXmlPojo = XmlParser.loadXmlFile(CodeList.class, path);
+
+          codelist = new Codelist();
+
+          codelist.setId(codelistXmlPojo
+              .getIdentification()
+              .getLongName().stream()
+              .filter((Identification.LongName longName) -> longName.getIdentifier() == null)
+              .findFirst()
+              .get()
+              .getValue());
+
+          codelist.setCodes(
+              codelistXmlPojo.getSimpleCodeList()
+                  .getRow().stream()
+                  .map((Row row) -> row.getValue().stream()
+                      .filter((Value rowValue) -> rowValue.getColumnRef().equals("code"))
+                      .map(Value::getSimpleValue)
+                      .findFirst()
+                      .get())
+                  .collect(Collectors.toSet()));
+
+          result.add(codelist);
+        }
+      }
+    }
+
+    return result;
   }
 }

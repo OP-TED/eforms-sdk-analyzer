@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlValue;
  * &lt;/complexType&gt;
  * </pre>
  * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -100,6 +101,7 @@ public class Properties {
     return this.entry;
   }
 
+
   /**
    * <p>
    * Java class for anonymous complex type.
@@ -124,6 +126,7 @@ public class Properties {
       "value"
   })
   public static class Entry {
+
     @XmlValue
     protected String value;
     @XmlAttribute(name = "key", required = true)
@@ -168,5 +171,7 @@ public class Properties {
     public void setKey(String value) {
       this.key = value;
     }
+
   }
+
 }

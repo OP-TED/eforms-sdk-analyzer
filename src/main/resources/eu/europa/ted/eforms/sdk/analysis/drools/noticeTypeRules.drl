@@ -2,12 +2,13 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
+import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContent;
+import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContentType;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
-import java.nio.file.Files;
 
 // TEDEFO-1813: Check the sdkVersion in the header of every file in the folder.
 rule "Every notice type has SDK version"
@@ -85,11 +86,11 @@ end
 
 // TEDEFO-1821:
 //  For every <noticeSubtype>.json file:
-//    If a group is _repeatable then: 
-//      It should have a nodeId property 
-//      The node corresponding to the nodeId should exist in fields.json 
-//      This node should be repeatable 
-//      The first repeatable parent of the node should be associated with the first repeatable parent of the group 
+//    If a group is _repeatable then:
+//      It should have a nodeId property
+//      The node corresponding to the nodeId should exist in fields.json
+//      This node should be repeatable
+//      The first repeatable ancestor of the node should be associated with the first repeatable ancestor of the group
 rule "Every repeatable group of notice sub types has a nodeId"
 when
   /noticeTypes[ $nt: this ]
@@ -107,11 +108,64 @@ then
   results.add(new ValidationResult($nt, "Repeatable group " + $contentId + " references node " + $referencedNodeId + " which does not exist or is not repeatable", ValidationStatusEnum.ERROR));
 end
 
-rule "The first repeatable parent of a node is associated with the first repeatable parent of the referencing group"
+rule "The first repeatable ancestor of a repeatable node is associated with the first repeatable ancestor of the referencing repeatable group"
 when
   /noticeTypes[ $nt: this ]
-  NoticeTypeContent($contentId: id, $firstRepeatableGroupParent: firstRepeatableParent, repeatable == true, $referencedNodeId: nodeId) from $nt.groups
-  not (exists /nodes[ id == $referencedNodeId && repeatable == true && firstRepeatableParent.id == $firstRepeatableGroupParent.nodeId ])
+  NoticeTypeContent($groupId: id, $firstRepeatableGroupAncestor: firstRepeatableAncestor, repeatable == true, $referencedNodeId: nodeId, firstRepeatableAncestor != null) from $nt.groups
+  not (exists /nodes[ id == $referencedNodeId && repeatable == true && firstRepeatableAncestor.id == $firstRepeatableGroupAncestor.nodeId ])
 then
-  results.add(new ValidationResult($nt, "Repeatable group " + $contentId + " references node " + $referencedNodeId + " with a mismatching first repeatable parent", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($nt, "Repeatable group " + $groupId + " references node " + $referencedNodeId + " with a mismatching first repeatable ancestor", ValidationStatusEnum.ERROR));
+end
+
+// TEDEFO-1822:
+//   For every <noticeSubtype>.json file: For every field, the first repeatable ancestor group should have a nodeId property
+//   that corresponds to a node that is an ancestor of the field.
+rule "Ancestor groups and nodes of notice sub type fields are aligned"
+when
+  /noticeTypes[ $nt: this ]
+  NoticeTypeContent($fieldId: id, $firstRepeatableAncestorGroupId: firstRepeatableAncestorGroup.id, $referencedNodeId: firstRepeatableAncestorGroup.nodeId, firstRepeatableAncestorGroup != null) from $nt.fields
+  not (exists /fields[ id == $fieldId && hasAncestor($referencedNodeId) ])
+then
+  results.add(new ValidationResult($nt, "The first repeatable ancestor group " + $firstRepeatableAncestorGroupId + " of field " + $fieldId + " references node " + $referencedNodeId + " which is not an ancestor of the field", ValidationStatusEnum.ERROR));
+end
+
+// TEDEFO-1823: For every <noticeSubtype>.json file: A nodeId can only appear once (no 2 groups with the same nodeId).
+rule "No two notice sub type groups reference the same nodeId"
+when
+  /noticeTypes[ $nt: this ]
+  NoticeTypeContent($groupId1: id, $referencedNodeId: nodeId, nodeId != null) from $nt.groups
+  NoticeTypeContent($groupId2: id, nodeId == $referencedNodeId, id != $groupId1) from $nt.groups
+  eval($groupId2 != null)
+then
+  results.add(new ValidationResult($nt, "Groups " + $groupId1 + " and " + $groupId2 + " have the same nodeId " + $referencedNodeId, ValidationStatusEnum.ERROR));
+end
+
+// TEDEFO-1824: For every field, check in fields.json that the notice subtype is not listed in the forbidden constraint that has no condition.
+rule "Notice sub type is not unconditionally forbidden for any field"
+ when
+  /noticeTypes[ $nt: this, $noticeTypeId: id ]
+  NoticeTypeContent($fieldId: id) from $nt.fields
+  exists /fields[ id == $fieldId, forbiddenConstraintWithoutCondition !=null && forbiddenConstraintWithoutCondition.noticeTypes contains $noticeTypeId ]
+ then
+  results.add(new ValidationResult($nt, "Notice sub type " + $noticeTypeId + " is listed in the unconditional forbidden constraint of field " + $fieldId, ValidationStatusEnum.ERROR));
+ end
+
+// TEDEFO-1842: In notice-types.json check that all values of the "formType" property are part of the 'form-type" codelist
+rule "All formType values are part of the form-type codelist"
+when
+  /noticeTypesIndex[ $nti: this ];
+  /codelists[ $formTypeCodes: codes, id == "form-type" ]
+  NoticeSubTypeForIndex($subTypeId: subTypeId, $formType: formType, $formTypeCodes not contains formType) from $nti.noticeSubTypes
+then
+  results.add(new ValidationResult($nti, "Notice sub type " + $subTypeId + " references formType " + $formType + " which is not part of the \"form-types\" codelist", ValidationStatusEnum.ERROR));
+end
+
+// TEDEFO-1843: In notice-types.json check that all values of the "type" property are part of the 'notice-type" codelist
+rule "All type values are part of the notice-type codelist"
+when
+  /noticeTypesIndex[ $nti: this ];
+  /codelists[ $noticeTypeCodes: codes, id == "notice-type" ]
+  NoticeSubTypeForIndex($subTypeId: subTypeId, $type: type, $noticeTypeCodes not contains type) from $nti.noticeSubTypes
+then
+  results.add(new ValidationResult($nti, "Notice sub type " + $subTypeId + " references type " + $type + " which is not part of the \"notice-type\" codelist", ValidationStatusEnum.ERROR));
 end
