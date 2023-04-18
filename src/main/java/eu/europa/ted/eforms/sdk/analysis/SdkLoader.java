@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import eu.europa.ted.eforms.sdk.domain.Codelist;
 import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.Language;
 import eu.europa.ted.eforms.sdk.domain.Translation;
+import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
@@ -40,10 +43,14 @@ import eu.europa.ted.eforms.sdk.domain.xml.Properties;
 import eu.europa.ted.eforms.sdk.domain.xml.Properties.Entry;
 import eu.europa.ted.eforms.sdk.domain.xml.SimpleCodeList.Row;
 import eu.europa.ted.eforms.sdk.domain.xml.SimpleCodeList.Row.Value;
+import eu.europa.ted.eforms.sdk.util.XmlDataExtractor;
 import eu.europa.ted.eforms.sdk.util.XmlParser;
 
 public class SdkLoader {
   private static final Logger logger = LoggerFactory.getLogger(SdkLoader.class);
+
+  // Not in SdkResource, as it is not useful when you use the SDK in an app
+  public static final Path EXAMPLE_NOTICES = Path.of("examples", "notices");
 
   private final Path sdkRoot;
   private final ObjectMapper objectMapper;
@@ -238,6 +245,25 @@ public class SdkLoader {
                   .collect(Collectors.toSet()));
 
           result.add(codelist);
+        }
+      }
+    }
+
+    return result;
+  }
+
+  public Set<XmlNotice> getXmlNotices()
+      throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+    final Set<XmlNotice> result = new HashSet<>();
+
+    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
+        Path.of(sdkRoot.toString(), EXAMPLE_NOTICES.toString()))) {
+
+      for (Path path : dirStream) {
+        if (!Files.isDirectory(path)) {
+          XmlNotice xmlNotice = XmlDataExtractor.loadXmlNoticeFile(path);
+
+          result.add(xmlNotice);
         }
       }
     }

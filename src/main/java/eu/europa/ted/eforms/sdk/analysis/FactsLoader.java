@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.util.List;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.drools.ruleunits.api.DataSource;
 import org.drools.ruleunits.api.DataStore;
 import org.slf4j.Logger;
@@ -18,8 +20,10 @@ import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 import eu.europa.ted.eforms.sdk.domain.Codelist;
 import eu.europa.ted.eforms.sdk.domain.Label;
+import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
@@ -124,6 +128,18 @@ public class FactsLoader {
     final DataStore<CodelistFact> datastore = DataSource.createStore();
     sdkLoader.getCodelists()
         .forEach((Codelist codelist) -> datastore.add(new CodelistFact(codelist)));
+
+    return datastore;
+  }
+
+  public DataStore<XmlNoticeFact> loadXmlNotices()
+      throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+    logger.debug("Creating facts datastore for XML notice examples");
+
+    final DataStore<XmlNoticeFact> datastore = DataSource.createStore();
+    sdkLoader.getXmlNotices()
+        .forEach((XmlNotice xmlNotice) -> datastore
+            .add(new XmlNoticeFact(xmlNotice)));
 
     return datastore;
   }

@@ -1,0 +1,12 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata
+
+rule "Every notice example has correct SDK version"
+when
+  /xmlNotices[ $n: this, customizationId != '' && customizationId != sdkMetadata.customizationId ]
+then
+  results.add(new ValidationResult($n, "the value in CustomizationID is incorrect", ValidationStatusEnum.ERROR));
+end
