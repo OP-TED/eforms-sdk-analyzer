@@ -1,0 +1,17 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
+import eu.europa.ted.eforms.sdk.domain.field.Field;
+import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata
+
+// TEDEFO-2205: Xpath absolute uniqueness is verified.
+rule "Xpath absolute uniqueness is verified"
+when
+  ???? should this be done here or on the Java side ????
+  exists /nodes[xpathAbsolute == /fields[xpathAbsolute] ]
+then
+  ???? how to get $fieldId and $nodeId here
+  results.add(new ValidationResult($n, "the xpath absolute in field " + $fieldId + " is incorrect", ValidationStatusEnum.ERROR));
+end
