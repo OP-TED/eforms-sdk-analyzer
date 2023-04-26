@@ -51,6 +51,10 @@ public class FieldFact implements SdkComponentFact<String> {
     return null;
   }
 
+  public String getXpathAbsolute() {
+    return field.getXpathAbsolute();
+  }
+
   @Override
   public String getId() {
     return field.getId();

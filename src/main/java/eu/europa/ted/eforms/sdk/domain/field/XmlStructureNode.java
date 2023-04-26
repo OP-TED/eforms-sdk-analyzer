@@ -78,4 +78,8 @@ public class XmlStructureNode implements Serializable {
   public boolean isRepeatable() {
     return repeatable;
   }
+
+  public String getXpathAbsolute() {
+    return xpathAbsolute;
+  }
 }
