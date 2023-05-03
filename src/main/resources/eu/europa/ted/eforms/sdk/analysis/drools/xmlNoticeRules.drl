@@ -14,8 +14,7 @@ end
 rule "Every notice example has a corresponding validation report"
 when
   /xmlNotices[ $n: this, $exampleId : id ]
-  and
-	not (exists /svrlReports[ id == $exampleId ])
+  not (exists /svrlReports[ id == $exampleId ])
 then
   results.add(new ValidationResult($n, "the validation report is missing", ValidationStatusEnum.ERROR));
 end
@@ -23,8 +22,7 @@ end
 rule "Every validation report has a corresponding notice example"
 when
   /svrlReports[ $r: this, $exampleId : id ]
-  and
-	not (exists /xmlNotices[ id == $exampleId ])
+  not (exists /xmlNotices[ id == $exampleId ])
 then
   results.add(new ValidationResult($r, "the notice example is missing", ValidationStatusEnum.ERROR));
 end
