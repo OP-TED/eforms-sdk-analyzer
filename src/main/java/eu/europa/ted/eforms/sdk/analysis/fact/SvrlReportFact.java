@@ -1,5 +1,7 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import org.apache.commons.lang3.Validate;
+
 import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 
 public class SvrlReportFact implements SdkComponentFact<String> {
@@ -7,6 +9,7 @@ public class SvrlReportFact implements SdkComponentFact<String> {
 	private final SvrlReport svrlReport;
 
 	public SvrlReportFact(SvrlReport svrlReport) {
+		Validate.notNull(svrlReport, "SvrlReport is null");
 		this.svrlReport = svrlReport;
 	}
 
