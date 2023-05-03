@@ -26,6 +26,7 @@ import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.domain.Codelist;
 import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.Language;
+import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.domain.Translation;
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
@@ -51,6 +52,7 @@ public class SdkLoader {
 
   // Not in SdkResource, as it is not useful when you use the SDK in an app
   public static final Path EXAMPLE_NOTICES = Path.of("examples", "notices");
+  public static final Path EXAMPLE_REPORTS = Path.of("examples", "reports");
 
   private final Path sdkRoot;
   private final ObjectMapper objectMapper;
@@ -264,6 +266,25 @@ public class SdkLoader {
           XmlNotice xmlNotice = XmlDataExtractor.loadXmlNoticeFile(path);
 
           result.add(xmlNotice);
+        }
+      }
+    }
+
+    return result;
+  }
+
+  public Set<SvrlReport> getSvrlReports()
+      throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+    final Set<SvrlReport> result = new HashSet<>();
+
+    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
+        Path.of(sdkRoot.toString(), EXAMPLE_REPORTS.toString()))) {
+
+      for (Path path : dirStream) {
+        if (!Files.isDirectory(path)) {
+          SvrlReport svrlReport = XmlDataExtractor.loadSvrlReportFile(path);
+
+          result.add(svrlReport);
         }
       }
     }

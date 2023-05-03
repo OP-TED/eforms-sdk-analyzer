@@ -114,6 +114,12 @@ public class SdkValidationSteps {
     sdkUnit.setXmlNotices(new FactsLoader(testsFolder).loadXmlNotices());
   }
 
+  @When("I load all SVRL reports")
+  public void I_load_all_SVRL_reports()
+      throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+    sdkUnit.setSvrlReports(new FactsLoader(testsFolder).loadSvrlReports());
+  }
+
   @When("I load SDK metadata")
   public void I_load_SDK_metadata() throws IOException {
     sdkUnit.setSdkMetadata(SdkMetadataParser.loadSdkMetadata(testsFolder));

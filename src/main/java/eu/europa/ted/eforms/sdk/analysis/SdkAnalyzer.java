@@ -36,7 +36,8 @@ public class SdkAnalyzer {
         .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
         .setLabels(factsLoader.loadLabels())
         .setViewTemplates(factsLoader.loadViewTemplates())
-        .setXmlNotices(factsLoader.loadXmlNotices());
+        .setXmlNotices(factsLoader.loadXmlNotices())
+        .setSvrlReports(factsLoader.loadSvrlReports());
 
     fireAllRules(sdkUnit);
 
