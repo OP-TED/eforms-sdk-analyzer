@@ -15,6 +15,10 @@ public class FieldFact implements SdkComponentFact<String> {
     this.field = field;
   }
 
+  public String getParentId() {
+    return field.getParentNodeId();
+  }
+
   public boolean hasAncestor(String ancestorNodeId) {
     if (StringUtils.isBlank(ancestorNodeId)) {
       return false;

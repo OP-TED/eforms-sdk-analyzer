@@ -11,6 +11,10 @@ public class NodeFact implements SdkComponentFact<String> {
     this.node = node;
   }
 
+  public String getParentId() {
+    return node.getParentId();
+  }
+  
   public boolean isRepeatable() {
     return node.isRepeatable();
   }

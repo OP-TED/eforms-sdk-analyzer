@@ -12,6 +12,14 @@ then
   results.add(new ValidationResult($f, "the value " + $version + " in sdkVersion is incorrect", ValidationStatusEnum.ERROR));
 end
 
+rule "Every node has at least one child"
+when
+  /nodes[ $n: this, $nodeId : id ]
+  not (exists /nodes[ parentId == $nodeId ] or /fields[ parentId == $nodeId ])
+then
+  results.add(new ValidationResult($n, "node has no child node or field", ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-2205: Xpath absolute uniqueness is verified.
 //  For fields.json file:
 //    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node
