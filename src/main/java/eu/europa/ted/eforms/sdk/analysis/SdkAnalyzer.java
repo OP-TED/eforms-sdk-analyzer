@@ -67,6 +67,7 @@ public class SdkAnalyzer {
         .setSdkRoot(sdkRoot)
         .setSdkMetadata(sdkMetadata)
         .setDocumentTypes(factsLoader.loadDocumentTypes())
+        .setFieldsAndNodesMetadata(factsLoader.loadFieldsAndNodesMetadata())
         .setFields(factsLoader.loadFields())
         .setNodes(factsLoader.loadNodes())
         .setNoticeTypes(factsLoader.loadNoticeTypes())

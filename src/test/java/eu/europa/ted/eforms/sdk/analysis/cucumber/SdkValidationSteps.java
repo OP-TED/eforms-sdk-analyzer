@@ -94,6 +94,11 @@ public class SdkValidationSteps {
     sdkUnit.setDocumentTypes(new FactsLoader(testsFolder).loadDocumentTypes());
   }
 
+  @When("I load metadata from fields.json")
+  public void I_load_fields_json() throws IOException {
+    sdkUnit.setFieldsAndNodesMetadata(new FactsLoader(testsFolder).loadFieldsAndNodesMetadata());
+  }
+
   @When("I load all fields")
   public void i_load_all_fields() throws IOException {
     sdkUnit.setFields(new FactsLoader(testsFolder).loadFields());

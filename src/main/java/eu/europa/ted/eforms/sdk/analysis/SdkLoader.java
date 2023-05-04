@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.domain.Codelist;
+import eu.europa.ted.eforms.sdk.domain.EFormsTrackableEntity;
 import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.domain.Translation;
@@ -120,6 +121,14 @@ public class SdkLoader {
 
               return l.get(0);
             }));
+  }
+
+  public EFormsTrackableEntity getFieldsAndNodesMetadata() throws IOException {
+    // Load fields.json but keep only the metadata, not the fields and nodes
+    EFormsTrackableEntity metadata = loadJsonFile(FieldsAndNodes.class,
+        Path.of(sdkRoot.toString(), SdkResource.FIELDS_JSON.getPath().toString()));
+
+    return metadata;
   }
 
   public FieldsAndNodes getFieldsAndNodes() throws IOException {

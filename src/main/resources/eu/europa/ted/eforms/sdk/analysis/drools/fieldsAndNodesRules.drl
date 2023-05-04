@@ -5,6 +5,13 @@ unit SdkUnit;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 
+rule "Fields.json has correct SDK version"
+when
+  /fieldsAndNodesMetadata[ $f: this, $version: sdkVersion, $version != "eforms-sdk-" + sdkMetadata.version ]
+then
+  results.add(new ValidationResult($f, "the value " + $version + " in sdkVersion is incorrect", ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-2205: Xpath absolute uniqueness is verified.
 //  For fields.json file:
 //    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node
