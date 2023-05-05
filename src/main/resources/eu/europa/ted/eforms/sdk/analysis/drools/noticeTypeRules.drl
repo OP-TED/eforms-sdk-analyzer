@@ -141,13 +141,13 @@ end
 
 // TEDEFO-1824: For every field, check in fields.json that the notice subtype is not listed in the forbidden constraint that has no condition.
 rule "Notice sub type is not unconditionally forbidden for any field"
- when
+when
   /noticeTypes[ $nt: this, $noticeTypeId: id ]
   NoticeTypeContent($fieldId: id) from $nt.fields
   exists /fields[ id == $fieldId, forbiddenConstraintWithoutCondition !=null && forbiddenConstraintWithoutCondition.noticeTypes contains $noticeTypeId ]
- then
+then
   results.add(new ValidationResult($nt, "Notice sub type " + $noticeTypeId + " is listed in the unconditional forbidden constraint of field " + $fieldId, ValidationStatusEnum.ERROR));
- end
+end
 
 // TEDEFO-1842: In notice-types.json check that all values of the "formType" property are part of the 'form-type" codelist
 rule "All formType values are part of the form-type codelist"

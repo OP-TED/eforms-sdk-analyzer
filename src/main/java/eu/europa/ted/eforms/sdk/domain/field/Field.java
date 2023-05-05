@@ -100,4 +100,8 @@ public class Field implements Serializable {
   public BooleanProperty getForbidden() {
     return forbidden;
   }
+
+  public String getXpathAbsolute() {
+    return xpathAbsolute;
+  }
 }

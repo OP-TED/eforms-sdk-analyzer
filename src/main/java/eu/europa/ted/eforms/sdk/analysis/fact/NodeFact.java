@@ -32,6 +32,10 @@ public class NodeFact implements SdkComponentFact<String> {
     return result;
   }
 
+  public String getXpathAbsolute() {
+    return node.getXpathAbsolute();
+  }
+
   @Override
   public String getId() {
     return node.getId();

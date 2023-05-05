@@ -1,0 +1,34 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "eforms-sdk-1.8.0",
+  "metadataDatabase" : {
+    "version" : "1.7.10",
+    "createdOn" : "2023-04-24T17:08:41"
+  },
+  "xmlStructure" : [ {
+    "id" : "ND-Root",
+    "xpathAbsolute" : "/*",
+    "xpathRelative" : "/*",
+    "repeatable" : false
+  }, {
+    "id" : "ND-Version-Invalid-Dummy",
+    "xpathAbsolute" : "/*/cbc:VersionID",
+    "xpathRelative" : "cbc:VersionID",
+    "repeatable" : false
+  } ],
+  "fields": [ {
+    "id" : "BT-757-notice",
+    "parentNodeId" : "ND-Root",
+    "name" : "Notice Version",
+    "btId" : "BT-757",
+    "xpathAbsolute" : "/*/cbc:VersionID",
+    "xpathRelative" : "cbc:VersionID",
+    "xsdSequenceOrder" : [ { "cbc:VersionID" : 14 } ],
+    "type" : "id",
+    "legalType" : "IDENTIFIER",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  } ]
+}
