@@ -24,6 +24,8 @@ public class NodeFact implements SdkComponentFact<String> {
     while (currentNode != null) {
       if (currentNode.isRepeatable()) {
         result = currentNode;
+        // First repeatable ancestor found
+        break;
       }
 
       currentNode = currentNode.getParent();

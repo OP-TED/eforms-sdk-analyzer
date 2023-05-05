@@ -23,7 +23,7 @@ Feature: Notice Types - Ancestor groups validation for fields
     And I load all fields
     And I execute validation
     Then Rule "<expected rule>" should have been fired
-    Then I should get 3 validation errors
+    Then I should get 6 validation errors
 
     Examples:
      | expected rule                                                   |
