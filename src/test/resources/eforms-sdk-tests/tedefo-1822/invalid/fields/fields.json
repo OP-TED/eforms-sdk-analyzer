@@ -13212,7 +13212,7 @@
     }
   }, {
     "id" : "BT-505-Organization-TouchPoint",
-    "parentNodeId" : "ND-Touchpoint",
+    "parentNodeId" : "ND-Organization",
     "name" : "Internet Address",
     "btId" : "BT-505",
     "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:Organizations/efac:Organization/efac:TouchPoint/cbc:WebsiteURI",

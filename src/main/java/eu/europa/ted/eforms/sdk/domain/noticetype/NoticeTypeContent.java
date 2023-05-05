@@ -179,6 +179,8 @@ public class NoticeTypeContent {
       if (currentContent.isRepeatable()
           && (type == null || currentContent.getContentType() == type.getLiteral())) {
         result = currentContent;
+        // First repeatable ancestor found
+        break;
       }
 
       currentContent = currentContent.getParent();
