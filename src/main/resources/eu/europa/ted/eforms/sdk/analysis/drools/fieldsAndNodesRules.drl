@@ -36,6 +36,14 @@ then
   results.add(new ValidationResult($f, "Field parent ID " + $parentId + " does not correspond to an existing node", ValidationStatusEnum.ERROR));
 end
 
+rule "There are no loops in the node structure"
+when
+  $ancestorsId : /nodes[ $n: this, $nodeId : id ]/ancestors/id
+  exists /nodes[ id == $nodeId, id == $ancestorsId ]
+then
+  results.add(new ValidationResult($n, "Node is part of its ancestors (loop in the node hierarchy)", ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-2205: Xpath absolute uniqueness is verified.
 //  For fields.json file:
 //    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node

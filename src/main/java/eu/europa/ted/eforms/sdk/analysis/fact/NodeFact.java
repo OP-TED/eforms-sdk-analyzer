@@ -1,5 +1,8 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 
 public class NodeFact implements SdkComponentFact<String> {
@@ -19,19 +22,34 @@ public class NodeFact implements SdkComponentFact<String> {
     return node.isRepeatable();
   }
 
-  public XmlStructureNode getFirstRepeatableAncestor() {
-    XmlStructureNode result = new XmlStructureNode();
+  /**
+   * Returns the list of ancestors, starting from the node: the node parent, then grand-parent, etc.
+   * If the structure is incorrect and a node is in its ancestor, this will put the node in the
+   * list and return it, to avoid going into an infinite loop.
+   */
+  public List<XmlStructureNode> getAncestors() {
+    List<XmlStructureNode> result = new ArrayList<>();
     XmlStructureNode currentNode = node.getParent();
 
     while (currentNode != null) {
-      if (currentNode.isRepeatable()) {
-        result = currentNode;
-        // First repeatable ancestor found
+      if (result.contains(currentNode)) {
+        // A node is its own ancestor. Add it to the list of ancestors,
+        // but break to avoid going into an infinite loop.
+        result.add(currentNode);
         break;
       }
+      result.add(currentNode);
 
       currentNode = currentNode.getParent();
     }
+
+    return result;
+  }
+
+  public XmlStructureNode getFirstRepeatableAncestor() {
+    XmlStructureNode result = new XmlStructureNode();
+
+    result = this.getAncestors().stream().filter(n -> n.isRepeatable()).findFirst().orElse(result);
 
     return result;
   }
