@@ -44,6 +44,20 @@ then
   results.add(new ValidationResult($n, "Node is part of its ancestors (loop in the node hierarchy)", ValidationStatusEnum.ERROR));
 end
 
+rule "The absolute XPath of every node is consistent with its parent and its relative XPath"
+when
+  /nodes[ $n: this, $absoluteXpath : xpathAbsolute, parent != null, $parentXpath : parent.xpathAbsolute, $relativeXpath : xpathRelative, $absoluteXpath != "" + $parentXpath + "/" + $relativeXpath ]
+then
+  results.add(new ValidationResult($n, "Absolute XPath is inconsistent with its parent and relative XPath", ValidationStatusEnum.ERROR));
+end
+
+rule "The absolute XPath of every field is consistent with its parent and its relative XPath"
+when
+  /fields[ $f: this, $absoluteXpath : xpathAbsolute, parent != null, $parentXpath : parent.xpathAbsolute, $relativeXpath : xpathRelative, $absoluteXpath != "" + $parentXpath + "/" + $relativeXpath ]
+then
+  results.add(new ValidationResult($f, "Absolute XPath is inconsistent with its parent and relative XPath", ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-2205: Xpath absolute uniqueness is verified.
 //  For fields.json file:
 //    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node

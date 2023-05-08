@@ -15,6 +15,10 @@ public class FieldFact implements SdkComponentFact<String> {
     this.field = field;
   }
 
+  public XmlStructureNode getParent() {
+    return field.getParentNode();
+  }
+
   public String getParentId() {
     return field.getParentNodeId();
   }
@@ -55,6 +59,10 @@ public class FieldFact implements SdkComponentFact<String> {
 
   public String getXpathAbsolute() {
     return field.getXpathAbsolute();
+  }
+
+  public String getXpathRelative() {
+    return field.getXpathRelative();
   }
 
   @Override

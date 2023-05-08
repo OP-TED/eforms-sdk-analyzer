@@ -18,6 +18,10 @@ public class NodeFact implements SdkComponentFact<String> {
     return node.getParentId();
   }
   
+  public XmlStructureNode getParent() {
+    return node.getParent();
+  }
+  
   public boolean isRepeatable() {
     return node.isRepeatable();
   }
@@ -56,6 +60,10 @@ public class NodeFact implements SdkComponentFact<String> {
 
   public String getXpathAbsolute() {
     return node.getXpathAbsolute();
+  }
+
+  public String getXpathRelative() {
+    return node.getXpathRelative();
   }
 
   @Override
