@@ -3,9 +3,7 @@ package eu.europa.ted.eforms.sdk.domain.view.index;
 import java.io.Serializable;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 
-@Data
 public class TedefoViewTemplateIndex implements Serializable {
   private static final long serialVersionUID = -4884796492682953244L;
 
@@ -21,5 +19,21 @@ public class TedefoViewTemplateIndex implements Serializable {
 
   public String getId() {
     return id;
+  }
+
+  public String getFilename() {
+    return filename;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public String getLabelId() {
+    return labelId;
+  }
+
+  public List<String> getNoticeSubtypeIds() {
+    return noticeSubtypeIds;
   }
 }

@@ -5,9 +5,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
-import lombok.Data;
 
-@Data
 public class DocumentTypeFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 2293703290220188078L;
 

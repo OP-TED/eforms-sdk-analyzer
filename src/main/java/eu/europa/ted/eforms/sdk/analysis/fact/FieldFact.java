@@ -5,9 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.domain.field.BooleanConstraint;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
-import lombok.Data;
 
-@Data
 public class FieldFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -8325643682910825716L;
 

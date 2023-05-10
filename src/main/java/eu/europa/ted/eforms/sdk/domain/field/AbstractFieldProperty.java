@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Data;
 
 /**
  * TEDEFO-546: An abstract field property.
@@ -13,7 +12,6 @@ import lombok.Data;
  *        type as the default value.
  * @param <V> Type of the default value, it is the same as the one used inside the constraint.
  */
-@Data
 @JsonPropertyOrder({"value", "severity", "message", "constraints"})
 public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V extends Serializable>
     implements Serializable {
@@ -35,6 +33,18 @@ public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V e
    * The list can be empty but not null.
    */
   private final List<C> constraints = new ArrayList<>();
+
+  public V getValue() {
+    return value;
+  }
+
+  public PropertyOrConstraintSeverity getSeverity() {
+    return severity;
+  }
+
+  public String getMessage() {
+    return message;
+  }
 
   public List<C> getConstraints() {
     return constraints;

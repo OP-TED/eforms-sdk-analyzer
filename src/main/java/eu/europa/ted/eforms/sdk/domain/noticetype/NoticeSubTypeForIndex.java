@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ted.eforms.sdk.domain.mdd.enums.NoticeLegalBasis;
 import eu.europa.ted.eforms.sdk.util.EnumHelper;
-import lombok.Data;
 
-@Data
 @JsonPropertyOrder({"documentType", "legalBasis", "formType", "type", "description", "subTypeId",
     "_label", "viewTemplateIds"})
 public class NoticeSubTypeForIndex implements Serializable {

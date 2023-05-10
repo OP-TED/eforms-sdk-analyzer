@@ -5,8 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import eu.europa.ted.eforms.sdk.domain.EFormsTrackableEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Domain object to represent an SDK notice type for JSON in Java. Top level item.
@@ -15,8 +13,6 @@ import lombok.EqualsAndHashCode;
  * IMPORTANT: be careful when adding getters as those will end up in the JSON !!!
  * </p>
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 public class NoticeTypeSdk extends EFormsTrackableEntity {
   private static final long serialVersionUID = 7181276451291968975L;

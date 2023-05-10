@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Data;
 
 /**
  * A field used in the SDK fields.json generation.
@@ -18,7 +17,6 @@ import lombok.Data;
  * but we may not need that.
  * </p>
  */
-@Data
 @JsonPropertyOrder({"id", "parentNodeId", "name", "btId", "xpathAbsolute", "xpathRelative", "type",
     "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength", "privacy",
     "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList", "inChangeNotice",
@@ -81,27 +79,107 @@ public class Field implements Serializable {
   @JsonProperty("assert")
   private StringProperty assertion;
 
-  public String getParentNodeId() {
-    return parentNodeId;
+  public String getId() {
+    return id;
   }
 
-  public void setParentNode(XmlStructureNode parentNode) {
-    this.parentNode = parentNode;
+  public String getParentNodeId() {
+    return parentNodeId;
   }
 
   public XmlStructureNode getParentNode() {
     return parentNode;
   }
 
-  public String getId() {
-    return id;
+  public void setParentNode(XmlStructureNode parentNode) {
+    this.parentNode = parentNode;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getBtId() {
+    return btId;
+  }
+
+  public String getXpathAbsolute() {
+    return xpathAbsolute;
+  }
+
+  public String getXpathRelative() {
+    return xpathRelative;
+  }
+
+  public List<XmlElementPosition> getXsdSequenceOrder() {
+    return xsdSequenceOrder;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public String getPresetValue() {
+    return presetValue;
+  }
+
+  public List<String> getIdSchemes() {
+    return idSchemes;
+  }
+
+  public String getIdScheme() {
+    return idScheme;
+  }
+
+  public String getSchemeName() {
+    return schemeName;
+  }
+
+  public String getLegalType() {
+    return legalType;
+  }
+
+  public Integer getMaxLength() {
+    return maxLength;
+  }
+
+  public FieldPrivacy getPrivacy() {
+    return privacy;
+  }
+
+  public BooleanProperty getRepeatable() {
+    return repeatable;
   }
 
   public BooleanProperty getForbidden() {
     return forbidden;
   }
 
-  public String getXpathAbsolute() {
-    return xpathAbsolute;
+  public BooleanProperty getMandatory() {
+    return mandatory;
+  }
+
+  public StringProperty getPattern() {
+    return pattern;
+  }
+
+  public RangeNumericProperty getRangeNumeric() {
+    return rangeNumeric;
+  }
+
+  public CodeListProperty getCodeList() {
+    return codeList;
+  }
+
+  public ChangeableOrCpProperty getInChangeNotice() {
+    return inChangeNotice;
+  }
+
+  public ChangeableOrCpProperty getInContinueProcedure() {
+    return inContinueProcedure;
+  }
+
+  public StringProperty getAssertion() {
+    return assertion;
   }
 }

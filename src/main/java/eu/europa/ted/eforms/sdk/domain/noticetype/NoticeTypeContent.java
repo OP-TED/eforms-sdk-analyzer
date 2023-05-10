@@ -3,15 +3,12 @@ package eu.europa.ted.eforms.sdk.domain.noticetype;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.builder.ToStringExclude;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
 import eu.europa.ted.eforms.sdk.util.EnumHelper;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Domain object to represent items of the SDK notice type for JSON in Java. This is not for the top
@@ -21,7 +18,6 @@ import lombok.EqualsAndHashCode;
  * IMPORTANT: be careful when adding getters as those will end up in the JSON !!!
  * </p>
  */
-@Data
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 @JsonPropertyOrder({"id", "contentType", "nodeId", "displayType", "description", "_label",
     "valueSource", "_idScheme", "_idSchemes", "_schemeName", "_identifierFieldId", "readOnly",
@@ -98,8 +94,6 @@ public class NoticeTypeContent {
    */
   private List<NoticeTypeContent> content = new ArrayList<>();
 
-  @EqualsAndHashCode.Exclude
-  @ToStringExclude
   private NoticeTypeContent parent;
 
   /**
@@ -147,6 +141,10 @@ public class NoticeTypeContent {
     this.displayType = EnumHelper.getEnum(NoticeTypeContentDisplayType.class, displayType);
   }
 
+  public String getDescription() {
+    return description;
+  }
+
   public Stream<NoticeTypeContent> flattened() {
     return Stream.concat(
         Stream.of(this),
@@ -192,6 +190,10 @@ public class NoticeTypeContent {
     return id;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public String getNodeId() {
     return nodeId;
   }
@@ -200,8 +202,28 @@ public class NoticeTypeContent {
     return repeatable;
   }
 
+  public void setRepeatable(boolean repeatable) {
+    this.repeatable = repeatable;
+  }
+
+  public String getValueSource() {
+    return valueSource;
+  }
+
   public String getLabel() {
     return label;
+  }
+
+  public boolean isCollapsed() {
+    return collapsed;
+  }
+
+  public boolean isHidden() {
+    return hidden;
+  }
+
+  public boolean isReadOnly() {
+    return readOnly;
   }
 
   public NoticeTypeContent getParent() {
