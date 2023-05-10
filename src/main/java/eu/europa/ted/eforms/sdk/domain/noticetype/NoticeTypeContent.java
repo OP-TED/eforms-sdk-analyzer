@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentDisplayType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
-import eu.europa.ted.eforms.sdk.util.EnumHelper;
 
 /**
  * Domain object to represent items of the SDK notice type for JSON in Java. This is not for the top
@@ -125,20 +125,12 @@ public class NoticeTypeContent {
     return contentType;
   }
 
-  public String getContentType() {
-    return contentType != null ? contentType.getLiteral() : null;
+  public NoticeTypeContentType getContentType() {
+    return contentType;
   }
 
-  public void setContentType(String contentType) {
-    this.contentType = EnumHelper.getEnum(NoticeTypeContentType.class, contentType);
-  }
-
-  public String getDisplayType() {
-    return displayType != null ? displayType.getLiteral() : null;
-  }
-
-  public void setDisplayType(String displayType) {
-    this.displayType = EnumHelper.getEnum(NoticeTypeContentDisplayType.class, displayType);
+  public NoticeTypeContentDisplayType getDisplayType() {
+    return displayType;
   }
 
   public String getDescription() {
@@ -174,7 +166,7 @@ public class NoticeTypeContent {
 
     while (currentContent != null) {
       if (currentContent.isRepeatable()
-          && (type == null || currentContent.getContentType().equals(type.getLiteral()))) {
+          && (type == null || currentContent.getContentType().equals(type))) {
         result = currentContent;
         // First repeatable ancestor found
         break;

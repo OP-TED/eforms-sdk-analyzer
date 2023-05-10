@@ -3,7 +3,6 @@ package eu.europa.ted.eforms.sdk.domain.field;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ted.eforms.sdk.domain.mdd.enums.FieldPrivacyCode;
-import eu.europa.ted.eforms.sdk.util.EnumHelper;
 
 @JsonPropertyOrder({"code", "unpublishedFieldId", "reasonCodeFieldId", "reasonDescriptionFieldId",
     "publicationDateFieldId"})
@@ -17,12 +16,8 @@ public class FieldPrivacy implements Serializable {
   private String reasonDescriptionFieldId;
   private String publicationDateFieldId;
 
-  public String getCode() {
-    return code != null ? code.getLiteral() : null;
-  }
-
-  public void setCode(final String code) {
-    this.code = EnumHelper.getEnum(FieldPrivacyCode.class, code);
+  public FieldPrivacyCode getCode() {
+    return code;
   }
 
   public String getUnpublishedFieldId() {

@@ -19,9 +19,9 @@ public enum NoticeLegalBasis implements ILiteral {
 
   _32018R1046("32018R1046"),
 
-  other("other"),
+  OTHER("other"),
 
-  unknown("unknown");
+  UNKNOWN("unknown");
 
   private final String literal;
 

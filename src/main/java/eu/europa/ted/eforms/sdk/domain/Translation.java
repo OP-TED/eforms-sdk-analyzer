@@ -1,6 +1,7 @@
 package eu.europa.ted.eforms.sdk.domain;
 
 import java.util.Map;
+import eu.europa.ted.eforms.sdk.domain.enums.Language;
 
 public class Translation {
   private String comment;

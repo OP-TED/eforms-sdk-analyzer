@@ -1,4 +1,4 @@
-package eu.europa.ted.eforms.sdk.domain.noticetype;
+package eu.europa.ted.eforms.sdk.domain.noticetype.enums;
 
 import eu.europa.ted.eforms.sdk.domain.ILiteral;
 

@@ -21,7 +21,7 @@ public class NoticeType implements Serializable {
   }
 
   public NoticeLegalBasis getLegalBasis() {
-    return noticeSubTypeForIndex.getLegalBasisEnum();
+    return noticeSubTypeForIndex.getLegalBasis();
   }
 
   public String getFormType() {

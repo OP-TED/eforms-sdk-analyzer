@@ -1,4 +1,4 @@
-package eu.europa.ted.eforms.sdk.domain;
+package eu.europa.ted.eforms.sdk.domain.enums;
 
 import java.util.Locale;
 
