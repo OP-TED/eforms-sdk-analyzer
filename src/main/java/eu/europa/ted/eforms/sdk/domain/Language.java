@@ -38,36 +38,4 @@ public enum Language {
     this.englishLanguage = englishLanguage;
     this.genericodeLanguage = genericodeLanguage;
   }
-
-//  public Locale getLocale() {
-//    return locale;
-//  }
-//
-//  public String getEnglishLanguage() {
-//    return englishLanguage;
-//  }
-//
-//  public static Language valueOfFromSkos(final String value) {
-//    return Arrays.stream(values())
-//        .filter(event -> event.locale.getLanguage().equals(value))
-//        .findFirst()
-//        .orElseThrow(
-//            () -> new IllegalArgumentException(String.format("Unknown skos value: '%s'", value)));
-//  }
-//
-//  public static Language valueOfFromGenericode(final String value) {
-//    return Arrays.stream(values())
-//        .filter(event -> event.genericodeLanguage.equals(value))
-//        .findFirst()
-//        .orElseThrow(
-//            () -> new IllegalArgumentException(String.format("Unknown genericode: '%s'", value)));
-//  }
-//
-//  public static Language valueOfFromLocale(final Locale value) {
-//    return Arrays.stream(values())
-//        .filter(event -> event.locale == value)
-//        .findFirst()
-//        .orElseThrow(
-//            () -> new IllegalArgumentException(String.format("Unknown locale: '%s':", value)));
-//  }
 }

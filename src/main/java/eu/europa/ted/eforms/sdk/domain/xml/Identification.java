@@ -123,7 +123,7 @@ public class Identification {
    */
   public List<Identification.LongName> getLongName() {
     if (longName == null) {
-      longName = new ArrayList<Identification.LongName>();
+      longName = new ArrayList<>();
     }
     return this.longName;
   }

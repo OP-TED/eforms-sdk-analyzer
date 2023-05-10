@@ -3,6 +3,7 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 
 public class XmlNoticeFact implements SdkComponentFact<String> {
+  private static final long serialVersionUID = 7260419598936482554L;
 
   private final XmlNotice xmlNotice;
 

@@ -29,18 +29,6 @@ public enum NoticeLegalBasis implements ILiteral {
     this.literal = literal;
   }
 
-  // public Catalog getCatalog() {
-  // return null;
-  // }
-  //
-  // public Schema getSchema() {
-  // return null;
-  // }
-  //
-  // public String getName() {
-  // return "notice_legal_basis";
-  // }
-  //
   @Override
   public String getLiteral() {
     return literal;

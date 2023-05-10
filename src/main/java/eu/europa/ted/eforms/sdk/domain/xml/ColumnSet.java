@@ -83,7 +83,7 @@ public class ColumnSet {
    */
   public List<ColumnSet.Column> getColumn() {
     if (column == null) {
-      column = new ArrayList<ColumnSet.Column>();
+      column = new ArrayList<>();
     }
     return this.column;
   }

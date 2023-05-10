@@ -1,9 +1,13 @@
 package eu.europa.ted.eforms.sdk.domain;
 
+import java.io.Serializable;
+
 /**
  * Information in an XML notice, limited to what is required for the analysis.
  */
-public class XmlNotice {
+public class XmlNotice implements Serializable {
+  private static final long serialVersionUID = 2167488422739343874L;
+
   private final String filename;
   private final String customizationId;
 

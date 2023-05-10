@@ -25,7 +25,7 @@ import eu.europa.ted.eforms.sdk.domain.XmlNotice;
  * that we do not need or want to load as a whole.
  */
 public class XmlDataExtractor {
-  private static final Logger logger = LoggerFactory.getLogger(XmlParser.class);
+  private static final Logger logger = LoggerFactory.getLogger(XmlDataExtractor.class);
 
   private static final String XPATH_NOTICE_CUSTOMIZATIONID = "/*/cbc:CustomizationID/text()";
   private static final String XPATH_SVRL_ERRORS =
@@ -79,8 +79,7 @@ public class XmlDataExtractor {
     // For the XPaths to work
     dbf.setNamespaceAware(true);
 
-    Document xmlDoc = dbf.newDocumentBuilder().parse(xmlFilePath.toFile());
-    return xmlDoc;
+    return dbf.newDocumentBuilder().parse(xmlFilePath.toFile());
   }
 
   private static final class SimpleNamespaceContext implements NamespaceContext {

@@ -81,7 +81,7 @@ public class SimpleCodeList {
    */
   public List<SimpleCodeList.Row> getRow() {
     if (row == null) {
-      row = new ArrayList<SimpleCodeList.Row>();
+      row = new ArrayList<>();
     }
     return this.row;
   }
@@ -149,7 +149,7 @@ public class SimpleCodeList {
      */
     public List<SimpleCodeList.Row.Value> getValue() {
       if (value == null) {
-        value = new ArrayList<SimpleCodeList.Row.Value>();
+        value = new ArrayList<>();
       }
       return this.value;
     }

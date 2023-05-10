@@ -105,21 +105,6 @@ public enum FieldPrivacyCode implements ILiteral {
     this.literal = literal;
   }
 
-  // @Override
-  // public Catalog getCatalog() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public Schema getSchema() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public String getName() {
-  // return "field_privacy_code";
-  // }
-  //
   @Override
   public String getLiteral() {
     return literal;

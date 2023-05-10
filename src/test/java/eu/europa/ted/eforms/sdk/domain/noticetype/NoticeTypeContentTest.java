@@ -3,9 +3,9 @@ package eu.europa.ted.eforms.sdk.domain.noticetype;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class NoticeTypeContentTest {
+class NoticeTypeContentTest {
   @Test
-  public void testGetFirstRepeatableAncestor() {
+  void testGetFirstRepeatableAncestor() {
     /*Create the following structure:
      *  a (root)
      *  |
