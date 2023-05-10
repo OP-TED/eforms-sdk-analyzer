@@ -58,6 +58,14 @@ then
   results.add(new ValidationResult($f, "Absolute XPath is inconsistent with its parent and relative XPath", ValidationStatusEnum.ERROR));
 end
 
+rule "The notice type referenced in field constraints exists"
+when
+  $noticeType : /fields[ $f: this ]/allNoticeTypes
+  not (exists /noticeTypes[ id == $noticeType ])
+then
+  results.add(new ValidationResult($f, "The referenced notice type " + $noticeType + " does not exist", ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-2205: Xpath absolute uniqueness is verified.
 //  For fields.json file:
 //    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node
