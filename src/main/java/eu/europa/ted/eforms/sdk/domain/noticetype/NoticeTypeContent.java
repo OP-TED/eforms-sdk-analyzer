@@ -25,8 +25,7 @@ import lombok.EqualsAndHashCode;
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 @JsonPropertyOrder({"id", "contentType", "nodeId", "displayType", "description", "_label",
     "valueSource", "_idScheme", "_idSchemes", "_schemeName", "_identifierFieldId", "readOnly",
-    "_repeatable",
-    "_presetValue", "hidden", "collapsed", "content"})
+    "_repeatable", "_presetValue", "hidden", "collapsed", "content"})
 public class NoticeTypeContent {
   /**
    * Unique identifier.

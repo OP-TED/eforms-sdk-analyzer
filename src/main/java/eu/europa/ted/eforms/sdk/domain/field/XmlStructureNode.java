@@ -2,7 +2,6 @@ package eu.europa.ted.eforms.sdk.domain.field;
 
 import java.io.Serializable;
 import java.util.List;
-
 import lombok.Data;
 
 /**

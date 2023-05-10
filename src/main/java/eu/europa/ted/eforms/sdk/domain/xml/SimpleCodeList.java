@@ -52,12 +52,9 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "row"
-})
+@XmlType(name = "", propOrder = {"row"})
 @XmlRootElement(name = "SimpleCodeList")
 public class SimpleCodeList {
-
   @XmlElement(name = "Row", required = true)
   protected List<SimpleCodeList.Row> row;
 
@@ -123,9 +120,7 @@ public class SimpleCodeList {
    * 
    */
   @XmlAccessorType(XmlAccessType.FIELD)
-  @XmlType(name = "", propOrder = {
-      "value"
-  })
+  @XmlType(name = "", propOrder = {"value"})
   public static class Row {
 
     @XmlElement(name = "Value", required = true)
@@ -183,9 +178,7 @@ public class SimpleCodeList {
      * 
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "simpleValue"
-    })
+    @XmlType(name = "", propOrder = {"simpleValue"})
     public static class Value {
 
       @XmlElement(name = "SimpleValue", required = true)
@@ -232,9 +225,6 @@ public class SimpleCodeList {
       public void setColumnRef(String value) {
         this.columnRef = value;
       }
-
     }
-
   }
-
 }

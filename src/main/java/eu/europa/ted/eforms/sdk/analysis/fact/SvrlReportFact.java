@@ -1,7 +1,6 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import org.apache.commons.lang3.Validate;
-
 import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 
 public class SvrlReportFact implements SdkComponentFact<String> {

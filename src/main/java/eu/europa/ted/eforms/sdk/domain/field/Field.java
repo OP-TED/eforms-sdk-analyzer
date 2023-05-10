@@ -20,9 +20,9 @@ import lombok.Data;
  */
 @Data
 @JsonPropertyOrder({"id", "parentNodeId", "name", "btId", "xpathAbsolute", "xpathRelative", "type",
-    "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength",
-    "privacy", "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList",
-    "inChangeNotice", "inContinueProcedure", "assert"})
+    "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength", "privacy",
+    "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList", "inChangeNotice",
+    "inContinueProcedure", "assert"})
 public class Field implements Serializable {
   private static final long serialVersionUID = -1387933500392516298L;
 

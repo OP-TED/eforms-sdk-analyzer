@@ -6,7 +6,6 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
-
 import org.drools.ruleunits.api.DataSource;
 import org.drools.ruleunits.api.DataStore;
 import org.slf4j.Logger;
@@ -93,8 +92,7 @@ public class FactsLoader {
 
     final DataStore<LabelFact> datastore = DataSource.createStore();
 
-    sdkLoader.getLabels()
-        .forEach((Label label) -> datastore.add(new LabelFact(label)));
+    sdkLoader.getLabels().forEach((Label label) -> datastore.add(new LabelFact(label)));
 
     return datastore;
   }
@@ -117,8 +115,7 @@ public class FactsLoader {
 
     final DataStore<DocumentTypeFact> datastore = DataSource.createStore();
     sdkLoader.getNoticeTypesForIndex().getDocumentTypes()
-        .forEach((DocumentType documentType) -> datastore
-            .add(new DocumentTypeFact(documentType)));
+        .forEach((DocumentType documentType) -> datastore.add(new DocumentTypeFact(documentType)));
 
     return datastore;
   }
@@ -140,8 +137,7 @@ public class FactsLoader {
 
     final DataStore<XmlNoticeFact> datastore = DataSource.createStore();
     sdkLoader.getXmlNotices()
-        .forEach((XmlNotice xmlNotice) -> datastore
-            .add(new XmlNoticeFact(xmlNotice)));
+        .forEach((XmlNotice xmlNotice) -> datastore.add(new XmlNoticeFact(xmlNotice)));
 
     return datastore;
   }
@@ -152,8 +148,7 @@ public class FactsLoader {
 
     final DataStore<SvrlReportFact> datastore = DataSource.createStore();
     sdkLoader.getSvrlReports()
-        .forEach((SvrlReport svrlReport) -> datastore
-            .add(new SvrlReportFact(svrlReport)));
+        .forEach((SvrlReport svrlReport) -> datastore.add(new SvrlReportFact(svrlReport)));
 
     return datastore;
   }

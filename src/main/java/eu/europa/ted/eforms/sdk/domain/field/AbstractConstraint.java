@@ -29,7 +29,7 @@ public abstract class AbstractConstraint<V extends Serializable> implements Seri
   }
 
   public void setNoticeTypes(List<String> noticeTypes) {
-    this.noticeTypes=noticeTypes;
+    this.noticeTypes = noticeTypes;
   }
 
   public String getCondition() {

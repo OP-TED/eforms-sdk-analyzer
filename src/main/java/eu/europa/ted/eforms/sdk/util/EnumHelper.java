@@ -10,8 +10,7 @@ public class EnumHelper {
   private EnumHelper() {}
 
 
-  public static <T extends ILiteral> T getEnum(final Class<T> enumType,
-      final String literal) {
+  public static <T extends ILiteral> T getEnum(final Class<T> enumType, final String literal) {
     Validate.notNull(enumType, "Undefined enum type");
 
     Optional<T> result = Stream.of(enumType.getEnumConstants())

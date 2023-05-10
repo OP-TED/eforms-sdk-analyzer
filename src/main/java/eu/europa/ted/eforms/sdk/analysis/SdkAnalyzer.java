@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +18,8 @@ public class SdkAnalyzer {
 
   private SdkAnalyzer() {}
 
-  public static int analyze(Path sdkRoot)
-      throws IOException, JAXBException, SAXException, ParserConfigurationException, XPathExpressionException {
+  public static int analyze(Path sdkRoot) throws IOException, JAXBException, SAXException,
+      ParserConfigurationException, XPathExpressionException {
     logger.info("Analyzing SDK under folder [{}]", sdkRoot);
 
     FactsLoader factsLoader = new FactsLoader(sdkRoot);

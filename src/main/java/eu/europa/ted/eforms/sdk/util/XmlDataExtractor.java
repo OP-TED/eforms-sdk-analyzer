@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,27 +13,26 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathNodes;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
 import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 
 /**
- * Extract some specific information from an XML file, by applying some XPaths.
- * This for XML files that we do not need or want to load as a whole.
+ * Extract some specific information from an XML file, by applying some XPaths. This for XML files
+ * that we do not need or want to load as a whole.
  */
 public class XmlDataExtractor {
   private static final Logger logger = LoggerFactory.getLogger(XmlParser.class);
 
   private static final String XPATH_NOTICE_CUSTOMIZATIONID = "/*/cbc:CustomizationID/text()";
-  private static final String XPATH_SVRL_ERRORS = "/svrl:schematron-output/svrl:failed-assert[@role='ERROR']";
+  private static final String XPATH_SVRL_ERRORS =
+      "/svrl:schematron-output/svrl:failed-assert[@role='ERROR']";
 
   private XmlDataExtractor() {}
-  
+
   public static XmlNotice loadXmlNoticeFile(Path xmlFilePath)
       throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
     logger.debug("Loading XML notice [{}]", xmlFilePath);
@@ -44,8 +42,8 @@ public class XmlDataExtractor {
     String filename = xmlFilePath.getFileName().toString();
 
     XPath xpath = getXPath();
-    String customizationId = xpath.evaluateExpression(XPATH_NOTICE_CUSTOMIZATIONID, xmlDoc,
-        String.class);
+    String customizationId =
+        xpath.evaluateExpression(XPATH_NOTICE_CUSTOMIZATIONID, xmlDoc, String.class);
 
     return new XmlNotice(filename, customizationId.trim());
   }
@@ -94,7 +92,7 @@ public class XmlDataExtractor {
       nsMap.put("cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2");
       nsMap.put("svrl", "http://purl.oclc.org/dsdl/svrl");
     }
-    
+
     @Override
     public Iterator<String> getPrefixes(String namespaceURI) {
       return null;

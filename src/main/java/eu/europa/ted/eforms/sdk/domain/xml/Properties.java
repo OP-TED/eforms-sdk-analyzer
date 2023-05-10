@@ -41,10 +41,7 @@ import javax.xml.bind.annotation.XmlValue;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "comment",
-    "entry"
-})
+@XmlType(name = "", propOrder = {"comment", "entry"})
 @XmlRootElement(name = "properties")
 public class Properties {
 
@@ -122,9 +119,7 @@ public class Properties {
    * 
    */
   @XmlAccessorType(XmlAccessType.FIELD)
-  @XmlType(name = "", propOrder = {
-      "value"
-  })
+  @XmlType(name = "", propOrder = {"value"})
   public static class Entry {
 
     @XmlValue
@@ -171,7 +166,5 @@ public class Properties {
     public void setKey(String value) {
       this.key = value;
     }
-
   }
-
 }
