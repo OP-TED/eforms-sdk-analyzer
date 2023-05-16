@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--File generated from metadata database version 1.6.0 created on the 2023-02-17T12:00-->
+<gc:CodeList xmlns:gc="http://docs.oasis-open.org/codelist/ns/genericode/1.0/">
+   <Identification>
+      <ShortName>NumberFixed</ShortName>
+      <LongName>number-fixed</LongName>
+      <LongName Identifier="listId">http://publications.europa.eu/resource/authority/number-fixed</LongName>
+      <Version>20220615-0</Version>
+      <CanonicalUri>http://publications.europa.eu/resource/dataset/number-fixed</CanonicalUri>
+      <CanonicalVersionUri/>
+      <Agency>
+         <ShortName>OP</ShortName>
+         <LongName>Publications Office of the European Union</LongName>
+      </Agency>
+   </Identification>
+   <ColumnSet>
+      <Column Id="code" Use="required">
+         <ShortName>Code</ShortName>
+         <Data Lang="eng" Type="normalizedString"/>
+      </Column>
+      <Column Id="Name" Use="optional">
+         <ShortName>Name</ShortName>
+         <Data Lang="eng" Type="string"/>
+      </Column>
+      <Column Id="bul_label" Use="optional">
+         <ShortName>bulLabel</ShortName>
+         <Data Lang="bul" Type="string"/>
+      </Column>
+      <Column Id="spa_label" Use="optional">
+         <ShortName>spaLabel</ShortName>
+         <Data Lang="spa" Type="string"/>
+      </Column>
+      <Column Id="ces_label" Use="optional">
+         <ShortName>cesLabel</ShortName>
+         <Data Lang="ces" Type="string"/>
+      </Column>
+      <Column Id="dan_label" Use="optional">
+         <ShortName>danLabel</ShortName>
+         <Data Lang="dan" Type="string"/>
+      </Column>
+      <Column Id="deu_label" Use="optional">
+         <ShortName>deuLabel</ShortName>
+         <Data Lang="deu" Type="string"/>
+      </Column>
+      <Column Id="est_label" Use="optional">
+         <ShortName>estLabel</ShortName>
+         <Data Lang="est" Type="string"/>
+      </Column>
+      <Column Id="ell_label" Use="optional">
+         <ShortName>ellLabel</ShortName>
+         <Data Lang="ell" Type="string"/>
+      </Column>
+      <Column Id="eng_label" Use="optional">
+         <ShortName>engLabel</ShortName>
+         <Data Lang="eng" Type="string"/>
+      </Column>
+      <Column Id="fra_label" Use="optional">
+         <ShortName>fraLabel</ShortName>
+         <Data Lang="fra" Type="string"/>
+      </Column>
+      <Column Id="gle_label" Use="optional">
+         <ShortName>gleLabel</ShortName>
+         <Data Lang="gle" Type="string"/>
+      </Column>
+      <Column Id="hrv_label" Use="optional">
+         <ShortName>hrvLabel</ShortName>
+         <Data Lang="hrv" Type="string"/>
+      </Column>
+      <Column Id="ita_label" Use="optional">
+         <ShortName>itaLabel</ShortName>
+         <Data Lang="ita" Type="string"/>
+      </Column>
+      <Column Id="lav_label" Use="optional">
+         <ShortName>lavLabel</ShortName>
+         <Data Lang="lav" Type="string"/>
+      </Column>
+      <Column Id="lit_label" Use="optional">
+         <ShortName>litLabel</ShortName>
+         <Data Lang="lit" Type="string"/>
+      </Column>
+      <Column Id="hun_label" Use="optional">
+         <ShortName>hunLabel</ShortName>
+         <Data Lang="hun" Type="string"/>
+      </Column>
+      <Column Id="mlt_label" Use="optional">
+         <ShortName>mltLabel</ShortName>
+         <Data Lang="mlt" Type="string"/>
+      </Column>
+      <Column Id="nld_label" Use="optional">
+         <ShortName>nldLabel</ShortName>
+         <Data Lang="nld" Type="string"/>
+      </Column>
+      <Column Id="pol_label" Use="optional">
+         <ShortName>polLabel</ShortName>
+         <Data Lang="pol" Type="string"/>
+      </Column>
+      <Column Id="por_label" Use="optional">
+         <ShortName>porLabel</ShortName>
+         <Data Lang="por" Type="string"/>
+      </Column>
+      <Column Id="ron_label" Use="optional">
+         <ShortName>ronLabel</ShortName>
+         <Data Lang="ron" Type="string"/>
+      </Column>
+      <Column Id="slk_label" Use="optional">
+         <ShortName>slkLabel</ShortName>
+         <Data Lang="slk" Type="string"/>
+      </Column>
+      <Column Id="slv_label" Use="optional">
+         <ShortName>slvLabel</ShortName>
+         <Data Lang="slv" Type="string"/>
+      </Column>
+      <Column Id="fin_label" Use="optional">
+         <ShortName>finLabel</ShortName>
+         <Data Lang="fin" Type="string"/>
+      </Column>
+      <Column Id="swe_label" Use="optional">
+         <ShortName>sweLabel</ShortName>
+         <Data Lang="swe" Type="string"/>
+      </Column>
+   </ColumnSet>
+   <SimpleCodeList>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>fix-tot</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>Fixed value (total)</SimpleValue>
+         </Value>
+         <Value ColumnRef="bul_label">
+            <SimpleValue>Фиксирана стойност (общо)</SimpleValue>
+         </Value>
+         <Value ColumnRef="ces_label">
+            <SimpleValue>Pevná hodnota (celkem)</SimpleValue>
+         </Value>
+         <Value ColumnRef="dan_label">
+            <SimpleValue>Fast værdi (i alt)</SimpleValue>
+         </Value>
+         <Value ColumnRef="deu_label">
+            <SimpleValue>Fester Wert (insgesamt)</SimpleValue>
+         </Value>
+         <Value ColumnRef="ell_label">
+            <SimpleValue>Σταθερή αξία (σύνολο)</SimpleValue>
+         </Value>
+         <Value ColumnRef="eng_label">
+            <SimpleValue>Fixed value (total)</SimpleValue>
+         </Value>
+         <Value ColumnRef="spa_label">
+            <SimpleValue>Valor fijo (total)</SimpleValue>
+         </Value>
+         <Value ColumnRef="est_label">
+            <SimpleValue>Fikseeritud väärtus (kokku)</SimpleValue>
+         </Value>
+         <Value ColumnRef="fin_label">
+            <SimpleValue>Kiinteä arvo (yhteensä)</SimpleValue>
+         </Value>
+         <Value ColumnRef="fra_label">
+            <SimpleValue>Valeur fixe (total)</SimpleValue>
+         </Value>
+         <Value ColumnRef="gle_label">
+            <SimpleValue>Luach seasta (iomlán)</SimpleValue>
+         </Value>
+         <Value ColumnRef="hrv_label">
+            <SimpleValue>Fiksna vrijednost (ukupno)</SimpleValue>
+         </Value>
+         <Value ColumnRef="hun_label">
+            <SimpleValue>Rögzített érték (összesen)</SimpleValue>
+         </Value>
+         <Value ColumnRef="ita_label">
+            <SimpleValue>Valore fisso (totale)</SimpleValue>
+         </Value>
+         <Value ColumnRef="lit_label">
+            <SimpleValue>Fiksuota vertė (iš viso)</SimpleValue>
+         </Value>
+         <Value ColumnRef="lav_label">
+            <SimpleValue>Fiksētā vērtība (kopā)</SimpleValue>
+         </Value>
+         <Value ColumnRef="mlt_label">
+            <SimpleValue>Valur fiss (total)</SimpleValue>
+         </Value>
+         <Value ColumnRef="nld_label">
+            <SimpleValue>Vaste waarde (totaal)</SimpleValue>
+         </Value>
+         <Value ColumnRef="pol_label">
+            <SimpleValue>Stała wartość (całkowita)</SimpleValue>
+         </Value>
+         <Value ColumnRef="por_label">
+            <SimpleValue>Valor fixo (total)</SimpleValue>
+         </Value>
+         <Value ColumnRef="ron_label">
+            <SimpleValue>Valoare fixă (total)</SimpleValue>
+         </Value>
+         <Value ColumnRef="slk_label">
+            <SimpleValue>Pevná hodnota (spolu)</SimpleValue>
+         </Value>
+         <Value ColumnRef="slv_label">
+            <SimpleValue>Fiksna vrednost (skupaj)</SimpleValue>
+         </Value>
+         <Value ColumnRef="swe_label">
+            <SimpleValue>Fast värde (totalt)</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>fix-unit</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>Fixed value (per unit)</SimpleValue>
+         </Value>
+         <Value ColumnRef="bul_label">
+            <SimpleValue>Фиксирана стойност (за единица)</SimpleValue>
+         </Value>
+         <Value ColumnRef="ces_label">
+            <SimpleValue>Pevná hodnota (za jednotku)</SimpleValue>
+         </Value>
+         <Value ColumnRef="dan_label">
+            <SimpleValue>Fast værdi (pr. enhed)</SimpleValue>
+         </Value>
+         <Value ColumnRef="deu_label">
+            <SimpleValue>Fester Wert (pro Einheit)</SimpleValue>
+         </Value>
+         <Value ColumnRef="ell_label">
+            <SimpleValue>Σταθερή αξία (ανά μονάδα)</SimpleValue>
+         </Value>
+         <Value ColumnRef="eng_label">
+            <SimpleValue>Fixed value (per unit)</SimpleValue>
+         </Value>
+         <Value ColumnRef="spa_label">
+            <SimpleValue>Valor fijo (por unidad)</SimpleValue>
+         </Value>
+         <Value ColumnRef="est_label">
+            <SimpleValue>Fikseeritud väärtus (ühiku kohta)</SimpleValue>
+         </Value>
+         <Value ColumnRef="fin_label">
+            <SimpleValue>Kiinteä arvo (yksikköä kohti)</SimpleValue>
+         </Value>
+         <Value ColumnRef="fra_label">
+            <SimpleValue>Valeur fixe (par unité)</SimpleValue>
+         </Value>
+         <Value ColumnRef="gle_label">
+            <SimpleValue>Luach seasta (in aghaidh an aonaid)</SimpleValue>
+         </Value>
+         <Value ColumnRef="hrv_label">
+            <SimpleValue>Fiksna vrijednost (po jedinici)</SimpleValue>
+         </Value>
+         <Value ColumnRef="hun_label">
+            <SimpleValue>Rögzített érték (egységenként)</SimpleValue>
+         </Value>
+         <Value ColumnRef="ita_label">
+            <SimpleValue>Valore fisso (per unità)</SimpleValue>
+         </Value>
+         <Value ColumnRef="lit_label">
+            <SimpleValue>Fiksuota vertė (vienetui)</SimpleValue>
+         </Value>
+         <Value ColumnRef="lav_label">
+            <SimpleValue>Fiksētā vērtība (par vienību)</SimpleValue>
+         </Value>
+         <Value ColumnRef="mlt_label">
+            <SimpleValue>Valur fiss (għal kull unità)</SimpleValue>
+         </Value>
+         <Value ColumnRef="nld_label">
+            <SimpleValue>Vaste waarde (per eenheid)</SimpleValue>
+         </Value>
+         <Value ColumnRef="pol_label">
+            <SimpleValue>Stała wartość (na jednostkę)</SimpleValue>
+         </Value>
+         <Value ColumnRef="por_label">
+            <SimpleValue>Valor fixo (por unidade)</SimpleValue>
+         </Value>
+         <Value ColumnRef="ron_label">
+            <SimpleValue>Valoare fixă (pe unitate)</SimpleValue>
+         </Value>
+         <Value ColumnRef="slk_label">
+            <SimpleValue>Pevná hodnota (na jednotku)</SimpleValue>
+         </Value>
+         <Value ColumnRef="slv_label">
+            <SimpleValue>Stalna vrednost (na enoto)</SimpleValue>
+         </Value>
+         <Value ColumnRef="swe_label">
+            <SimpleValue>Fast värde (per enhet)</SimpleValue>
+         </Value>
+      </Row>
+   </SimpleCodeList>
+</gc:CodeList>

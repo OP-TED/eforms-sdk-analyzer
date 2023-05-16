@@ -21,7 +21,9 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
 import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzer;
+import eu.europa.ted.eforms.sdk.analysis.TemplatesValidator;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
+import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import eu.europa.ted.eforms.sdk.util.SdkMetadataParser;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -34,6 +36,8 @@ public class SdkValidationSteps {
   private Path testsFolder;
 
   private SdkUnit sdkUnit;
+  private TemplatesValidator templatesValidator;
+
   private List<String> testedRules = new ArrayList<>();
 
   private Exception thrownException = null;
@@ -120,7 +124,9 @@ public class SdkValidationSteps {
 
   @When("I load SDK metadata")
   public void I_load_SDK_metadata() throws IOException {
-    sdkUnit.setSdkMetadata(SdkMetadataParser.loadSdkMetadata(testsFolder));
+    final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(testsFolder);
+
+    sdkUnit.setSdkMetadata(sdkMetadata);
   }
 
   @When("I execute validation")
@@ -140,6 +146,24 @@ public class SdkValidationSteps {
     }
   }
 
+  @When("I execute view templates validation")
+  public void i_execute_view_templates_validation() throws IOException {
+    final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(testsFolder);
+
+    templatesValidator = new TemplatesValidator(testsFolder, sdkMetadata.getVersion());
+    templatesValidator.validate();
+
+    if (templatesValidator.hasWarnings()) {
+      logger.warn("Validation warnings:\n{}",
+          StringUtils.join(templatesValidator.getWarnings(), '\n'));
+    }
+
+    if (templatesValidator.hasErrors()) {
+      logger.error("Validation errors:\n{}",
+          StringUtils.join(templatesValidator.getErrors(), '\n'));
+    }
+  }
+
   @Then("No rules should have been fired")
   public void no_rules_should_have_been_fired() {
     assertEquals(0, sdkUnit.getFiredRules().size());
@@ -153,9 +177,14 @@ public class SdkValidationSteps {
         .isPresent());
   }
 
-  @Then("^I should get (.*) validation errors?$")
-  public void i_should_get_validation_errors(int errorsCount) {
+  @Then("^I should get (.*) SDK validation errors?$")
+  public void i_should_get_sdk_validation_errors(int errorsCount) {
     assertEquals(errorsCount, sdkUnit.getErrors().length);
+  }
+
+  @Then("^I should get (.*) template validation errors?$")
+  public void i_should_get_template_validation_errors(int errorsCount) {
+    assertEquals(errorsCount, templatesValidator.getErrors().length);
   }
 
   @Then("I should get not found exception for file {string}")

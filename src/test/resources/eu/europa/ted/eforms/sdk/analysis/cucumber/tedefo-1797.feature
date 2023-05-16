@@ -12,7 +12,7 @@ Feature: Notice examples - SDK version validation
     When I load all notice examples
     And I load SDK metadata
     And I execute validation
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Some files do not have correct SDK version
     Given A "tedefo-1797" folder with "invalid" files
@@ -20,7 +20,7 @@ Feature: Notice examples - SDK version validation
     And I load SDK metadata
     And I execute validation
     Then Rule "<expected rule>" should have been fired
-    And I should get 1 validation error
+    And I should get 1 SDK validation error
 
     Examples:
      | expected rule                      |

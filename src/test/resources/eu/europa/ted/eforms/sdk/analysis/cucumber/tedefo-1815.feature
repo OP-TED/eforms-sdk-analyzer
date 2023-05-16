@@ -12,7 +12,7 @@ Feature: Notice Types Index - Labels validation
     When I load the notice types index
     And I load all labels
     And I execute validation 
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Some referenced labels do not exist
     Given A "tedefo-1815" folder with "invalid" files
@@ -20,7 +20,7 @@ Feature: Notice Types Index - Labels validation
     And I load all labels
     And I execute validation 
     Then Rule "<expected rule>" should have been fired
-    Then I should get 2 validation errors
+    Then I should get 2 SDK validation errors
 
     Examples:
      | expected rule                                 |

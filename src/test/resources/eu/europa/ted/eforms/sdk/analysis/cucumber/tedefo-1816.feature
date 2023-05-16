@@ -12,7 +12,7 @@ Feature: Notice Types Index - View templates validation
     When I load the notice types index
     And I load the view templates index
     And I execute validation 
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Some referenced view templates do not exist
     Given A "tedefo-1816" folder with "invalid" files
@@ -20,7 +20,7 @@ Feature: Notice Types Index - View templates validation
     And I load the view templates index
     And I execute validation 
     Then Rule "<expected rule>" should have been fired
-    Then I should get 2 validation errors
+    Then I should get 2 SDK validation errors
 
     Examples:
      | expected rule                                         |

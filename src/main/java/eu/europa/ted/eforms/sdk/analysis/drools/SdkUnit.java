@@ -2,16 +2,12 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.drools.ruleunits.api.DataStore;
 import org.kie.api.definition.rule.Rule;
-import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
+import eu.europa.ted.eforms.sdk.analysis.Validator;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
@@ -25,7 +21,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
-public class SdkUnit implements RuleUnit {
+public class SdkUnit implements RuleUnit, Validator {
   private Path sdkRoot;
 
   private DataStore<CodelistFact> codelists;
@@ -158,36 +154,9 @@ public class SdkUnit implements RuleUnit {
     return this;
   }
 
+  @Override
   public Set<ValidationResult> getResults() {
-    return getResults(null);
-  }
-
-  public Set<ValidationResult> getResults(EnumSet<ValidationStatusEnum> statuses) {
-    if (CollectionUtils.isEmpty(statuses)) {
-      return results;
-    }
-
-    return results.stream()
-        .filter((ValidationResult result) -> statuses.contains(result.getStatus()))
-        .collect(Collectors.toSet());
-  }
-
-  public String[] getWarnings() {
-    return getResults(EnumSet.of(ValidationStatusEnum.WARNING)).stream()
-        .map(ValidationResult::toString).toArray(String[]::new);
-  }
-
-  public String[] getErrors() {
-    return getResults(EnumSet.of(ValidationStatusEnum.ERROR)).stream()
-        .map(ValidationResult::toString).toArray(String[]::new);
-  }
-
-  public boolean hasWarnings() {
-    return ArrayUtils.isNotEmpty(getWarnings());
-  }
-
-  public boolean hasErrors() {
-    return ArrayUtils.isNotEmpty(getErrors());
+    return results;
   }
 
   @Override

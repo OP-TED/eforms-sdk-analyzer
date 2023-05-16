@@ -13,7 +13,7 @@ Feature: Notice examples - SVRL report validation
     And I load all SVRL reports
     And I load SDK metadata
     And I execute validation
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Valid notice examples have errors
     Given A "tedefo-1800" folder with "invalid" files
@@ -22,7 +22,7 @@ Feature: Notice examples - SVRL report validation
     And I load SDK metadata
     And I execute validation
     Then Rule "<expected rule>" should have been fired
-    And I should get 1 validation error
+    And I should get 1 SDK validation error
 
     Examples:
      | expected rule                      |

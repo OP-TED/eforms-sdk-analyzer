@@ -7,7 +7,7 @@ Feature: Notice Types Index - Notice type files validation
   Scenario: A file exists for each notice type on the index file
     Given A "tedefo-1814" folder with "valid" files
     When I load all notice types
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario: Files do not exist for some notice types on the index file
     Given A "tedefo-1814" folder with "invalid" files
