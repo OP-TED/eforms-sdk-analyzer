@@ -54,7 +54,7 @@ public class SdkAnalyzer {
 
   private static Validator analyzeTemplates(final Path sdkRoot, final String sdkVersion)
       throws IOException {
-    return new TemplatesValidator(sdkRoot, sdkVersion).validate();
+    return new EfxValidator(sdkRoot, sdkVersion).validateTemplates();
   }
 
   private static Validator analyzeSdk(final Path sdkRoot, SdkMetadata sdkMetadata)

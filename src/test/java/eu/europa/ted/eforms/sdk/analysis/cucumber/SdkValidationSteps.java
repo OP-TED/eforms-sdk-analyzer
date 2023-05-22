@@ -19,9 +19,9 @@ import org.kie.api.definition.rule.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+import eu.europa.ted.eforms.sdk.analysis.EfxValidator;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
 import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzer;
-import eu.europa.ted.eforms.sdk.analysis.TemplatesValidator;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import eu.europa.ted.eforms.sdk.util.SdkMetadataParser;
@@ -36,7 +36,7 @@ public class SdkValidationSteps {
   private Path testsFolder;
 
   private SdkUnit sdkUnit;
-  private TemplatesValidator templatesValidator;
+  private EfxValidator efxValidator;
 
   private List<String> testedRules = new ArrayList<>();
 
@@ -146,21 +146,32 @@ public class SdkValidationSteps {
     }
   }
 
-  @When("I execute view templates validation")
-  public void i_execute_view_templates_validation() throws IOException {
+  @When("I execute EFX {string} validation")
+  public void i_execute_efx_expressions_validation(final String validationType) throws IOException {
     final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(testsFolder);
 
-    templatesValidator = new TemplatesValidator(testsFolder, sdkMetadata.getVersion());
-    templatesValidator.validate();
-
-    if (templatesValidator.hasWarnings()) {
-      logger.warn("Validation warnings:\n{}",
-          StringUtils.join(templatesValidator.getWarnings(), '\n'));
+    efxValidator = new EfxValidator(testsFolder, sdkMetadata.getVersion());
+    switch (validationType) {
+      case "templates":
+        efxValidator.validateTemplates();
+        break;
+      case "expressions":
+        efxValidator.validateExpressions();
+        break;
+      default:
+        throw new IllegalArgumentException(MessageFormat.format(
+            "Unsupported validation type [{}]. Expected [templates] or [expressions]",
+            validationType));
     }
 
-    if (templatesValidator.hasErrors()) {
+    if (efxValidator.hasWarnings()) {
+      logger.warn("Validation warnings:\n{}",
+          StringUtils.join(efxValidator.getWarnings(), '\n'));
+    }
+
+    if (efxValidator.hasErrors()) {
       logger.error("Validation errors:\n{}",
-          StringUtils.join(templatesValidator.getErrors(), '\n'));
+          StringUtils.join(efxValidator.getErrors(), '\n'));
     }
   }
 
@@ -182,9 +193,9 @@ public class SdkValidationSteps {
     assertEquals(errorsCount, sdkUnit.getErrors().length);
   }
 
-  @Then("^I should get (.*) template validation errors?$")
-  public void i_should_get_template_validation_errors(int errorsCount) {
-    assertEquals(errorsCount, templatesValidator.getErrors().length);
+  @Then("^I should get (.*) EFX validation errors?$")
+  public void i_should_get_efx_validation_errors(int errorsCount) {
+    assertEquals(errorsCount, efxValidator.getErrors().length);
   }
 
   @Then("I should get not found exception for file {string}")
