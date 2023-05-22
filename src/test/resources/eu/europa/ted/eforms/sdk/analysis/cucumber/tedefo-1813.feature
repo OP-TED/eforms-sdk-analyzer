@@ -14,7 +14,7 @@ Feature: Notice Types - SDK version validation
     And I load the notice types index
     And I execute validation 
     Then No rules should have been fired
-    And I should get 0 validation errors
+    And I should get 0 SDK validation errors
 
   Scenario Outline: Some files do not have SDK version
     Given A "tedefo-1813" folder with "invalid" files
@@ -22,7 +22,7 @@ Feature: Notice Types - SDK version validation
     And I load the notice types index
     And I execute validation 
     Then Rule "<expected rule>" should have been fired
-    And I should get 3 validation errors
+    And I should get 3 SDK validation errors
 
     Examples:
      | expected rule                      |

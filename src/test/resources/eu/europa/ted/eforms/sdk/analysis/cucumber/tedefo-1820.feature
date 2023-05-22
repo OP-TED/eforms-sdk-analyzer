@@ -12,7 +12,7 @@ Feature: Notice Types - Fields validation
     When I load all notice types
     And I load all fields
     And I execute validation 
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Some referenced fields do not exist
     Given A "tedefo-1820" folder with "invalid" files
@@ -20,7 +20,7 @@ Feature: Notice Types - Fields validation
     And I load all fields
     And I execute validation 
     Then Rule "<expected rule>" should have been fired
-    Then I should get 7 validation errors
+    Then I should get 7 SDK validation errors
 
     Examples:
      | expected rule                              |

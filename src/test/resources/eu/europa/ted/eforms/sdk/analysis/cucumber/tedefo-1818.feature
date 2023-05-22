@@ -11,14 +11,14 @@ Feature: Notice Types Index - Document types schemaLocation validation
     Given A "tedefo-1818" folder with "valid" files
     When I load all document types
     And I execute validation 
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Some schemaLocation do not point to existing files
     Given A "tedefo-1818" folder with "invalid" files
     When I load all document types
     And I execute validation 
     Then Rule "<expected rule>" should have been fired
-    Then I should get 4 validation errors
+    Then I should get 4 SDK validation errors
 
     Examples:
      | expected rule                              |

@@ -12,7 +12,7 @@ Feature: Fields and Nodes - Validate absolute xpath uniqueness
     When I load all nodes
     And I load all fields
     And I execute validation 
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Some absolute xpath are not unique
     Given A "tedefo-2205" folder with "invalid" files
@@ -20,7 +20,7 @@ Feature: Fields and Nodes - Validate absolute xpath uniqueness
     And I load all fields
     And I execute validation 
     Then Rule "<expected rule>" should have been fired 
-    Then I should get 1 validation errors
+    Then I should get 1 SDK validation errors
 
     Examples:
      | expected rule                         |

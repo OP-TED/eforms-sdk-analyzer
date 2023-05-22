@@ -15,7 +15,7 @@ Feature: Notice Types - Repeatable groups validation
     When I load all notice types
     And I load all nodes
     And I execute validation
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Some referenced fields do not exist
     Given A "tedefo-1821" folder with "invalid" files
@@ -23,7 +23,7 @@ Feature: Notice Types - Repeatable groups validation
     And I load all nodes
     And I execute validation
     Then Rule "<expected rule>" should have been fired
-    Then I should get 8 validation errors
+    Then I should get 8 SDK validation errors
 
     Examples:
      | expected rule                                                                                                                           |

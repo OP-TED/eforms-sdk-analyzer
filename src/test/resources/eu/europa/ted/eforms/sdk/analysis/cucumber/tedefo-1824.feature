@@ -12,7 +12,7 @@ Feature: Notice Types - Validate field constraints
     When I load all notice types
     When I load all fields
     And I execute validation 
-    Then I should get 0 validation errors
+    Then I should get 0 SDK validation errors
 
   Scenario Outline: Some notice sub types are listed on their fields\' unconditionally forbidden constraints
     Given A "tedefo-1824" folder with "invalid" files
@@ -20,7 +20,7 @@ Feature: Notice Types - Validate field constraints
     When I load all fields
     And I execute validation 
     Then Rule "<expected rule>" should have been fired
-    Then I should get 4 validation errors
+    Then I should get 4 SDK validation errors
 
     Examples:
      | expected rule                                                  |
