@@ -58,12 +58,20 @@ then
   results.add(new ValidationResult($f, "Absolute XPath is inconsistent with its parent and relative XPath", ValidationStatusEnum.ERROR));
 end
 
-rule "The notice type referenced in field constraints exists"
+rule "The notice subtype referenced in field constraints exists"
 when
   $noticeType : /fields[ $f: this ]/allNoticeTypes
   not (exists /noticeTypes[ id == $noticeType ])
 then
-  results.add(new ValidationResult($f, "The referenced notice type " + $noticeType + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "The referenced notice subtype " + $noticeType + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+rule "Field is present in the notice type definitions for which it is mandatory"
+when
+  $noticeTypeIds : /fields[ $f: this, $fieldId: id, alwaysMandatoryConstraint != null ]/alwaysMandatoryConstraint.noticeTypes
+  not (exists /noticeTypes[ id == $noticeTypeIds, fieldIds contains $fieldId ])
+then
+  results.add(new ValidationResult($f, "Field is mandatory for notice subtype " + $noticeTypeIds + " but not present in the notice type definition.", ValidationStatusEnum.ERROR));
 end
 
 // TEDEFO-2205: Xpath absolute uniqueness is verified.

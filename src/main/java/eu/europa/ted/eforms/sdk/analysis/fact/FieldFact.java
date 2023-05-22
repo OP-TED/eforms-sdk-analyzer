@@ -60,6 +60,38 @@ public class FieldFact implements SdkComponentFact<String> {
     return null;
   }
 
+  /*
+   * Return the constraint representing when the field is always mandatory.
+   * This is the "mandatory" constraint without a condition, but also without any notice
+   * subtype for which the field can be forbidden.
+   */
+  public BooleanConstraint getAlwaysMandatoryConstraint() {
+    if (field.getMandatory() == null) {
+      return null;
+    }
+
+    List<BooleanConstraint> constraints = field.getMandatory().getConstraints();
+
+    if (constraints == null) {
+      return null;
+    }
+
+    // the one mandatory constraint with no condition
+    BooleanConstraint mandatory = constraints.stream()
+          .filter(
+              (BooleanConstraint constraint) -> StringUtils.isBlank(constraint.getCondition()))
+          .findFirst()
+          .orElse(null);
+    
+    if (mandatory != null && field.getForbidden() != null) {
+      // If the field can be forbidden for a notice subtype, then it's not always mandatory,
+      // So we remove those notice subtypes from the constraint.
+      mandatory.getNoticeTypes().removeAll(field.getForbidden().getAllNoticeTypeIds());
+    }
+
+    return mandatory;
+  }
+
   public String getXpathAbsolute() {
     return field.getXpathAbsolute();
   }
