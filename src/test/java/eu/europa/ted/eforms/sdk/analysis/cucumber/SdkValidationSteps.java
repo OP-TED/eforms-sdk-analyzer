@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.kie.api.definition.rule.Rule;
 import org.slf4j.Logger;
@@ -47,8 +46,7 @@ public class SdkValidationSteps {
         .getResource(MessageFormat.format("/eforms-sdk-tests/{0}/{1}", testsFolder, filesValidity))
         .toURI());
 
-    sdkUnit = new SdkUnit()
-        .setSdkRoot(this.testsFolder);
+    sdkUnit = new SdkUnit().setSdkRoot(this.testsFolder);
   }
 
   @Given("The following rules")
@@ -134,13 +132,11 @@ public class SdkValidationSteps {
         sdkUnit.getFiredRules().stream().map(Rule::getName).collect(Collectors.toSet()));
 
     if (sdkUnit.hasWarnings()) {
-      logger.warn("Validation warnings:\n{}",
-          StringUtils.join(sdkUnit.getWarnings(), '\n'));
+      logger.warn("Validation warnings:\n{}", StringUtils.join(sdkUnit.getWarnings(), '\n'));
     }
 
     if (sdkUnit.hasErrors()) {
-      logger.error("Validation errors:\n{}",
-          StringUtils.join(sdkUnit.getErrors(), '\n'));
+      logger.error("Validation errors:\n{}", StringUtils.join(sdkUnit.getErrors(), '\n'));
     }
   }
 

@@ -19,9 +19,9 @@ public enum NoticeLegalBasis implements ILiteral {
 
   _32018R1046("32018R1046"),
 
-  other("other"),
+  OTHER("other"),
 
-  unknown("unknown");
+  UNKNOWN("unknown");
 
   private final String literal;
 
@@ -29,18 +29,6 @@ public enum NoticeLegalBasis implements ILiteral {
     this.literal = literal;
   }
 
-  // public Catalog getCatalog() {
-  // return null;
-  // }
-  //
-  // public Schema getSchema() {
-  // return null;
-  // }
-  //
-  // public String getName() {
-  // return "notice_legal_basis";
-  // }
-  //
   @Override
   public String getLiteral() {
     return literal;

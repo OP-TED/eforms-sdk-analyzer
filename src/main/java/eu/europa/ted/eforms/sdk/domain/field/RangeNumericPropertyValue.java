@@ -1,12 +1,10 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
 import java.io.Serializable;
-import lombok.Data;
 
 /**
  * TEDEFO-546: Implements a range / interval constraint value.
  */
-@Data
 public class RangeNumericPropertyValue implements Serializable {
   private static final long serialVersionUID = -5361635853614332303L;
 
@@ -29,4 +27,12 @@ public class RangeNumericPropertyValue implements Serializable {
    * </p>
    */
   private String maxNumber;
+
+  public String getMinNumber() {
+    return minNumber;
+  }
+
+  public String getMaxNumber() {
+    return maxNumber;
+  }
 }

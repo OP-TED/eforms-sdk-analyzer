@@ -123,7 +123,7 @@ public class Identification {
    */
   public List<Identification.LongName> getLongName() {
     if (longName == null) {
-      longName = new ArrayList<Identification.LongName>();
+      longName = new ArrayList<>();
     }
     return this.longName;
   }
@@ -232,10 +232,7 @@ public class Identification {
    * 
    */
   @XmlAccessorType(XmlAccessType.FIELD)
-  @XmlType(name = "", propOrder = {
-      "shortName",
-      "longName"
-  })
+  @XmlType(name = "", propOrder = {"shortName", "longName"})
   public static class Agency {
 
     @XmlElement(name = "ShortName", required = true)
@@ -306,9 +303,7 @@ public class Identification {
    * 
    */
   @XmlAccessorType(XmlAccessType.FIELD)
-  @XmlType(name = "", propOrder = {
-      "value"
-  })
+  @XmlType(name = "", propOrder = {"value"})
   public static class LongName {
 
     @XmlValue
@@ -355,7 +350,5 @@ public class Identification {
     public void setIdentifier(String value) {
       this.identifier = value;
     }
-
   }
-
 }

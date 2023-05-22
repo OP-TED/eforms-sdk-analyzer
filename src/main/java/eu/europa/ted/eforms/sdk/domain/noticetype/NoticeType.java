@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import eu.europa.ted.eforms.sdk.domain.MetadataDatabase;
 import eu.europa.ted.eforms.sdk.domain.mdd.enums.NoticeLegalBasis;
-import lombok.Data;
 
-@Data
 public class NoticeType implements Serializable {
   private static final long serialVersionUID = 2166698175017975952L;
 
@@ -23,7 +21,7 @@ public class NoticeType implements Serializable {
   }
 
   public NoticeLegalBasis getLegalBasis() {
-    return noticeSubTypeForIndex.getLegalBasisEnum();
+    return noticeSubTypeForIndex.getLegalBasis();
   }
 
   public String getFormType() {

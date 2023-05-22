@@ -7,9 +7,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType&gt;
@@ -28,91 +30,75 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "identification",
-    "columnSet",
-    "simpleCodeList"
-})
+@XmlType(name = "", propOrder = {"identification", "columnSet", "simpleCodeList"})
 @XmlRootElement(name = "gc:CodeList")
 public class CodeList {
 
-    @XmlElement(name = "Identification", required = true)
-    protected Identification identification;
-    @XmlElement(name = "ColumnSet", required = true)
-    protected ColumnSet columnSet;
-    @XmlElement(name = "SimpleCodeList", required = true)
-    protected SimpleCodeList simpleCodeList;
+  @XmlElement(name = "Identification", required = true)
+  protected Identification identification;
+  @XmlElement(name = "ColumnSet", required = true)
+  protected ColumnSet columnSet;
+  @XmlElement(name = "SimpleCodeList", required = true)
+  protected SimpleCodeList simpleCodeList;
 
-    /**
-     * Gets the value of the identification property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Identification }
-     *     
-     */
-    public Identification getIdentification() {
-        return identification;
-    }
+  /**
+   * Gets the value of the identification property.
+   * 
+   * @return possible object is {@link Identification }
+   * 
+   */
+  public Identification getIdentification() {
+    return identification;
+  }
 
-    /**
-     * Sets the value of the identification property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Identification }
-     *     
-     */
-    public void setIdentification(Identification value) {
-        this.identification = value;
-    }
+  /**
+   * Sets the value of the identification property.
+   * 
+   * @param value allowed object is {@link Identification }
+   * 
+   */
+  public void setIdentification(Identification value) {
+    this.identification = value;
+  }
 
-    /**
-     * Gets the value of the columnSet property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ColumnSet }
-     *     
-     */
-    public ColumnSet getColumnSet() {
-        return columnSet;
-    }
+  /**
+   * Gets the value of the columnSet property.
+   * 
+   * @return possible object is {@link ColumnSet }
+   * 
+   */
+  public ColumnSet getColumnSet() {
+    return columnSet;
+  }
 
-    /**
-     * Sets the value of the columnSet property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ColumnSet }
-     *     
-     */
-    public void setColumnSet(ColumnSet value) {
-        this.columnSet = value;
-    }
+  /**
+   * Sets the value of the columnSet property.
+   * 
+   * @param value allowed object is {@link ColumnSet }
+   * 
+   */
+  public void setColumnSet(ColumnSet value) {
+    this.columnSet = value;
+  }
 
-    /**
-     * Gets the value of the simpleCodeList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link SimpleCodeList }
-     *     
-     */
-    public SimpleCodeList getSimpleCodeList() {
-        return simpleCodeList;
-    }
+  /**
+   * Gets the value of the simpleCodeList property.
+   * 
+   * @return possible object is {@link SimpleCodeList }
+   * 
+   */
+  public SimpleCodeList getSimpleCodeList() {
+    return simpleCodeList;
+  }
 
-    /**
-     * Sets the value of the simpleCodeList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link SimpleCodeList }
-     *     
-     */
-    public void setSimpleCodeList(SimpleCodeList value) {
-        this.simpleCodeList = value;
-    }
+  /**
+   * Sets the value of the simpleCodeList property.
+   * 
+   * @param value allowed object is {@link SimpleCodeList }
+   * 
+   */
+  public void setSimpleCodeList(SimpleCodeList value) {
+    this.simpleCodeList = value;
+  }
 
 }

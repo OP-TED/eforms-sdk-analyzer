@@ -53,9 +53,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "column"
-})
+@XmlType(name = "", propOrder = {"column"})
 @XmlRootElement(name = "ColumnSet")
 public class ColumnSet {
 
@@ -85,7 +83,7 @@ public class ColumnSet {
    */
   public List<ColumnSet.Column> getColumn() {
     if (column == null) {
-      column = new ArrayList<ColumnSet.Column>();
+      column = new ArrayList<>();
     }
     return this.column;
   }
@@ -125,10 +123,7 @@ public class ColumnSet {
    * 
    */
   @XmlAccessorType(XmlAccessType.FIELD)
-  @XmlType(name = "", propOrder = {
-      "shortName",
-      "data"
-  })
+  @XmlType(name = "", propOrder = {"shortName", "data"})
   public static class Column {
 
     @XmlElement(name = "ShortName", required = true)

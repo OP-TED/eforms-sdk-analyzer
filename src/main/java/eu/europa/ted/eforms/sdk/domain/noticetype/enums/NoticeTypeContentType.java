@@ -27,8 +27,4 @@ public enum NoticeTypeContentType implements ILiteral {
   public String getLiteral() {
     return literal;
   }
-
-  // public String getName() {
-  // return "notice_type_content_type";
-  // }
 }

@@ -1,29 +1,18 @@
 package eu.europa.ted.eforms.sdk.domain.mdd.enums;
 
-public enum CodeListType {
-  flat("flat"),
+import eu.europa.ted.eforms.sdk.domain.ILiteral;
 
-  hierarchical("hierarchical");
+public enum CodeListType implements ILiteral {
+  FLAT("flat"), HIERARCHICAL("hierarchical");
 
-  private final String literal;
+  private String literal;
 
-  private CodeListType(String literal) {
+  CodeListType(String literal) {
     this.literal = literal;
   }
 
-//  public Catalog getCatalog() {
-//    return null;
-//  }
-//
-//  public Schema getSchema() {
-//    return null;
-//  }
-//
-//  public String getName() {
-//    return "code_list_type";
-//  }
-//
-//  public String getLiteral() {
-//    return literal;
-//  }
+  @Override
+  public String getLiteral() {
+    return literal;
+  }
 }

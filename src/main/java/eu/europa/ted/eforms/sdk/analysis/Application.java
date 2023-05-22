@@ -21,8 +21,7 @@ public class Application {
         .setExecutionExceptionHandler(new IExecutionExceptionHandler() {
           @Override
           public int handleExecutionException(Exception e, CommandLine commandLine,
-              ParseResult parseResult)
-              throws Exception {
+              ParseResult parseResult) throws Exception {
             logger.error("Error executing the application with arguments [{}]: {}",
                 Arrays.asList(args).stream()
                     .map((String arg) -> arg.startsWith("--password")

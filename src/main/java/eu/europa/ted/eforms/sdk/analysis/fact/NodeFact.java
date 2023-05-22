@@ -1,9 +1,7 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
-import lombok.Data;
 
-@Data
 public class NodeFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -6237630016231337698L;
 

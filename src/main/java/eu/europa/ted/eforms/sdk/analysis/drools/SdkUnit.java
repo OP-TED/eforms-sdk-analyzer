@@ -46,7 +46,9 @@ public class SdkUnit implements RuleUnit {
 
   private final List<Rule> firedRules = new ArrayList<>();
 
-  public SdkUnit() {}
+  public SdkUnit() {
+    // Default constructor
+  }
 
   public Path getSdkRoot() {
     return sdkRoot;

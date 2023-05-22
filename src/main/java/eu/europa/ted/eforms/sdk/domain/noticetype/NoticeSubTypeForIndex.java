@@ -6,10 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ted.eforms.sdk.domain.mdd.enums.NoticeLegalBasis;
-import eu.europa.ted.eforms.sdk.util.EnumHelper;
-import lombok.Data;
 
-@Data
 @JsonPropertyOrder({"documentType", "legalBasis", "formType", "type", "description", "subTypeId",
     "_label", "viewTemplateIds"})
 public class NoticeSubTypeForIndex implements Serializable {
@@ -35,16 +32,8 @@ public class NoticeSubTypeForIndex implements Serializable {
     return viewTemplateIds;
   }
 
-  public NoticeLegalBasis getLegalBasisEnum() {
+  public NoticeLegalBasis getLegalBasis() {
     return legalBasis;
-  }
-
-  public String getLegalBasis() {
-    return legalBasis != null ? legalBasis.getLiteral() : null;
-  }
-
-  public void setLegalBasis(final String code) {
-    this.legalBasis = EnumHelper.getEnum(NoticeLegalBasis.class, code);
   }
 
   public String getFormType() {

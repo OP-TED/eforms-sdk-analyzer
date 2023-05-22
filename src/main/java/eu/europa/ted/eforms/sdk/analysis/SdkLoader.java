@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -25,10 +24,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.domain.Codelist;
 import eu.europa.ted.eforms.sdk.domain.Label;
-import eu.europa.ted.eforms.sdk.domain.Language;
 import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.domain.Translation;
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
+import eu.europa.ted.eforms.sdk.domain.enums.Language;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
@@ -161,9 +160,8 @@ public class SdkLoader {
   }
 
   public NoticeTypeSdk getNoticeTypeSdk(String noticeId, Path sdkRoot) throws IOException {
-    return loadJsonFile(NoticeTypeSdk.class,
-        Path.of(sdkRoot.toString(), SdkResource.NOTICE_TYPES.getPath().toString(),
-            MessageFormat.format("{0}.json", noticeId)));
+    return loadJsonFile(NoticeTypeSdk.class, Path.of(sdkRoot.toString(),
+        SdkResource.NOTICE_TYPES.getPath().toString(), MessageFormat.format("{0}.json", noticeId)));
   }
 
   public Set<Translation> getTranslations()
@@ -236,15 +234,14 @@ public class SdkLoader {
               .get()
               .getValue());
 
-          codelist.setCodes(
-              codelistXmlPojo.getSimpleCodeList()
-                  .getRow().stream()
-                  .map((Row row) -> row.getValue().stream()
-                      .filter((Value rowValue) -> rowValue.getColumnRef().equals("code"))
-                      .map(Value::getSimpleValue)
-                      .findFirst()
-                      .get())
-                  .collect(Collectors.toSet()));
+          codelist.setCodes(codelistXmlPojo
+              .getSimpleCodeList()
+              .getRow().stream()
+              .map((Row row) -> row.getValue().stream()
+                  .filter((Value rowValue) -> rowValue.getColumnRef().equals("code"))
+                  .map(Value::getSimpleValue).findFirst()
+                  .get())
+              .collect(Collectors.toSet()));
 
           result.add(codelist);
         }
@@ -258,8 +255,8 @@ public class SdkLoader {
       throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
     final Set<XmlNotice> result = new HashSet<>();
 
-    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
-        Path.of(sdkRoot.toString(), EXAMPLE_NOTICES.toString()))) {
+    try (DirectoryStream<Path> dirStream =
+        Files.newDirectoryStream(Path.of(sdkRoot.toString(), EXAMPLE_NOTICES.toString()))) {
 
       for (Path path : dirStream) {
         if (!Files.isDirectory(path)) {
@@ -277,8 +274,8 @@ public class SdkLoader {
       throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
     final Set<SvrlReport> result = new HashSet<>();
 
-    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
-        Path.of(sdkRoot.toString(), EXAMPLE_REPORTS.toString()))) {
+    try (DirectoryStream<Path> dirStream =
+        Files.newDirectoryStream(Path.of(sdkRoot.toString(), EXAMPLE_REPORTS.toString()))) {
 
       for (Path path : dirStream) {
         if (!Files.isDirectory(path)) {

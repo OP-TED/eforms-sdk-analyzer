@@ -26,8 +26,7 @@ public class RulesRunner {
       }
     });
 
-    try (RuleUnitInstance<T> instance =
-        RuleUnitProvider.get().createRuleUnitInstance(unit, rc)) {
+    try (RuleUnitInstance<T> instance = RuleUnitProvider.get().createRuleUnitInstance(unit, rc)) {
       logger.info("Run query. Rules are also fired");
 
       instance.fire((Match match) -> ArrayUtils.isEmpty(rulesFilter)
