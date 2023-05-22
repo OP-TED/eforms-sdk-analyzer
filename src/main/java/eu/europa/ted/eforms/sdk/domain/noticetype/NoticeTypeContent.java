@@ -232,4 +232,16 @@ public class NoticeTypeContent {
     this.parent = parent;
     return this;
   }
+
+  public String getUnpublishGroupId() {
+    return unpublishGroupId;
+  }
+
+  public String getUnpublishFieldId() {
+    return unpublishFieldId;
+  }
+
+  public String getUnpublishCode() {
+    return unpublishCode;
+  }
 }
