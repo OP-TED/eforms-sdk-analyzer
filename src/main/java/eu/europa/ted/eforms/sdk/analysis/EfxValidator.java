@@ -25,7 +25,6 @@ import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.StringConstraint;
 import eu.europa.ted.eforms.sdk.domain.field.StringProperty;
 import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
-import eu.europa.ted.eforms.sdk.resource.SdkResourceLoader;
 import eu.europa.ted.efx.EfxTranslator;
 import eu.europa.ted.efx.exceptions.ThrowingErrorListener;
 import eu.europa.ted.efx.interfaces.MarkupGenerator;
@@ -58,7 +57,7 @@ public class EfxValidator implements Validator {
 
     this.dependencyFactory = new DependencyFactory(sdkRoot);
 
-    this.sdkLoader = new SdkLoader(Path.of(sdkRoot.toString(), this.sdkVersion));
+    this.sdkLoader = new SdkLoader(Path.of(sdkRoot.toString()));
 
     this.results = new HashSet<>();
   }
@@ -67,8 +66,8 @@ public class EfxValidator implements Validator {
     final Set<TedefoViewTemplateIndex> viewTemplates = sdkLoader.getViewTemplates();
 
     viewTemplates.forEach((TedefoViewTemplateIndex template) -> {
-      final Path templatePath = SdkResourceLoader.getResourceAsPath(sdkVersion,
-          SdkResource.VIEW_TEMPLATES, template.getFilename(), sdkRoot);
+      final Path templatePath = Path.of(sdkRoot.toString(),
+          SdkResource.VIEW_TEMPLATES.getPath().toString(), template.getFilename());
 
       logger.debug("Compiling template [{}] using file [{}]", template.getId(), templatePath);
 
