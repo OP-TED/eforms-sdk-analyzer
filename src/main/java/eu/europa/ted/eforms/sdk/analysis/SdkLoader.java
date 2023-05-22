@@ -171,8 +171,14 @@ public class SdkLoader {
     Translation translation = null;
     Properties translationProperties = null;
 
+    DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+      public boolean accept(Path file) throws IOException {
+          return !file.getFileName().toString().matches("translations\\.(xml|json)");
+      }
+    };
+
     try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
-        Path.of(sdkRoot.toString(), SdkResource.TRANSLATIONS.getPath().toString()))) {
+        Path.of(sdkRoot.toString(), SdkResource.TRANSLATIONS.getPath().toString()), filter)) {
 
       for (Path path : dirStream) {
         if (!Files.isDirectory(path)) {

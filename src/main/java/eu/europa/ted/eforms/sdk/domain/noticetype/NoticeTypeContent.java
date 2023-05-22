@@ -21,7 +21,9 @@ import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 @JsonPropertyOrder({"id", "contentType", "nodeId", "displayType", "description", "_label",
     "valueSource", "_idScheme", "_idSchemes", "_schemeName", "_identifierFieldId", "readOnly",
-    "_repeatable", "_presetValue", "hidden", "collapsed", "content"})
+    "_repeatable", "_presetValue", "hidden", "collapsed",
+    "unpublishGroupId", "unpublishFieldId", "unpublishCode",
+    "content"})
 public class NoticeTypeContent {
   /**
    * Unique identifier.
@@ -66,6 +68,10 @@ public class NoticeTypeContent {
 
   @JsonProperty("_presetValue")
   private String presetValue;
+
+  private String unpublishGroupId;
+  private String unpublishFieldId;
+  private String unpublishCode;
 
   /**
    * For the UI logic. Read only form inputs.
@@ -225,5 +231,17 @@ public class NoticeTypeContent {
   public NoticeTypeContent setParent(NoticeTypeContent parent) {
     this.parent = parent;
     return this;
+  }
+
+  public String getUnpublishGroupId() {
+    return unpublishGroupId;
+  }
+
+  public String getUnpublishFieldId() {
+    return unpublishFieldId;
+  }
+
+  public String getUnpublishCode() {
+    return unpublishCode;
   }
 }
