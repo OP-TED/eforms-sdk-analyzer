@@ -8,9 +8,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContent;
 import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
-import lombok.Data;
 
-@Data
 public class NoticeTypeFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 8298379634322672452L;
 

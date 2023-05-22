@@ -1,8 +1,10 @@
 package eu.europa.ted.eforms.sdk.domain.field;
 
+import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 
-public class XmlElementPosition {
+public class XmlElementPosition implements Serializable {
+  private static final long serialVersionUID = 3484514100289348439L;
 
   private String elementName;
   private Integer elementIndex;

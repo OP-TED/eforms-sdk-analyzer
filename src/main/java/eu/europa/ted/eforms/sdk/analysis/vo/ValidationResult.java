@@ -10,8 +10,7 @@ public class ValidationResult {
   private final String message;
   private final ValidationStatusEnum status;
 
-  public ValidationResult(SdkComponentFact<?> fact, String message,
-      ValidationStatusEnum status) {
+  public ValidationResult(SdkComponentFact<?> fact, String message, ValidationStatusEnum status) {
     this.fact = fact;
     this.message = message;
     this.status = status;
@@ -31,6 +30,7 @@ public class ValidationResult {
 
   @Override
   public String toString() {
-    return MessageFormat.format("{0}({1}) - {2}: {3}",fact.getTypeName(), fact.getId(), status, message);
+    return MessageFormat.format("{0}({1}) - {2}: {3}", fact.getTypeName(), fact.getId(), status,
+        message);
   }
 }

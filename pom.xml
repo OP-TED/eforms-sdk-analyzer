@@ -42,7 +42,6 @@
     <version.jackson>2.14.1</version.jackson>
     <version.junit>5.9.2</version.junit>
     <version.logback>1.4.4</version.logback>
-    <version.lombok>1.18.24</version.lombok>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
     <version.semver4j>3.1.0</version.semver4j>
@@ -145,11 +144,6 @@
         <groupId>info.picocli</groupId>
         <artifactId>picocli</artifactId>
         <version>${version.picocli}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${version.lombok}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -272,11 +266,6 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
     </dependency>
@@ -320,11 +309,6 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <annotationProcessorPaths>
-            <annotationProcessorPat>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${version.lombok}</version>
-            </annotationProcessorPat>
             <annotationProcessorPath>
               <groupId>info.picocli</groupId>
               <artifactId>picocli-codegen</artifactId>

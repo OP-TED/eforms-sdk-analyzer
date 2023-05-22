@@ -3,15 +3,12 @@ package eu.europa.ted.eforms.sdk.domain.noticetype;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.builder.ToStringExclude;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentDisplayType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
-import eu.europa.ted.eforms.sdk.util.EnumHelper;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Domain object to represent items of the SDK notice type for JSON in Java. This is not for the top
@@ -21,7 +18,6 @@ import lombok.EqualsAndHashCode;
  * IMPORTANT: be careful when adding getters as those will end up in the JSON !!!
  * </p>
  */
-@Data
 @JsonInclude(Include.NON_DEFAULT) // Avoids having xyz: false
 @JsonPropertyOrder({"id", "contentType", "nodeId", "displayType", "description", "_label",
     "valueSource", "_idScheme", "_idSchemes", "_schemeName", "_identifierFieldId", "readOnly",
@@ -104,8 +100,6 @@ public class NoticeTypeContent {
    */
   private List<NoticeTypeContent> content = new ArrayList<>();
 
-  @EqualsAndHashCode.Exclude
-  @ToStringExclude
   private NoticeTypeContent parent;
 
   /**
@@ -137,20 +131,16 @@ public class NoticeTypeContent {
     return contentType;
   }
 
-  public String getContentType() {
-    return contentType != null ? contentType.getLiteral() : null;
+  public NoticeTypeContentType getContentType() {
+    return contentType;
   }
 
-  public void setContentType(String contentType) {
-    this.contentType = EnumHelper.getEnum(NoticeTypeContentType.class, contentType);
+  public NoticeTypeContentDisplayType getDisplayType() {
+    return displayType;
   }
 
-  public String getDisplayType() {
-    return displayType != null ? displayType.getLiteral() : null;
-  }
-
-  public void setDisplayType(String displayType) {
-    this.displayType = EnumHelper.getEnum(NoticeTypeContentDisplayType.class, displayType);
+  public String getDescription() {
+    return description;
   }
 
   public Stream<NoticeTypeContent> flattened() {
@@ -182,7 +172,7 @@ public class NoticeTypeContent {
 
     while (currentContent != null) {
       if (currentContent.isRepeatable()
-          && (type == null || currentContent.getContentType() == type.getLiteral())) {
+          && (type == null || currentContent.getContentType().equals(type))) {
         result = currentContent;
         // First repeatable ancestor found
         break;
@@ -198,6 +188,10 @@ public class NoticeTypeContent {
     return id;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public String getNodeId() {
     return nodeId;
   }
@@ -206,8 +200,28 @@ public class NoticeTypeContent {
     return repeatable;
   }
 
+  public void setRepeatable(boolean repeatable) {
+    this.repeatable = repeatable;
+  }
+
+  public String getValueSource() {
+    return valueSource;
+  }
+
   public String getLabel() {
     return label;
+  }
+
+  public boolean isCollapsed() {
+    return collapsed;
+  }
+
+  public boolean isHidden() {
+    return hidden;
+  }
+
+  public boolean isReadOnly() {
+    return readOnly;
   }
 
   public NoticeTypeContent getParent() {

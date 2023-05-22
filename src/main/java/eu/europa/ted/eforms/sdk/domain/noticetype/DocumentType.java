@@ -2,9 +2,7 @@ package eu.europa.ted.eforms.sdk.domain.noticetype;
 
 import java.io.Serializable;
 import java.util.List;
-import lombok.Data;
 
-@Data
 public class DocumentType implements Serializable {
   private static final long serialVersionUID = -6022318533541565505L;
 
@@ -19,7 +17,19 @@ public class DocumentType implements Serializable {
     return id;
   }
 
+  public String getNamespace() {
+    return namespace;
+  }
+
+  public String getRootElement() {
+    return rootElement;
+  }
+
   public String getSchemaLocation() {
     return schemaLocation;
+  }
+
+  public List<DocumentTypeNamespace> getAdditionalNamespaces() {
+    return additionalNamespaces;
   }
 }

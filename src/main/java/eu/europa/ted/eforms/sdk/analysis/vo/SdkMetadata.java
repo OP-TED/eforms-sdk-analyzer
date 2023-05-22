@@ -13,7 +13,7 @@ public class SdkMetadata {
   public String getVersion() {
     return sdkVersion;
   }
-  
+
   public String getVersionMajorMinor() {
     Semver version = new Semver(sdkVersion);
 

@@ -7,9 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
-import lombok.Data;
 
-@Data
 public class NoticeTypesIndexFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 780561935375885850L;
 

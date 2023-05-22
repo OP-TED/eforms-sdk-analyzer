@@ -1,9 +1,7 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import eu.europa.ted.eforms.sdk.domain.Label;
-import lombok.Data;
 
-@Data
 public class LabelFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -8325643682910825716L;
 

@@ -3,8 +3,6 @@ package eu.europa.ted.eforms.sdk.domain.field;
 import java.io.Serializable;
 import java.util.List;
 
-import lombok.Data;
-
 /**
  * While this is called Xml... it is used to create a json object inside the fields.json. TEDEFO-552
  * xml structure node for addition in the SDK fields.json file. This represents something like a
@@ -13,7 +11,6 @@ import lombok.Data;
  * NOTE: Thiemo of enotices2 initially called this a group, but we renamed it to node.
  * </p>
  */
-@Data
 public class XmlStructureNode implements Serializable {
   private static final long serialVersionUID = 8566153444257534770L;
 
@@ -30,8 +27,8 @@ public class XmlStructureNode implements Serializable {
    * Human readable name.
    */
   private String name;
-
   /**
+   * 
    * Looks like field context. See TEDEFO-555 for details.
    */
   private String xpathAbsolute;
@@ -63,6 +60,10 @@ public class XmlStructureNode implements Serializable {
     return id;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public String getParentId() {
     return parentId;
   }
@@ -75,11 +76,43 @@ public class XmlStructureNode implements Serializable {
     this.parent = parent;
   }
 
-  public boolean isRepeatable() {
-    return repeatable;
+  public String getName() {
+    return name;
   }
 
   public String getXpathAbsolute() {
     return xpathAbsolute;
+  }
+
+  public String getXpathRelative() {
+    return xpathRelative;
+  }
+
+  public List<XmlElementPosition> getXsdSequenceOrder() {
+    return xsdSequenceOrder;
+  }
+
+  public boolean isRepeatable() {
+    return repeatable;
+  }
+
+  public void setRepeatable(boolean repeatable) {
+    this.repeatable = repeatable;
+  }
+
+  public String getIdentifierFieldId() {
+    return identifierFieldId;
+  }
+
+  public String getCaptionFieldId() {
+    return captionFieldId;
+  }
+
+  public ChangeableOrCpProperty getInChangeNotice() {
+    return inChangeNotice;
+  }
+
+  public ChangeableOrCpProperty getInContinueProcedure() {
+    return inContinueProcedure;
   }
 }

@@ -3,101 +3,54 @@ package eu.europa.ted.eforms.sdk.domain.mdd.enums;
 import eu.europa.ted.eforms.sdk.domain.ILiteral;
 
 public enum FieldPrivacyCode implements ILiteral {
-  not_val("not-val"),
-
-  not_max_val("not-max-val"),
-
-  gro_max_ide("gro-max-ide"),
-
-  gro_max_val("gro-max-val"),
-
-  win_cho("win-cho"),
-
-  no_awa_rea("no-awa-rea"),
-
-  max_val("max-val"),
-
-  rec_sub_cou("rec-sub-cou"),
-
-  rec_sub_typ("rec-sub-typ"),
-
-  ten_val_low("ten-val-low"),
-
-  ten_val_hig("ten-val-hig"),
-
-  rev_req("rev-req"),
-
-  buy_rev_cou("buy-rev-cou"),
-
-  buy_rev_typ("buy-rev-typ"),
-
-  con_rev_use("con-rev-use"),
-
-  con_rev_buy("con-rev-buy"),
-
-  val_con_des("val-con-des"),
-
-  cou_ori("cou-ori"),
-
-  win_org_ide("win-org-ide"),
-
-  win_ten_val("win-ten-val"),
-
-  ten_ran("ten-ran"),
-
-  win_ten_var("win-ten-var"),
-
-  sub_val_kno("sub-val-kno"),
-
-  sub_per_kno("sub-per-kno"),
-
-  sub_val("sub-val"),
-
-  sub_per("sub-per"),
-
-  sub_des("sub-des"),
-
-  sub_con("sub-con"),
-
-  cro_bor_law("cro-bor-law"),
-
-  pro_typ("pro-typ"),
-
-  pro_fea("pro-fea"),
-
-  pro_acc("pro-acc"),
-
-  pro_acc_jus("pro-acc-jus"),
-
-  dir_awa_jus("dir-awa-jus"),
-
-  dir_awa_pre("dir-awa-pre"),
-
-  dir_awa_tex("dir-awa-tex"),
-
-  awa_cri_typ("awa-cri-typ"),
-
-  awa_cri_nam("awa-cri-nam"),
-
-  awa_cri_des("awa-cri-des"),
-
-  awa_cri_wei("awa-cri-wei"),
-
-  awa_cri_fix("awa-cri-fix"),
-
-  awa_cri_thr("awa-cri-thr"),
-
-  awa_cri_num("awa-cri-num"),
-
-  awa_cri_com("awa-cri-com"),
-
-  awa_cri_ord("awa-cri-ord"),
-
-  not_app_val("not-app-val"),
-
-  ree_val("ree-val"),
-
-  gro_ree_val("gro-ree-val");
+  NOT_VAL("not-val"),
+  NOT_MAX_VAL("not-max-val"),
+  GRO_MAX_IDE("gro-max-ide"),
+  GRO_MAX_VAL("gro-max-val"),
+  WIN_CHO("win-cho"),
+  NO_AWA_REA("no-awa-rea"),
+  MAX_VAL("max-val"),
+  REC_SUB_COU("rec-sub-cou"),
+  REC_SUB_TYP("rec-sub-typ"),
+  TEN_VAL_LOW("ten-val-low"),
+  TEN_VAL_HIG("ten-val-hig"),
+  REV_REQ("rev-req"),
+  BUY_REV_COU("buy-rev-cou"),
+  BUY_REV_TYP("buy-rev-typ"),
+  CON_REV_USE("con-rev-use"),
+  CON_REV_BUY("con-rev-buy"),
+  VAL_CON_DES("val-con-des"),
+  COU_ORI("cou-ori"),
+  WIN_ORG_IDE("win-org-ide"),
+  WIN_TEN_VAL("win-ten-val"),
+  TEN_RAN("ten-ran"),
+  WIN_TEN_VAR("win-ten-var"),
+  SUB_VAL_KNO("sub-val-kno"),
+  SUB_PER_KNO("sub-per-kno"),
+  SUB_VAL("sub-val"),
+  SUB_PER("sub-per"),
+  SUB_DES("sub-des"),
+  SUB_CON("sub-con"),
+  CRO_BOR_LAW("cro-bor-law"),
+  PRO_TYP("pro-typ"),
+  PRO_FEA("pro-fea"),
+  PRO_ACC("pro-acc"),
+  PRO_ACC_JUS("pro-acc-jus"),
+  DIR_AWA_JUS("dir-awa-jus"),
+  DIR_AWA_PRE("dir-awa-pre"),
+  DIR_AWA_TEX("dir-awa-tex"),
+  AWA_CRI_TYP("awa-cri-typ"),
+  AWA_CRI_NAM("awa-cri-nam"),
+  AWA_CRI_DES("awa-cri-des"),
+  AWA_CRI_WEI("awa-cri-wei"),
+  AWA_CRI_FIX("awa-cri-fix"),
+  AWA_CRI_THR("awa-cri-thr"),
+  AWA_CRI_NUM("awa-cri-num"),
+  AWA_CRI_COM("awa-cri-com"),
+  AWA_CRI_ORD("awa-cri-ord"),
+  NOT_APP_VAL("not-app-val"),
+  REE_VAL("ree-val"),
+  GRO_REE_VAL("gro-ree-val");
 
   private final String literal;
 
@@ -105,21 +58,6 @@ public enum FieldPrivacyCode implements ILiteral {
     this.literal = literal;
   }
 
-  // @Override
-  // public Catalog getCatalog() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public Schema getSchema() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public String getName() {
-  // return "field_privacy_code";
-  // }
-  //
   @Override
   public String getLiteral() {
     return literal;
