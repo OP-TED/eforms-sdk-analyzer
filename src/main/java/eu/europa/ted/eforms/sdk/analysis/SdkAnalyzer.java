@@ -39,7 +39,7 @@ public class SdkAnalyzer {
       logger.warn("Validation warnings:\n{}", StringUtils.join(errors, '\n'));
     }
 
-    if (ArrayUtils.isNotEmpty(errors) && logger.isWarnEnabled()) {
+    if (ArrayUtils.isNotEmpty(errors) && logger.isErrorEnabled()) {
       logger.error("Validation errors:\n{}", StringUtils.join(errors, '\n'));
     }
 
