@@ -3,10 +3,12 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.domain.field.BooleanConstraint;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
+import eu.europa.ted.eforms.sdk.domain.field.FieldPrivacy;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 
 public class FieldFact implements SdkComponentFact<String> {
@@ -117,6 +119,23 @@ public class FieldFact implements SdkComponentFact<String> {
         });
     
     return noticeTypes;
+  }
+
+  /*
+   * Return the various field identifiers indicated in the "privacy" property.
+   */
+  public Set<String> getReferencedPrivacyFieldIds() {
+    Set<String> fieldReferences = new HashSet<>();
+    
+    FieldPrivacy privacy = field.getPrivacy();
+
+    if (privacy != null) {
+      fieldReferences = Stream.of(privacy.getUnpublishedFieldId(), privacy.getReasonCodeFieldId(),
+              privacy.getReasonDescriptionFieldId(), privacy.getPublicationDateFieldId())
+          .collect(Collectors.toSet());
+    }
+
+    return fieldReferences;
   }
 
   @Override

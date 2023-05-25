@@ -74,6 +74,14 @@ then
   results.add(new ValidationResult($f, "Field is mandatory for notice subtype " + $noticeTypeIds + " but not present in the notice type definition.", ValidationStatusEnum.ERROR));
 end
 
+rule "Fields referenced in privacy property exist"
+when
+  $fieldReference : /fields[ $f: this ]/referencedPrivacyFieldIds
+  not (exists /fields[ id == $fieldReference ])
+then
+  results.add(new ValidationResult($f, "privacy property references non existing field " + $fieldReference, ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-2205: Xpath absolute uniqueness is verified.
 //  For fields.json file:
 //    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node
