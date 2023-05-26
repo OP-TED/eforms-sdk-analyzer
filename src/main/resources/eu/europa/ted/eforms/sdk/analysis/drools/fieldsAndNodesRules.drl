@@ -82,6 +82,15 @@ then
   results.add(new ValidationResult($f, "privacy property references non existing field " + $fieldReference, ValidationStatusEnum.ERROR));
 end
 
+rule "Code referenced in privacy property is in the expected codelist"
+when
+  $privacyCode : /fields[ $f: this ]/privacyCode
+  $codelistId : /fields[ id == $f.unpublishedFieldId ]/codelistId
+  not (exists /codelists[ id == $codelistId, codes contains $privacyCode ])
+then
+  results.add(new ValidationResult($f, "Privacy code " + $privacyCode + " is not in the codelist " + $codelistId, ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-2205: Xpath absolute uniqueness is verified.
 //  For fields.json file:
 //    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node

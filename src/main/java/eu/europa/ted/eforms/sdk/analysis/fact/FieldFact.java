@@ -126,6 +126,22 @@ public class FieldFact implements SdkComponentFact<String> {
     return noticeTypes;
   }
 
+  public String getPrivacyCode() {
+    if (field.getPrivacy() != null) {
+      return field.getPrivacy().getCode().getLiteral();
+    } else {
+      return null;
+    }
+  }
+
+  public String getUnpublishedFieldId() {
+    if (field.getPrivacy() != null) {
+      return field.getPrivacy().getUnpublishedFieldId();
+    } else {
+      return null;
+    }
+  }
+
   /*
    * Return the various field identifiers indicated in the "privacy" property.
    */
@@ -141,6 +157,13 @@ public class FieldFact implements SdkComponentFact<String> {
     }
 
     return fieldReferences;
+  }
+
+  public String getCodelistId() {
+    if (field.getCodeList() != null) {
+      return field.getCodeList().getValue().getId();
+    }
+    return null;
   }
 
   @Override
