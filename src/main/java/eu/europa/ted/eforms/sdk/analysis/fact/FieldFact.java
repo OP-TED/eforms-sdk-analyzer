@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.domain.field.BooleanConstraint;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldPrivacy;
+import eu.europa.ted.eforms.sdk.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 
 public class FieldFact implements SdkComponentFact<String> {
@@ -26,6 +27,10 @@ public class FieldFact implements SdkComponentFact<String> {
 
   public String getParentId() {
     return field.getParentNodeId();
+  }
+
+  public List<XmlElementPosition> getXsdSequenceOrder() {
+    return field.getXsdSequenceOrder();
   }
 
   public boolean hasAncestor(String ancestorNodeId) {

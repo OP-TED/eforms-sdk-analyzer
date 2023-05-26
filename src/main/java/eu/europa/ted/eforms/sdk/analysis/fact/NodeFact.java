@@ -3,6 +3,7 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.europa.ted.eforms.sdk.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 
 public class NodeFact implements SdkComponentFact<String> {
@@ -22,6 +23,10 @@ public class NodeFact implements SdkComponentFact<String> {
     return node.getParent();
   }
   
+  public List<XmlElementPosition> getXsdSequenceOrder() {
+    return node.getXsdSequenceOrder();
+  }
+
   public boolean isRepeatable() {
     return node.isRepeatable();
   }

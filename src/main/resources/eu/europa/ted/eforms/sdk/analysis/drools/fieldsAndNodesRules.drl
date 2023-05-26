@@ -93,3 +93,17 @@ when
 then
   results.add(new ValidationResult($f, "xpath absolute are equal for field " + $fieldId + ", node " + $nodeId, ValidationStatusEnum.ERROR));
 end
+
+rule "Every field has an XSD sequence order"
+when
+  /fields[ $f: this, xsdSequenceOrder == null ]
+then
+  results.add(new ValidationResult($f, "Field is missing its XSD sequence order.", ValidationStatusEnum.ERROR));
+end
+
+rule "Every non-root node has an XSD sequence order"
+when
+  /nodes[ $n: this, parentId != null, xsdSequenceOrder == null ]
+then
+  results.add(new ValidationResult($n, "Node is missing its XSD sequence order.", ValidationStatusEnum.ERROR));
+end
