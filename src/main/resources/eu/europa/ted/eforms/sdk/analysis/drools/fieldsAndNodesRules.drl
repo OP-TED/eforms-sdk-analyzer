@@ -66,6 +66,14 @@ then
   results.add(new ValidationResult($f, "The referenced notice subtype " + $noticeType + " does not exist", ValidationStatusEnum.ERROR));
 end
 
+rule "The codelist referenced in the codelist property exists"
+when
+  $codelistId : /fields[ $f: this ]/codelistId
+  not (exists /codelists[ id == $codelistId ])
+then
+  results.add(new ValidationResult($f, "Codelist " + $codelistId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
 rule "Field is present in the notice type definitions for which it is mandatory"
 when
   $noticeTypeIds : /fields[ $f: this, $fieldId: id, alwaysMandatoryConstraint != null ]/alwaysMandatoryConstraint.noticeTypes
