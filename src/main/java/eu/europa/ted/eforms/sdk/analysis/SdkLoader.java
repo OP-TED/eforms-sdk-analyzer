@@ -232,8 +232,15 @@ public class SdkLoader {
     Codelist codelist = null;
     CodeList codelistXmlPojo = null;
 
+    DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+      public boolean accept(Path file) throws IOException {
+        // Only load *.gc files
+        return file.getFileName().toString().endsWith(".gc");
+      }
+    };
+
     try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
-        Path.of(sdkRoot.toString(), SdkResource.CODELISTS.getPath().toString()))) {
+        Path.of(sdkRoot.toString(), SdkResource.CODELISTS.getPath().toString()), filter)) {
 
       for (Path path : dirStream) {
         if (!Files.isDirectory(path)) {
