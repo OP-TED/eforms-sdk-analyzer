@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.domain.Codelist;
+import eu.europa.ted.eforms.sdk.domain.EFormsTrackableEntity;
 import eu.europa.ted.eforms.sdk.domain.Label;
 import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.domain.Translation;
@@ -120,6 +121,14 @@ public class SdkLoader {
 
               return l.get(0);
             }));
+  }
+
+  public EFormsTrackableEntity getFieldsAndNodesMetadata() throws IOException {
+    // Load fields.json but keep only the metadata, not the fields and nodes
+    EFormsTrackableEntity metadata = loadJsonFile(FieldsAndNodes.class,
+        Path.of(sdkRoot.toString(), SdkResource.FIELDS_JSON.getPath().toString()));
+
+    return metadata;
   }
 
   public FieldsAndNodes getFieldsAndNodes() throws IOException {
@@ -223,8 +232,15 @@ public class SdkLoader {
     Codelist codelist = null;
     CodeList codelistXmlPojo = null;
 
+    DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+      public boolean accept(Path file) throws IOException {
+        // Only load *.gc files
+        return file.getFileName().toString().endsWith(".gc");
+      }
+    };
+
     try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
-        Path.of(sdkRoot.toString(), SdkResource.CODELISTS.getPath().toString()))) {
+        Path.of(sdkRoot.toString(), SdkResource.CODELISTS.getPath().toString()), filter)) {
 
       for (Path path : dirStream) {
         if (!Files.isDirectory(path)) {

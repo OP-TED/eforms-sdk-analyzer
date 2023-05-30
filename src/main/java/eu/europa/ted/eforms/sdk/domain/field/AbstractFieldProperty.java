@@ -3,6 +3,8 @@ package eu.europa.ted.eforms.sdk.domain.field;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ted.eforms.sdk.domain.field.enums.PropertyOrConstraintSeverity;
 
@@ -49,5 +51,16 @@ public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V e
 
   public List<C> getConstraints() {
     return constraints;
+  }
+
+  /**
+   * @return All notice type identifiers referenced in the constraints of this field property.
+   */
+  public Set<String> getAllNoticeTypeIds() {
+    return getConstraints()
+        .stream()
+        .map(AbstractConstraint::getNoticeTypes)
+        .flatMap(List::stream)
+        .collect(Collectors.toSet());
   }
 }

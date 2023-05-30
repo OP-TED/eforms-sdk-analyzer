@@ -11,6 +11,7 @@ import eu.europa.ted.eforms.sdk.analysis.Validator;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.FieldsAndNodesMetadataFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
@@ -27,6 +28,7 @@ public class SdkUnit implements RuleUnit, Validator {
   private DataStore<CodelistFact> codelists;
   private DataStore<DocumentTypeFact> documentTypes;
   private DataStore<XmlNoticeFact> xmlNotices;
+  private DataStore<FieldsAndNodesMetadataFact> fieldsAndNodesMetadata;
   private DataStore<FieldFact> fields;
   private DataStore<LabelFact> labels;
   private DataStore<NodeFact> nodes;
@@ -70,6 +72,15 @@ public class SdkUnit implements RuleUnit, Validator {
 
   public SdkUnit setDocumentTypes(DataStore<DocumentTypeFact> documentTypes) {
     this.documentTypes = documentTypes;
+    return this;
+  }
+
+  public DataStore<FieldsAndNodesMetadataFact> getFieldsAndNodesMetadata() {
+    return fieldsAndNodesMetadata;
+  }
+
+  public SdkUnit setFieldsAndNodesMetadata(DataStore<FieldsAndNodesMetadataFact> metadata) {
+    this.fieldsAndNodesMetadata = metadata;
     return this;
   }
 

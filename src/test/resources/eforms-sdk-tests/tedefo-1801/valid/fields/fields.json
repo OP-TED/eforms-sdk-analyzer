@@ -1,0 +1,44 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "eforms-sdk-1.7.0-rc.1",
+  "metadataDatabase" : {
+    "version" : "1.7.0",
+    "createdOn" : "2023-02-17T12:00:00"
+  },
+  "xmlStructure" : [ {
+    "id" : "ND-Root",
+    "xpathAbsolute" : "/*",
+    "xpathRelative" : "/*",
+    "repeatable" : false
+  } ],
+  "fields" : [ {
+    "id" : "BT-01-notice",
+    "parentNodeId" : "ND-Root",
+    "name" : "Procedure Legal Basis",
+    "btId" : "BT-01",
+    "xpathAbsolute" : "/*/cbc:RegulatoryDomain",
+    "xpathRelative" : "cbc:RegulatoryDomain",
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    },
+    "mandatory" : {
+      "value" : false,
+      "severity" : "ERROR",
+      "constraints" : [ {
+        "noticeTypes" : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "CEI", "T01", "T02", "X01", "X02" ],
+        "value" : true,
+        "severity" : "ERROR"
+      } ]
+    },
+    "codeList" : {
+      "value" : {
+        "id" : "eforms-legal-basis",
+        "type" : "flat"
+      },
+      "severity" : "ERROR"
+    }
+  } ]
+}

@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.FieldsAndNodesMetadataFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
@@ -43,6 +44,16 @@ public class FactsLoader {
 
   public FactsLoader(Path sdkRoot) {
     sdkLoader = new SdkLoader(sdkRoot);
+  }
+
+  public DataStore<FieldsAndNodesMetadataFact> loadFieldsAndNodesMetadata() throws IOException {
+    logger.debug("Creating facts datastore for metadata in fields.json");
+
+    final DataStore<FieldsAndNodesMetadataFact> datastore = DataSource.createStore();
+
+    datastore.add(new FieldsAndNodesMetadataFact(sdkLoader.getFieldsAndNodesMetadata()));
+
+    return datastore;
   }
 
   public DataStore<FieldFact> loadFields() throws IOException {

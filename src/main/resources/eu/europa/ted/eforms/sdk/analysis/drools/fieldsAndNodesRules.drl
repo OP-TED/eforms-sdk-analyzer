@@ -5,6 +5,100 @@ unit SdkUnit;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
 
+rule "Fields.json has correct SDK version"
+when
+  /fieldsAndNodesMetadata[ $f: this, $version: sdkVersion, $version != "eforms-sdk-" + sdkMetadata.version ]
+then
+  results.add(new ValidationResult($f, "The value " + $version + " in sdkVersion is incorrect", ValidationStatusEnum.ERROR));
+end
+
+rule "Every node has at least one child"
+when
+  /nodes[ $n: this, $nodeId : id ]
+  not (exists /nodes[ parentId == $nodeId ] or /fields[ parentId == $nodeId ])
+then
+  results.add(new ValidationResult($n, "Node has no child node or field", ValidationStatusEnum.ERROR));
+end
+
+rule "Every node parent ID corresponds to an existing node"
+when
+  /nodes[ $n: this, $parentId : parentId, parentId != null ]
+  not (exists /nodes[ id == $parentId ])
+then
+  results.add(new ValidationResult($n, "Node parent ID " + $parentId + " does not correspond to an existing node", ValidationStatusEnum.ERROR));
+end
+
+rule "Every field parent ID corresponds to an existing node"
+when
+  /fields[ $f: this, $parentId : parentId ]
+  not (exists /nodes[ id == $parentId ])
+then
+  results.add(new ValidationResult($f, "Field parent ID " + $parentId + " does not correspond to an existing node", ValidationStatusEnum.ERROR));
+end
+
+rule "There are no loops in the node structure"
+when
+  $ancestorsId : /nodes[ $n: this, $nodeId : id ]/ancestors/id
+  exists /nodes[ id == $nodeId, id == $ancestorsId ]
+then
+  results.add(new ValidationResult($n, "Node is part of its ancestors (loop in the node hierarchy)", ValidationStatusEnum.ERROR));
+end
+
+rule "The absolute XPath of every node is consistent with its parent and its relative XPath"
+when
+  /nodes[ $n: this, $absoluteXpath : xpathAbsolute, parent != null, $parentXpath : parent.xpathAbsolute, $relativeXpath : xpathRelative, $absoluteXpath != "" + $parentXpath + "/" + $relativeXpath ]
+then
+  results.add(new ValidationResult($n, "Absolute XPath is inconsistent with its parent and relative XPath", ValidationStatusEnum.ERROR));
+end
+
+rule "The absolute XPath of every field is consistent with its parent and its relative XPath"
+when
+  /fields[ $f: this, $absoluteXpath : xpathAbsolute, parent != null, $parentXpath : parent.xpathAbsolute, $relativeXpath : xpathRelative, $absoluteXpath != "" + $parentXpath + "/" + $relativeXpath ]
+then
+  results.add(new ValidationResult($f, "Absolute XPath is inconsistent with its parent and relative XPath", ValidationStatusEnum.ERROR));
+end
+
+rule "The notice subtype referenced in field constraints exists"
+when
+  $noticeType : /fields[ $f: this ]/allNoticeTypes
+  not (exists /noticeTypes[ id == $noticeType ])
+then
+  results.add(new ValidationResult($f, "The referenced notice subtype " + $noticeType + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+rule "The codelist referenced in the codelist property exists"
+when
+  $codelistId : /fields[ $f: this ]/codelistId
+  not (exists /codelists[ id == $codelistId ])
+then
+  results.add(new ValidationResult($f, "Codelist " + $codelistId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+rule "Field is present in the notice type definitions for which it is mandatory"
+when
+  $noticeTypeIds : /fields[ $f: this, $fieldId: id, alwaysMandatoryConstraint != null ]/alwaysMandatoryConstraint.noticeTypes
+  not (exists /noticeTypes[ id == $noticeTypeIds, fieldIds contains $fieldId ])
+then
+  results.add(new ValidationResult($f, "Field is mandatory for notice subtype " + $noticeTypeIds + " but not present in the notice type definition.", ValidationStatusEnum.ERROR));
+end
+
+rule "Fields referenced in privacy property exist"
+when
+  $fieldReference : /fields[ $f: this ]/referencedPrivacyFieldIds
+  not (exists /fields[ id == $fieldReference ])
+then
+  results.add(new ValidationResult($f, "privacy property references non existing field " + $fieldReference, ValidationStatusEnum.ERROR));
+end
+
+rule "Code referenced in privacy property is in the expected codelist"
+when
+  $privacyCode : /fields[ $f: this ]/privacyCode
+  $codelistId : /fields[ id == $f.unpublishedFieldId ]/codelistId
+  not (exists /codelists[ id == $codelistId, codes contains $privacyCode ])
+then
+  results.add(new ValidationResult($f, "Privacy code " + $privacyCode + " is not in the codelist " + $codelistId, ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-2205: Xpath absolute uniqueness is verified.
 //  For fields.json file:
 //    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node
@@ -15,4 +109,18 @@ when
   eval($xpathAbsoluteField == $xpathAbsoluteNode)
 then
   results.add(new ValidationResult($f, "xpath absolute are equal for field " + $fieldId + ", node " + $nodeId, ValidationStatusEnum.ERROR));
+end
+
+rule "Every field has an XSD sequence order"
+when
+  /fields[ $f: this, xsdSequenceOrder == null ]
+then
+  results.add(new ValidationResult($f, "Field is missing its XSD sequence order.", ValidationStatusEnum.ERROR));
+end
+
+rule "Every non-root node has an XSD sequence order"
+when
+  /nodes[ $n: this, parentId != null, xsdSequenceOrder == null ]
+then
+  results.add(new ValidationResult($n, "Node is missing its XSD sequence order.", ValidationStatusEnum.ERROR));
 end
