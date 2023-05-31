@@ -198,6 +198,11 @@ public class SdkValidationSteps {
     assertEquals(errorsCount, sdkUnit.getErrors().length);
   }
 
+  @Then("^I should get (.*) SDK validation warnings?$")
+  public void i_should_get_sdk_validation_warnings(int warningsCount) {
+    assertEquals(warningsCount, sdkUnit.getWarnings().length);
+  }
+
   @Then("^I should get (.*) EFX validation errors?$")
   public void i_should_get_efx_validation_errors(int errorsCount) {
     assertEquals(errorsCount, efxValidator.getErrors().length);
