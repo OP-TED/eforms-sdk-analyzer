@@ -44,6 +44,16 @@ public class NoticeTypeFact implements SdkComponentFact<String> {
     return new HashSet<>(CollectionUtils.union(getMetadataFieldsIds(), getContentFieldIds()));
   }
 
+  public Set<String> getNodeIds() {
+    return noticeType.getContent()
+        .stream()
+        .flatMap(NoticeTypeContent::flattened)
+        .filter((NoticeTypeContent content) -> NoticeTypeContentType.GROUP == content
+            .getContentTypeEnum())
+        .map(NoticeTypeContent::getNodeId)
+        .collect(Collectors.toSet());
+  }
+
   public Set<String> getLabelIds() {
     return noticeType.getContent()
         .stream()

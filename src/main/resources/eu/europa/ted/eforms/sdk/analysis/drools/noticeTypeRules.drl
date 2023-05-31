@@ -168,3 +168,14 @@ when
 then
   results.add(new ValidationResult($nti, "Notice sub type " + $subTypeId + " references type " + $type + " which is not part of the \"notice-type\" codelist", ValidationStatusEnum.ERROR));
 end
+
+// TEDEFO-1845: Warning
+//   For every field in a notice type definition, all its repeatable ancestor should be in this notice type definition
+rule "All repeatable ancestors of a field are in the notice type definition"
+when
+  $fieldIds : /noticeTypes[ $nt: this ]/fieldIds
+  $ancestorIds : /fields[ id memberOf $fieldIds, allRepeatableAncestors != null ]/allRepeatableAncestors.id
+  not (exists /noticeTypes[ id == $nt.id, nodeIds contains $ancestorIds ])
+then
+  results.add(new ValidationResult($nt, "The repeatable ancestor " + $ancestorIds + " of field " + $fieldIds + " should be present", ValidationStatusEnum.WARNING));
+end

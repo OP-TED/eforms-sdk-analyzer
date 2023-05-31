@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -157,6 +158,38 @@ public class FieldFact implements SdkComponentFact<String> {
     }
 
     return fieldReferences;
+  }
+
+    /**
+   * Returns the list of ancestors, starting from the field: parent node, then grand-parent, etc.
+   * If the structure is incorrect and a node is in its ancestor, this will put the node in the
+   * list and return it, to avoid going into an infinite loop.
+   */
+  public List<XmlStructureNode> getAncestors() {
+    List<XmlStructureNode> result = new ArrayList<>();
+    XmlStructureNode currentNode = getParent();
+
+    while (currentNode != null) {
+      if (result.contains(currentNode)) {
+        // A node is its own ancestor. Add it to the list of ancestors,
+        // but break to avoid going into an infinite loop.
+        result.add(currentNode);
+        break;
+      }
+      result.add(currentNode);
+
+      currentNode = currentNode.getParent();
+    }
+
+    return result;
+  }
+
+  public List<XmlStructureNode> getAllRepeatableAncestors() {
+    List<XmlStructureNode> result;
+
+    result = this.getAncestors().stream().filter(n -> n.isRepeatable()).collect(Collectors.toList());
+
+    return result;
   }
 
   public String getCodelistId() {
