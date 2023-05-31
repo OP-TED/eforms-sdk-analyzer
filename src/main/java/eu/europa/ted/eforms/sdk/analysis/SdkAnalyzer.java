@@ -36,11 +36,13 @@ public class SdkAnalyzer {
     final String[] errors = concatArrays(templatesValidator.getErrors(), sdkValidator.getErrors());
 
     if (ArrayUtils.isNotEmpty(warnings) && logger.isWarnEnabled()) {
-      logger.warn("Validation warnings:\n{}", StringUtils.join(errors, '\n'));
+      logger.warn("Validation warnings:\n{}", StringUtils.join(warnings, '\n'));
+      logger.warn("Total number of validation warnings: {}", warnings.length);
     }
 
     if (ArrayUtils.isNotEmpty(errors) && logger.isErrorEnabled()) {
       logger.error("Validation errors:\n{}", StringUtils.join(errors, '\n'));
+      logger.error("Total number of validation errors: {}", errors.length);
     }
 
     return ArrayUtils.isNotEmpty(errors) ? 1 : 0;
