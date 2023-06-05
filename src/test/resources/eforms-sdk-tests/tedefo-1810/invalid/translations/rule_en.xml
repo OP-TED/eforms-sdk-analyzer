@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>rule in English. File generated from metadata database.</comment>
+<entry key="rule|text|BR-BT-00118-0100">If 'Maximum value of the framework agreements in this group of lots' (BT-156) and 'Maximum value of the framework agreement' (BT-709) have the same currency, then 'Maximum value of the framework agreements in this procedure' (BT-118) must be equal to the sum of 'Maximum value of the framework agreement' (BT-709) and 'Re-estimated value of the framework agreement' (BT-660)</entry>
+<entry key="rule|text|BR-BT-00198-4292">'Date of when this will be published' (BT-198) must be between 2 days and 10 years after 'Notice dispatch date'</entry>
+<entry key="rule|text|BR-BT-01118-0100">If 'Re-estimated value of the framework agreements within a group of lots' (BT-1561) and 'Re-estimated value of the framework agreement' (BT-660) have the same currency, then 'Approximate value of the framework agreements' (BT-1118) must be equal to the sum of 'Re-estimated value of the framework agreement' (BT-660)</entry>
+<entry key="rule|text|BR-BT-01251-0001">BT-1251-Part is not allowed in notice type 'X01'</entry>
+<entry key="rule|text|BR-BT-01251-0002">BT-1251-Part is not allowed in notice type 'X02'</entry>
+<entry key="rule|text|element-not-empty">Elements must have content, and the content must be something other than only whitespace.</entry>
+</properties>
