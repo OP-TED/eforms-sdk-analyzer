@@ -12,8 +12,16 @@ public class CodelistFact implements SdkComponentFact<String> {
     this.codelist = codelist;
   }
 
+  public String getParentId() {
+    return codelist.getParentId();
+  }
+
   public Set<String> getCodes() {
     return codelist.getCodes();
+  }
+
+  public boolean isTailored() {
+    return codelist.getParentId() != null;
   }
 
   @Override

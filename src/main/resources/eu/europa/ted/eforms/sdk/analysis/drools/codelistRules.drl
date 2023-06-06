@@ -1,0 +1,13 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+import eu.europa.ted.eforms.sdk.domain.Codelist;
+
+rule "Codes in tailored codelists are present in parent codelist"
+when
+  $tailoredcode : /codelists[ $tailored: this, $parentId: parentId, isTailored == true ]/codes
+  not (exists /codelists[ id == $parentId, codes contains $tailoredcode ])
+then
+  results.add(new ValidationResult($tailored, "Code " + $tailoredcode + " is not present in parent codelist " + $parentId, ValidationStatusEnum.ERROR));
+end

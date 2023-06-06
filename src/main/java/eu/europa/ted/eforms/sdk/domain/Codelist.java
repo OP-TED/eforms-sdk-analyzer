@@ -7,6 +7,7 @@ public class Codelist implements Serializable {
   private static final long serialVersionUID = 9090505617139835976L;
 
   private String id;
+  private String parentId;
 
   private Set<String> codes;
 
@@ -16,6 +17,14 @@ public class Codelist implements Serializable {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public String getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(String parentId) {
+    this.parentId = parentId;
   }
 
   public Set<String> getCodes() {

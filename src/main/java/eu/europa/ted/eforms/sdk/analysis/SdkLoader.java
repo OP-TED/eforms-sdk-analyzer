@@ -229,7 +229,6 @@ public class SdkLoader {
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
     final Set<Codelist> result = new HashSet<>();
 
-    Codelist codelist = null;
     CodeList codelistXmlPojo = null;
 
     DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
@@ -246,7 +245,7 @@ public class SdkLoader {
         if (!Files.isDirectory(path)) {
           codelistXmlPojo = XmlParser.loadXmlFile(CodeList.class, path);
 
-          codelist = new Codelist();
+          final Codelist codelist = new Codelist();
 
           codelist.setId(codelistXmlPojo
               .getIdentification()
@@ -255,6 +254,13 @@ public class SdkLoader {
               .findFirst()
               .get()
               .getValue());
+
+          codelistXmlPojo
+              .getIdentification()
+              .getLongName().stream()
+              .filter(longName -> "eFormsParentId".equals(longName.getIdentifier()))
+              .findFirst()
+              .ifPresent(l -> codelist.setParentId(l.getValue()));
 
           codelist.setCodes(codelistXmlPojo
               .getSimpleCodeList()
