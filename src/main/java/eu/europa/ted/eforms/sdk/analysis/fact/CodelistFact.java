@@ -28,6 +28,16 @@ public class CodelistFact implements SdkComponentFact<String> {
     return codelist.getFilename();
   }
 
+  public String getExpectedFilename() {
+    String basename;
+    if (getParentId() == null) {
+      basename = getId();
+    } else {
+      basename = getParentId() + "_" + getId();
+    }
+    return basename + ".gc";
+  }
+
   @Override
   public String getId() {
     return codelist.getId();

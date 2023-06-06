@@ -28,3 +28,9 @@ then
   results.add(new ValidationResult($cl, "Codelist file " + $filename + " with id " + $codelistId + " is not listed in codelists.json", ValidationStatusEnum.ERROR));
 end
 
+rule "Codelist filenames are as expected"
+when
+  /codelists[ $cl: this, $filename: filename, filename != expectedFilename ]
+then
+  results.add(new ValidationResult($cl, "Codelist file " + $filename + " does not have the expected filename", ValidationStatusEnum.ERROR));
+end
