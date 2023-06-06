@@ -1,7 +1,7 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import java.util.Set;
-import eu.europa.ted.eforms.sdk.domain.Codelist;
+import eu.europa.ted.eforms.sdk.domain.codelist.Codelist;
 
 public class CodelistFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 597836162298039219L;

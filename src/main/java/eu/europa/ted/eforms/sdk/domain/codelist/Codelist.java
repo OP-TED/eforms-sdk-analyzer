@@ -1,4 +1,4 @@
-package eu.europa.ted.eforms.sdk.domain;
+package eu.europa.ted.eforms.sdk.domain.codelist;
 
 import java.io.Serializable;
 import java.util.Set;
