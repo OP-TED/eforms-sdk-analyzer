@@ -11,3 +11,20 @@ when
 then
   results.add(new ValidationResult($tailored, "Code " + $tailoredcode + " is not present in parent codelist " + $parentId, ValidationStatusEnum.ERROR));
 end
+
+rule "Codelist indicated in codelists index exists"
+when
+  $codelistId : /codelistsIndex[ $cli: this ]/indexItems.id
+  not (exists /codelists[ id == $codelistId ])
+then
+  results.add(new ValidationResult($cli, "Codelist with id " + $codelistId + " is not present the codelists folder", ValidationStatusEnum.ERROR));
+end
+
+rule "Codelist files are indicated in codelists index"
+when
+  $codelistId : /codelists[ $cl: this ]/id
+  not (exists /codelistsIndex/indexItems[ id == $codelistId ])
+then
+  results.add(new ValidationResult($cl, "Codelist file with id " + $codelistId + " is not listed in codelists.json", ValidationStatusEnum.ERROR));
+end
+

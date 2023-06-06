@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.CodelistsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldsAndNodesMetadataFact;
@@ -138,6 +139,15 @@ public class FactsLoader {
     final DataStore<CodelistFact> datastore = DataSource.createStore();
     sdkLoader.getCodelists()
         .forEach((Codelist codelist) -> datastore.add(new CodelistFact(codelist)));
+
+    return datastore;
+  }
+
+  public DataStore<CodelistsIndexFact> loadCodelistsIndex() throws IOException {
+    logger.debug("Creating facts datastore for codelists index");
+
+    final DataStore<CodelistsIndexFact> datastore = DataSource.createStore();
+    datastore.add(new CodelistsIndexFact(sdkLoader.getCodelistsIndex()));
 
     return datastore;
   }

@@ -28,6 +28,7 @@ import eu.europa.ted.eforms.sdk.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.domain.Translation;
 import eu.europa.ted.eforms.sdk.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.domain.codelist.CodelistsIndex;
 import eu.europa.ted.eforms.sdk.domain.enums.Language;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
@@ -277,6 +278,11 @@ public class SdkLoader {
     }
 
     return result;
+  }
+
+  public CodelistsIndex getCodelistsIndex() throws IOException {
+    return loadJsonFile(CodelistsIndex.class,
+        Path.of(sdkRoot.toString(), SdkResource.CODELISTS_JSON.getPath().toString()));
   }
 
   public Set<XmlNotice> getXmlNotices()

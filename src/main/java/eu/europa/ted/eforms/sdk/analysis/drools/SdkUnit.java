@@ -9,6 +9,7 @@ import org.drools.ruleunits.api.DataStore;
 import org.kie.api.definition.rule.Rule;
 import eu.europa.ted.eforms.sdk.analysis.Validator;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.CodelistsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldsAndNodesMetadataFact;
@@ -26,6 +27,7 @@ public class SdkUnit implements RuleUnit, Validator {
   private Path sdkRoot;
 
   private DataStore<CodelistFact> codelists;
+  private DataStore<CodelistsIndexFact> codelistsIndex;
   private DataStore<DocumentTypeFact> documentTypes;
   private DataStore<XmlNoticeFact> xmlNotices;
   private DataStore<FieldsAndNodesMetadataFact> fieldsAndNodesMetadata;
@@ -63,6 +65,15 @@ public class SdkUnit implements RuleUnit, Validator {
 
   public SdkUnit setCodelists(DataStore<CodelistFact> codelists) {
     this.codelists = codelists;
+    return this;
+  }
+
+  public DataStore<CodelistsIndexFact> getCodelistsIndex() {
+    return codelistsIndex;
+  }
+
+  public SdkUnit setCodelistsIndex(DataStore<CodelistsIndexFact> codelistsIndex) {
+    this.codelistsIndex = codelistsIndex;
     return this;
   }
 
