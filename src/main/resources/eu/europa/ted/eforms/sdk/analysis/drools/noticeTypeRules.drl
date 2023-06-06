@@ -173,7 +173,7 @@ end
 //   For every field in a notice type definition, all its repeatable ancestor should be in this notice type definition
 rule "All repeatable ancestors of a field are in the notice type definition"
 when
-  $fieldIds : /noticeTypes[ $nt: this ]/fieldIds
+  $fieldIds : /noticeTypes[ $nt: this ]/contentFieldIds
   $ancestorIds : /fields[ id memberOf $fieldIds, allRepeatableAncestors != null ]/allRepeatableAncestors.id
   not (exists /noticeTypes[ id == $nt.id, nodeIds contains $ancestorIds ])
 then
