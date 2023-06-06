@@ -11,6 +11,10 @@ public class Codelist implements Serializable {
 
   private Set<String> codes;
 
+  // Name of the file that contains the codelist.
+  // This is rather metadata for the codelist, but its simpler to have it here.
+  private String filename;
+
   public String getId() {
     return id;
   }
@@ -33,5 +37,13 @@ public class Codelist implements Serializable {
 
   public void setCodes(Set<String> codes) {
     this.codes = codes;
+  }
+
+  public String getFilename() {
+    return filename;
+  }
+
+  public void setFilename(String filename) {
+    this.filename = filename;
   }
 }

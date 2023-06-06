@@ -24,6 +24,10 @@ public class CodelistFact implements SdkComponentFact<String> {
     return codelist.getParentId() != null;
   }
 
+  public String getFilename() {
+    return codelist.getFilename();
+  }
+
   @Override
   public String getId() {
     return codelist.getId();

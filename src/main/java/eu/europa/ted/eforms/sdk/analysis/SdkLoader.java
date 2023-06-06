@@ -248,6 +248,8 @@ public class SdkLoader {
 
           final Codelist codelist = new Codelist();
 
+          codelist.setFilename(path.getFileName().toString());
+
           codelist.setId(codelistXmlPojo
               .getIdentification()
               .getLongName().stream()

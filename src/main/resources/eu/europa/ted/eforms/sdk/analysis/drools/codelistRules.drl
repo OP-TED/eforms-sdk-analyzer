@@ -14,17 +14,17 @@ end
 
 rule "Codelist indicated in codelists index exists"
 when
-  $codelistId : /codelistsIndex[ $cli: this ]/indexItems.id
-  not (exists /codelists[ id == $codelistId ])
+  /codelistsIndex[ $cli: this ]/indexItems[ $codelistId: id, $filename: filename ]
+  not (exists /codelists[ id == $codelistId, filename == $filename ])
 then
-  results.add(new ValidationResult($cli, "Codelist with id " + $codelistId + " is not present the codelists folder", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($cli, "Codelist with id " + $codelistId + " is not present the codelists folder with filename " + $filename, ValidationStatusEnum.ERROR));
 end
 
 rule "Codelist files are indicated in codelists index"
 when
-  $codelistId : /codelists[ $cl: this ]/id
-  not (exists /codelistsIndex/indexItems[ id == $codelistId ])
+  /codelists[ $cl: this, $codelistId: id, $filename: filename ]
+  not (exists /codelistsIndex/indexItems[ id == $codelistId, filename == $filename ])
 then
-  results.add(new ValidationResult($cl, "Codelist file with id " + $codelistId + " is not listed in codelists.json", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($cl, "Codelist file " + $filename + " with id " + $codelistId + " is not listed in codelists.json", ValidationStatusEnum.ERROR));
 end
 
