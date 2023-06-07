@@ -67,7 +67,7 @@ public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V e
   /**
    * @return All label identifiers referenced in the constraints of this field property.
    */
-  public Set<String> getAllContraintsLabelIds() {
+  public Set<String> getAllConstraintsLabelIds() {
     return getConstraints()
         .stream()
         .map(AbstractConstraint::getMessage)

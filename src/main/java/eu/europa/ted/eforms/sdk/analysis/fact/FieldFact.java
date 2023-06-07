@@ -221,7 +221,7 @@ public class FieldFact implements SdkComponentFact<String> {
       if (property != null) {
         labelIds.add(property.getMessage());
         // Constraints can also reference a label
-        labelIds.addAll(property.getAllContraintsLabelIds());
+        labelIds.addAll(property.getAllConstraintsLabelIds());
       }
     });
 
