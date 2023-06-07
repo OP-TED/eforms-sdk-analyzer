@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
+
+import eu.europa.ted.eforms.sdk.domain.field.AbstractConstraint;
+import eu.europa.ted.eforms.sdk.domain.field.AbstractFieldProperty;
 import eu.europa.ted.eforms.sdk.domain.field.BooleanConstraint;
 import eu.europa.ted.eforms.sdk.domain.field.Field;
 import eu.europa.ted.eforms.sdk.domain.field.FieldPrivacy;
@@ -108,6 +111,15 @@ public class FieldFact implements SdkComponentFact<String> {
     return field.getXpathRelative();
   }
 
+  /*
+   * Return a stream of the dynamic properties of the field
+   */
+  private Stream<AbstractFieldProperty<? extends AbstractConstraint<?>, ?>> getDynamicProperties() {
+    return Stream.of(field.getRepeatable(), field.getForbidden(), field.getMandatory(), 
+            field.getCodeList(), field.getPattern(), field.getRangeNumeric(), field.getAssertion(),
+            field.getInChangeNotice(), field.getInContinueProcedure());
+  }
+
   /**
    * Return the notices types referenced in all properties of the field.
    */
@@ -115,12 +127,10 @@ public class FieldFact implements SdkComponentFact<String> {
     Set<String> noticeTypes = new HashSet<>();
     
     // Go over all dynamic properties and collect referenced notice types
-    Stream.of(field.getRepeatable(), field.getForbidden(), field.getMandatory(), 
-            field.getCodeList(), field.getPattern(), field.getRangeNumeric(), field.getAssertion(),
-            field.getInChangeNotice(), field.getInContinueProcedure())
-        .forEach(c -> {
-          if (c != null) {
-            noticeTypes.addAll(c.getAllNoticeTypeIds());
+    getDynamicProperties()
+        .forEach(property -> {
+          if (property != null) {
+            noticeTypes.addAll(property.getAllNoticeTypeIds());
           }
         });
     
@@ -197,6 +207,25 @@ public class FieldFact implements SdkComponentFact<String> {
       return field.getCodeList().getValue().getId();
     }
     return null;
+  }
+
+  /*
+   * Return all label identifiers referenced by a field
+   */
+  public Set<String> getAllLabelIds() {
+    Set<String> labelIds = new HashSet<>();
+
+    // Go through every property that can contain a reference to a label
+    // Dynamic properties can reference a label, but it is not currently not used.
+    getDynamicProperties().forEach(property -> {
+      if (property != null) {
+        labelIds.add(property.getMessage());
+        // Constraints can also reference a label
+        labelIds.addAll(property.getAllContraintsLabelIds());
+      }
+    });
+
+    return labelIds;
   }
 
   @Override

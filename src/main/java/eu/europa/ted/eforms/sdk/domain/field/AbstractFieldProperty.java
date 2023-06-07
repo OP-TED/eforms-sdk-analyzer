@@ -63,4 +63,14 @@ public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V e
         .flatMap(List::stream)
         .collect(Collectors.toSet());
   }
+
+  /**
+   * @return All label identifiers referenced in the constraints of this field property.
+   */
+  public Set<String> getAllContraintsLabelIds() {
+    return getConstraints()
+        .stream()
+        .map(AbstractConstraint::getMessage)
+        .collect(Collectors.toSet());
+  }
 }

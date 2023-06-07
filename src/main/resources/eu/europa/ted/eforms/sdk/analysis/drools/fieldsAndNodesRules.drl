@@ -124,3 +124,11 @@ when
 then
   results.add(new ValidationResult($n, "Node is missing its XSD sequence order.", ValidationStatusEnum.ERROR));
 end
+
+rule "The labels referenced in field properties exist"
+when
+  $labelId : /fields[ $f: this ]/allLabelIds
+  not (exists /labels[ id == $labelId ])
+then
+  results.add(new ValidationResult($f, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end

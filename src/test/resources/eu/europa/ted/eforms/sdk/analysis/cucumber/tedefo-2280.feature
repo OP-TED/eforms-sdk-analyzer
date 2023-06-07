@@ -11,7 +11,7 @@ Feature: Fields - Field validation
   Scenario: All fields and nodes have an XSD sequence order
     Given A "tedefo-2280" folder with "valid" files
     When I load all fields
-	And I load all nodes
+    And I load all nodes
     And I execute validation
     Then I should get 0 SDK validation errors
 
