@@ -34,3 +34,11 @@ when
 then
   results.add(new ValidationResult($cl, "Codelist file " + $filename + " does not have the expected filename", ValidationStatusEnum.ERROR));
 end
+
+rule "Every codelist has a column for the code"
+when
+  /codelists[ $cl: this ]
+  not (exists /codelists[ this == $cl ]/columnDefinitions[ id == "code", use == "required" ])
+then
+  results.add(new ValidationResult($cl, "Codelist does not have a 'code' column", ValidationStatusEnum.ERROR));
+end

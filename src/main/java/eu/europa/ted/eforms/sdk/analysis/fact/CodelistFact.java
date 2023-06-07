@@ -1,7 +1,9 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.util.List;
 import java.util.Set;
 import eu.europa.ted.eforms.sdk.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.domain.xml.ColumnSet.Column;
 
 public class CodelistFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 597836162298039219L;
@@ -22,6 +24,10 @@ public class CodelistFact implements SdkComponentFact<String> {
 
   public boolean isTailored() {
     return codelist.getParentId() != null;
+  }
+
+  public List<Column> getColumnDefinitions() {
+    return codelist.getColumnDefinitions();
   }
 
   public String getFilename() {
