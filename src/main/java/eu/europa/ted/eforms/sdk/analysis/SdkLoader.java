@@ -272,7 +272,7 @@ public class SdkLoader {
                   .filter((Value rowValue) -> rowValue.getColumnRef().equals("code"))
                   .map(Value::getSimpleValue).findFirst()
                   .get())
-              .collect(Collectors.toSet()));
+              .collect(Collectors.toList()));
 
           codelist.setColumnDefinitions(codelistXmlPojo.getColumnSet().getColumn());
 

@@ -2,7 +2,6 @@ package eu.europa.ted.eforms.sdk.analysis.domain.codelist;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.ColumnSet.Column;
 
@@ -12,7 +11,7 @@ public class Codelist implements Serializable {
   private String id;
   private String parentId;
 
-  private Set<String> codes;
+  private List<String> codes;
 
   private List<Column> columnDefinitions;
 
@@ -36,11 +35,11 @@ public class Codelist implements Serializable {
     this.parentId = parentId;
   }
 
-  public Set<String> getCodes() {
+  public List<String> getCodes() {
     return codes;
   }
 
-  public void setCodes(Set<String> codes) {
+  public void setCodes(List<String> codes) {
     this.codes = codes;
   }
 

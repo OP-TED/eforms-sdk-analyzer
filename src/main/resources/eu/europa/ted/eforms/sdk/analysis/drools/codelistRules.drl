@@ -42,3 +42,10 @@ when
 then
   results.add(new ValidationResult($cl, "Codelist does not have a 'code' column", ValidationStatusEnum.ERROR));
 end
+
+rule "Every code is unique in the codelist"
+when
+  $duplicates : /codelists[ $cl: this ]/duplicateCodes
+then
+  results.add(new ValidationResult($cl, "Codelist contains duplicate codes: " + $duplicates, ValidationStatusEnum.ERROR));
+end
