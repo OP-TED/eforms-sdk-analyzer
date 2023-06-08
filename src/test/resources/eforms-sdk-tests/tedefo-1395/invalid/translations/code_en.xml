@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>code in English. File generated from metadata database.</comment>
+<entry key="code|name|authority-activity.defence">Defence</entry>
+<entry key="code|name|authority-activity.econ-aff">Economic affairs</entry>
+<entry key="code|name|authority-activity.education">Education</entry>
+<entry key="code|name|authority-activity.env-pro">Environmental protection</entry>
+<entry key="code|name|authority-activity.gen-pub">General public services</entry>
+<entry key="code|name|authority-activity.hc-am">Housing and community amenities</entry>
+<entry key="code|name|authority-activity.health">Health</entry>
+<entry key="code|name|authority-activity.rcr">Recreation, culture and religion</entry>
+<entry key="code|name|authority-activity.soc-pro">Social protection</entry>
+<entry key="code|name|main-activity.airport">Airport-related activities</entry>
+<entry key="code|name|main-activity.defence">Defence</entry>
+<entry key="code|name|main-activity.econ-aff">Economic affairs</entry>
+<entry key="code|name|main-activity.education">Education</entry>
+<entry key="code|name|main-activity.electricity">Electricity-related activities</entry>
+<entry key="code|name|main-activity.env-pro">Environmental protection</entry>
+<entry key="code|name|main-activity.gas-heat">Production, transport or distribution of gas or heat</entry>
+<entry key="code|name|main-activity.gas-oil">Extraction of gas or oil</entry>
+<entry key="code|name|main-activity.gen-pub">General public services</entry>
+<entry key="code|name|main-activity.hc-am">Housing and community amenities</entry>
+<entry key="code|name|main-activity.health">Health</entry>
+<entry key="code|name|main-activity.port">Port-related activities</entry>
+<entry key="code|name|main-activity.post">Postal services</entry>
+<entry key="code|name|main-activity.pub-os">Public order and safety</entry>
+<entry key="code|name|main-activity.rail">Railway services</entry>
+<entry key="code|name|main-activity.rcr">Recreation, culture and religion</entry>
+<entry key="code|name|main-activity.soc-pro">Social protection</entry>
+<entry key="code|name|main-activity.solid-fuel">Exploration or extraction of coal or other solid fuels</entry>
+<entry key="code|name|main-activity.urttb">Urban railway, tramway, trolleybus or bus services</entry>
+<entry key="code|name|main-activity.water">Water-related activities</entry>
+</properties>
