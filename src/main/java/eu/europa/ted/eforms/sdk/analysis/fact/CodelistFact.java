@@ -2,8 +2,8 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import java.util.List;
 import java.util.Set;
-import eu.europa.ted.eforms.sdk.domain.codelist.Codelist;
-import eu.europa.ted.eforms.sdk.domain.xml.ColumnSet.Column;
+import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.ColumnSet.Column;
 
 public class CodelistFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 597836162298039219L;

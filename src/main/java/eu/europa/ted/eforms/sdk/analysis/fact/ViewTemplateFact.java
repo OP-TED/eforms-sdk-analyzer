@@ -1,6 +1,6 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
-import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
 
 public class ViewTemplateFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 591669979811179909L;

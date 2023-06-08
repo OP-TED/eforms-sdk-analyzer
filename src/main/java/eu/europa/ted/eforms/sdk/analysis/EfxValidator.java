@@ -17,14 +17,15 @@ import org.slf4j.LoggerFactory;
 import eu.europa.ted.eforms.sdk.ComponentFactory;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.SdkVersion;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.StringConstraint;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.StringProperty;
+import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
+import eu.europa.ted.eforms.sdk.analysis.efx.mock.MarkupGeneratorMock;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
-import eu.europa.ted.eforms.sdk.domain.field.Field;
-import eu.europa.ted.eforms.sdk.domain.field.StringConstraint;
-import eu.europa.ted.eforms.sdk.domain.field.StringProperty;
-import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.efx.EfxTranslator;
 import eu.europa.ted.efx.exceptions.ThrowingErrorListener;
 import eu.europa.ted.efx.interfaces.MarkupGenerator;
@@ -32,7 +33,6 @@ import eu.europa.ted.efx.interfaces.ScriptGenerator;
 import eu.europa.ted.efx.interfaces.SymbolResolver;
 import eu.europa.ted.efx.interfaces.TranslatorDependencyFactory;
 import eu.europa.ted.efx.interfaces.TranslatorOptions;
-import eu.europa.ted.efx.mock.MarkupGeneratorMock;
 
 public class EfxValidator implements Validator {
   private static final Logger logger = LoggerFactory.getLogger(EfxValidator.class);

@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.drools.RulesRunner;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
+import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
-import eu.europa.ted.eforms.sdk.util.SdkMetadataParser;
 
 public class SdkAnalyzer {
   private static final Logger logger = LoggerFactory.getLogger(SdkAnalyzer.class);

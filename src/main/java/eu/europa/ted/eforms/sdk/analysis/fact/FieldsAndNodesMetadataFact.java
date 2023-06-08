@@ -2,7 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import org.apache.commons.lang3.StringUtils;
 
-import eu.europa.ted.eforms.sdk.domain.EFormsTrackableEntity;
+import eu.europa.ted.eforms.sdk.analysis.domain.EFormsTrackableEntity;
 
 public class FieldsAndNodesMetadataFact implements SdkComponentFact<String> {
   private EFormsTrackableEntity metadata;

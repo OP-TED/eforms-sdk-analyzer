@@ -2,7 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
-import eu.europa.ted.eforms.sdk.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
 
 rule "Codes in tailored codelists are present in parent codelist"
 when

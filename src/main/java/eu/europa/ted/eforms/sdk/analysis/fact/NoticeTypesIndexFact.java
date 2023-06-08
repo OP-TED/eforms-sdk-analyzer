@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
-import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeSubTypeForIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypesForIndex;
 
 public class NoticeTypesIndexFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 780561935375885850L;

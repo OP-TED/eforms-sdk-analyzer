@@ -2,8 +2,8 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
-import eu.europa.ted.eforms.sdk.domain.field.Field;
-import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
 
 rule "Fields.json has correct SDK version"
 when
