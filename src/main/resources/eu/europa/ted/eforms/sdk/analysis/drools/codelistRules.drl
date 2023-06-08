@@ -49,3 +49,11 @@ when
 then
   results.add(new ValidationResult($cl, "Codelist contains duplicate codes: " + $duplicates, ValidationStatusEnum.ERROR));
 end
+
+rule "Label indicated in codelists index exists"
+when
+  /codelistsIndex[ $cli: this ]/indexItems[ $labelId: labelId ]
+  not (exists /labels[ id == $labelId ])
+then
+  results.add(new ValidationResult($cli, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end
