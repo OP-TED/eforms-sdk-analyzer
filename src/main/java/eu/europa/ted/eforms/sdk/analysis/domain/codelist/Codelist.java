@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.ColumnSet.Column;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row;
 
 public class Codelist implements Serializable {
   private static final long serialVersionUID = 9090505617139835976L;
@@ -14,6 +15,8 @@ public class Codelist implements Serializable {
   private List<String> codes;
 
   private List<Column> columnDefinitions;
+
+  private List<Row> rows;
 
   // Name of the file that contains the codelist.
   // This is rather metadata for the codelist, but its simpler to have it here.
@@ -49,6 +52,14 @@ public class Codelist implements Serializable {
   
   public void setColumnDefinitions(List<Column> columnDefinitions) {
     this.columnDefinitions = columnDefinitions;
+  }
+
+  public List<Row> getRows() {
+    return rows;
+  }
+
+  public void setRows(List<Row> rows) {
+    this.rows = rows;
   }
 
   public String getFilename() {

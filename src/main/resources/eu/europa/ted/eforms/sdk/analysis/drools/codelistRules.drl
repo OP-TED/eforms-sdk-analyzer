@@ -3,6 +3,8 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 unit SdkUnit;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row.Value;
 
 rule "Codes in tailored codelists are present in parent codelist"
 when
@@ -56,4 +58,12 @@ when
   not (exists /labels[ id == $labelId ])
 then
   results.add(new ValidationResult($cli, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+rule "Every column reference exists in the column definition"
+when
+  /codelists[ $cl: this ]/rows/value[ $colRef: columnRef ]
+  not (exists /codelists[ this == $cl ]/columnDefinitions[ id == $colRef ])
+then
+  results.add(new ValidationResult($cl, "Codelist does not have a definition for column " + $colRef, ValidationStatusEnum.ERROR));
 end

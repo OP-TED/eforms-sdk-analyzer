@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.ColumnSet.Column;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row;
 
 public class CodelistFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 597836162298039219L;
@@ -31,6 +32,10 @@ public class CodelistFact implements SdkComponentFact<String> {
 
   public List<Column> getColumnDefinitions() {
     return codelist.getColumnDefinitions();
+  }
+
+  public List<Row> getRows() {
+    return codelist.getRows();
   }
 
   public String getFilename() {

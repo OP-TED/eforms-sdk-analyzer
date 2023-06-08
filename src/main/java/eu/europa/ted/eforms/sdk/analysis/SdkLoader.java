@@ -276,6 +276,8 @@ public class SdkLoader {
 
           codelist.setColumnDefinitions(codelistXmlPojo.getColumnSet().getColumn());
 
+          codelist.setRows(codelistXmlPojo.getSimpleCodeList().getRow());
+
           result.add(codelist);
         }
       }
