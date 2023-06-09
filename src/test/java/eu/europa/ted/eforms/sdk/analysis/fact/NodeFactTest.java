@@ -2,7 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
 
 class NodeFactTest {
   @Test

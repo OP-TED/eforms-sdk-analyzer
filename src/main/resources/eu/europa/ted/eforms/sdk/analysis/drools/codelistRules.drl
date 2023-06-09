@@ -1,0 +1,85 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row.Value;
+
+rule "Codes in tailored codelists are present in parent codelist"
+when
+  $tailoredcode : /codelists[ $tailored: this, $parentId: parentId, isTailored == true ]/codes
+  not (exists /codelists[ id == $parentId, codes contains $tailoredcode ])
+then
+  results.add(new ValidationResult($tailored, "Code " + $tailoredcode + " is not present in parent codelist " + $parentId, ValidationStatusEnum.ERROR));
+end
+
+rule "Codelist indicated in codelists index exists"
+when
+  /codelistsIndex[ $cli: this ]/indexItems[ $codelistId: id, $filename: filename ]
+  not (exists /codelists[ id == $codelistId, filename == $filename ])
+then
+  results.add(new ValidationResult($cli, "Codelist with id " + $codelistId + " is not present the codelists folder with filename " + $filename, ValidationStatusEnum.ERROR));
+end
+
+rule "Codelist files are indicated in codelists index"
+when
+  /codelists[ $cl: this, $codelistId: id, $filename: filename ]
+  not (exists /codelistsIndex/indexItems[ id == $codelistId, filename == $filename ])
+then
+  results.add(new ValidationResult($cl, "Codelist file " + $filename + " with id " + $codelistId + " is not listed in codelists.json", ValidationStatusEnum.ERROR));
+end
+
+rule "Codelist filenames are as expected"
+when
+  /codelists[ $cl: this, $filename: filename, filename != expectedFilename ]
+then
+  results.add(new ValidationResult($cl, "Codelist file " + $filename + " does not have the expected filename", ValidationStatusEnum.ERROR));
+end
+
+rule "Every codelist has a column for the code"
+when
+  /codelists[ $cl: this ]
+  not (exists /codelists[ this == $cl ]/columnDefinitions[ id == "code", use == "required" ])
+then
+  results.add(new ValidationResult($cl, "Codelist does not have a 'code' column", ValidationStatusEnum.ERROR));
+end
+
+rule "Every code is unique in the codelist"
+when
+  $duplicates : /codelists[ $cl: this ]/duplicateCodes
+then
+  results.add(new ValidationResult($cl, "Codelist contains duplicate codes: " + $duplicates, ValidationStatusEnum.ERROR));
+end
+
+rule "Label indicated in codelists index exists"
+when
+  /codelistsIndex[ $cli: this ]/indexItems[ $labelId: labelId ]
+  not (exists /labels[ id == $labelId ])
+then
+  results.add(new ValidationResult($cli, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+rule "Every column reference exists in the column definition"
+when
+  /codelists[ $cl: this ]/rows/value[ $colRef: columnRef ]
+  not (exists /codelists[ this == $cl ]/columnDefinitions[ id == $colRef ])
+then
+  results.add(new ValidationResult($cl, "Codelist does not have a definition for column " + $colRef, ValidationStatusEnum.ERROR));
+end
+
+rule "Parent code exists in the codelist"
+when
+  /codelists[ $cl: this ]/rows/value[ $parentCode: simpleValue,  columnRef == "parentCode"]
+  not (exists /codelists[ this == $cl, codes contains $parentCode ])
+then
+  results.add(new ValidationResult($cl, "Codelist does not have a code for parent code " + $parentCode, ValidationStatusEnum.ERROR));
+end
+
+rule "Every code has a label"
+when
+  $code : /codelists[ $cl: this, $codelistId: id ]/codes
+  not (exists /labels[ id == "code|name|" + $codelistId + "." + $code ])
+then
+  results.add(new ValidationResult($cl, "Code " + $code + " does not have a corresponding label", ValidationStatusEnum.ERROR));
+end

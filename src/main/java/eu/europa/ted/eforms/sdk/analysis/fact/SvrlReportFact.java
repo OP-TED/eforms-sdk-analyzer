@@ -1,7 +1,7 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import org.apache.commons.lang3.Validate;
-import eu.europa.ted.eforms.sdk.domain.SvrlReport;
+import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
 
 public class SvrlReportFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 2253226277261559611L;

@@ -23,8 +23,8 @@ import eu.europa.ted.eforms.sdk.analysis.EfxValidator;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
 import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzer;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
+import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
-import eu.europa.ted.eforms.sdk.util.SdkMetadataParser;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -113,6 +113,12 @@ public class SdkValidationSteps {
   public void i_load_all_codelists()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
     sdkUnit.setCodelists(new FactsLoader(testsFolder).loadCodelists());
+  }
+
+  @When("I load the codelists index")
+  public void i_load_the_codelists_index()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    sdkUnit.setCodelistsIndex(new FactsLoader(testsFolder).loadCodelistsIndex());
   }
 
   @When("I load all notice examples")

@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 
-import eu.europa.ted.eforms.sdk.domain.field.AbstractConstraint;
-import eu.europa.ted.eforms.sdk.domain.field.AbstractFieldProperty;
-import eu.europa.ted.eforms.sdk.domain.field.BooleanConstraint;
-import eu.europa.ted.eforms.sdk.domain.field.Field;
-import eu.europa.ted.eforms.sdk.domain.field.FieldPrivacy;
-import eu.europa.ted.eforms.sdk.domain.field.XmlElementPosition;
-import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.AbstractConstraint;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.AbstractFieldProperty;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.BooleanConstraint;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldPrivacy;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
 
 public class FieldFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -8325643682910825716L;
@@ -221,7 +221,7 @@ public class FieldFact implements SdkComponentFact<String> {
       if (property != null) {
         labelIds.add(property.getMessage());
         // Constraints can also reference a label
-        labelIds.addAll(property.getAllContraintsLabelIds());
+        labelIds.addAll(property.getAllConstraintsLabelIds());
       }
     });
 

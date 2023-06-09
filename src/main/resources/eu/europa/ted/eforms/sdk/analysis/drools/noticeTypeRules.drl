@@ -3,9 +3,9 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 unit SdkUnit;
 
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
-import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContent;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeSubTypeForIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypeContent;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 

@@ -1,0 +1,26 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.8.0",
+  "metadataDatabase" : {
+    "version" : "1.8.0",
+    "createdOn" : "2023-06-02T14:00:00"
+  },
+  "codelists" : [ {
+    "id" : "accelerated-procedure",
+    "parentId" : "indicator",
+    "filename" : "indicator_accelerated-procedure.gc",
+    "description" : "List of codes to specify whether a procedure is accelerated or not.",
+    "_label" : "codelist|name|accelerated-procedure"
+  }, {
+    "id" : "authority-activity",
+    "parentId" : "main-activity",
+    "filename" : "main-activity_authority-activity.gc",
+    "description" : "List of Main Activity codes allowed for a Contracting Authority",
+    "_label" : "codelist|name|authority-activity"
+  }, {
+    "id" : "main-activity",
+    "filename" : "main-activity.gc",
+    "description" : "List of codes for the main activities of the buyers.",
+    "_label" : "codelist|name|main-activity"
+  } ]
+}

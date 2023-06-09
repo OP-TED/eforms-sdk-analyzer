@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeContent;
-import eu.europa.ted.eforms.sdk.domain.noticetype.enums.NoticeTypeContentType;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeType;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypeContent;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.enums.NoticeTypeContentType;
 
 public class NoticeTypeFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 8298379634322672452L;

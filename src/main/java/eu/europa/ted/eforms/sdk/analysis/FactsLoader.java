@@ -11,7 +11,18 @@ import org.drools.ruleunits.api.DataStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+import eu.europa.ted.eforms.sdk.analysis.domain.Label;
+import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
+import eu.europa.ted.eforms.sdk.analysis.domain.XmlNotice;
+import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeType;
+import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplatesIndex;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.CodelistsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldsAndNodesMetadataFact;
@@ -22,16 +33,6 @@ import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.SvrlReportFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
-import eu.europa.ted.eforms.sdk.domain.Codelist;
-import eu.europa.ted.eforms.sdk.domain.Label;
-import eu.europa.ted.eforms.sdk.domain.SvrlReport;
-import eu.europa.ted.eforms.sdk.domain.XmlNotice;
-import eu.europa.ted.eforms.sdk.domain.field.Field;
-import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
-import eu.europa.ted.eforms.sdk.domain.noticetype.DocumentType;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
-import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
-import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplatesIndex;
 
 public class FactsLoader {
   private static final Logger logger = LoggerFactory.getLogger(FactsLoader.class);
@@ -138,6 +139,15 @@ public class FactsLoader {
     final DataStore<CodelistFact> datastore = DataSource.createStore();
     sdkLoader.getCodelists()
         .forEach((Codelist codelist) -> datastore.add(new CodelistFact(codelist)));
+
+    return datastore;
+  }
+
+  public DataStore<CodelistsIndexFact> loadCodelistsIndex() throws IOException {
+    logger.debug("Creating facts datastore for codelists index");
+
+    final DataStore<CodelistsIndexFact> datastore = DataSource.createStore();
+    datastore.add(new CodelistsIndexFact(sdkLoader.getCodelistsIndex()));
 
     return datastore;
   }

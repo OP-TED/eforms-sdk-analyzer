@@ -22,30 +22,31 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
-import eu.europa.ted.eforms.sdk.domain.Codelist;
-import eu.europa.ted.eforms.sdk.domain.EFormsTrackableEntity;
-import eu.europa.ted.eforms.sdk.domain.Label;
-import eu.europa.ted.eforms.sdk.domain.SvrlReport;
-import eu.europa.ted.eforms.sdk.domain.Translation;
-import eu.europa.ted.eforms.sdk.domain.XmlNotice;
-import eu.europa.ted.eforms.sdk.domain.enums.Language;
-import eu.europa.ted.eforms.sdk.domain.field.Field;
-import eu.europa.ted.eforms.sdk.domain.field.FieldsAndNodes;
-import eu.europa.ted.eforms.sdk.domain.field.XmlStructureNode;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeSubTypeForIndex;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeType;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypeSdk;
-import eu.europa.ted.eforms.sdk.domain.noticetype.NoticeTypesForIndex;
-import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplateIndex;
-import eu.europa.ted.eforms.sdk.domain.view.index.TedefoViewTemplatesIndex;
-import eu.europa.ted.eforms.sdk.domain.xml.CodeList;
-import eu.europa.ted.eforms.sdk.domain.xml.Identification;
-import eu.europa.ted.eforms.sdk.domain.xml.Properties;
-import eu.europa.ted.eforms.sdk.domain.xml.Properties.Entry;
-import eu.europa.ted.eforms.sdk.domain.xml.SimpleCodeList.Row;
-import eu.europa.ted.eforms.sdk.domain.xml.SimpleCodeList.Row.Value;
-import eu.europa.ted.eforms.sdk.util.XmlDataExtractor;
-import eu.europa.ted.eforms.sdk.util.XmlParser;
+import eu.europa.ted.eforms.sdk.analysis.domain.EFormsTrackableEntity;
+import eu.europa.ted.eforms.sdk.analysis.domain.Label;
+import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
+import eu.europa.ted.eforms.sdk.analysis.domain.Translation;
+import eu.europa.ted.eforms.sdk.analysis.domain.XmlNotice;
+import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.analysis.domain.codelist.CodelistsIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.enums.Language;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldsAndNodes;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeSubTypeForIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeType;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypeSdk;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypesForIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplatesIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.CodeList;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.Identification;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.Properties;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.Properties.Entry;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row.Value;
+import eu.europa.ted.eforms.sdk.analysis.util.XmlDataExtractor;
+import eu.europa.ted.eforms.sdk.analysis.util.XmlParser;
 
 public class SdkLoader {
   private static final Logger logger = LoggerFactory.getLogger(SdkLoader.class);
@@ -229,7 +230,6 @@ public class SdkLoader {
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
     final Set<Codelist> result = new HashSet<>();
 
-    Codelist codelist = null;
     CodeList codelistXmlPojo = null;
 
     DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
@@ -246,7 +246,9 @@ public class SdkLoader {
         if (!Files.isDirectory(path)) {
           codelistXmlPojo = XmlParser.loadXmlFile(CodeList.class, path);
 
-          codelist = new Codelist();
+          final Codelist codelist = new Codelist();
+
+          codelist.setFilename(path.getFileName().toString());
 
           codelist.setId(codelistXmlPojo
               .getIdentification()
@@ -256,6 +258,13 @@ public class SdkLoader {
               .get()
               .getValue());
 
+          codelistXmlPojo
+              .getIdentification()
+              .getLongName().stream()
+              .filter(longName -> "eFormsParentId".equals(longName.getIdentifier()))
+              .findFirst()
+              .ifPresent(l -> codelist.setParentId(l.getValue()));
+
           codelist.setCodes(codelistXmlPojo
               .getSimpleCodeList()
               .getRow().stream()
@@ -263,7 +272,11 @@ public class SdkLoader {
                   .filter((Value rowValue) -> rowValue.getColumnRef().equals("code"))
                   .map(Value::getSimpleValue).findFirst()
                   .get())
-              .collect(Collectors.toSet()));
+              .collect(Collectors.toList()));
+
+          codelist.setColumnDefinitions(codelistXmlPojo.getColumnSet().getColumn());
+
+          codelist.setRows(codelistXmlPojo.getSimpleCodeList().getRow());
 
           result.add(codelist);
         }
@@ -271,6 +284,11 @@ public class SdkLoader {
     }
 
     return result;
+  }
+
+  public CodelistsIndex getCodelistsIndex() throws IOException {
+    return loadJsonFile(CodelistsIndex.class,
+        Path.of(sdkRoot.toString(), SdkResource.CODELISTS_JSON.getPath().toString()));
   }
 
   public Set<XmlNotice> getXmlNotices()
