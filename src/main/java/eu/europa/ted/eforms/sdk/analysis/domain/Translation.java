@@ -3,9 +3,13 @@ package eu.europa.ted.eforms.sdk.analysis.domain;
 import java.util.Map;
 import eu.europa.ted.eforms.sdk.analysis.domain.enums.Language;
 
+/**
+ * Represents the information in one file in the translations folder:
+ * A set of labels, all in the same language.
+ */
 public class Translation {
   private String comment;
-  private Map<Label, String> labels;
+  private Map<String, Label> labels;
   private Language language;
 
   public String getComment() {
@@ -16,11 +20,11 @@ public class Translation {
     this.comment = comment;
   }
 
-  public Map<Label, String> getLabels() {
+  public Map<String, Label> getLabels() {
     return labels;
   }
 
-  public void setLabels(Map<Label, String> labels) {
+  public void setLabels(Map<String, Label> labels) {
     this.labels = labels;
   }
 

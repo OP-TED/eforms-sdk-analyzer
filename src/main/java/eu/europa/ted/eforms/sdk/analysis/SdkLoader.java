@@ -194,13 +194,15 @@ public class SdkLoader {
         if (!Files.isDirectory(path)) {
           translationProperties = XmlParser.loadXmlFile(Properties.class, path);
 
+          Language language = Language.valueOf(
+              path.getFileName().toString().replaceAll("^.*?_(.*?).xml$", "$1").toUpperCase());
           translation = new Translation();
           translation.setComment(translationProperties.getComment());
-          translation.setLanguage(Language.valueOf(
-              path.getFileName().toString().replaceAll("^.*?_(.*?).xml$", "$1").toUpperCase()));
+          translation.setLanguage(language);
           translation.setLabels(translationProperties.getEntry().stream()
               .collect(
-                  Collectors.toMap((Entry entry) -> new Label(entry.getKey()), Entry::getValue)));
+                  Collectors.toMap((Entry entry) -> entry.getKey(),
+                      (Entry entry) -> new Label(entry.getKey(), language, entry.getValue()))));
 
           result.add(translation);
         }
@@ -213,7 +215,7 @@ public class SdkLoader {
   public Set<Label> getLabels()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
     return getTranslations().stream()
-        .flatMap((Translation translation) -> translation.getLabels().keySet().stream())
+        .flatMap((Translation translation) -> translation.getLabels().values().stream())
         .collect(Collectors.toSet());
   }
 
