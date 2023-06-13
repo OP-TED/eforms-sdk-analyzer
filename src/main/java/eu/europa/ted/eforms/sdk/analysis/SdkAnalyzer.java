@@ -27,13 +27,16 @@ public class SdkAnalyzer {
 
     final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(sdkRoot);
 
+    final Validator xmlSchemaValidator = analyzeXmlSchema(sdkRoot);
+
     final Validator templatesValidator = analyzeTemplates(sdkRoot, sdkMetadata.getVersion());
 
     final Validator sdkValidator = analyzeSdk(sdkRoot, sdkMetadata);
 
-    final String[] warnings =
-        concatArrays(templatesValidator.getWarnings(), sdkValidator.getWarnings());
-    final String[] errors = concatArrays(templatesValidator.getErrors(), sdkValidator.getErrors());
+    final String[] warnings = concatArrays(xmlSchemaValidator.getWarnings(),
+        templatesValidator.getWarnings(), sdkValidator.getWarnings());
+    final String[] errors = concatArrays(xmlSchemaValidator.getErrors(),
+        templatesValidator.getErrors(), sdkValidator.getErrors());
 
     if (ArrayUtils.isNotEmpty(warnings) && logger.isWarnEnabled()) {
       logger.warn("Validation warnings:\n{}", StringUtils.join(warnings, '\n'));
@@ -52,6 +55,11 @@ public class SdkAnalyzer {
     return Stream.of(arrays)
         .flatMap(Stream::of)
         .toArray(String[]::new);
+  }
+
+  private static Validator analyzeXmlSchema(final Path sdkRoot)
+      throws IOException {
+    return new XmlSchemaValidator(sdkRoot).validateXmlSchemas();
   }
 
   private static Validator analyzeTemplates(final Path sdkRoot, final String sdkVersion)

@@ -22,6 +22,7 @@ import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.EfxValidator;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
 import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzer;
+import eu.europa.ted.eforms.sdk.analysis.XmlSchemaValidator;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
 import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
@@ -37,6 +38,7 @@ public class SdkValidationSteps {
 
   private SdkUnit sdkUnit;
   private EfxValidator efxValidator;
+  private XmlSchemaValidator schemaValidator;
 
   private List<String> testedRules = new ArrayList<>();
 
@@ -186,6 +188,22 @@ public class SdkValidationSteps {
     }
   }
 
+  @When("I execute schema validation")
+  public void i_execute_schema_validation() throws IOException {
+    schemaValidator = new XmlSchemaValidator(testsFolder);
+    schemaValidator.validateXmlSchemas();
+
+    if (schemaValidator.hasWarnings()) {
+      logger.warn("Validation warnings:\n{}",
+          StringUtils.join(schemaValidator.getWarnings(), '\n'));
+    }
+
+    if (schemaValidator.hasErrors()) {
+      logger.error("Validation errors:\n{}",
+          StringUtils.join(schemaValidator.getErrors(), '\n'));
+    }
+  }
+
   @Then("No rules should have been fired")
   public void no_rules_should_have_been_fired() {
     assertEquals(0, sdkUnit.getFiredRules().size());
@@ -212,6 +230,11 @@ public class SdkValidationSteps {
   @Then("^I should get (.*) EFX validation errors?$")
   public void i_should_get_efx_validation_errors(int errorsCount) {
     assertEquals(errorsCount, efxValidator.getErrors().length);
+  }
+
+  @Then("^I should get (.*) schema validation errors?$")
+  public void i_should_get_schema_validation_errors(int errorsCount) {
+    assertEquals(errorsCount, schemaValidator.getErrors().length);
   }
 
   @Then("I should get not found exception for file {string}")
