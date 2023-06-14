@@ -111,6 +111,10 @@ public class FieldFact implements SdkComponentFact<String> {
     return field.getXpathRelative();
   }
 
+  public String getType() {
+    return field.getType();
+  }
+
   /*
    * Return a stream of the dynamic properties of the field
    */
