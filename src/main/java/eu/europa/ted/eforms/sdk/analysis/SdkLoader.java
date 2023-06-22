@@ -12,9 +12,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -329,5 +331,21 @@ public class SdkLoader {
     }
 
     return result;
+  }
+
+  public XmlSchemaCollection getXmlSchemas() throws IOException {
+    XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+
+    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
+        Path.of(sdkRoot.toString(), SdkResource.SCHEMAS_MAINDOC.getPath().toString()))) {
+
+      for (Path path : dirStream) {
+        if (!Files.isDirectory(path)) {
+          schemaCol.read(new StreamSource(path.toFile()));
+        }
+      }
+    }
+
+    return schemaCol;
   }
 }
