@@ -237,9 +237,6 @@ public class XmlSchemaValidator implements Validator {
 
     XmlSchemaElement element = schemaCollection.getElementByQName(elementQName);
   
-    if (elementQName.getLocalPart().equals("NoticeDocumentReference")) {
-      logger.debug("");
-    }
     long maxOccurs = findElementMaxOccursUnder(element, parent);
 
     if (maxOccurs < 0) {
