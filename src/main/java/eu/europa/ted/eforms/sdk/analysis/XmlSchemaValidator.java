@@ -89,6 +89,8 @@ public class XmlSchemaValidator implements Validator {
   /*
    * Check that the schema allows the element corresponding to the field to occur several times
    * under its parent node.
+   * If the parent node has the relative XPath A/B, and the field has C/D, then we need to
+   * check that C can be repeated under B.
    */
   private void checkFieldRepeatability(Field field) {
     if (!field.getRepeatable().getValue()) {
@@ -96,7 +98,8 @@ public class XmlSchemaValidator implements Validator {
       return;
     }
 
-    final QName fieldQName = buildQName(getLastElementName(field.getXpathRelative()));
+    // If the field's relative XPath has several steps, it's the first that must be repeatable
+    final QName fieldQName = buildQName(getFirstElementName(field.getXpathRelative()));
 
     if (field.getParentNodeId().equals(ROOT_NODE_ID)) {
       // We don't know in which document root(s) the field can appear, so we look at all roots,
@@ -120,6 +123,8 @@ public class XmlSchemaValidator implements Validator {
   /*
    * Check that the schema allows the element corresponding to the node to occur several times
    * under its given parent.
+   * If the node has the relative XPath C/D, and it's parent node has A/B, then we need to
+   * check that C can be repeated under B.
    */
   private void checkNodeRepeatability(XmlStructureNode node) {
     if (!node.isRepeatable()) {
@@ -127,7 +132,8 @@ public class XmlSchemaValidator implements Validator {
       return;
     }
 
-    final QName nodeQName = buildQName(getLastElementName(node.getXpathRelative()));
+    // If the node's relative XPath has several steps, it's the first that must be repeatable
+    final QName nodeQName = buildQName(getFirstElementName(node.getXpathRelative()));
 
     XmlStructureNode parentNode = node.getParent();
 
@@ -146,6 +152,15 @@ public class XmlSchemaValidator implements Validator {
             "Node is repeatable but this is not allowed by the schema", ValidationStatusEnum.ERROR));
       }
     }
+  }
+
+  /**
+   * Return the name of the element that is the first step in the given XPath,
+   * removing any predicate.
+   */
+  private String getFirstElementName(String xpath) {
+    List<String> names = XPathSplitter.getStepElementNames(xpath);
+    return names.get(0);
   }
 
   /**
@@ -222,9 +237,6 @@ public class XmlSchemaValidator implements Validator {
 
     XmlSchemaElement element = schemaCollection.getElementByQName(elementQName);
   
-    if (elementQName.getLocalPart().equals("NoticeDocumentReference")) {
-      logger.debug("");
-    }
     long maxOccurs = findElementMaxOccursUnder(element, parent);
 
     if (maxOccurs < 0) {
