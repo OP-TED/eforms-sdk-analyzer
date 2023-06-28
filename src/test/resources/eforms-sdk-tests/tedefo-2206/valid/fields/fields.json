@@ -2001,5 +2001,36 @@
         "message" : "rule|text|BR-BT-00198-4003"
       } ]
     }
+  }, {
+    "id" : "BT-702(b)-notice",
+    "parentNodeId" : "ND-Root",
+    "name" : "Notice Official Language",
+    "btId" : "BT-702",
+    "xpathAbsolute" : "/*/cac:AdditionalNoticeLanguage/cbc:ID",
+    "xpathRelative" : "cac:AdditionalNoticeLanguage/cbc:ID",
+    "xsdSequenceOrder" : [ { "cac:AdditionalNoticeLanguage" : 22 }, { "cbc:ID" : 2 } ],
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : true,
+      "severity" : "ERROR"
+    },
+    "codeList" : {
+      "value" : {
+        "id" : "eu-official-language",
+        "type" : "flat"
+      },
+      "severity" : "ERROR"
+    },
+    "assert" : {
+      "value" : "{ND-Root} ${TRUE}",
+      "severity" : "ERROR",
+      "constraints" : [ {
+        "condition" : "{BT-702(b)-notice} ${BT-702(b)-notice is present}",
+        "value" : "{BT-702(b)-notice} ${BT-702(b)-notice is unique in /BT-702(b)-notice}",
+        "severity" : "ERROR",
+        "message" : "rule|text|BR-BT-00702-0151"
+      } ]
+    }
   } ]
 }
