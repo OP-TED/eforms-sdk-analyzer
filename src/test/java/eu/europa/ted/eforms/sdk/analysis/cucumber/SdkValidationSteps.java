@@ -22,6 +22,7 @@ import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.EfxValidator;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
 import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzer;
+import eu.europa.ted.eforms.sdk.analysis.TextValidator;
 import eu.europa.ted.eforms.sdk.analysis.XmlSchemaValidator;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
 import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
@@ -38,6 +39,7 @@ public class SdkValidationSteps {
 
   private SdkUnit sdkUnit;
   private EfxValidator efxValidator;
+  private TextValidator textValidator;
   private XmlSchemaValidator schemaValidator;
 
   private List<String> testedRules = new ArrayList<>();
@@ -204,6 +206,23 @@ public class SdkValidationSteps {
     }
   }
 
+  @When("I execute text validation")
+  public void i_execute_text_validation() throws IOException, JAXBException, SAXException,
+      ParserConfigurationException {
+    textValidator = new TextValidator(testsFolder);
+    textValidator.validateTranslationTexts();
+
+    if (textValidator.hasWarnings()) {
+      logger.warn("Validation warnings:\n{}",
+          StringUtils.join(textValidator.getWarnings(), '\n'));
+    }
+
+    if (textValidator.hasErrors()) {
+      logger.error("Validation errors:\n{}",
+          StringUtils.join(textValidator.getErrors(), '\n'));
+    }
+  }
+
   @Then("No rules should have been fired")
   public void no_rules_should_have_been_fired() {
     assertEquals(0, sdkUnit.getFiredRules().size());
@@ -235,6 +254,11 @@ public class SdkValidationSteps {
   @Then("^I should get (.*) schema validation errors?$")
   public void i_should_get_schema_validation_errors(int errorsCount) {
     assertEquals(errorsCount, schemaValidator.getErrors().length);
+  }
+
+  @Then("^I should get (.*) text validation errors?$")
+  public void i_should_get_text_validation_errors(int errorsCount) {
+    assertEquals(errorsCount, textValidator.getErrors().length);
   }
 
   @Then("I should get not found exception for file {string}")

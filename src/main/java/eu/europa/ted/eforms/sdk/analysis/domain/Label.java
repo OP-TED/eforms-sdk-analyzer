@@ -1,21 +1,23 @@
 package eu.europa.ted.eforms.sdk.analysis.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.enums.Language;
 
+/**
+ * A specific label, with all its translations in all languages.
+ */
 public class Label implements Serializable {
   private static final long serialVersionUID = -24724237531309137L;
 
   private final String id;
-  private final Language language;
-  private final String text;
+  private Map<Language, String> translations;
 
-
-  public Label(String id, Language language, String text) {
+  public Label(String id) {
     this.id = id;
-    this.language = language;
-    this.text = text;
+    this.translations = new HashMap<>();
   }
 
 
@@ -23,13 +25,15 @@ public class Label implements Serializable {
     return id;
   }
 
-
-  public Language getLanguage() {
-    return language;
+  public Map<Language, String> getTranslations() {
+    return translations;
   }
 
+  public void addTranslation(Language language, String text) {
+    translations.put(language, text);
+  }
 
-  public String getText() {
-    return text;
+  public String getText(Language lang) {
+    return translations.get(lang);
   }
 }
