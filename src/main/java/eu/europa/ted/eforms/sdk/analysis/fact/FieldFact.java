@@ -15,11 +15,14 @@ import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldPrivacy;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter;
 
 public class FieldFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -8325643682910825716L;
 
   private Field field;
+
+  private int stepCount = 0;
 
   public FieldFact(Field field) {
     this.field = field;
@@ -35,6 +38,10 @@ public class FieldFact implements SdkComponentFact<String> {
 
   public List<XmlElementPosition> getXsdSequenceOrder() {
     return field.getXsdSequenceOrder();
+  }
+
+  public int getXsdSequenceOrderCount() {
+    return getXsdSequenceOrder() == null ? 0 : getXsdSequenceOrder().size();
   }
 
   public boolean hasAncestor(String ancestorNodeId) {
@@ -109,6 +116,13 @@ public class FieldFact implements SdkComponentFact<String> {
 
   public String getXpathRelative() {
     return field.getXpathRelative();
+  }
+
+  public int getXpathRelativeStepCount() {
+    if (stepCount == 0 && getXpathRelative() != null) {
+      stepCount = XPathSplitter.getSteps(getXpathRelative()).size();
+    }
+    return stepCount;
   }
 
   public String getType() {

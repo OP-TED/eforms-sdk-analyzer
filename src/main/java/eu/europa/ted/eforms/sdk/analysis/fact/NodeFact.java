@@ -5,11 +5,14 @@ import java.util.List;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter;
 
 public class NodeFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -6237630016231337698L;
 
   private XmlStructureNode node;
+
+  private int stepCount = 0;
 
   public NodeFact(XmlStructureNode node) {
     this.node = node;
@@ -25,6 +28,10 @@ public class NodeFact implements SdkComponentFact<String> {
   
   public List<XmlElementPosition> getXsdSequenceOrder() {
     return node.getXsdSequenceOrder();
+  }
+
+  public int getXsdSequenceOrderCount() {
+    return getXsdSequenceOrder() == null ? 0 : getXsdSequenceOrder().size();
   }
 
   public boolean isRepeatable() {
@@ -69,6 +76,13 @@ public class NodeFact implements SdkComponentFact<String> {
 
   public String getXpathRelative() {
     return node.getXpathRelative();
+  }
+
+  public int getXpathRelativeStepCount() {
+    if (stepCount == 0 && getXpathRelative() != null) {
+      stepCount = XPathSplitter.getSteps(getXpathRelative()).size();
+    }
+    return stepCount;
   }
 
   @Override
