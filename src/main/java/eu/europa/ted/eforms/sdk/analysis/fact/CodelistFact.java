@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.ColumnSet.Column;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row;
+import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row.Value;
 
 public class CodelistFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = 597836162298039219L;
@@ -55,6 +56,24 @@ public class CodelistFact implements SdkComponentFact<String> {
       basename = getParentId() + "_" + getId();
     }
     return basename + ".gc";
+  }
+
+  public Set<String> getInvalidColumnRefs() {
+    Set<String> result = new HashSet<>();
+
+    // All column identifiers in the column definitions
+    Set<String> colIds = getColumnDefinitions().stream().map(Column::getId).collect(Collectors.toSet());
+
+    getRows().forEach(r -> {
+      // Find any column ref that is not in colIds 
+      result.addAll(r.getValue().stream()
+          .map(Value::getColumnRef)
+          .filter(v -> !colIds.contains(v))
+          .collect(Collectors.toSet())
+      );
+    });
+
+    return result;
   }
 
   @Override
