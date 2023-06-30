@@ -18,7 +18,7 @@ Feature: Codelists - Rows correspond to column definition
     When I load all codelists
     And I execute validation 
     Then Rule "<expected rule>" should have been fired
-    Then I should get 21 SDK validation errors
+    Then I should get 2 SDK validation errors
 
     Examples:
      | expected rule                                 |

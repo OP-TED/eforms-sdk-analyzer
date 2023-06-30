@@ -62,10 +62,9 @@ end
 
 rule "Every column reference exists in the column definition"
 when
-  /codelists[ $cl: this ]/rows/value[ $colRef: columnRef ]
-  not (exists /codelists[ this == $cl ]/columnDefinitions[ id == $colRef ])
+  $invalidColRef: /codelists[ $cl: this ]/invalidColumnRefs
 then
-  results.add(new ValidationResult($cl, "Codelist does not have a definition for column " + $colRef, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($cl, "Codelist does not have a definition for column " + $invalidColRef, ValidationStatusEnum.ERROR));
 end
 
 rule "Parent code exists in the codelist"

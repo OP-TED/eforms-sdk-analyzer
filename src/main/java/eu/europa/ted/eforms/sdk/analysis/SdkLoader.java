@@ -6,8 +6,10 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
@@ -27,7 +29,6 @@ import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.analysis.domain.EFormsTrackableEntity;
 import eu.europa.ted.eforms.sdk.analysis.domain.Label;
 import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
-import eu.europa.ted.eforms.sdk.analysis.domain.Translation;
 import eu.europa.ted.eforms.sdk.analysis.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.CodelistsIndex;
@@ -44,7 +45,6 @@ import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplatesIn
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.CodeList;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.Identification;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.Properties;
-import eu.europa.ted.eforms.sdk.analysis.domain.xml.Properties.Entry;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row.Value;
 import eu.europa.ted.eforms.sdk.analysis.util.XmlDataExtractor;
@@ -176,11 +176,10 @@ public class SdkLoader {
         SdkResource.NOTICE_TYPES.getPath().toString(), MessageFormat.format("{0}.json", noticeId)));
   }
 
-  public Set<Translation> getTranslations()
+  public Set<Label> getLabels()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    final Set<Translation> result = new HashSet<>();
+    final Map<String, Label> labels = new HashMap<>();
 
-    Translation translation = null;
     Properties translationProperties = null;
 
     DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
@@ -198,27 +197,16 @@ public class SdkLoader {
 
           Language language = Language.valueOf(
               path.getFileName().toString().replaceAll("^.*?_(.*?).xml$", "$1").toUpperCase());
-          translation = new Translation();
-          translation.setComment(translationProperties.getComment());
-          translation.setLanguage(language);
-          translation.setLabels(translationProperties.getEntry().stream()
-              .collect(
-                  Collectors.toMap((Entry entry) -> entry.getKey(),
-                      (Entry entry) -> new Label(entry.getKey(), language, entry.getValue()))));
 
-          result.add(translation);
+          translationProperties.getEntry().stream().forEach(e -> {
+            Label label = labels.computeIfAbsent(e.getKey(), k -> new Label(k));
+            label.addTranslation(language, e.getValue());
+          });          
         }
       }
     }
 
-    return result;
-  }
-
-  public Set<Label> getLabels()
-      throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    return getTranslations().stream()
-        .flatMap((Translation translation) -> translation.getLabels().values().stream())
-        .collect(Collectors.toSet());
+    return new HashSet<>(labels.values());
   }
 
   public TedefoViewTemplatesIndex getViewTemplatesIndex() throws IOException {

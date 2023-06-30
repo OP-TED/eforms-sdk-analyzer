@@ -31,12 +31,14 @@ public class SdkAnalyzer {
 
     final Validator templatesValidator = analyzeTemplates(sdkRoot, sdkMetadata.getVersion());
 
+    final Validator textValidator = analyzeTexts(sdkRoot);
+
     final Validator sdkValidator = analyzeSdk(sdkRoot, sdkMetadata);
 
     final String[] warnings = concatArrays(xmlSchemaValidator.getWarnings(),
-        templatesValidator.getWarnings(), sdkValidator.getWarnings());
+        templatesValidator.getWarnings(), textValidator.getWarnings(), sdkValidator.getWarnings());
     final String[] errors = concatArrays(xmlSchemaValidator.getErrors(),
-        templatesValidator.getErrors(), sdkValidator.getErrors());
+        templatesValidator.getErrors(), textValidator.getErrors(), sdkValidator.getErrors());
 
     if (ArrayUtils.isNotEmpty(warnings) && logger.isWarnEnabled()) {
       logger.warn("Validation warnings:\n{}", StringUtils.join(warnings, '\n'));
@@ -65,6 +67,11 @@ public class SdkAnalyzer {
   private static Validator analyzeTemplates(final Path sdkRoot, final String sdkVersion)
       throws IOException {
     return new EfxValidator(sdkRoot, sdkVersion).validateTemplates();
+  }
+
+  private static Validator analyzeTexts(final Path sdkRoot)
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    return new TextValidator(sdkRoot).validateTranslationTexts();
   }
 
   private static Validator analyzeSdk(final Path sdkRoot, SdkMetadata sdkMetadata)
