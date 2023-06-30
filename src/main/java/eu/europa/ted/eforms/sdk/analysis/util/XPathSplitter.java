@@ -52,7 +52,7 @@ public class XPathSplitter extends XPath20BaseListener {
  /**
    * Parses the given xpath and returns a list containing the element name for
    * each step that the XPath is comprised of.
-   * A step corresponding to an element is ignored, and predicates are removed from each element.
+   * A step corresponding to an attribute is ignored, and predicates are removed from each element.
    * So for "a/b/ns:foo[x = y]/@attr" this will return ("a", "b", "ns:foo")
    */
   public static List<String> getStepElementNames(String xpath) {
