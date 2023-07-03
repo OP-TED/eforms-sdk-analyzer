@@ -5,7 +5,9 @@ Feature: Fields and Nodes - Validate absolute xpath uniqueness
 
   Background:
     Given The following rules
-      | Xpath absolute uniqueness is verified |
+      | Absolute XPath of field is not equal to the absolute XPath of a node |
+      | Absolute XPath of field is not equal to the absolute XPath of another field |
+      | Absolute XPath of node is not equal to the absolute XPath of another node |
 
   Scenario: All absolute xpath are unique
     Given A "tedefo-2205" folder with "valid" files
@@ -20,8 +22,10 @@ Feature: Fields and Nodes - Validate absolute xpath uniqueness
     And I load all fields
     And I execute validation 
     Then Rule "<expected rule>" should have been fired 
-    Then I should get 1 SDK validation errors
+    Then I should get 3 SDK validation errors
 
     Examples:
      | expected rule                         |
-     | Xpath absolute uniqueness is verified |
+     | Absolute XPath of field is not equal to the absolute XPath of a node |
+     | Absolute XPath of field is not equal to the absolute XPath of another field |
+     | Absolute XPath of node is not equal to the absolute XPath of another node |
