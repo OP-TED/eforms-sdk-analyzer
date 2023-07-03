@@ -117,8 +117,8 @@ end
 
 rule "Absolute XPath of node is not equal to the absolute XPath of another node"
 when
-  /nodes[ $n: this, $xpathAbsoluteField: xpathAbsolute ];
-  /nodes[ $otherNodeId : id, id < $n.id, xpathAbsolute == $xpathAbsoluteField ]
+  /nodes[ $n: this, $xpathAbsoluteNode: xpathAbsolute ];
+  /nodes[ $otherNodeId : id, id < $n.id, xpathAbsolute == $xpathAbsoluteNode ]
 then
   results.add(new ValidationResult($n, "Absolute XPath is the same as for node " + $otherNodeId, ValidationStatusEnum.ERROR));
 end
