@@ -99,16 +99,28 @@ then
   results.add(new ValidationResult($f, "Privacy code " + $privacyCode + " is not in the codelist " + $codelistId, ValidationStatusEnum.ERROR));
 end
 
-// TEDEFO-2205: Xpath absolute uniqueness is verified.
-//  For fields.json file:
-//    The xpathAbsolute of a field should not be equal to the xpathAbsolute of a node
-rule "Xpath absolute uniqueness is verified"
+rule "Absolute XPath of field is not equal to the absolute XPath of a node"
 when
-  /fields[ $f: this, $fieldId : id, $xpathAbsoluteField: xpathAbsolute ];
-  /nodes[ $n: this, $nodeId : id, $xpathAbsoluteNode: xpathAbsolute ]
-  eval($xpathAbsoluteField == $xpathAbsoluteNode)
+  /fields[ $f: this, $xpathAbsoluteField: xpathAbsolute ];
+  /nodes[ $nodeId : id, xpathAbsolute == $xpathAbsoluteField ]
 then
-  results.add(new ValidationResult($f, "xpath absolute are equal for field " + $fieldId + ", node " + $nodeId, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Absolute XPath is the same as for node " + $nodeId, ValidationStatusEnum.ERROR));
+end
+
+rule "Absolute XPath of field is not equal to the absolute XPath of another field"
+when
+  /fields[ $f: this, $xpathAbsoluteField: xpathAbsolute, !id.startsWith("OPA-") ];
+  /fields[ $otherFieldId : id, id < $f.id, !id.startsWith("OPA-"), xpathAbsolute == $xpathAbsoluteField ]
+then
+  results.add(new ValidationResult($f, "Absolute XPath is the same as for field " + $otherFieldId, ValidationStatusEnum.ERROR));
+end
+
+rule "Absolute XPath of node is not equal to the absolute XPath of another node"
+when
+  /nodes[ $n: this, $xpathAbsoluteNode: xpathAbsolute ];
+  /nodes[ $otherNodeId : id, id < $n.id, xpathAbsolute == $xpathAbsoluteNode ]
+then
+  results.add(new ValidationResult($n, "Absolute XPath is the same as for node " + $otherNodeId, ValidationStatusEnum.ERROR));
 end
 
 rule "Every field has an XSD sequence order"
