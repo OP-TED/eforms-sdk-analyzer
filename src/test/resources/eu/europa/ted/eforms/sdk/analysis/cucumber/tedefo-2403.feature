@@ -21,7 +21,7 @@ Feature: Fields - Field validation
     And I load all nodes
     And I execute validation
     Then Rule "<expected rule>" should have been fired
-    And I should get 4 SDK validation errors
+    And I should get 5 SDK validation errors
 
     Examples:
       | expected rule                     |

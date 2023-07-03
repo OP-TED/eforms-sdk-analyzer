@@ -51,11 +51,15 @@ public class XPathSplitter extends XPath20BaseListener {
 
  /**
    * Parses the given xpath and returns a list containing the element name for
-   * each step that the XPath is comprised of. Predicates are removed.
-   * So for "a/b/ns:foo[x = y]" this will return ("a", "b", "ns:foo")
+   * each step that the XPath is comprised of.
+   * A step corresponding to an attribute is ignored, and predicates are removed from each element.
+   * So for "a/b/ns:foo[x = y]/@attr" this will return ("a", "b", "ns:foo")
    */
   public static List<String> getStepElementNames(String xpath) {
-    return getSteps(xpath).stream().map(StepInfo::getElementName).collect(Collectors.toList());
+    return getSteps(xpath).stream()
+        .filter(s -> !s.isAttribute())
+        .map(StepInfo::getElementName)
+        .collect(Collectors.toList());
   }
 
   /**
@@ -160,6 +164,10 @@ public class XPathSplitter extends XPath20BaseListener {
 
     public String getElementName() {
       return stepText;
+    }
+
+    public Boolean isAttribute() {
+      return this.stepText.startsWith("@");
     }
 
     public Boolean isVariableStep() {

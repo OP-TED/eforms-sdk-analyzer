@@ -80,7 +80,7 @@ public class NodeFact implements SdkComponentFact<String> {
 
   public int getXpathRelativeStepCount() {
     if (stepCount == 0 && getXpathRelative() != null) {
-      stepCount = XPathSplitter.getSteps(getXpathRelative()).size();
+      stepCount = XPathSplitter.getStepElementNames(getXpathRelative()).size();
     }
     return stepCount;
   }
