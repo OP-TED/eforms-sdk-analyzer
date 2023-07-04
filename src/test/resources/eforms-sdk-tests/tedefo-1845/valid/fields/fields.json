@@ -12244,7 +12244,6 @@
       } ]
     }
   }, {
-  }, {
     "id" : "OPT-301-Part-AddInfo",
     "parentNodeId" : "ND-PartTenderingTerms",
     "name" : "Additional Info Provider Technical Identifier Reference",
@@ -12690,7 +12689,6 @@
       "value" : "^ORG-\\d{4}$",
       "severity" : "ERROR"
     }
-  }, {
   }, {
     "id" : "OPT-302-Organization",
     "parentNodeId" : "ND-Organization",
