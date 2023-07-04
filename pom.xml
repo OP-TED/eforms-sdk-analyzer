@@ -389,10 +389,15 @@
                 <filter>
                   <artifact>*:*</artifact>
                   <excludes>
+                    <exclude>LICENSE</exclude>
+                    <exclude>NOTICE</exclude>
+                    <exclude>about.html</exclude>
                     <exclude>module-info.class</exclude>
                     <exclude>META-INF/*.SF</exclude>
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
+                    <exclude>META-INF/buildinfo.xml</exclude>
+                    <exclude>META-INF/sisu/javax.inject.Named</exclude>
                     <exclude>META-INF/MANIFEST.MF</exclude>
                     <exclude>META-INF/DEPENDENCIES</exclude>
                   </excludes>
