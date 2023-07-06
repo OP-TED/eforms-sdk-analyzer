@@ -1,4 +1,4 @@
-package eu.europa.ted.eforms.sdk.analysis;
+package eu.europa.ted.eforms.sdk.analysis.validator;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -9,6 +9,9 @@ import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 public interface Validator {
+
+  Validator validate() throws Exception;
+
   Set<ValidationResult> getResults();
 
   default Set<ValidationResult> getResults(EnumSet<ValidationStatusEnum> statuses) {
