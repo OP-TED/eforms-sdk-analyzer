@@ -4,8 +4,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +24,11 @@ public class SdkAnalyzer {
     List<String> warnings = new ArrayList<>();
     List<String> errors = new ArrayList<>();
 
-    List<Validator> validators = Stream.of(
+    List<Validator> validators = List.of(
         new XmlSchemaValidator(sdkRoot),
         new EfxValidator(sdkRoot),
         new TextValidator(sdkRoot),
-        new SdkValidator(sdkRoot)).collect(Collectors.toList());
+        new SdkValidator(sdkRoot));
     
     for (Validator validator : validators) {
       validator.validate();
