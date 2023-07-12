@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import org.drools.ruleunits.api.DataStore;
 import org.kie.api.definition.rule.Rule;
-import eu.europa.ted.eforms.sdk.analysis.Validator;
+
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
@@ -23,7 +23,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
-public class SdkUnit implements RuleUnit, Validator {
+public class SdkUnit implements RuleUnit {
   private Path sdkRoot;
 
   private DataStore<CodelistFact> codelists;
@@ -176,7 +176,6 @@ public class SdkUnit implements RuleUnit, Validator {
     return this;
   }
 
-  @Override
   public Set<ValidationResult> getResults() {
     return results;
   }

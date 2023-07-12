@@ -1,4 +1,4 @@
-package eu.europa.ted.eforms.sdk.analysis;
+package eu.europa.ted.eforms.sdk.analysis.validator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import eu.europa.ted.eforms.sdk.ComponentFactory;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.SdkVersion;
+import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.StringConstraint;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.StringProperty;
@@ -25,6 +26,8 @@ import eu.europa.ted.eforms.sdk.analysis.efx.mock.MarkupGeneratorMock;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
+import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
+import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.efx.EfxTranslator;
 import eu.europa.ted.efx.exceptions.ThrowingErrorListener;
@@ -34,6 +37,9 @@ import eu.europa.ted.efx.interfaces.SymbolResolver;
 import eu.europa.ted.efx.interfaces.TranslatorDependencyFactory;
 import eu.europa.ted.efx.interfaces.TranslatorOptions;
 
+/**
+ * Validates EFX expressions and templates 
+ */
 public class EfxValidator implements Validator {
   private static final Logger logger = LoggerFactory.getLogger(EfxValidator.class);
 
@@ -43,23 +49,28 @@ public class EfxValidator implements Validator {
   private final SdkLoader sdkLoader;
   private final TranslatorDependencyFactory dependencyFactory;
 
-  // Variable to store validations results
   private final Set<ValidationResult> results;
 
-  public EfxValidator(final Path sdkRoot, final String sdkVersion) throws FileNotFoundException {
-    Validate.notBlank(sdkVersion, "Undefined SDK version");
-    this.sdkVersion = new SdkVersion(sdkVersion).toStringWithoutPatch();
-
+  public EfxValidator(final Path sdkRoot) throws IOException {
     this.sdkRoot = Validate.notNull(sdkRoot, "Undefined SDK root path");
+
     if (!Files.isDirectory(sdkRoot)) {
       throw new FileNotFoundException(sdkRoot.toString());
     }
+
+    final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(sdkRoot);
+    this.sdkVersion = new SdkVersion(sdkMetadata.getVersion()).toStringWithoutPatch();
 
     this.dependencyFactory = new DependencyFactory(sdkRoot);
 
     this.sdkLoader = new SdkLoader(Path.of(sdkRoot.toString()));
 
     this.results = new HashSet<>();
+  }
+
+  @Override
+  public Validator validate() throws Exception {
+    return validateTemplates().validateExpressions();
   }
 
   public EfxValidator validateTemplates() throws IOException {

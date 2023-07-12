@@ -1,112 +1,51 @@
 package eu.europa.ted.eforms.sdk.analysis;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.stream.Stream;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
-import eu.europa.ted.eforms.sdk.analysis.drools.RulesRunner;
-import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
-import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
-import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
+import eu.europa.ted.eforms.sdk.analysis.validator.EfxValidator;
+import eu.europa.ted.eforms.sdk.analysis.validator.SdkValidator;
+import eu.europa.ted.eforms.sdk.analysis.validator.TextValidator;
+import eu.europa.ted.eforms.sdk.analysis.validator.Validator;
+import eu.europa.ted.eforms.sdk.analysis.validator.XmlSchemaValidator;
 
 public class SdkAnalyzer {
   private static final Logger logger = LoggerFactory.getLogger(SdkAnalyzer.class);
 
   private SdkAnalyzer() {}
 
-  public static int analyze(final Path sdkRoot) throws XPathExpressionException, IOException,
-      JAXBException, SAXException, ParserConfigurationException {
+  public static int analyze(final Path sdkRoot) throws Exception {
     logger.info("Analyzing SDK under folder [{}]", sdkRoot);
 
-    final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(sdkRoot);
+    List<String> warnings = new ArrayList<>();
+    List<String> errors = new ArrayList<>();
 
-    final Validator xmlSchemaValidator = analyzeXmlSchema(sdkRoot);
+    List<Validator> validators = List.of(
+        new XmlSchemaValidator(sdkRoot),
+        new EfxValidator(sdkRoot),
+        new TextValidator(sdkRoot),
+        new SdkValidator(sdkRoot));
+    
+    for (Validator validator : validators) {
+      validator.validate();
+      warnings.addAll(Arrays.asList(validator.getWarnings()));
+      errors.addAll(Arrays.asList(validator.getErrors()));      
+    }
 
-    final Validator templatesValidator = analyzeTemplates(sdkRoot, sdkMetadata.getVersion());
-
-    final Validator textValidator = analyzeTexts(sdkRoot);
-
-    final Validator sdkValidator = analyzeSdk(sdkRoot, sdkMetadata);
-
-    final String[] warnings = concatArrays(xmlSchemaValidator.getWarnings(),
-        templatesValidator.getWarnings(), textValidator.getWarnings(), sdkValidator.getWarnings());
-    final String[] errors = concatArrays(xmlSchemaValidator.getErrors(),
-        templatesValidator.getErrors(), textValidator.getErrors(), sdkValidator.getErrors());
-
-    if (ArrayUtils.isNotEmpty(warnings) && logger.isWarnEnabled()) {
+    if (!warnings.isEmpty() && logger.isWarnEnabled()) {
       logger.warn("Validation warnings:\n{}", StringUtils.join(warnings, '\n'));
-      logger.warn("Total number of validation warnings: {}", warnings.length);
+      logger.warn("Total number of validation warnings: {}", warnings.size());
     }
 
-    if (ArrayUtils.isNotEmpty(errors) && logger.isErrorEnabled()) {
+    if (!errors.isEmpty() && logger.isErrorEnabled()) {
       logger.error("Validation errors:\n{}", StringUtils.join(errors, '\n'));
-      logger.error("Total number of validation errors: {}", errors.length);
+      logger.error("Total number of validation errors: {}", errors.size());
     }
 
-    return ArrayUtils.isNotEmpty(errors) ? 1 : 0;
-  }
-
-  private static String[] concatArrays(String[]... arrays) {
-    return Stream.of(arrays)
-        .flatMap(Stream::of)
-        .toArray(String[]::new);
-  }
-
-  private static Validator analyzeXmlSchema(final Path sdkRoot)
-      throws IOException {
-    return new XmlSchemaValidator(sdkRoot).validateXmlSchemas();
-  }
-
-  private static Validator analyzeTemplates(final Path sdkRoot, final String sdkVersion)
-      throws IOException {
-    return new EfxValidator(sdkRoot, sdkVersion).validateTemplates();
-  }
-
-  private static Validator analyzeTexts(final Path sdkRoot)
-      throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    return new TextValidator(sdkRoot).validateTranslationTexts();
-  }
-
-  private static Validator analyzeSdk(final Path sdkRoot, SdkMetadata sdkMetadata)
-      throws XPathExpressionException,
-      IOException, JAXBException, SAXException, ParserConfigurationException {
-    final FactsLoader factsLoader = new FactsLoader(sdkRoot);
-
-    logger.debug("Creating RuleUnit");
-    SdkUnit sdkUnit = new SdkUnit()
-        .setSdkRoot(sdkRoot)
-        .setSdkMetadata(sdkMetadata)
-        .setCodelists(factsLoader.loadCodelists())
-        .setCodelistsIndex(factsLoader.loadCodelistsIndex())
-        .setDocumentTypes(factsLoader.loadDocumentTypes())
-        .setFieldsAndNodesMetadata(factsLoader.loadFieldsAndNodesMetadata())
-        .setFields(factsLoader.loadFields())
-        .setNodes(factsLoader.loadNodes())
-        .setNoticeTypes(factsLoader.loadNoticeTypes())
-        .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
-        .setLabels(factsLoader.loadLabels())
-        .setViewTemplates(factsLoader.loadViewTemplates())
-        .setXmlNotices(factsLoader.loadXmlNotices())
-        .setSvrlReports(factsLoader.loadSvrlReports());
-
-    fireAllRules(sdkUnit);
-    return sdkUnit;
-  }
-
-  public static SdkUnit fireAllRules(final SdkUnit sdkUnit) {
-    return fireRules(sdkUnit);
-  }
-
-  public static SdkUnit fireRules(final SdkUnit sdkUnit, final String... rules) {
-    RulesRunner.execute(sdkUnit, rules);
-
-    return sdkUnit;
+    return errors.isEmpty() ? 0 : 1;
   }
 }

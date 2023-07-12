@@ -10,22 +10,20 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang3.StringUtils;
-import org.kie.api.definition.rule.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
-import eu.europa.ted.eforms.sdk.analysis.EfxValidator;
+
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
-import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzer;
-import eu.europa.ted.eforms.sdk.analysis.TextValidator;
-import eu.europa.ted.eforms.sdk.analysis.XmlSchemaValidator;
-import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
 import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
+import eu.europa.ted.eforms.sdk.analysis.validator.EfxValidator;
+import eu.europa.ted.eforms.sdk.analysis.validator.SdkValidator;
+import eu.europa.ted.eforms.sdk.analysis.validator.TextValidator;
+import eu.europa.ted.eforms.sdk.analysis.validator.XmlSchemaValidator;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -37,7 +35,7 @@ public class SdkValidationSteps {
 
   private Path testsFolder;
 
-  private SdkUnit sdkUnit;
+  private SdkValidator sdkValidator;
   private EfxValidator efxValidator;
   private TextValidator textValidator;
   private XmlSchemaValidator schemaValidator;
@@ -54,7 +52,7 @@ public class SdkValidationSteps {
         .getResource(MessageFormat.format("/eforms-sdk-tests/{0}/{1}", testsFolder, filesValidity))
         .toURI());
 
-    sdkUnit = new SdkUnit().setSdkRoot(this.testsFolder);
+    sdkValidator = new SdkValidator(this.testsFolder);
   }
 
   @Given("The following rules")
@@ -64,7 +62,7 @@ public class SdkValidationSteps {
 
   @When("I load all notice types")
   public void i_load_all_notice_types() throws IOException {
-    sdkUnit.setNoticeTypes(new FactsLoader(testsFolder).loadNoticeTypes());
+    sdkValidator.getSdkUnit().setNoticeTypes(new FactsLoader(testsFolder).loadNoticeTypes());
   }
 
   @When("I load all notice types storing the exception")
@@ -78,94 +76,93 @@ public class SdkValidationSteps {
 
   @When("I load the notice types index")
   public void i_load_the_notice_types_index() throws IOException {
-    sdkUnit.setNoticeTypesIndex(new FactsLoader(testsFolder).loadNoticeTypesIndex());
+    sdkValidator.getSdkUnit().setNoticeTypesIndex(new FactsLoader(testsFolder).loadNoticeTypesIndex());
   }
 
   @When("I load all labels")
   public void i_load_all_labels()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    sdkUnit.setLabels(new FactsLoader(testsFolder).loadLabels());
+    sdkValidator.getSdkUnit().setLabels(new FactsLoader(testsFolder).loadLabels());
   }
 
   @When("I load the view templates index")
   public void i_load_the_view_templates_index()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    sdkUnit.setViewTemplates(new FactsLoader(testsFolder).loadViewTemplates());
+    sdkValidator.getSdkUnit().setViewTemplates(new FactsLoader(testsFolder).loadViewTemplates());
   }
 
   @When("I load all document types")
   public void i_load_all_document_types() throws IOException {
-    sdkUnit.setDocumentTypes(new FactsLoader(testsFolder).loadDocumentTypes());
+    sdkValidator.getSdkUnit().setDocumentTypes(new FactsLoader(testsFolder).loadDocumentTypes());
   }
 
   @When("I load metadata from fields.json")
   public void I_load_fields_json() throws IOException {
-    sdkUnit.setFieldsAndNodesMetadata(new FactsLoader(testsFolder).loadFieldsAndNodesMetadata());
+    sdkValidator.getSdkUnit().setFieldsAndNodesMetadata(new FactsLoader(testsFolder).loadFieldsAndNodesMetadata());
   }
 
   @When("I load all fields")
   public void i_load_all_fields() throws IOException {
-    sdkUnit.setFields(new FactsLoader(testsFolder).loadFields());
+    sdkValidator.getSdkUnit().setFields(new FactsLoader(testsFolder).loadFields());
   }
 
   @When("I load all nodes")
   public void i_load_all_nodes() throws IOException {
-    sdkUnit.setNodes(new FactsLoader(testsFolder).loadNodes());
+    sdkValidator.getSdkUnit().setNodes(new FactsLoader(testsFolder).loadNodes());
   }
 
   @When("I load all codelists")
   public void i_load_all_codelists()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    sdkUnit.setCodelists(new FactsLoader(testsFolder).loadCodelists());
+    sdkValidator.getSdkUnit().setCodelists(new FactsLoader(testsFolder).loadCodelists());
   }
 
   @When("I load the codelists index")
   public void i_load_the_codelists_index()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    sdkUnit.setCodelistsIndex(new FactsLoader(testsFolder).loadCodelistsIndex());
+    sdkValidator.getSdkUnit().setCodelistsIndex(new FactsLoader(testsFolder).loadCodelistsIndex());
   }
 
   @When("I load all notice examples")
   public void I_load_all_notice_examples()
       throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-    sdkUnit.setXmlNotices(new FactsLoader(testsFolder).loadXmlNotices());
+    sdkValidator.getSdkUnit().setXmlNotices(new FactsLoader(testsFolder).loadXmlNotices());
   }
 
   @When("I load all SVRL reports")
   public void I_load_all_SVRL_reports()
       throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
-    sdkUnit.setSvrlReports(new FactsLoader(testsFolder).loadSvrlReports());
+    sdkValidator.getSdkUnit().setSvrlReports(new FactsLoader(testsFolder).loadSvrlReports());
   }
 
   @When("I load SDK metadata")
   public void I_load_SDK_metadata() throws IOException {
     final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(testsFolder);
 
-    sdkUnit.setSdkMetadata(sdkMetadata);
+    sdkValidator.getSdkUnit().setSdkMetadata(sdkMetadata);
   }
 
   @When("I execute validation")
   public void i_execute_validation()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
-    SdkAnalyzer.fireRules(sdkUnit, testedRules.toArray(String[]::new));
+    sdkValidator.fireRules(testedRules.toArray(String[]::new));
 
     logger.info("Rules fired: {}",
-        sdkUnit.getFiredRules().stream().map(Rule::getName).collect(Collectors.toSet()));
+        sdkValidator.getFiredRulesNames());
 
-    if (sdkUnit.hasWarnings()) {
-      logger.warn("Validation warnings:\n{}", StringUtils.join(sdkUnit.getWarnings(), '\n'));
+    if (sdkValidator.hasWarnings()) {
+      logger.warn("Validation warnings:\n{}", StringUtils.join(sdkValidator.getWarnings(), '\n'));
     }
 
-    if (sdkUnit.hasErrors()) {
-      logger.error("Validation errors:\n{}", StringUtils.join(sdkUnit.getErrors(), '\n'));
+    if (sdkValidator.hasErrors()) { 
+      logger.error("Validation errors:\n{}", StringUtils.join(sdkValidator.getErrors(), '\n'));
     }
   }
 
   @When("I execute EFX {string} validation")
   public void i_execute_efx_expressions_validation(final String validationType) throws IOException {
-    final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(testsFolder);
 
-    efxValidator = new EfxValidator(testsFolder, sdkMetadata.getVersion());
+    efxValidator = new EfxValidator(testsFolder);
     switch (validationType) {
       case "templates":
         efxValidator.validateTemplates();
@@ -193,7 +190,7 @@ public class SdkValidationSteps {
   @When("I execute schema validation")
   public void i_execute_schema_validation() throws IOException {
     schemaValidator = new XmlSchemaValidator(testsFolder);
-    schemaValidator.validateXmlSchemas();
+    schemaValidator.validate();
 
     if (schemaValidator.hasWarnings()) {
       logger.warn("Validation warnings:\n{}",
@@ -207,10 +204,9 @@ public class SdkValidationSteps {
   }
 
   @When("I execute text validation")
-  public void i_execute_text_validation() throws IOException, JAXBException, SAXException,
-      ParserConfigurationException {
+  public void i_execute_text_validation() throws Exception {
     textValidator = new TextValidator(testsFolder);
-    textValidator.validateTranslationTexts();
+    textValidator.validate();
 
     if (textValidator.hasWarnings()) {
       logger.warn("Validation warnings:\n{}",
@@ -225,25 +221,25 @@ public class SdkValidationSteps {
 
   @Then("No rules should have been fired")
   public void no_rules_should_have_been_fired() {
-    assertEquals(0, sdkUnit.getFiredRules().size());
+    assertEquals(0, sdkValidator.getFiredRulesNames().size());
   }
 
   @Then("Rule {string} should have been fired")
   public void rule_should_have_been_fired(String expectedRule) {
-    assertTrue(sdkUnit.getFiredRules().stream()
-        .filter((Rule firedRule) -> firedRule.getName().equals(expectedRule))
+    assertTrue(sdkValidator.getFiredRulesNames().stream()
+        .filter(firedRule -> firedRule.equals(expectedRule))
         .findAny()
         .isPresent());
   }
 
   @Then("^I should get (.*) SDK validation errors?$")
   public void i_should_get_sdk_validation_errors(int errorsCount) {
-    assertEquals(errorsCount, sdkUnit.getErrors().length);
+    assertEquals(errorsCount, sdkValidator.getErrors().length);
   }
 
   @Then("^I should get (.*) SDK validation warnings?$")
   public void i_should_get_sdk_validation_warnings(int warningsCount) {
-    assertEquals(warningsCount, sdkUnit.getWarnings().length);
+    assertEquals(warningsCount, sdkValidator.getWarnings().length);
   }
 
   @Then("^I should get (.*) EFX validation errors?$")

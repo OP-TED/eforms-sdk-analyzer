@@ -1,4 +1,4 @@
-package eu.europa.ted.eforms.sdk.analysis;
+package eu.europa.ted.eforms.sdk.analysis.validator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,6 +22,8 @@ import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
@@ -71,7 +73,7 @@ public class XmlSchemaValidator implements Validator {
     this.results = new HashSet<>();
   }
 
-  public XmlSchemaValidator validateXmlSchemas() throws IOException {
+  public XmlSchemaValidator validate() throws IOException {
     final List<Field> fields = sdkLoader.getFieldsAndNodes().getFields();
     final List<XmlStructureNode> nodes = sdkLoader.getFieldsAndNodes().getNodes();
 
