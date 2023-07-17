@@ -17,9 +17,8 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import eu.europa.ted.efx.xpath.XPath20BaseListener;
 import eu.europa.ted.efx.xpath.XPath20Lexer;
 import eu.europa.ted.efx.xpath.XPath20Parser;
-import eu.europa.ted.efx.xpath.XPath20Parser.AxisstepContext;
-import eu.europa.ted.efx.xpath.XPath20Parser.FilterexprContext;
 import eu.europa.ted.efx.xpath.XPath20Parser.PredicateContext;
+import eu.europa.ted.efx.xpath.XPath20Parser.StepexprContext;;
 
 public class XPathSplitter extends XPath20BaseListener {
 
@@ -82,44 +81,9 @@ public class XPathSplitter extends XPath20BaseListener {
   }
 
   @Override
-  public void exitAxisstep(AxisstepContext ctx) {
-    if (inPredicateMode()) {
-      return;
-    }
-
-    // When we recognize a step, we add it to the queue if is is empty.
-    // If the queue is not empty, and the depth of the new step is not smaller than
-    // the depth of the last step in the queue, then this step needs to be added to
-    // the queue too.
-    // Otherwise, the last step in the queue is a sub-expression of the new step,
-    // and we need to
-    // replace it in the queue with the new step.
-    if (this.steps.isEmpty() || !this.steps.getLast().isPartOf(ctx.getSourceInterval())) {
-      this.steps.offer(new AxisStepInfo(ctx, this::getInputText));
-    } else {
-      Interval removedInterval = ctx.getSourceInterval();
-      while(!this.steps.isEmpty() && this.steps.getLast().isPartOf(removedInterval)) {
-        this.steps.removeLast();
-      }
-      this.steps.offer(new AxisStepInfo(ctx, this::getInputText));
-    }    
-  }
-
-  @Override
-  public void exitFilterexpr(FilterexprContext ctx) {
-    if (inPredicateMode()) {
-      return;
-    }
-
-    // Same logic as for axis steps here (sse exitAxisstep).
-    if (this.steps.isEmpty() || !this.steps.getLast().isPartOf(ctx.getSourceInterval())) {
-      this.steps.offer(new FilterStepInfo(ctx, this::getInputText));
-    } else {
-      Interval removedInterval = ctx.getSourceInterval();
-      while(!this.steps.isEmpty() && this.steps.getLast().isPartOf(removedInterval)) {
-        this.steps.removeLast();
-      }
-      this.steps.offer(new FilterStepInfo(ctx, this::getInputText));
+  public void exitStepexpr(StepexprContext ctx) {
+    if (!inPredicateMode()) {
+      this.steps.offer(new StepInfo(ctx, this::getInputText));
     }
   }
 
@@ -133,28 +97,18 @@ public class XPathSplitter extends XPath20BaseListener {
     this.predicateMode--;
   }
 
-  public class AxisStepInfo extends StepInfo {
-
-    public AxisStepInfo(AxisstepContext ctx, Function<ParserRuleContext, String> getInputText) {
-      super(ctx.reversestep() != null? getInputText.apply(ctx.reversestep()) : getInputText.apply(ctx.forwardstep()), 
-      ctx.predicatelist().predicate().stream().map(getInputText).collect(Collectors.toList()), ctx.getSourceInterval());
-    }
-  }
-
-  public class FilterStepInfo extends StepInfo {
-
-    public FilterStepInfo(FilterexprContext ctx, Function<ParserRuleContext, String> getInputText) {
-      super(getInputText.apply(ctx.primaryexpr()), 
-      ctx.predicatelist().predicate().stream().map(getInputText).collect(Collectors.toList()), ctx.getSourceInterval());
-    }
-  }
-
   public class StepInfo {
     String stepText;
     List<String> predicates;
     int a;
     int b;
 
+    public StepInfo(StepexprContext ctx, Function<ParserRuleContext, String> getInputText) {
+      this.stepText = getInputText.apply(ctx.step());
+      this.predicates =
+          ctx.predicatelist().predicate().stream().map(getInputText).collect(Collectors.toList());
+    }
+     
     protected StepInfo(String stepText, List<String> predicates, Interval interval) {
       this.stepText = stepText;
       this.predicates = predicates;
