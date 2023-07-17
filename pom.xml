@@ -11,6 +11,11 @@
 
   <name>eforms-sdk-analyzer</name>
 
+  <scm>
+    <connection>scm:git:https://github.com/OP-TED/eforms-sdk-analyzer.git</connection>
+    <url>https://github.com/OP-TED/eforms-sdk-analyzer</url>
+  </scm>
+
   <distributionManagement>
     <repository>
       <id>github</id>
