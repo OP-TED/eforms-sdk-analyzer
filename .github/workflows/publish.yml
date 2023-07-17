@@ -22,19 +22,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          server-id: op-ted-github_mdd-entities
-          server-username: GH_USER
-          server-password: GH_PASSWORD
-      - name: Build
-        run: mvn --batch-mode clean install
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_USER: ${{ secrets.GH_USER }}
-          GH_PASSWORD: ${{ secrets.GH_PASSWORD }}
-      - uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'adopt'
       - name: Publish package
         run: mvn --batch-mode deploy
         env:
