@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--File generated from metadata database version 1.6.0 created on the 2023-02-17T12:00-->
+<gc:CodeList xmlns:gc="http://docs.oasis-open.org/codelist/ns/genericode/1.0/">
+   <Identification>
+      <ShortName>MissingInfoSubmission</ShortName>
+      <LongName>missing-info-submission</LongName>
+      <LongName Identifier="listId">http://publications.europa.eu/resource/authority/missing-info-submission</LongName>
+      <Version>20220928-0</Version>
+      <CanonicalUri>http://publications.europa.eu/resource/dataset/missing-info-submission</CanonicalUri>
+      <CanonicalVersionUri/>
+      <Agency>
+         <ShortName>OP</ShortName>
+         <LongName>Publications Office of the European Union</LongName>
+      </Agency>
+   </Identification>
+   <ColumnSet>
+      <Column Id="code" Use="required">
+         <ShortName>Code</ShortName>
+         <Data Lang="eng" Type="normalizedString"/>
+      </Column>
+      <Column Id="Name" Use="optional">
+         <ShortName>Name</ShortName>
+         <Data Lang="eng" Type="string"/>
+      </Column>
+      <Column Id="bul_label" Use="optional">
+         <ShortName>bulLabel</ShortName>
+         <Data Lang="bul" Type="string"/>
+      </Column>
+      <Column Id="spa_label" Use="optional">
+         <ShortName>spaLabel</ShortName>
+         <Data Lang="spa" Type="string"/>
+      </Column>
+      <Column Id="ces_label" Use="optional">
+         <ShortName>cesLabel</ShortName>
+         <Data Lang="ces" Type="string"/>
+      </Column>
+      <Column Id="dan_label" Use="optional">
+         <ShortName>danLabel</ShortName>
+         <Data Lang="dan" Type="string"/>
+      </Column>
+      <Column Id="deu_label" Use="optional">
+         <ShortName>deuLabel</ShortName>
+         <Data Lang="deu" Type="string"/>
+      </Column>
+      <Column Id="est_label" Use="optional">
+         <ShortName>estLabel</ShortName>
+         <Data Lang="est" Type="string"/>
+      </Column>
+      <Column Id="ell_label" Use="optional">
+         <ShortName>ellLabel</ShortName>
+         <Data Lang="ell" Type="string"/>
+      </Column>
+      <Column Id="eng_label" Use="optional">
+         <ShortName>engLabel</ShortName>
+         <Data Lang="eng" Type="string"/>
+      </Column>
+      <Column Id="fra_label" Use="optional">
+         <ShortName>fraLabel</ShortName>
+         <Data Lang="fra" Type="string"/>
+      </Column>
+      <Column Id="gle_label" Use="optional">
+         <ShortName>gleLabel</ShortName>
+         <Data Lang="gle" Type="string"/>
+      </Column>
+      <Column Id="hrv_label" Use="optional">
+         <ShortName>hrvLabel</ShortName>
+         <Data Lang="hrv" Type="string"/>
+      </Column>
+      <Column Id="ita_label" Use="optional">
+         <ShortName>itaLabel</ShortName>
+         <Data Lang="ita" Type="string"/>
+      </Column>
+      <Column Id="lav_label" Use="optional">
+         <ShortName>lavLabel</ShortName>
+         <Data Lang="lav" Type="string"/>
+      </Column>
+      <Column Id="lit_label" Use="optional">
+         <ShortName>litLabel</ShortName>
+         <Data Lang="lit" Type="string"/>
+      </Column>
+      <Column Id="hun_label" Use="optional">
+         <ShortName>hunLabel</ShortName>
+         <Data Lang="hun" Type="string"/>
+      </Column>
+      <Column Id="mlt_label" Use="optional">
+         <ShortName>mltLabel</ShortName>
+         <Data Lang="mlt" Type="string"/>
+      </Column>
+      <Column Id="nld_label" Use="optional">
+         <ShortName>nldLabel</ShortName>
+         <Data Lang="nld" Type="string"/>
+      </Column>
+      <Column Id="pol_label" Use="optional">
+         <ShortName>polLabel</ShortName>
+         <Data Lang="pol" Type="string"/>
+      </Column>
+      <Column Id="por_label" Use="optional">
+         <ShortName>porLabel</ShortName>
+         <Data Lang="por" Type="string"/>
+      </Column>
+      <Column Id="ron_label" Use="optional">
+         <ShortName>ronLabel</ShortName>
+         <Data Lang="ron" Type="string"/>
+      </Column>
+      <Column Id="slk_label" Use="optional">
+         <ShortName>slkLabel</ShortName>
+         <Data Lang="slk" Type="string"/>
+      </Column>
+      <Column Id="slv_label" Use="optional">
+         <ShortName>slvLabel</ShortName>
+         <Data Lang="slv" Type="string"/>
+      </Column>
+      <Column Id="fin_label" Use="optional">
+         <ShortName>finLabel</ShortName>
+         <Data Lang="fin" Type="string"/>
+      </Column>
+      <Column Id="swe_label" Use="optional">
+         <ShortName>sweLabel</ShortName>
+         <Data Lang="swe" Type="string"/>
+      </Column>
+   </ColumnSet>
+   <SimpleCodeList>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>late-all</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>At the discretion of the buyer, all missing tenderer-related documents may be submitted later.</SimpleValue>
+         </Value>
+         <Value ColumnRef="bul_label">
+            <SimpleValue>По преценка на купувача всички липсващи документи, отнасящи се до оферентите, могат да бъдат подадени по-късно.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ces_label">
+            <SimpleValue>Podle uvážení kupujícího mohou být všechny chybějící dokumenty týkající se uchazeče předloženy později.</SimpleValue>
+         </Value>
+         <Value ColumnRef="dan_label">
+            <SimpleValue>Køberen kan beslutte, at alle manglende tilbudsrelaterede dokumenter kan indsendes senere.</SimpleValue>
+         </Value>
+         <Value ColumnRef="deu_label">
+            <SimpleValue>Nach Ermessen des Käufers können alle fehlenden Bieterunterlagen nach Fristablauf nachgereicht werden.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ell_label">
+            <SimpleValue>Κατά τη διακριτική ευχέρεια του αγοραστή, όλα τα έγγραφα σχετικά με τον προσφέροντα που λείπουν μπορούν να υποβληθούν αργότερα.</SimpleValue>
+         </Value>
+         <Value ColumnRef="eng_label">
+            <SimpleValue>At the discretion of the buyer, all missing tenderer-related documents may be submitted later.</SimpleValue>
+         </Value>
+         <Value ColumnRef="spa_label">
+            <SimpleValue>A discreción del comprador, podrán presentarse posteriormente todos los documentos relacionados con el licitador que falten.</SimpleValue>
+         </Value>
+         <Value ColumnRef="est_label">
+            <SimpleValue>Ostja äranägemisel võib kõik puuduvad pakkujaga seotud dokumendid esitada hiljem.</SimpleValue>
+         </Value>
+         <Value ColumnRef="fin_label">
+            <SimpleValue>Hankkijan harkinnan mukaan kaikki puuttuvat hakuasiakirjat voidaan toimittaa myöhemmin.</SimpleValue>
+         </Value>
+         <Value ColumnRef="fra_label">
+            <SimpleValue>À la discrétion de l’acheteur, tous les documents manquants relatifs au soumissionnaire peuvent être transmis ultérieurement.</SimpleValue>
+         </Value>
+         <Value ColumnRef="gle_label">
+            <SimpleValue>Faoi rogha an cheannaitheora, féadfar gach doiciméad ar iarraidh a bhaineann leis an tairgeoir a chur isteach níos déanaí.</SimpleValue>
+         </Value>
+         <Value ColumnRef="hrv_label">
+            <SimpleValue>Ovisno o volji kupca, svi nedostajući dokumenti povezani s ponuditeljem mogu se dostaviti kasnije.</SimpleValue>
+         </Value>
+         <Value ColumnRef="hun_label">
+            <SimpleValue>A vevő mérlegelése alapján az ajánlattevővel kapcsolatos összes dokumentum benyújtható egy későbbi időpontban.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ita_label">
+            <SimpleValue>A discrezione dell'acquirente, tutti i documenti mancanti relativi all'offerente possono essere presentati successivamente.</SimpleValue>
+         </Value>
+         <Value ColumnRef="lit_label">
+            <SimpleValue>Pirkėjo nuožiūra, visi trūkstami su konkurso dalyviais susiję dokumentai gali būti pateikti vėliau.</SimpleValue>
+         </Value>
+         <Value ColumnRef="lav_label">
+            <SimpleValue>Pircējs pēc saviem ieskatiem visus ar pretendentu saistītos trūkstošos dokumentus var iesniegt vēlāk.</SimpleValue>
+         </Value>
+         <Value ColumnRef="mlt_label">
+            <SimpleValue>Fid-diskrezzjoni tax-xerrej, id-dokumenti kollha neqsin relatati mal-offerent jistgħu jiġu ppreżentati aktar tard.</SimpleValue>
+         </Value>
+         <Value ColumnRef="nld_label">
+            <SimpleValue>Voor zover de afnemer dit toestaat, kunnen alle ontbrekende documenten in verband met de inschrijver later worden ingediend.</SimpleValue>
+         </Value>
+         <Value ColumnRef="pol_label">
+            <SimpleValue>Według uznania nabywcy wszystkie brakujące dokumenty dotyczące oferenta mogą zostać przedłożone później.</SimpleValue>
+         </Value>
+         <Value ColumnRef="por_label">
+            <SimpleValue>Ao critério do comprador, todos os documentos em falta relacionados com o proponente poderão ser apresentados posteriormente.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ron_label">
+            <SimpleValue>La latitudinea cumpărătorului, toate documentele lipsă legate de ofertant pot fi depuse ulterior.</SimpleValue>
+         </Value>
+         <Value ColumnRef="slk_label">
+            <SimpleValue>Podľa uváženia kupujúceho sa môžu všetky chýbajúce dokumenty týkajúce sa uchádzača predložiť neskôr.</SimpleValue>
+         </Value>
+         <Value ColumnRef="slv_label">
+            <SimpleValue>Po presoji kupca se lahko vsi manjkajoči dokumenti v zvezi s ponudbo predložijo pozneje.</SimpleValue>
+         </Value>
+         <Value ColumnRef="swe_label">
+            <SimpleValue>Enligt köparens gottfinnande får alla saknade dokument som rör anbudsgivaren lämnas in senare.</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>late-none</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>No documents can be submitted later.</SimpleValue>
+         </Value>
+         <Value ColumnRef="bul_label">
+            <SimpleValue>Никакви документи не може да бъдат подадени по-късно.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ces_label">
+            <SimpleValue>Žádné doklady nemohou být předloženy později.</SimpleValue>
+         </Value>
+         <Value ColumnRef="dan_label">
+            <SimpleValue>Manglende dokumenter vedrørende tilbudsgiver kan ikke indgives senere.</SimpleValue>
+         </Value>
+         <Value ColumnRef="deu_label">
+            <SimpleValue>Fehlende Bieterunterlagen können nicht nach Fristablauf nachgereicht werden.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ell_label">
+            <SimpleValue>Κανένα έγγραφο δεν μπορεί να υποβληθεί αργότερα.</SimpleValue>
+         </Value>
+         <Value ColumnRef="eng_label">
+            <SimpleValue>No documents can be submitted later.</SimpleValue>
+         </Value>
+         <Value ColumnRef="spa_label">
+            <SimpleValue>Ningún documento puede presentarse más tarde.</SimpleValue>
+         </Value>
+         <Value ColumnRef="est_label">
+            <SimpleValue>Dokumente ei ole võimalik hiljem esitada.</SimpleValue>
+         </Value>
+         <Value ColumnRef="fin_label">
+            <SimpleValue>Asiakirjoja ei voida toimittaa myöhemmin.</SimpleValue>
+         </Value>
+         <Value ColumnRef="fra_label">
+            <SimpleValue>Aucun document ne peut être présenté ultérieurement.</SimpleValue>
+         </Value>
+         <Value ColumnRef="gle_label">
+            <SimpleValue>Ní féidir aon doiciméid a chur isteach níos déanaí.</SimpleValue>
+         </Value>
+         <Value ColumnRef="hrv_label">
+            <SimpleValue>Kasnije nije moguće podnijeti nikakve dokumente.</SimpleValue>
+         </Value>
+         <Value ColumnRef="hun_label">
+            <SimpleValue>Egyetlen dokumentumot sem lehet később benyújtani.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ita_label">
+            <SimpleValue>Nessun documento può essere presentato successivamente.</SimpleValue>
+         </Value>
+         <Value ColumnRef="lit_label">
+            <SimpleValue>Vėliau dokumentų pateikti negalima.</SimpleValue>
+         </Value>
+         <Value ColumnRef="lav_label">
+            <SimpleValue>Nekādus dokumentus vēlāk iesniegt nevar.</SimpleValue>
+         </Value>
+         <Value ColumnRef="mlt_label">
+            <SimpleValue>L-ebda dokument ma jista’ jiġi ppreżentat iktar tard.</SimpleValue>
+         </Value>
+         <Value ColumnRef="nld_label">
+            <SimpleValue>Geen enkel document kan later worden ingediend.</SimpleValue>
+         </Value>
+         <Value ColumnRef="pol_label">
+            <SimpleValue>W późniejszym terminie nie można przedkładać żadnych dokumentów.</SimpleValue>
+         </Value>
+         <Value ColumnRef="por_label">
+            <SimpleValue>Nenhum documento pode ser apresentado posteriormente.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ron_label">
+            <SimpleValue>Niciun document nu poate fi transmis ulterior.</SimpleValue>
+         </Value>
+         <Value ColumnRef="slk_label">
+            <SimpleValue>Žiadne dokumenty nemožno predložiť neskôr.</SimpleValue>
+         </Value>
+         <Value ColumnRef="slv_label">
+            <SimpleValue>Pozneje ni več mogoče predložiti dokumentov.</SimpleValue>
+         </Value>
+         <Value ColumnRef="swe_label">
+            <SimpleValue>Inga dokument kan lämnas in senare.</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>late-some</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>At the discretion of the buyer, some missing tenderer-related documents may be submitted later.</SimpleValue>
+         </Value>
+         <Value ColumnRef="bul_label">
+            <SimpleValue>По преценка на купувача някои липсващи документи, отнасящи се до оферентите, могат да бъдат подадени по-късно.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ces_label">
+            <SimpleValue>Podle uvážení kupujícího mohou být některé chybějící dokumenty týkající se uchazeče předloženy později.</SimpleValue>
+         </Value>
+         <Value ColumnRef="dan_label">
+            <SimpleValue>Køberen kan beslutte, at visse manglende tilbudsrelaterede dokumenter kan indsendes senere.</SimpleValue>
+         </Value>
+         <Value ColumnRef="deu_label">
+            <SimpleValue>Nach Ermessen des Käufers können einige fehlenden Bieterunterlagen nach Fristablauf nachgereicht werden.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ell_label">
+            <SimpleValue>Κατά τη διακριτική ευχέρεια του αγοραστή, ορισμένα έγγραφα σχετικά με τον προσφέροντα που λείπουν μπορούν να υποβληθούν αργότερα.</SimpleValue>
+         </Value>
+         <Value ColumnRef="eng_label">
+            <SimpleValue>At the discretion of the buyer, some missing tenderer-related documents may be submitted later.</SimpleValue>
+         </Value>
+         <Value ColumnRef="spa_label">
+            <SimpleValue>A discreción del comprador, podrán presentarse posteriormente algunos de los documentos relacionados con el licitador que falten.</SimpleValue>
+         </Value>
+         <Value ColumnRef="est_label">
+            <SimpleValue>Ostja äranägemisel võib osa puuduvad pakkujaga seotud dokumente esitada hiljem.</SimpleValue>
+         </Value>
+         <Value ColumnRef="fin_label">
+            <SimpleValue>Hankkijan harkinnan mukaan osa puuttuvista hakuasiakirjoista voidaan toimittaa myöhemmin.</SimpleValue>
+         </Value>
+         <Value ColumnRef="fra_label">
+            <SimpleValue>À la discrétion de l’acheteur, certains documents manquants relatifs au soumissionnaire peuvent être transmis ultérieurement.</SimpleValue>
+         </Value>
+         <Value ColumnRef="gle_label">
+            <SimpleValue>Faoi rogha an cheannaitheora, féadfar roinnt doiciméad ar iarraidh a bhaineann leis an tairgeoir a chur isteach níos déanaí.</SimpleValue>
+         </Value>
+         <Value ColumnRef="hrv_label">
+            <SimpleValue>Ovisno o volji kupca, neki nedostajući dokumenti povezani s ponuditeljem mogu se dostaviti kasnije.</SimpleValue>
+         </Value>
+         <Value ColumnRef="hun_label">
+            <SimpleValue>A vevő mérlegelése alapján az ajánlattevővel kapcsolatos egyes dokumentumok benyújthatók egy későbbi időpontban.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ita_label">
+            <SimpleValue>A discrezione dell'acquirente, alcuni documenti mancanti relativi all'offerente possono essere presentati successivamente.</SimpleValue>
+         </Value>
+         <Value ColumnRef="lit_label">
+            <SimpleValue>Pirkėjo nuožiūra, kai kurie trūkstami su konkurso dalyviais susiję dokumentai gali būti pateikti vėliau.</SimpleValue>
+         </Value>
+         <Value ColumnRef="lav_label">
+            <SimpleValue>Pircējs pēc saviem ieskatiem dažus ar pretendentu saistītos trūkstošos dokumentus var iesniegt vēlāk.</SimpleValue>
+         </Value>
+         <Value ColumnRef="mlt_label">
+            <SimpleValue>Fid-diskrezzjoni tax-xerrej, xi dokumenti neqsin relatati mal-offerent jistgħu jiġu ppreżentati aktar tard.</SimpleValue>
+         </Value>
+         <Value ColumnRef="nld_label">
+            <SimpleValue>Voor zover de afnemer dit toestaat, kunnen sommige ontbrekende documenten in verband met de inschrijver later worden ingediend.</SimpleValue>
+         </Value>
+         <Value ColumnRef="pol_label">
+            <SimpleValue>Według uznania nabywcy niektóre brakujące dokumenty dotyczące oferenta mogą zostać przedłożone później.</SimpleValue>
+         </Value>
+         <Value ColumnRef="por_label">
+            <SimpleValue>Ao critério do comprador, alguns documentos em falta relacionados com o proponente poderão ser apresentados posteriormente.</SimpleValue>
+         </Value>
+         <Value ColumnRef="ron_label">
+            <SimpleValue>La latitudinea cumpărătorului, o parte din documentele lipsă legate de ofertant pot fi depuse ulterior.</SimpleValue>
+         </Value>
+         <Value ColumnRef="slk_label">
+            <SimpleValue>Podľa uváženia kupujúceho sa môžu niektoré chýbajúce dokumenty týkajúce sa uchádzača predložiť neskôr.</SimpleValue>
+         </Value>
+         <Value ColumnRef="slv_label">
+            <SimpleValue>Po presoji kupca se lahko nekateri manjkajoči dokumenti v zvezi s ponudbo predložijo pozneje.</SimpleValue>
+         </Value>
+         <Value ColumnRef="swe_label">
+            <SimpleValue>Enligt köparens gottfinnande får vissa saknade dokument som rör anbudsgivaren lämnas in senare.</SimpleValue>
+         </Value>
+      </Row>
+   </SimpleCodeList>
+</gc:CodeList>

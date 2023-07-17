@@ -1,0 +1,18 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.6.0",
+  "metadataDatabase" : {
+    "version" : "1.5.52",
+    "createdOn" : "2023-02-07T16:21:08"
+  },
+  "noticeSubTypes" : [ {
+    "documentType" : "PIN",
+    "legalBasis" : "32014L0024",
+    "formType" : "planning",
+    "type" : "pin-buyer",
+    "description" : "Notice of the publication of a prior information notice on a buyer profile - general directive",
+    "subTypeId" : "1",
+    "_label" : "notice|name|1",
+    "viewTemplateIds" : [ "1", "summary" ]
+  } ]
+}

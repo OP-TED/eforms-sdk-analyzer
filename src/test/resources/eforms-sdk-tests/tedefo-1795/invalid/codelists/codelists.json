@@ -1,0 +1,26 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.8.0",
+  "metadataDatabase" : {
+    "version" : "1.8.0",
+    "createdOn" : "2023-06-02T14:00:00"
+  },
+  "codelists" : [ {
+    "id" : "authority-activity",
+    "parentId" : "main-activity",
+    "filename" : "main-activity_authority-activity.gc",
+    "description" : "List of Main Activity codes allowed for a Contracting Authority",
+    "_label" : "codelist|name|authority-activityBAD"
+  }, {
+    "id" : "entity-activity",
+    "parentId" : "main-activity",
+    "filename" : "main-activity_entity-activity.gc",
+    "description" : "List of Main Activity codes allowed for a Contracting Entity",
+    "_label" : "codelist|name|entity-activity"
+  }, {
+    "id" : "main-activity",
+    "filename" : "main-activity.gc",
+    "description" : "List of codes for the main activities of the buyers.",
+    "_label" : "codelist|name|main-activity"
+  } ]
+}

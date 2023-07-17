@@ -1,0 +1,90 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "eforms-sdk-1.8.0",
+  "metadataDatabase" : {
+    "version" : "1.7.10",
+    "createdOn" : "2023-04-24T17:08:41"
+  },
+  "xmlStructure" : [ {
+    "id" : "ND-Root",
+    "xpathAbsolute" : "/*",
+    "xpathRelative" : "/*",
+    "repeatable" : false
+  }, {
+    "id" : "ND-Version-Invalid-Dummy",
+    "xpathAbsolute" : "/*/cbc:VersionID",
+    "xpathRelative" : "cbc:VersionID",
+    "repeatable" : false
+  }, {
+    "id" : "ND-ContractingParty",
+    "parentId" : "ND-Root",
+    "xpathAbsolute" : "/*/cac:ContractingParty",
+    "xpathRelative" : "cac:ContractingParty",
+    "xsdSequenceOrder" : [ { "cac:ContractingParty" : 29 } ],
+    "repeatable" : true
+  }, {
+    "id" : "ND-ContractingPartyDUPLICATE",
+    "parentId" : "ND-Root",
+    "xpathAbsolute" : "/*/cac:ContractingParty",
+    "xpathRelative" : "cac:ContractingParty",
+    "xsdSequenceOrder" : [ { "cac:ContractingParty" : 29 } ],
+    "repeatable" : true
+  } ],
+  "fields": [ {
+    "id" : "BT-757-notice",
+    "parentNodeId" : "ND-Root",
+    "name" : "Notice Version",
+    "btId" : "BT-757",
+    "xpathAbsolute" : "/*/cbc:VersionID",
+    "xpathRelative" : "cbc:VersionID",
+    "xsdSequenceOrder" : [ { "cbc:VersionID" : 14 } ],
+    "type" : "id",
+    "legalType" : "IDENTIFIER",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  }, {
+    "id" : "BT-01-notice",
+    "parentNodeId" : "ND-Root",
+    "name" : "Procedure Legal Basis",
+    "btId" : "BT-01",
+    "xpathAbsolute" : "/*/cbc:RegulatoryDomain",
+    "xpathRelative" : "cbc:RegulatoryDomain",
+    "xsdSequenceOrder" : [ { "cbc:RegulatoryDomain" : 18 } ],
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    },
+    "codeList" : {
+      "value" : {
+        "id" : "eforms-legal-basis",
+        "type" : "flat"
+      },
+      "severity" : "ERROR"
+    }
+  }, {
+    "id" : "BT-01-noticeDUPLICATE",
+    "parentNodeId" : "ND-Root",
+    "name" : "Procedure Legal Basis",
+    "btId" : "BT-01",
+    "xpathAbsolute" : "/*/cbc:RegulatoryDomain",
+    "xpathRelative" : "cbc:RegulatoryDomain",
+    "xsdSequenceOrder" : [ { "cbc:RegulatoryDomain" : 18 } ],
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    },
+    "codeList" : {
+      "value" : {
+        "id" : "eforms-legal-basis",
+        "type" : "flat"
+      },
+      "severity" : "ERROR"
+    }
+  } ]
+}

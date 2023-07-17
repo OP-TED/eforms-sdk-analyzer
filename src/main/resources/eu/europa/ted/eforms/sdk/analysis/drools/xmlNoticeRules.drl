@@ -1,0 +1,35 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata
+
+rule "Every notice example has correct SDK version"
+when
+  /xmlNotices[ $n: this, customizationId != '' && customizationId != sdkMetadata.customizationId ]
+then
+  results.add(new ValidationResult($n, "the value in CustomizationID is incorrect", ValidationStatusEnum.ERROR));
+end
+
+rule "Every notice example has a corresponding validation report"
+when
+  /xmlNotices[ $n: this, $exampleId : id ]
+  not (exists /svrlReports[ id == $exampleId ])
+then
+  results.add(new ValidationResult($n, "the validation report is missing", ValidationStatusEnum.ERROR));
+end
+
+rule "Every validation report has a corresponding notice example"
+when
+  /svrlReports[ $r: this, $exampleId : id ]
+  not (exists /xmlNotices[ id == $exampleId ])
+then
+  results.add(new ValidationResult($r, "the notice example is missing", ValidationStatusEnum.ERROR));
+end
+
+rule "Every valid notice example has no errors in the corresponding validation report"
+when
+  /svrlReports[ $r: this, shouldBeValid == true && errorCount > 0 ]
+then
+  results.add(new ValidationResult($r, "the validation report contains errors", ValidationStatusEnum.ERROR));
+end

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>codelist in English. File generated from metadata database.</comment>
+<entry key="codelist|name|authority-activity">List of Main Activity codes allowed for a Contracting Authority</entry>
+<entry key="codelist|name|entity-activity">List of Main Activity codes allowed for a Contracting Entity</entry>
+<entry key="codelist|name|main-activity">List of codes for the main activities of the buyers.</entry>
+</properties>

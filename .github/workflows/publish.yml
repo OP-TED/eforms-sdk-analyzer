@@ -1,0 +1,41 @@
+name: Publish package to GitHub Packages
+on:
+  push:
+    branches:
+      - 'develop'
+
+  release:
+    types: [published]
+
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          server-id: op-ted-github_mdd-entities
+          server-username: GH_USER
+          server-password: GH_PASSWORD
+      - name: Build
+        run: mvn --batch-mode clean install
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USER: ${{ secrets.GH_USER }}
+          GH_PASSWORD: ${{ secrets.GH_PASSWORD }}
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
