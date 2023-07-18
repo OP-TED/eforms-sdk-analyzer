@@ -42,6 +42,12 @@ Each check should have corresponding unit tests, with both valid and invalid tes
 
 Those tests are defined using [Cucumber](https://cucumber.io/).
 
+In order to run tests for only one Cucumber feature, you can filter based on the tag indicated at the top of the feature file:
+
+```shell
+ mvn test -Dcucumber.filter.tags="@tedefo-2447"
+```
+
 Unit tests for other parts of the application can be defined as regular JUnit tests.
 
 ## Licence
