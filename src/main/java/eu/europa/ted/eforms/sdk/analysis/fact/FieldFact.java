@@ -16,6 +16,7 @@ import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldPrivacy;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter;
+import eu.europa.ted.eforms.sdk.analysis.util.XPathUtils;
 import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter.StepInfo;
 
 public class FieldFact implements SdkComponentFact<String> {
@@ -124,6 +125,14 @@ public class FieldFact implements SdkComponentFact<String> {
       stepCount = XPathSplitter.getStepElementNames(getXpathRelative()).size();
     }
     return stepCount;
+  }
+
+  public List<String> getInvalidXpathRelativeSteps() {
+    List<String> badSteps = XPathSplitter.getStepElementNames(getXpathRelative()).stream()
+      .filter(s -> XPathUtils.isAscendingStep(s))
+      .collect(Collectors.toList());
+
+    return badSteps;
   }
 
   public String getType() {

@@ -123,6 +123,20 @@ then
   results.add(new ValidationResult($n, "Absolute XPath is the same as for node " + $otherNodeId, ValidationStatusEnum.ERROR));
 end
 
+rule "Relative XPath of field does not contain an ascending step"
+when
+  /fields[ $f: this, $invalidSteps: invalidXpathRelativeSteps, $invalidSteps != null, $invalidSteps.size() > 0 ]
+then
+  results.add(new ValidationResult($f, "Relative XPath of field contains invalid steps " + $invalidSteps, ValidationStatusEnum.ERROR));
+end
+
+rule "Relative XPath of node does not contain an ascending step"
+when
+  /nodes[ $n: this, $invalidSteps: invalidXpathRelativeSteps, $invalidSteps != null, $invalidSteps.size() > 0 ]
+then
+  results.add(new ValidationResult($n, "Relative XPath of node contains invalid steps " + $invalidSteps, ValidationStatusEnum.ERROR));
+end
+
 rule "Every field has an XSD sequence order"
 when
   /fields[ $f: this, xsdSequenceOrder == null ]
