@@ -1,0 +1,169 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.6.0",
+  "metadataDatabase" : {
+    "version" : "1.6.0",
+    "createdOn" : "2023-02-17T12:00:00"
+  },
+  "codelists" : [ {
+    "id" : "bri",
+    "parentId" : "notice-type",
+    "filename" : "notice-type_bri.gc",
+    "description" : "List of allowed Notice Type codes for a Business Register Information document",
+    "_label" : "codelist|name|bri"
+  }, {
+    "id" : "brin-ecs",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_brin-ecs.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice concerning a European Company or a European Cooperative Society registration processing.",
+    "_label" : "codelist|name|brin-ecs"
+  }, {
+    "id" : "brin-eeig",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_brin-eeig.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice concerning a European Economic Interest Grouping registration processing.",
+    "_label" : "codelist|name|brin-eeig"
+  }, {
+    "id" : "can-desg",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_can-desg.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of CAN Design Notice Type.",
+    "_label" : "codelist|name|can-desg"
+  }, {
+    "id" : "can-modif",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_can-modif.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of Contract Modification Notice Type .",
+    "_label" : "codelist|name|can-modif"
+  }, {
+    "id" : "can-social",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_can-social.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of CAN Social Notice Type .",
+    "_label" : "codelist|name|can-social"
+  }, {
+    "id" : "can-standard",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_can-standard.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of CAN Standard Notice Type .",
+    "_label" : "codelist|name|can-standard"
+  }, {
+    "id" : "can-tran",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_can-tran.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of CAN Public Transport Service Notice Type .",
+    "_label" : "codelist|name|can-tran"
+  }, {
+    "id" : "cn-desg",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_cn-desg.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of CN Design Notice Type.",
+    "_label" : "codelist|name|cn-desg"
+  }, {
+    "id" : "cn-social",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_cn-social.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of CN Social Notice Type.",
+    "_label" : "codelist|name|cn-social"
+  }, {
+    "id" : "cn-standard",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_cn-standard.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of CN Standard Design Notice Type.",
+    "_label" : "codelist|name|cn-standard"
+  }, {
+    "id" : "competition",
+    "parentId" : "notice-type",
+    "filename" : "notice-type_competition.gc",
+    "description" : "List of allowed Notice Type codes for a notice of Competition Form Type",
+    "_label" : "codelist|name|competition"
+  }, {
+    "id" : "cont-modif",
+    "parentId" : "notice-type",
+    "filename" : "notice-type_cont-modif.gc",
+    "description" : "List of allowed Notice Type codes for a notice of Contract Modification Form Type",
+    "_label" : "codelist|name|cont-modif"
+  }, {
+    "id" : "dir-awa-pre",
+    "parentId" : "notice-type",
+    "filename" : "notice-type_dir-awa-pre.gc",
+    "description" : "List of allowed Notice Type codes for a Direct Award Preannouncement Form Type",
+    "_label" : "codelist|name|dir-awa-pre"
+  }, {
+    "id" : "notice-subtype",
+    "filename" : "notice-subtype.gc",
+    "description" : "List of possible Notice Subtype codes for a Notice of type Business Registration Information Notice.",
+    "_label" : "codelist|name|notice-subtype"
+  }, {
+    "id" : "notice-type",
+    "filename" : "notice-type.gc",
+    "description" : "This table provides a list of public procurement notices  according to procurement legislation  published once a project is approved.",
+    "_label" : "codelist|name|notice-type"
+  }, {
+    "id" : "pin-buyer",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_pin-buyer.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of PIN Buyer Notice Type.",
+    "_label" : "codelist|name|pin-buyer"
+  }, {
+    "id" : "pin-cfc-social",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_pin-cfc-social.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of PIN Call for Competition Social Notice Type.",
+    "_label" : "codelist|name|pin-cfc-social"
+  }, {
+    "id" : "pin-cfc-standard",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_pin-cfc-standard.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of PIN Call for Competition Standard Notice Type.",
+    "_label" : "codelist|name|pin-cfc-standard"
+  }, {
+    "id" : "pin-only",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_pin-only.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of PIN Only Notice Type.",
+    "_label" : "codelist|name|pin-only"
+  }, {
+    "id" : "pin-rtl",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_pin-rtl.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of PIN Reduced Time Limit Notice Type.",
+    "_label" : "codelist|name|pin-rtl"
+  }, {
+    "id" : "pin-tran",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_pin-tran.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of PIN for Public Transportation Service Contract Notice Type.",
+    "_label" : "codelist|name|pin-tran"
+  }, {
+    "id" : "planning",
+    "parentId" : "notice-type",
+    "filename" : "notice-type_planning.gc",
+    "description" : "List of allowed Notice Type codes for a Planning Form Type",
+    "_label" : "codelist|name|planning"
+  }, {
+    "id" : "qu-sy",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_qu-sy.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of Qualification System Notice Type.",
+    "_label" : "codelist|name|qu-sy"
+  }, {
+    "id" : "result",
+    "parentId" : "notice-type",
+    "filename" : "notice-type_result.gc",
+    "description" : "List of allowed Notice Type codes for a Result Form Type",
+    "_label" : "codelist|name|result"
+  }, {
+    "id" : "subco",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_subco.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of Subcontracting Notice Type.",
+    "_label" : "codelist|name|subco"
+  }, {
+    "id" : "veat",
+    "parentId" : "notice-subtype",
+    "filename" : "notice-subtype_veat.gc",
+    "description" : "List of allowed Notice Subtype codes for a notice of Voluntary ex-ante Transparency Notice Type.",
+    "_label" : "codelist|name|veat"
+  } ]
+}
