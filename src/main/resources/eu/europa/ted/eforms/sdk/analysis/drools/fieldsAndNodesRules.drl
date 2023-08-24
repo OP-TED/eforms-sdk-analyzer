@@ -123,6 +123,20 @@ then
   results.add(new ValidationResult($n, "Absolute XPath is the same as for node " + $otherNodeId, ValidationStatusEnum.ERROR));
 end
 
+rule "Relative XPath of field does not contain an ascending step"
+when
+  /fields[ $f: this, $invalidSteps: invalidXpathRelativeSteps, $invalidSteps != null, $invalidSteps.size() > 0 ]
+then
+  results.add(new ValidationResult($f, "Relative XPath of field contains invalid steps " + $invalidSteps, ValidationStatusEnum.ERROR));
+end
+
+rule "Relative XPath of node does not contain an ascending step"
+when
+  /nodes[ $n: this, $invalidSteps: invalidXpathRelativeSteps, $invalidSteps != null, $invalidSteps.size() > 0 ]
+then
+  results.add(new ValidationResult($n, "Relative XPath of node contains invalid steps " + $invalidSteps, ValidationStatusEnum.ERROR));
+end
+
 rule "Every field has an XSD sequence order"
 when
   /fields[ $f: this, xsdSequenceOrder == null ]
@@ -157,6 +171,21 @@ when
   not (exists /labels[ id == $labelId ])
 then
   results.add(new ValidationResult($f, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+rule "Fields corresponding to XML attributes have the expected information"
+when
+  /fields[ $f: this, isAttribute == true, attributeName == null || attributeOf == null ]
+then
+  results.add(new ValidationResult($f, "Attribute field is missing attributeName or attributeOf properties", ValidationStatusEnum.ERROR));
+end
+
+rule "Relationships between fields for element and attribute are consistent"
+when
+  /fields[ $f: this, $attributeFieldId: id, $elementFieldId: attributeOf, attributeOf != null ]
+  not (exists /fields[ id == $elementFieldId, attributes contains $attributeFieldId ])
+then
+  results.add(new ValidationResult($f, "Relationship with field " + $elementFieldId + " is incorrect", ValidationStatusEnum.ERROR));
 end
 
 // TEDEFO-1806: Warning

@@ -16,6 +16,8 @@ import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldPrivacy;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter;
+import eu.europa.ted.eforms.sdk.analysis.util.XPathUtils;
+import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter.StepInfo;
 
 public class FieldFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -8325643682910825716L;
@@ -125,11 +127,39 @@ public class FieldFact implements SdkComponentFact<String> {
     return stepCount;
   }
 
+  public List<String> getInvalidXpathRelativeSteps() {
+    List<String> badSteps = XPathSplitter.getStepElementNames(getXpathRelative()).stream()
+      .filter(s -> XPathUtils.isAscendingStep(s))
+      .collect(Collectors.toList());
+
+    return badSteps;
+  }
+
   public String getType() {
     return field.getType();
   }
 
-  /*
+  /**
+   * Return true if the last step of the relative path corresponds to an XML attribute.
+   */
+  public boolean isAttribute() {
+    List<StepInfo> steps = XPathSplitter.getSteps(getXpathRelative());
+    return steps.get(steps.size() - 1).isAttribute();
+  }
+
+  public String getAttributeOf() {
+    return field.getAttributeOf();
+  }
+
+  public String getAttributeName() {
+    return field.getAttributeName();
+  }
+
+  public List<String> getAttributes() {
+    return field.getAttributes();
+  }
+
+  /**
    * Return a stream of the dynamic properties of the field
    */
   private Stream<AbstractFieldProperty<? extends AbstractConstraint<?>, ?>> getDynamicProperties() {

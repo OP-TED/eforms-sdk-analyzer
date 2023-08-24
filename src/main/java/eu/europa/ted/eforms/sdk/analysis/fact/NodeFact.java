@@ -2,10 +2,12 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter;
+import eu.europa.ted.eforms.sdk.analysis.util.XPathUtils;
 
 public class NodeFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -6237630016231337698L;
@@ -83,6 +85,14 @@ public class NodeFact implements SdkComponentFact<String> {
       stepCount = XPathSplitter.getStepElementNames(getXpathRelative()).size();
     }
     return stepCount;
+  }
+
+  public List<String> getInvalidXpathRelativeSteps() {
+    List<String> badSteps = XPathSplitter.getStepElementNames(getXpathRelative()).stream()
+      .filter(s -> XPathUtils.isAscendingStep(s))
+      .collect(Collectors.toList());
+
+    return badSteps;
   }
 
   @Override

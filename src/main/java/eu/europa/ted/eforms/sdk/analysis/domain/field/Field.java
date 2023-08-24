@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * </p>
  */
 @JsonPropertyOrder({"id", "parentNodeId", "name", "btId", "xpathAbsolute", "xpathRelative", "type",
+    "attributeName", "attributeOf", "attributes",
     "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength", "privacy",
     "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList", "inChangeNotice",
     "inContinueProcedure", "assert"})
@@ -41,6 +42,9 @@ public class Field implements Serializable {
   private List<XmlElementPosition> xsdSequenceOrder;
 
   private String type;
+  private String attributeOf;
+  private String attributeName;
+  private List<String> attributes;
   private String presetValue;
 
   private List<String> idSchemes;
@@ -117,6 +121,18 @@ public class Field implements Serializable {
 
   public String getType() {
     return type;
+  }
+
+  public String getAttributeOf() {
+    return attributeOf;
+  }
+
+  public String getAttributeName() {
+    return attributeName;
+  }
+
+  public List<String> getAttributes() {
+    return attributes;
   }
 
   public String getPresetValue() {
