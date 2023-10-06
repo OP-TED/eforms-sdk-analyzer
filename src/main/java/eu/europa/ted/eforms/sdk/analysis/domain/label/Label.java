@@ -1,4 +1,4 @@
-package eu.europa.ted.eforms.sdk.analysis.domain;
+package eu.europa.ted.eforms.sdk.analysis.domain.label;
 
 import java.io.Serializable;
 import java.util.HashMap;

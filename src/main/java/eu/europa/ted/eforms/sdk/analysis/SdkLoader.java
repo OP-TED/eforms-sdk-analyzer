@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.analysis.domain.EFormsTrackableEntity;
-import eu.europa.ted.eforms.sdk.analysis.domain.Label;
 import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.analysis.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
@@ -36,6 +35,9 @@ import eu.europa.ted.eforms.sdk.analysis.domain.enums.Language;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldsAndNodes;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
+import eu.europa.ted.eforms.sdk.analysis.domain.label.LanguageFileInfo;
+import eu.europa.ted.eforms.sdk.analysis.domain.label.TranslationsIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeType;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypeSdk;
@@ -56,6 +58,9 @@ public class SdkLoader {
   // Not in SdkResource, as it is not useful when you use the SDK in an app
   public static final Path EXAMPLE_NOTICES = Path.of("examples", "notices");
   public static final Path EXAMPLE_REPORTS = Path.of("examples", "reports");
+
+  // TODO: Use constant from SdkResource in ECL when it is available (TEDEFO-2707)
+  public static final Path TRANSLATIONS_JSON = Path.of("translations", "translations.json");
 
   private final Path sdkRoot;
   private final ObjectMapper objectMapper;
@@ -176,33 +181,33 @@ public class SdkLoader {
         SdkResource.NOTICE_TYPES.getPath().toString(), MessageFormat.format("{0}.json", noticeId)));
   }
 
+  public TranslationsIndex getTranslationsIndex() throws IOException {
+    return loadJsonFile(TranslationsIndex.class,
+        Path.of(sdkRoot.toString(), TRANSLATIONS_JSON.toString()));
+  }
+
   public Set<Label> getLabels()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
     final Map<String, Label> labels = new HashMap<>();
 
     Properties translationProperties = null;
 
-    DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
-      public boolean accept(Path file) throws IOException {
-          return !file.getFileName().toString().matches("translations\\.(xml|json)");
-      }
-    };
+    TranslationsIndex translationsIndex = getTranslationsIndex();
 
-    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(
-        Path.of(sdkRoot.toString(), SdkResource.TRANSLATIONS.getPath().toString()), filter)) {
+    for (LanguageFileInfo info : translationsIndex.getFiles()) {
+      Path path = Path.of(sdkRoot.toString(),
+          SdkResource.TRANSLATIONS.getPath().toString(),
+          info.getFilename());
+      if (!Files.isDirectory(path)) {
+        translationProperties = XmlParser.loadXmlFile(Properties.class, path);
 
-      for (Path path : dirStream) {
-        if (!Files.isDirectory(path)) {
-          translationProperties = XmlParser.loadXmlFile(Properties.class, path);
+        Language language = Language.valueOf(
+            path.getFileName().toString().replaceAll("^.*?_(.*?).xml$", "$1").toUpperCase());
 
-          Language language = Language.valueOf(
-              path.getFileName().toString().replaceAll("^.*?_(.*?).xml$", "$1").toUpperCase());
-
-          translationProperties.getEntry().stream().forEach(e -> {
-            Label label = labels.computeIfAbsent(e.getKey(), k -> new Label(k));
-            label.addTranslation(language, e.getValue());
-          });          
-        }
+        translationProperties.getEntry().stream().forEach(e -> {
+          Label label = labels.computeIfAbsent(e.getKey(), k -> new Label(k));
+          label.addTranslation(language, e.getValue());
+        });          
       }
     }
 
