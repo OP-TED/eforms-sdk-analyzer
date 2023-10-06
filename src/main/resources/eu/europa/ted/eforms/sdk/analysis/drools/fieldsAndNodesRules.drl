@@ -193,5 +193,5 @@ rule "All fields of type code have a codelist property"
 when
   /fields[ $f: this, type == "code", codelistId == null ]
 then
-  results.add(new ValidationResult($f, "The field is of type code but does not have a 'codelist' property", ValidationStatusEnum.WARNING));
+  results.add(new ValidationResult($f, "The field is of type code but does not have a 'codelist' property", ValidationStatusEnum.ERROR));
 end

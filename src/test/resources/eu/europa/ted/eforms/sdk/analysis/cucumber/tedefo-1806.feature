@@ -18,7 +18,7 @@ Feature: Fields - Field validation
     When I load all fields
     And I execute validation
     Then Rule "<expected rule>" should have been fired
-    And I should get 2 SDK validation warnings
+    And I should get 2 SDK validation errors
 
     Examples:
       | expected rule                     |

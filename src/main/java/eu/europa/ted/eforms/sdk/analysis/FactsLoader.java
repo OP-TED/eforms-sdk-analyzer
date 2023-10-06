@@ -11,12 +11,13 @@ import org.drools.ruleunits.api.DataStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
-import eu.europa.ted.eforms.sdk.analysis.domain.Label;
+
 import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.analysis.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeType;
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
@@ -31,6 +32,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.SvrlReportFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.TranslationsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 
@@ -94,6 +96,15 @@ public class FactsLoader {
 
     final DataStore<NoticeTypesIndexFact> datastore = DataSource.createStore();
     datastore.add(new NoticeTypesIndexFact(sdkLoader.getNoticeTypesForIndex()));
+
+    return datastore;
+  }
+
+  public DataStore<TranslationsIndexFact> loadTranslationsIndex() throws IOException {
+    logger.debug("Creating facts datastore for translations index");
+
+    final DataStore<TranslationsIndexFact> datastore = DataSource.createStore();
+    datastore.add(new TranslationsIndexFact(sdkLoader.getTranslationsIndex()));
 
     return datastore;
   }

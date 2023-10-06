@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
-import eu.europa.ted.eforms.sdk.analysis.domain.Label;
+import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
