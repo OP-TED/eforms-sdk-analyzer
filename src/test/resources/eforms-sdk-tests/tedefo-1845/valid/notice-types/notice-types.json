@@ -32,6 +32,15 @@
     "subTypeId" : "3",
     "_label" : "notice|name|3",
     "viewTemplateIds" : [ "3", "summary" ]
+  }, {
+    "documentType" : "CAN",
+    "legalBasis" : "32014L0024",
+    "formType" : "cont-modif",
+    "type" : "can-modif",
+    "description" : "Contract modification notice – general directive",
+    "subTypeId" : "38",
+    "_label" : "notice|name|38",
+    "viewTemplateIds" : [ "38", "summary" ]
   }],
   "documentTypes" : [ {
     "id" : "BRIN",

@@ -1,0 +1,184 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.10.0-SNAPSHOT",
+  "metadataDatabase" : {
+    "version" : "1.9.85",
+    "createdOn" : "2023-10-09T13:18:12"
+  },
+  "noticeId" : "38",
+  "metadata" : [ {
+    "id" : "BT-02-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Type",
+    "_label" : "field|name|BT-02-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-03-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Form Type",
+    "_label" : "field|name|BT-03-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-04-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Procedure Identifier",
+    "_label" : "field|name|BT-04-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-701-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Identifier",
+    "_label" : "field|name|BT-701-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-757-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Version",
+    "_label" : "field|name|BT-757-notice",
+    "readOnly" : true
+  }, {
+    "id" : "BT-702(a)-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Official Language",
+    "_label" : "field|name|BT-702(a)-notice",
+    "hidden" : true
+  }, {
+    "id" : "BT-702(b)-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Official Language",
+    "_label" : "field|name|BT-702(b)-notice",
+    "_repeatable" : true,
+    "hidden" : true
+  }, {
+    "id" : "BT-05(a)-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Dispatch Date",
+    "_label" : "field|name|BT-05(a)-notice",
+    "_presetValue" : "{NOW}",
+    "hidden" : true
+  }, {
+    "id" : "BT-05(b)-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Dispatch Time",
+    "_label" : "field|name|BT-05(b)-notice",
+    "_presetValue" : "{NOW}",
+    "hidden" : true
+  }, {
+    "id" : "BT-738-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Preferred Publication Date",
+    "_label" : "field|name|BT-738-notice",
+    "hidden" : true
+  }, {
+    "id" : "OPT-999",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Dummy Tender Award Date",
+    "_label" : "field|name|OPT-999",
+    "_presetValue" : "2000-01-01Z",
+    "hidden" : true
+  }, {
+    "id" : "OPT-001-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "UBL version ID (UBL)",
+    "_label" : "field|name|OPT-001-notice",
+    "hidden" : true
+  }, {
+    "id" : "OPT-002-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Customization ID (UBL)",
+    "_label" : "field|name|OPT-002-notice",
+    "readOnly" : true
+  }, {
+    "id" : "OPP-070-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Subtype",
+    "_label" : "field|name|OPP-070-notice",
+    "readOnly" : true
+  }, {
+    "id" : "OPP-010-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "Notice Publication Number",
+    "_label" : "field|name|OPP-010-notice",
+    "hidden" : true
+  }, {
+    "id" : "OPP-011-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "OJEU Identifier",
+    "_label" : "field|name|OPP-011-notice",
+    "hidden" : true
+  }, {
+    "id" : "OPP-012-notice",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "description" : "OJEU Publication Date",
+    "_label" : "field|name|OPP-012-notice",
+    "hidden" : true
+  } ],
+  "content" : [ {
+
+    "id" : "GR-Result",
+    "contentType" : "group",
+    "nodeId" : "ND-NoticeResult",
+    "displayType" : "SECTION",
+    "description" : "Outcome of the Procurement Procedure for all lots listed in the notice (also contains individual Lot Results)",
+    "_label" : "group|name|ND-NoticeResult",
+    "content" : [ {
+
+      "id" : "GR-LotResult-Section",
+      "contentType" : "group",
+      "displayType" : "SECTION",
+      "description" : "Lot Results",
+      "_label" : "group|name|GR-LotResult-Section",
+      "content" : [ {
+        "id" : "GR-LotResult",
+        "contentType" : "group",
+        "nodeId" : "ND-LotResult",
+        "displayType" : "GROUP",
+        "description" : "Outcome of the Procurement Procedure for a given Lot",
+        "_label" : "group|name|ND-LotResult",
+        "_idScheme" : "RES",
+        "_schemeName" : "result",
+        "_identifierFieldId" : "OPT-322-LotResult",
+        "_repeatable" : true,
+        "content" : [ {
+
+          "id" : "GR-LotResult-CVD",
+          "contentType" : "group",
+          "nodeId" : "ND-StrategicProcurementInformationLotResult",
+          "displayType" : "GROUP",
+          "description" : "Information about the strategic procurement and associated assets: categories (Procurement, assets ...) and quantity (number) in the context of an applicable Legal Basis",
+          "_label" : "group|name|ND-StrategicProcurementInformationLotResult",
+          "_repeatable" : true,
+          "content" : [ {
+
+            "id" : "BT-735-LotResult",
+            "contentType" : "field",
+            "displayType" : "COMBOBOX",
+            "description" : "CVD Contract Type",
+            "_label" : "field|name|BT-735-LotResult"
+
+          } ]
+
+        } ]
+      } ]
+    } ]
+
+
+  } ]
+}
