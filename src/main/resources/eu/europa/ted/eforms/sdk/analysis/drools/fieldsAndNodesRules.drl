@@ -153,14 +153,14 @@ end
 
 rule "Every field has XSD sequence order consistent with relative xpath"
 when
-  /fields[ $f: this, xsdSequenceOrderCount != xpathRelativeStepCount ]
+  /fields[ $f: this, xsdSequenceOrderCount != xpathRelativeElementCount ]
 then
   results.add(new ValidationResult($f, "Field XSD sequence order is inconsistent with relative XPath.", ValidationStatusEnum.ERROR));
 end
 
 rule "Every non-root node has XSD sequence order consistent with relative xpath"
 when
-  /nodes[ $n: this, parentId != null, xsdSequenceOrderCount != xpathRelativeStepCount ]
+  /nodes[ $n: this, parentId != null, xsdSequenceOrderCount != xpathRelativeElementCount ]
 then
   results.add(new ValidationResult($n, "Node XSD sequence order is inconsistent with relative XPath.", ValidationStatusEnum.ERROR));
 end
