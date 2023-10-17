@@ -15,9 +15,9 @@ import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldPrivacy;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
-import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter;
 import eu.europa.ted.eforms.sdk.analysis.util.XPathUtils;
-import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter.StepInfo;
+import eu.europa.ted.eforms.xpath.XPathInfo;
+import eu.europa.ted.eforms.xpath.XPathProcessor;
 
 public class FieldFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -8325643682910825716L;
@@ -120,16 +120,22 @@ public class FieldFact implements SdkComponentFact<String> {
     return field.getXpathRelative();
   }
 
-  public int getXpathRelativeStepCount() {
+  public int getXpathRelativeElementCount() {
     if (stepCount == 0 && getXpathRelative() != null) {
-      stepCount = XPathSplitter.getStepElementNames(getXpathRelative()).size();
+      XPathInfo xpathInfo = XPathProcessor.parse(getXpathRelative());
+      stepCount = xpathInfo.getSteps().size();
+      if (xpathInfo.isAttribute()) {
+        // we don't want to count attributes
+        stepCount--;
+      }
     }
     return stepCount;
   }
 
   public List<String> getInvalidXpathRelativeSteps() {
-    List<String> badSteps = XPathSplitter.getStepElementNames(getXpathRelative()).stream()
-      .filter(s -> XPathUtils.isAscendingStep(s))
+    List<String> badSteps = XPathProcessor.parse(getXpathRelative()).getSteps().stream()
+      .map(s -> s.getStepText())
+      .filter(x -> XPathUtils.isAscendingStep(x))
       .collect(Collectors.toList());
 
     return badSteps;
@@ -143,8 +149,7 @@ public class FieldFact implements SdkComponentFact<String> {
    * Return true if the last step of the relative path corresponds to an XML attribute.
    */
   public boolean isAttribute() {
-    List<StepInfo> steps = XPathSplitter.getSteps(getXpathRelative());
-    return steps.get(steps.size() - 1).isAttribute();
+    return XPathProcessor.parse(getXpathRelative()).isAttribute();
   }
 
   public String getAttributeOf() {
