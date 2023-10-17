@@ -174,7 +174,7 @@ end
 rule "All repeatable ancestors of a field are in the notice type definition"
 when
   $fieldIds : /noticeTypes[ $nt: this ]/contentFieldIds
-  $ancestorIds : /fields[ id memberOf $fieldIds, allRepeatableAncestors != null ]/allRepeatableAncestors.id
+  $ancestorIds : /fields[ id == $fieldIds, allRepeatableAncestors != null ]/allRepeatableAncestors.id
   not (exists /noticeTypes[ id == $nt.id, nodeIds contains $ancestorIds ])
 then
   results.add(new ValidationResult($nt, "The repeatable ancestor " + $ancestorIds + " of field " + $fieldIds + " should be present", ValidationStatusEnum.WARNING));
