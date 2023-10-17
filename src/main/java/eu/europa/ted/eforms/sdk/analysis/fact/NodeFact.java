@@ -5,7 +5,7 @@ import java.util.List;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
-import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter;
+import eu.europa.ted.eforms.xpath.XPathProcessor;
 
 public class NodeFact implements SdkComponentFact<String> {
   private static final long serialVersionUID = -6237630016231337698L;
@@ -78,9 +78,9 @@ public class NodeFact implements SdkComponentFact<String> {
     return node.getXpathRelative();
   }
 
-  public int getXpathRelativeStepCount() {
+  public int getXpathRelativeElementCount() {
     if (stepCount == 0 && getXpathRelative() != null) {
-      stepCount = XPathSplitter.getStepElementNames(getXpathRelative()).size();
+      stepCount = XPathProcessor.parse(getXpathRelative()).getSteps().size();
     }
     return stepCount;
   }
