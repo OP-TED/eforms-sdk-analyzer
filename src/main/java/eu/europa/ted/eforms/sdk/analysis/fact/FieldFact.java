@@ -159,6 +159,18 @@ public class FieldFact implements SdkComponentFact<String> {
     return field.getAttributes();
   }
 
+  public String getIdScheme() {
+    return field.getIdScheme();
+  }
+
+  public String getSchemeName() {
+    return field.getSchemeName();
+  }
+
+  public String getPresetValue() {
+    return field.getPresetValue();
+  }
+
   /**
    * Return a stream of the dynamic properties of the field
    */
