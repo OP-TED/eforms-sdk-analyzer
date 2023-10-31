@@ -50,6 +50,7 @@ public enum FieldPrivacyCode implements ILiteral {
   AWA_CRI_ORD("awa-cri-ord"),
   NOT_APP_VAL("not-app-val"),
   REE_VAL("ree-val"),
+  NOT_REE_VAL("not-ree-val"),
   GRO_REE_VAL("gro-ree-val");
 
   private final String literal;
