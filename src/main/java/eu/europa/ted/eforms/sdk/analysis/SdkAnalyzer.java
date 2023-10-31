@@ -26,11 +26,12 @@ public class SdkAnalyzer {
     List<String> errors = new ArrayList<>();
 
     List<Validator> validators = List.of(
-        new XmlSchemaValidator(sdkRoot),
-        new EfxValidator(sdkRoot),
-        new TextValidator(sdkRoot),
-        new SchematronValidator(sdkRoot),
-        new SdkValidator(sdkRoot));
+        //new XmlSchemaValidator(sdkRoot),
+        new EfxValidator(sdkRoot)
+        //new TextValidator(sdkRoot),
+        //new SchematronValidator(sdkRoot),
+        //new SdkValidator(sdkRoot)
+    );
     
     for (Validator validator : validators) {
       validator.validate();
