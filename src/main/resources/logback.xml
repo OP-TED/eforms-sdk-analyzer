@@ -14,7 +14,7 @@
   <logger name="org.reflections" level="ERROR" />
   <logger name="org.drools" level="ERROR" />
 
-  <root level="WARN">
+  <root level="DEBUG">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>
