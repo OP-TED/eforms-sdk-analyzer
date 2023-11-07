@@ -202,3 +202,10 @@ when
 then
   results.add(new ValidationResult($f, "SchemeName does not match preset value of a corresponding attribute field", ValidationStatusEnum.ERROR));
 end
+
+rule "Field constraints do not have duplicate notice types identifiers"
+when
+  /fields[ $f: this, $duplicateNoticeTypes: duplicateNoticeTypes, $duplicateNoticeTypes.size() > 0 ]
+then
+  results.add(new ValidationResult($f, "At least one constraint has duplicate notice types :" + $duplicateNoticeTypes, ValidationStatusEnum.ERROR));
+end
