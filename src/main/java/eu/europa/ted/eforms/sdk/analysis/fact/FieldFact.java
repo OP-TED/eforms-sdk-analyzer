@@ -197,6 +197,23 @@ public class FieldFact implements SdkComponentFact<String> {
     return noticeTypes;
   }
 
+  /**
+   * Return the notices types that appear more than once in the same property.
+   */
+  public Set<String> getDuplicateNoticeTypes() {
+    Set<String> noticeTypes = new HashSet<>();
+    
+    // Go over all dynamic properties and collect duplicate notice types
+    getDynamicProperties()
+        .forEach(property -> {
+          if (property != null) {
+            noticeTypes.addAll(property.getDuplicateNoticeTypeIds());
+          }
+        });
+    
+    return noticeTypes;
+  }
+
   public String getPrivacyCode() {
     if (field.getPrivacy() != null) {
       return field.getPrivacy().getCode().getLiteral();
