@@ -2,6 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis.domain.field;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,6 +62,18 @@ public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V e
         .stream()
         .map(AbstractConstraint::getNoticeTypes)
         .flatMap(List::stream)
+        .collect(Collectors.toSet());
+  }
+
+  public Set<String> getDuplicateNoticeTypeIds() {
+    List<String> values = getConstraints()
+        .stream()
+        .map(AbstractConstraint::getNoticeTypes)
+        .flatMap(List::stream)
+        .collect(Collectors.toList());
+    
+    return values.stream()
+        .filter(i -> Collections.frequency(values, i) > 1)
         .collect(Collectors.toSet());
   }
 

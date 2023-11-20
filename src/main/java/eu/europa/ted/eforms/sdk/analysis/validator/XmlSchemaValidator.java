@@ -31,8 +31,9 @@ import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentTypeNamespace
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
-import eu.europa.ted.eforms.sdk.analysis.util.XPathSplitter;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
+import eu.europa.ted.eforms.xpath.XPathProcessor;
+import eu.europa.ted.eforms.xpath.XPathStep;
 
 /**
  * Validates the content of the XSD files in the SDK, and their consistency with other files.
@@ -161,8 +162,7 @@ public class XmlSchemaValidator implements Validator {
    * removing any predicate.
    */
   private String getFirstElementName(String xpath) {
-    List<String> names = XPathSplitter.getStepElementNames(xpath);
-    return names.get(0);
+    return XPathProcessor.parse(xpath).getSteps().get(0).getStepText();
   }
 
   /**
@@ -170,8 +170,8 @@ public class XmlSchemaValidator implements Validator {
    * removing any predicate.
    */
   private String getLastElementName(String xpath) {
-    List<String> names = XPathSplitter.getStepElementNames(xpath);
-    return names.get(names.size() - 1);
+    List<XPathStep> steps = XPathProcessor.parse(xpath).getSteps();
+    return steps.get(steps.size() - 1).getStepText();
   }
 
   /**

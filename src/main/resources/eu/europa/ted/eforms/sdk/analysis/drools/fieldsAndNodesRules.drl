@@ -153,14 +153,14 @@ end
 
 rule "Every field has XSD sequence order consistent with relative xpath"
 when
-  /fields[ $f: this, xsdSequenceOrderCount != xpathRelativeStepCount ]
+  /fields[ $f: this, xsdSequenceOrderCount != xpathRelativeElementCount ]
 then
   results.add(new ValidationResult($f, "Field XSD sequence order is inconsistent with relative XPath.", ValidationStatusEnum.ERROR));
 end
 
 rule "Every non-root node has XSD sequence order consistent with relative xpath"
 when
-  /nodes[ $n: this, parentId != null, xsdSequenceOrderCount != xpathRelativeStepCount ]
+  /nodes[ $n: this, parentId != null, xsdSequenceOrderCount != xpathRelativeElementCount ]
 then
   results.add(new ValidationResult($n, "Node XSD sequence order is inconsistent with relative XPath.", ValidationStatusEnum.ERROR));
 end
@@ -188,10 +188,24 @@ then
   results.add(new ValidationResult($f, "Relationship with field " + $elementFieldId + " is incorrect", ValidationStatusEnum.ERROR));
 end
 
-// TEDEFO-1806: Warning
 rule "All fields of type code have a codelist property"
 when
   /fields[ $f: this, type == "code", codelistId == null ]
 then
-  results.add(new ValidationResult($f, "The field is of type code but does not have a 'codelist' property", ValidationStatusEnum.WARNING));
+  results.add(new ValidationResult($f, "The field is of type code but does not have a 'codelist' property", ValidationStatusEnum.ERROR));
+end
+
+rule "Fields with the schemeName property have a corresponding attribute field with the expected preset value"
+when
+  $attributeFieldId : /fields[ $f: this, $schemeName: schemeName, schemeName != null ]/attributes
+  not (exists /fields[ id == $attributeFieldId, attributeName == "schemeName", presetValue == $schemeName ])
+then
+  results.add(new ValidationResult($f, "SchemeName does not match preset value of a corresponding attribute field", ValidationStatusEnum.ERROR));
+end
+
+rule "Field constraints do not have duplicate notice types identifiers"
+when
+  /fields[ $f: this, $duplicateNoticeTypes: duplicateNoticeTypes, $duplicateNoticeTypes.size() > 0 ]
+then
+  results.add(new ValidationResult($f, "At least one constraint has duplicate notice types :" + $duplicateNoticeTypes, ValidationStatusEnum.ERROR));
 end
