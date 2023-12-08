@@ -46,7 +46,7 @@
     <version.drools>8.44.0.Final</version.drools>
     <version.jackson>2.14.1</version.jackson>
     <version.junit>5.9.2</version.junit>
-    <version.logback>1.4.4</version.logback>
+    <version.logback>1.4.14</version.logback>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
     <version.semver4j>3.1.0</version.semver4j>
