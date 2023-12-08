@@ -18,7 +18,7 @@ public class LabelFact implements SdkComponentFact<String> {
 
   public String getNormalizedId() {
     String id = label.getId();
-    return id.trim().toLowerCase().replaceAll("[-_\\.]", "");
+    return id.strip().toLowerCase().replaceAll("[-_\\.]", "");
   }
 
   @Override
