@@ -43,10 +43,10 @@
     <version.commons-collections4>4.4</version.commons-collections4>
     <version.commons-lang3>3.12.0</version.commons-lang3>
     <version.cucumber>7.11.1</version.cucumber>
-    <version.drools>8.35.0.Final</version.drools>
+    <version.drools>8.44.0.Final</version.drools>
     <version.jackson>2.14.1</version.jackson>
     <version.junit>5.9.2</version.junit>
-    <version.logback>1.4.4</version.logback>
+    <version.logback>1.4.14</version.logback>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
     <version.semver4j>3.1.0</version.semver4j>
@@ -384,6 +384,12 @@
                   </manifestEntries>
                 </transformer>
               </transformers>
+              <artifactSet>
+                <excludes>
+                  <!-- jakarta.activation is already included so avoid warnings by excluding -api -->
+                  <exclude>jakarta.activation:jakarta.activation-api</exclude>
+                </excludes>
+              </artifactSet>
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -391,7 +397,7 @@
                     <exclude>LICENSE</exclude>
                     <exclude>NOTICE</exclude>
                     <exclude>about.html</exclude>
-                    <exclude>module-info.class</exclude>
+                    <exclude>**/module-info.class</exclude>
                     <exclude>META-INF/*.SF</exclude>
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
