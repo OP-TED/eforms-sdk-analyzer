@@ -1,0 +1,11 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+rule "There are no labels with similar identifiers"
+when
+  /labels[ $l: this, $id: id, $normalizedId: normalizedId ];
+  /labels[ $otherId: id, $otherId < $id, normalizedId == $normalizedId ]
+then
+  results.add(new ValidationResult($l, "Identifier is similar to " + $otherId, ValidationStatusEnum.ERROR));
+end
