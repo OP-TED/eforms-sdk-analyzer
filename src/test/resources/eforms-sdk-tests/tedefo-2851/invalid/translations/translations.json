@@ -1,0 +1,18 @@
+{
+  "files" : [ {
+    "assetType" : "field",
+    "twoLetterCode" : "bg",
+    "threeLetterCode" : "bul",
+    "filename" : "field_bg.xml"
+  }, {
+    "assetType" : "auxiliary",
+    "twoLetterCode" : "bg",
+    "threeLetterCode" : "bul",
+    "filename" : "auxiliary_bg.xml"
+ } ],
+  "languages" : [ {
+    "description" : "Bulgarian",
+    "twoLetterCode" : "bg",
+    "threeLetterCode" : "bul"
+ } ]
+}

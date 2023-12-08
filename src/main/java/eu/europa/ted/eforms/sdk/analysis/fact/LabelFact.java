@@ -16,6 +16,11 @@ public class LabelFact implements SdkComponentFact<String> {
     return label.getId();
   }
 
+  public String getNormalizedId() {
+    String id = label.getId();
+    return id.strip().toLowerCase().replaceAll("[-_\\.]", "");
+  }
+
   @Override
   public String getTypeName() {
     return "label";
