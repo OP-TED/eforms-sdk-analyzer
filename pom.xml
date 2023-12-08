@@ -384,6 +384,12 @@
                   </manifestEntries>
                 </transformer>
               </transformers>
+              <artifactSet>
+                <excludes>
+                  <!-- jakarta.activation is already included so avoid warnings by excluding -api -->
+                  <exclude>jakarta.activation:jakarta.activation-api</exclude>
+                </excludes>
+              </artifactSet>
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -391,7 +397,7 @@
                     <exclude>LICENSE</exclude>
                     <exclude>NOTICE</exclude>
                     <exclude>about.html</exclude>
-                    <exclude>module-info.class</exclude>
+                    <exclude>**/module-info.class</exclude>
                     <exclude>META-INF/*.SF</exclude>
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
