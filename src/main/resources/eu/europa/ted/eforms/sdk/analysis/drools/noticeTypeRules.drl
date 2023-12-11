@@ -177,6 +177,15 @@ then
   results.add(new ValidationResult($nti, "Notice subtype " + $expected + " does not have a notice type definition", ValidationStatusEnum.ERROR));
 end
 
+rule "Privacy fields are present in the expected group"
+when
+  $field : /noticeTypes[ $nt: this  ]/fields[ $fieldId: id, $unpublishGroupId: unpublishGroupId, $unpublishGroupId != null ]
+  $privacyField : /fields[ id == $fieldId ]/referencedPrivacyFieldIds
+  not (exists /noticeTypes[ id == $nt.id ]/fields[ id == $privacyField, parent.id == $unpublishGroupId ])
+then
+  results.add(new ValidationResult($nt, "Field " + $fieldId + " is missing the privacy field " + $privacyField + " under " + $unpublishGroupId, ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-1845: Warning
 //   For every field in a notice type definition, all its repeatable ancestor should be in this notice type definition
 rule "All repeatable ancestors of a field are in the notice type definition"
