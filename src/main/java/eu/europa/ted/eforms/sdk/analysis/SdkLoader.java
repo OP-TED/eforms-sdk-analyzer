@@ -59,9 +59,6 @@ public class SdkLoader {
   public static final Path EXAMPLE_NOTICES = Path.of("examples", "notices");
   public static final Path EXAMPLE_REPORTS = Path.of("examples", "reports");
 
-  // TODO: Use constant from SdkResource in ECL when it is available (TEDEFO-2707)
-  public static final Path TRANSLATIONS_JSON = Path.of("translations", "translations.json");
-
   private final Path sdkRoot;
   private final ObjectMapper objectMapper;
 
@@ -183,7 +180,7 @@ public class SdkLoader {
 
   public TranslationsIndex getTranslationsIndex() throws IOException {
     return loadJsonFile(TranslationsIndex.class,
-        Path.of(sdkRoot.toString(), TRANSLATIONS_JSON.toString()));
+        Path.of(sdkRoot.toString(), SdkResource.TRANSLATIONS_JSON.getPath().toString()));
   }
 
   public Set<Label> getLabels()
