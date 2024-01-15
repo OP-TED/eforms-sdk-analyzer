@@ -58,7 +58,9 @@ public class SdkLoader {
   // Not in SdkResource, as it is not useful when you use the SDK in an app
   public static final Path EXAMPLE_NOTICES = Path.of("examples", "notices");
   public static final Path EXAMPLE_REPORTS = Path.of("examples", "reports");
-
+  public static final Path SCHEMATRONS_DYNAMIC = Path.of("schematrons", "dynamic");
+  public static final Path SCHEMATRONS_STATIC = Path.of("schematrons", "static");
+  
   private final Path sdkRoot;
   private final ObjectMapper objectMapper;
 
@@ -337,5 +339,13 @@ public class SdkLoader {
     }
 
     return schemaCol;
+  }
+
+  public List<Path> getSchematronFiles() {
+    String startFile = "complete-validation.sch";
+
+    return List.of(
+        sdkRoot.resolve(SCHEMATRONS_DYNAMIC).resolve(startFile),
+        sdkRoot.resolve(SCHEMATRONS_STATIC).resolve(startFile));
   }
 }

@@ -44,11 +44,15 @@
     <version.commons-lang3>3.12.0</version.commons-lang3>
     <version.cucumber>7.11.1</version.cucumber>
     <version.drools>8.44.0.Final</version.drools>
+    <version.istack>3.0.11</version.istack>
     <version.jackson>2.14.1</version.jackson>
+    <version.jaxb-bind-api>2.3.2</version.jaxb-bind-api>
+    <version.jaxb-impl>2.3.2</version.jaxb-impl>
     <version.junit>5.9.2</version.junit>
     <version.logback>1.4.14</version.logback>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
+    <version.ph-schematron>6.3.4</version.ph-schematron>
     <version.semver4j>3.1.0</version.semver4j>
     <version.slf4j>2.0.3</version.slf4j>
     <version.xmlschema>2.3.0</version.xmlschema>
@@ -133,6 +137,24 @@
         <scope>import</scope>
       </dependency>
 
+      <!-- JAXB -->
+      <dependency>
+        <groupId>com.sun.istack</groupId>
+        <artifactId>istack-commons-runtime</artifactId>
+        <version>${version.istack}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>${version.jaxb-bind-api}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>${version.jaxb-impl}</version>
+        <scope>runtime</scope>
+      </dependency>
+
       <!-- SLF4J -->
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -155,6 +177,16 @@
         <groupId>info.picocli</groupId>
         <artifactId>picocli</artifactId>
         <version>${version.picocli}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.helger.schematron</groupId>
+        <artifactId>ph-schematron-api</artifactId>
+        <version>${version.ph-schematron}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.helger.schematron</groupId>
+        <artifactId>ph-schematron-validator</artifactId>
+        <version>${version.ph-schematron}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -244,6 +276,20 @@
       <scope>runtime</scope>
     </dependency>
 
+    <!-- JAXB -->
+    <dependency>
+      <groupId>com.sun.istack</groupId>
+      <artifactId>istack-commons-runtime</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
     <!-- JUnit -->
     <dependency>
@@ -284,6 +330,14 @@
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.helger.schematron</groupId>
+      <artifactId>ph-schematron-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.helger.schematron</groupId>
+      <artifactId>ph-schematron-validator</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -384,12 +438,6 @@
                   </manifestEntries>
                 </transformer>
               </transformers>
-              <artifactSet>
-                <excludes>
-                  <!-- jakarta.activation is already included so avoid warnings by excluding -api -->
-                  <exclude>jakarta.activation:jakarta.activation-api</exclude>
-                </excludes>
-              </artifactSet>
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
