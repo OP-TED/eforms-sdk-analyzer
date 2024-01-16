@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import eu.europa.ted.eforms.sdk.analysis.validator.EfxValidator;
+import eu.europa.ted.eforms.sdk.analysis.validator.SchematronValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.SdkValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.TextValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.Validator;
@@ -28,6 +29,7 @@ public class SdkAnalyzer {
         new XmlSchemaValidator(sdkRoot),
         new EfxValidator(sdkRoot),
         new TextValidator(sdkRoot),
+        new SchematronValidator(sdkRoot),
         new SdkValidator(sdkRoot));
     
     for (Validator validator : validators) {
