@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CodelistsIndexItem implements Comparable<CodelistsIndexItem> {
   private String id;
+  private String version;
   private String parentId;
   private String filename;
   private String description;
@@ -18,6 +19,10 @@ public class CodelistsIndexItem implements Comparable<CodelistsIndexItem> {
 
   public String getParentId() {
     return parentId;
+  }
+
+  public String getVersion() {
+    return version;
   }
 
   public String getFilename() {
