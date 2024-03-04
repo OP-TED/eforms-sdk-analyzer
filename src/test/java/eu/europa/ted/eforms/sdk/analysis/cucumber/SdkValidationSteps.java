@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.FactsLoader;
 import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
 import eu.europa.ted.eforms.sdk.analysis.validator.EfxValidator;
+import eu.europa.ted.eforms.sdk.analysis.validator.SchematronValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.SdkValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.TextValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.XmlSchemaValidator;
@@ -39,6 +40,7 @@ public class SdkValidationSteps {
   private EfxValidator efxValidator;
   private TextValidator textValidator;
   private XmlSchemaValidator schemaValidator;
+  private SchematronValidator schematronValidator;
 
   private List<String> testedRules = new ArrayList<>();
 
@@ -219,6 +221,22 @@ public class SdkValidationSteps {
     }
   }
 
+  @When("I execute schematron validation")
+  public void i_execute_schematron_validation() throws Exception {
+    schematronValidator = new SchematronValidator(testsFolder);
+    schematronValidator.validate();
+
+    if (schematronValidator.hasWarnings()) {
+      logger.warn("Validation warnings:\n{}",
+          StringUtils.join(schematronValidator.getWarnings(), '\n'));
+    }
+
+    if (schematronValidator.hasErrors()) {
+      logger.error("Validation errors:\n{}",
+          StringUtils.join(schematronValidator.getErrors(), '\n'));
+    }
+  }
+
   @Then("No rules should have been fired")
   public void no_rules_should_have_been_fired() {
     assertEquals(0, sdkValidator.getFiredRulesNames().size());
@@ -255,6 +273,11 @@ public class SdkValidationSteps {
   @Then("^I should get (.*) text validation errors?$")
   public void i_should_get_text_validation_errors(int errorsCount) {
     assertEquals(errorsCount, textValidator.getErrors().length);
+  }
+
+  @Then("^I should get (.*) schematron validation errors?$")
+  public void i_should_get_schematron_validation_errors(int errorsCount) {
+    assertEquals(errorsCount, schematronValidator.getErrors().length);
   }
 
   @Then("I should get not found exception for file {string}")
