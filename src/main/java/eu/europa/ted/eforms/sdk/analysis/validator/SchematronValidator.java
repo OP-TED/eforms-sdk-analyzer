@@ -25,7 +25,7 @@ import com.helger.xml.transform.TransformSourceFactory;
 
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
-import eu.europa.ted.eforms.sdk.analysis.fact.SchematronFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.SchematronFileFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 /**
@@ -63,7 +63,7 @@ public class SchematronValidator implements Validator {
           e -> handleError(e, file));
 
       if (doc == null) {
-        ValidationResult result = new ValidationResult(new SchematronFact(file),
+        ValidationResult result = new ValidationResult(new SchematronFileFact(file),
             "File is not well-formed XML", ValidationStatusEnum.ERROR);
 
         results.add(result);
@@ -72,19 +72,20 @@ public class SchematronValidator implements Validator {
 
       String resolved = MicroWriter.getNodeAsString(doc);
       if (resolved == null) {
-        ValidationResult result = new ValidationResult(new SchematronFact(file),
+        ValidationResult result = new ValidationResult(new SchematronFileFact(file),
             "Resolved schematron could not be processed", ValidationStatusEnum.ERROR);
         
         results.add(result);
         return;
       }
       Source source = TransformSourceFactory.create(resolved);
+      // This will return an empty list if the schematron is valid.
       IErrorList errors = com.helger.schematron.validator.SchematronValidator.validateSchematron(source);
 
       if (errors != null) {
         errors.forEach(e -> handleError(e, file));
       } else {
-        ValidationResult result = new ValidationResult(new SchematronFact(file),
+        ValidationResult result = new ValidationResult(new SchematronFileFact(file),
             "Error while validating schematron", ValidationStatusEnum.ERROR);
         
         results.add(result);
@@ -101,7 +102,7 @@ public class SchematronValidator implements Validator {
       if (locale == null) {
         locale = new Locale("en");
       }
-      ValidationResult result = new ValidationResult(new SchematronFact(file),
+      ValidationResult result = new ValidationResult(new SchematronFileFact(file),
           error.getErrorText(locale), ValidationStatusEnum.ERROR);
 
       results.add(result);
