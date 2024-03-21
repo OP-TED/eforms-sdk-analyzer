@@ -3,7 +3,7 @@ package eu.europa.ted.eforms.sdk.analysis.domain.field;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"id", "name", "description", "labelId", "repeatable", "repeatsWithNodeId",
-    "instanceIdentifier", "identifierFieldId", "captionFieldId"})
+    "changeIdentification", "instanceIdentifier"})
 public class BusinessEntity {
   private String id;
   private String name;
