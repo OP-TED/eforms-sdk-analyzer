@@ -31,6 +31,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypeFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.SchematronFileFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.SvrlReportFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.TranslationsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
@@ -181,6 +182,15 @@ public class FactsLoader {
     final DataStore<SvrlReportFact> datastore = DataSource.createStore();
     sdkLoader.getSvrlReports()
         .forEach((SvrlReport svrlReport) -> datastore.add(new SvrlReportFact(svrlReport)));
+
+    return datastore;
+  }
+
+  public DataStore<SchematronFileFact> loadSchematrons() {
+    logger.debug("Creating facts datastore for Schematron files");
+
+    final DataStore<SchematronFileFact> datastore = DataSource.createStore();
+    sdkLoader.getSchematronFiles().forEach(f -> datastore.add(new SchematronFileFact(f)));
 
     return datastore;
   }

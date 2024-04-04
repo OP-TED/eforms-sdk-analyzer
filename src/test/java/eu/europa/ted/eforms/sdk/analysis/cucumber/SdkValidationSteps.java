@@ -137,6 +137,11 @@ public class SdkValidationSteps {
     sdkValidator.getSdkUnit().setSvrlReports(new FactsLoader(testsFolder).loadSvrlReports());
   }
 
+  @When("I load all schematron files")
+  public void I_load_all_Schematron_files() {
+    sdkValidator.getSdkUnit().setSchematrons(new FactsLoader(testsFolder).loadSchematrons());
+  }
+
   @When("I load SDK metadata")
   public void I_load_SDK_metadata() throws IOException {
     final SdkMetadata sdkMetadata = SdkMetadataParser.loadSdkMetadata(testsFolder);

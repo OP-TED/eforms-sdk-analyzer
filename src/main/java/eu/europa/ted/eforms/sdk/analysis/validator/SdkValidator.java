@@ -60,7 +60,8 @@ public class SdkValidator implements Validator {
         .setLabels(factsLoader.loadLabels())
         .setViewTemplates(factsLoader.loadViewTemplates())
         .setXmlNotices(factsLoader.loadXmlNotices())
-        .setSvrlReports(factsLoader.loadSvrlReports());
+        .setSvrlReports(factsLoader.loadSvrlReports())
+        .setSchematrons(factsLoader.loadSchematrons());
 
     fireAllRules();
     return this;

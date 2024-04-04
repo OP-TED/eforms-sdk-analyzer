@@ -24,6 +24,7 @@ import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.transform.TransformSourceFactory;
 
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
+import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronFile;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.SchematronFileFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
@@ -53,17 +54,21 @@ public class SchematronValidator implements Validator {
   public Validator validate() throws Exception {
     logger.debug("Validating Schematron files");
 
-    sdkLoader.getSchematronFiles().forEach(file -> {
+    sdkLoader.getSchematronFilesPaths().forEach(file -> {
       if (file == null) {
         return;
       }
+
+      // Create a fact for teh file being validated, to use in the validation result
+      SchematronFileFact schematronFileFact = new SchematronFileFact(new SchematronFile(file));
+
       IReadableResource schematron = new FileSystemResource(file);
       // Resolve all included files, so that they also get validated.
       final IMicroDocument doc = SchematronHelper.getWithResolvedSchematronIncludes(schematron,
-          e -> handleError(e, file));
+          e -> handleError(e, schematronFileFact));
 
       if (doc == null) {
-        ValidationResult result = new ValidationResult(new SchematronFileFact(file),
+        ValidationResult result = new ValidationResult(schematronFileFact,
             "File is not well-formed XML", ValidationStatusEnum.ERROR);
 
         results.add(result);
@@ -72,7 +77,7 @@ public class SchematronValidator implements Validator {
 
       String resolved = MicroWriter.getNodeAsString(doc);
       if (resolved == null) {
-        ValidationResult result = new ValidationResult(new SchematronFileFact(file),
+        ValidationResult result = new ValidationResult(schematronFileFact,
             "Resolved schematron could not be processed", ValidationStatusEnum.ERROR);
         
         results.add(result);
@@ -83,9 +88,9 @@ public class SchematronValidator implements Validator {
       IErrorList errors = com.helger.schematron.validator.SchematronValidator.validateSchematron(source);
 
       if (errors != null) {
-        errors.forEach(e -> handleError(e, file));
+        errors.forEach(e -> handleError(e, schematronFileFact));
       } else {
-        ValidationResult result = new ValidationResult(new SchematronFileFact(file),
+        ValidationResult result = new ValidationResult(schematronFileFact,
             "Error while validating schematron", ValidationStatusEnum.ERROR);
         
         results.add(result);
@@ -96,13 +101,13 @@ public class SchematronValidator implements Validator {
     return this;
   }
 
-  private void handleError(IError error, Path file) {
+  private void handleError(IError error, SchematronFileFact schematronFileFact) {
     if (error.getErrorLevel().isError()) {
       Locale locale = Locale.getDefault();
       if (locale == null) {
         locale = new Locale("en");
       }
-      ValidationResult result = new ValidationResult(new SchematronFileFact(file),
+      ValidationResult result = new ValidationResult(schematronFileFact,
           error.getErrorText(locale), ValidationStatusEnum.ERROR);
 
       results.add(result);
