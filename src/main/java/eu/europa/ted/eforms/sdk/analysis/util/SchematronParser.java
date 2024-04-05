@@ -33,14 +33,14 @@ public class SchematronParser {
         e -> handleError(e, schematronFilePath));
 
     if (doc == null) {
-      logger.error("Schematron file %s could not be loaded as XML", schematronFilePath);
+      logger.error("Schematron file {} could not be loaded as XML", schematronFilePath);
       return null;
     }
 
     List<SchematronAssert> asserts = new ArrayList<>();
     List<IMicroNode> allChildren = doc.getAllChildrenRecursive();
     if (allChildren == null) {
-      logger.error("Schematron file %s does not have the expected content", schematronFilePath);
+      logger.error("Schematron file {} does not have the expected content", schematronFilePath);
       return null;
     }
 
@@ -58,7 +58,7 @@ public class SchematronParser {
   }
 
   private static void handleError(IError error, Path schematronFilePath) {
-    logger.error("Error loading schematron file %s : %s", schematronFilePath.toString(),
+    logger.error("Error loading schematron file {} : {}", schematronFilePath.toString(),
         error.getAsString(new Locale("en")));
   }
 }
