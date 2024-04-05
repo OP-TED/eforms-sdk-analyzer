@@ -42,6 +42,7 @@ import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeSubTypeForIndex
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeType;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypeSdk;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypesForIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronFile;
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplatesIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.CodeList;
@@ -49,6 +50,7 @@ import eu.europa.ted.eforms.sdk.analysis.domain.xml.Identification;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.Properties;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row;
 import eu.europa.ted.eforms.sdk.analysis.domain.xml.SimpleCodeList.Row.Value;
+import eu.europa.ted.eforms.sdk.analysis.util.SchematronParser;
 import eu.europa.ted.eforms.sdk.analysis.util.XmlDataExtractor;
 import eu.europa.ted.eforms.sdk.analysis.util.XmlParser;
 
@@ -341,11 +343,20 @@ public class SdkLoader {
     return schemaCol;
   }
 
-  public List<Path> getSchematronFiles() {
+  public List<Path> getSchematronFilesPaths() {
     String startFile = "complete-validation.sch";
 
     return List.of(
         sdkRoot.resolve(SCHEMATRONS_DYNAMIC).resolve(startFile),
         sdkRoot.resolve(SCHEMATRONS_STATIC).resolve(startFile));
+  }
+
+  public Set<SchematronFile> getSchematronFiles() {
+    final Set<SchematronFile> result = new HashSet<>();
+    for (Path file : getSchematronFilesPaths()) {
+      result.add(SchematronParser.loadSchematronFile(file));
+    }
+
+    return result;
   }
 }

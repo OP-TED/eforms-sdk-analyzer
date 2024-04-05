@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import eu.europa.ted.eforms.sdk.ComponentFactory;
 import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.SdkVersion;
+import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzerSymbolResolver;
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.StringConstraint;
@@ -136,26 +137,28 @@ public class EfxValidator implements Validator {
     }
 
     @Override
-    public SymbolResolver createSymbolResolver(final String sdkVersion) {
+    public SymbolResolver createSymbolResolver(final String sdkVersion, String qualifier) {
       try {
-        return ComponentFactory.getSymbolResolver(sdkVersion, sdkRoot);
+        // We want SdkAnalyzerSymbolResolver, so always indicate its qualifier
+        return ComponentFactory.getSymbolResolver(sdkVersion, SdkAnalyzerSymbolResolver.QUALIFIER,
+            sdkRoot);
       } catch (InstantiationException e) {
         throw new RuntimeException(e.getMessage(), e);
       }
     }
 
     @Override
-    public ScriptGenerator createScriptGenerator(final String sdkVersion,
+    public ScriptGenerator createScriptGenerator(final String sdkVersion, String qualifier,
         final TranslatorOptions options) {
       try {
-        return ComponentFactory.getScriptGenerator(sdkVersion, options);
+        return ComponentFactory.getScriptGenerator(sdkVersion, qualifier, options);
       } catch (InstantiationException e) {
         throw new RuntimeException(e.getMessage(), e);
       }
     }
 
     @Override
-    public MarkupGenerator createMarkupGenerator(final String sdkVersion,
+    public MarkupGenerator createMarkupGenerator(final String sdkVersion, String qualifier,
         final TranslatorOptions options) {
       return new MarkupGeneratorMock();
     }
