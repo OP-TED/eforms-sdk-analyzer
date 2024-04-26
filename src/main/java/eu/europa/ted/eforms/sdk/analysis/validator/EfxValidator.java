@@ -35,6 +35,7 @@ import eu.europa.ted.efx.interfaces.MarkupGenerator;
 import eu.europa.ted.efx.interfaces.ScriptGenerator;
 import eu.europa.ted.efx.interfaces.SymbolResolver;
 import eu.europa.ted.efx.interfaces.TranslatorDependencyFactory;
+import eu.europa.ted.efx.interfaces.TranslatorOptions;
 
 /**
  * Validates EFX expressions and templates 
@@ -144,16 +145,18 @@ public class EfxValidator implements Validator {
     }
 
     @Override
-    public ScriptGenerator createScriptGenerator(final String sdkVersion) {
+    public ScriptGenerator createScriptGenerator(final String sdkVersion,
+        final TranslatorOptions options) {
       try {
-        return ComponentFactory.getScriptGenerator(sdkVersion);
+        return ComponentFactory.getScriptGenerator(sdkVersion, options);
       } catch (InstantiationException e) {
         throw new RuntimeException(e.getMessage(), e);
       }
     }
 
     @Override
-    public MarkupGenerator createMarkupGenerator(final String sdkVersion) {
+    public MarkupGenerator createMarkupGenerator(final String sdkVersion,
+        final TranslatorOptions options) {
       return new MarkupGeneratorMock();
     }
 
