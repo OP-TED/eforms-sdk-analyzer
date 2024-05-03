@@ -5,12 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
+import eu.europa.ted.eforms.sdk.analysis.domain.enums.Language;
 import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
@@ -21,6 +23,9 @@ import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
  */
 public class TextValidator implements Validator {
   private static final Logger logger = LoggerFactory.getLogger(TextValidator.class);
+
+  // Match label identifiers, so | with characters before and after.
+  private static Pattern labelIdPattern = Pattern.compile(".*\\w\\|\\w.*");
 
   private final SdkLoader sdkLoader;
 
@@ -48,16 +53,28 @@ public class TextValidator implements Validator {
     return this;
   }
 
-  private void validateLabel(Label l) {
-    l.getTranslations().forEach((lang, text) -> {
-      text.codePoints()
-          .filter(c -> isInvalidCharacter(c))
-          .mapToObj(c -> Character.toString(c))
-          .forEach(c -> {
-            String msg = String.format("Label in %s contains invalid character [%s]", lang, c);
-            results.add(new ValidationResult(new LabelFact(l), msg, ValidationStatusEnum.ERROR));
-          });
+  private void validateLabel(Label label) {
+    label.getTranslations().forEach((lang, text) -> {
+      checkCharacters(label, lang, text);
+      checkIdReference(label, lang, text);
     });
+  }
+
+  private void checkCharacters(Label l, Language lang, String text) {
+    text.codePoints()
+        .filter(c -> isInvalidCharacter(c))
+        .mapToObj(c -> Character.toString(c))
+        .forEach(c -> {
+          String msg = String.format("Label in %s contains invalid character [%s]", lang, c);
+          results.add(new ValidationResult(new LabelFact(l), msg, ValidationStatusEnum.ERROR));
+        });
+  }
+
+  private void checkIdReference(Label l, Language lang, String text) {
+    if (labelIdPattern.matcher(text).matches()) {
+      String msg = String.format("Label in %s contains label identifier", lang);
+      results.add(new ValidationResult(new LabelFact(l), msg, ValidationStatusEnum.ERROR));
+    }
   }
 
   private final boolean isInvalidCharacter(int codePoint) {
