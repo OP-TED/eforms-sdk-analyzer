@@ -6,7 +6,7 @@
 <entry key="code|name|authority-activity.econ-aff">Economic affairs</entry>
 <entry key="code|name|authority-activity.education">Valid: é ç ф ή </entry>
 <entry key="code|name|authority-activity.env-pro">Environmental protection</entry>
-<entry key="code|name|authority-activity.gen-pub">General public services</entry>
+<entry key="code|name|authority-activity.gen-pub">An identifier of a business entity (RESULT|((RES|TEN|TPA|TPO|ORG-XXXX)), as given in the previous notice</entry>
 <entry key="code|name|authority-activity.hc-am">Housing and community amenities</entry>
 <entry key="code|name|authority-activity.health">Health</entry>
 <entry key="code|name|authority-activity.pub-os">Public order and safety</entry>

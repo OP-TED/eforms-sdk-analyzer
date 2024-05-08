@@ -25,7 +25,7 @@ public class TextValidator implements Validator {
   private static final Logger logger = LoggerFactory.getLogger(TextValidator.class);
 
   // Match label identifiers, so | with characters before and after.
-  private static Pattern labelIdPattern = Pattern.compile(".*\\w\\|\\w.*");
+  private static Pattern labelIdPattern = Pattern.compile(".*[a-z0-9]\\|[a-z0-9].*");
 
   private final SdkLoader sdkLoader;
 
