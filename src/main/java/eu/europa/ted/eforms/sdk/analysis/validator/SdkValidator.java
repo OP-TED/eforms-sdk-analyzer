@@ -54,6 +54,7 @@ public class SdkValidator implements Validator {
         .setDocumentTypes(factsLoader.loadDocumentTypes())
         .setFieldsAndNodesMetadata(factsLoader.loadFieldsAndNodesMetadata())
         .setFields(factsLoader.loadFields())
+        .setBusinessEntities(factsLoader.loadBusinessEntities())
         .setNodes(factsLoader.loadNodes())
         .setNoticeTypes(factsLoader.loadNoticeTypes())
         .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())

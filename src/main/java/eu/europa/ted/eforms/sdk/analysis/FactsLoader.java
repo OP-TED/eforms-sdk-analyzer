@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.analysis.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.BusinessEntity;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
 import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
@@ -22,6 +23,7 @@ import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeType;
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplatesIndex;
+import eu.europa.ted.eforms.sdk.analysis.fact.BusinessEntityFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
@@ -67,6 +69,17 @@ public class FactsLoader {
 
     sdkLoader.getFieldsAndNodes().getFields()
         .forEach((Field field) -> datastore.add(new FieldFact(field)));
+
+    return datastore;
+  }
+
+  public DataStore<BusinessEntityFact> loadBusinessEntities() throws IOException {
+    logger.debug("Creating facts datastore for business entities");
+
+    final DataStore<BusinessEntityFact> datastore = DataSource.createStore();
+
+    sdkLoader.getFieldsAndNodes().getBusinessEntities()
+        .forEach((BusinessEntity entity) -> datastore.add(new BusinessEntityFact(entity)));
 
     return datastore;
   }
