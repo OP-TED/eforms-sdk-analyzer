@@ -20,11 +20,27 @@ public class BusinessEntityFact implements SdkComponentFact<String> {
   }
 
   public String getIdentifierFieldId() {
-    return businessEntity.getInstanceIdentifier().getIdentifierFieldId();
+    if (businessEntity.getInstanceIdentifier() != null) {
+      return businessEntity.getInstanceIdentifier().getIdentifierFieldId();
+    } else {
+      return null;
+    }
   }
 
   public String getCaptionFieldId() {
-    return businessEntity.getInstanceIdentifier().getCaptionFieldId();
+    if (businessEntity.getInstanceIdentifier() != null) {
+      return businessEntity.getInstanceIdentifier().getCaptionFieldId();
+    } else {
+      return null;
+    }
+  }
+
+  public String getReferencedBusinessEntityId() {
+    if (businessEntity.getInstanceIdentifier() != null) {
+      return businessEntity.getInstanceIdentifier().getReferencedBusinessEntityId();
+    } else {
+      return null;
+    }
   }
 
   @Override

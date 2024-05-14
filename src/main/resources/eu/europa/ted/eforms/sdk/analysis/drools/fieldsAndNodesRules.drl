@@ -217,3 +217,35 @@ when
 then
   results.add(new ValidationResult($f, "BusinessEntityId is not indicated or does not exist : " + $businessEntityId, ValidationStatusEnum.ERROR));
 end
+
+rule "Business entities have a correct label identifier"
+when
+  /businessEntities[ $b: this, $labelId: labelId ]
+  not (exists /labels[ id == $labelId ])
+then
+  results.add(new ValidationResult($b, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end
+
+rule "Relationships between business entities and nodes are consistent"
+when
+  /businessEntities[ $b: this, $businessEntityId: id, $nodeId: repeatsWithNodeId, repeatsWithNodeId != null ]
+  not (exists /nodes[ id == $nodeId, businessEntityId == $businessEntityId ])
+then
+  results.add(new ValidationResult($b, "Relationship with node " + $nodeId + " is incorrect", ValidationStatusEnum.ERROR));
+end
+
+rule "Relationships between business entities and identifier fields are consistent"
+when
+  /businessEntities[ $b: this, $businessEntityId: id, $fieldId: identifierFieldId, identifierFieldId != null ]
+  not (exists /fields[ id == $fieldId, businessEntityId == $businessEntityId ])
+then
+  results.add(new ValidationResult($b, "Relationship with identifier field " + $fieldId + " is incorrect", ValidationStatusEnum.ERROR));
+end
+
+rule "Relationships between business entities and caption fields are consistent"
+when
+  /businessEntities[ $b: this, $businessEntityId: id, $referencedBusinessEntityId: referencedBusinessEntityId, $fieldId: captionFieldId, captionFieldId != null ]
+  not (exists /fields[ id == $fieldId, businessEntityId == $businessEntityId || businessEntityId == $referencedBusinessEntityId ])
+then
+  results.add(new ValidationResult($b, "Relationship with caption field " + $fieldId + " is incorrect", ValidationStatusEnum.ERROR));
+end
