@@ -209,3 +209,11 @@ when
 then
   results.add(new ValidationResult($f, "At least one constraint has duplicate notice types :" + $duplicateNoticeTypes, ValidationStatusEnum.ERROR));
 end
+
+rule "All fields are part of an existing business entity"
+when
+  /fields[ $f: this, $businessEntityId: businessEntityId ]
+  not (exists /businessEntities[ id == $businessEntityId ])
+then
+  results.add(new ValidationResult($f, "BusinessEntityId is not indicated or does not exist : " + $businessEntityId, ValidationStatusEnum.ERROR));
+end
