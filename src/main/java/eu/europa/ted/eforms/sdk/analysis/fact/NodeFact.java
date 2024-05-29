@@ -96,6 +96,10 @@ public class NodeFact implements SdkComponentFact<String> {
     return badSteps;
   }
 
+  public String getBusinessEntityId() {
+    return node.getBusinessEntityId();
+  }
+
   @Override
   public String getId() {
     return node.getId();

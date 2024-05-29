@@ -8,6 +8,7 @@ import java.util.Set;
 import org.drools.ruleunits.api.DataStore;
 import org.kie.api.definition.rule.Rule;
 
+import eu.europa.ted.eforms.sdk.analysis.fact.BusinessEntityFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.CodelistsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.DocumentTypeFact;
@@ -33,6 +34,7 @@ public class SdkUnit implements RuleUnit {
   private DataStore<XmlNoticeFact> xmlNotices;
   private DataStore<FieldsAndNodesMetadataFact> fieldsAndNodesMetadata;
   private DataStore<FieldFact> fields;
+  private DataStore<BusinessEntityFact> businessEntities;
   private DataStore<LabelFact> labels;
   private DataStore<NodeFact> nodes;
   private DataStore<NoticeTypesIndexFact> noticeTypesIndex;
@@ -103,6 +105,15 @@ public class SdkUnit implements RuleUnit {
 
   public SdkUnit setFields(DataStore<FieldFact> fields) {
     this.fields = fields;
+    return this;
+  }
+
+  public DataStore<BusinessEntityFact> getBusinessEntities() {
+    return businessEntities;
+  }
+
+  public SdkUnit setBusinessEntities(DataStore<BusinessEntityFact> businessEntities) {
+    this.businessEntities = businessEntities;
     return this;
   }
 

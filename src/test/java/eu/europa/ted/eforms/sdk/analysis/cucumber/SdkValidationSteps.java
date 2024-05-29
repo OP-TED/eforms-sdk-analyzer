@@ -108,6 +108,11 @@ public class SdkValidationSteps {
     sdkValidator.getSdkUnit().setFields(new FactsLoader(testsFolder).loadFields());
   }
 
+  @When("I load all business entities")
+  public void i_load_all_business_entities() throws IOException {
+    sdkValidator.getSdkUnit().setBusinessEntities(new FactsLoader(testsFolder).loadBusinessEntities());
+  }
+
   @When("I load all nodes")
   public void i_load_all_nodes() throws IOException {
     sdkValidator.getSdkUnit().setNodes(new FactsLoader(testsFolder).loadNodes());

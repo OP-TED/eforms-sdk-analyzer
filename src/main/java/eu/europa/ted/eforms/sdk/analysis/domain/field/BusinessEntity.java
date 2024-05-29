@@ -12,7 +12,7 @@ public class BusinessEntity {
   private boolean repeatable;
   private String repeatsWithNodeId;
 
-  private  BusinessEntityChangeIdentification changeIdentification;
+  private BusinessEntityChangeIdentification changeIdentification;
 
   private BusinessEntityIdentifier instanceIdentifier;
 

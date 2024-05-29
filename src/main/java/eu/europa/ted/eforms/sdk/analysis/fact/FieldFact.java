@@ -176,6 +176,10 @@ public class FieldFact implements SdkComponentFact<String> {
     return field.getPresetValue();
   }
 
+  public String getBusinessEntityId() {
+    return field.getBusinessEntityId();
+  }
+
   /**
    * Return a stream of the dynamic properties of the field
    */
