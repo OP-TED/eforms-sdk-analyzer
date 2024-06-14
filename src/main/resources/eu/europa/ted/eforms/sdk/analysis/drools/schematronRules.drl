@@ -1,0 +1,17 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+rule "Every assert has an id"
+when
+  /schematrons[ $sch: this ]/asserts[ id == null ]
+then
+  results.add(new ValidationResult($sch, "Schematron has an assert without an id", ValidationStatusEnum.ERROR));
+end
+
+rule "Every assert id is unique in the schematron file"
+when
+  $duplicates : /schematrons[ $sch: this ]/duplicateAssertIds
+then
+  results.add(new ValidationResult($sch, "Schematron contains duplicate assert ids: " + $duplicates, ValidationStatusEnum.ERROR));
+end

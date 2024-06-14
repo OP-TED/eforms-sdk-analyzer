@@ -186,6 +186,14 @@ then
   results.add(new ValidationResult($nt, "Field " + $fieldId + " is missing the privacy field " + $privacyField + " under " + $unpublishGroupId, ValidationStatusEnum.ERROR));
 end
 
+rule "Business entity of the group is consistent with the node"
+when
+  $group : /noticeTypes[ $nt: this ]/groups[ $groupId: id, $nodeId: nodeId, $businessEntityId: businessEntityId, businessEntityId != null ]
+  not (exists /businessEntities[ id == $businessEntityId, repeatsWithNodeId == $nodeId ])
+then
+  results.add(new ValidationResult($nt, "Group  " + $groupId + " references business entity " + $businessEntityId + " which does not correspond to the same node", ValidationStatusEnum.ERROR));
+end
+
 // TEDEFO-1845: Warning
 //   For every field in a notice type definition, all its repeatable ancestor should be in this notice type definition
 rule "All repeatable ancestors of a field are in the notice type definition"

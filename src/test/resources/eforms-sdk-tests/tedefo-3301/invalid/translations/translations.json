@@ -1,0 +1,105 @@
+{
+  "files" : [ {
+    "assetType" : "code",
+    "twoLetterCode" : "en",
+    "threeLetterCode" : "eng",
+    "filename" : "code_en.xml"
+  } ],
+  "languages" : [ {
+    "description" : "Bulgarian",
+    "twoLetterCode" : "bg",
+    "threeLetterCode" : "bul"
+  }, {
+    "description" : "Czech",
+    "twoLetterCode" : "cs",
+    "threeLetterCode" : "ces"
+  }, {
+    "description" : "Danish",
+    "twoLetterCode" : "da",
+    "threeLetterCode" : "dan"
+  }, {
+    "description" : "German",
+    "twoLetterCode" : "de",
+    "threeLetterCode" : "deu"
+  }, {
+    "description" : "Greek",
+    "twoLetterCode" : "el",
+    "threeLetterCode" : "ell"
+  }, {
+    "description" : "English",
+    "twoLetterCode" : "en",
+    "threeLetterCode" : "eng"
+  }, {
+    "description" : "Spanish",
+    "twoLetterCode" : "es",
+    "threeLetterCode" : "spa"
+  }, {
+    "description" : "Estonian",
+    "twoLetterCode" : "et",
+    "threeLetterCode" : "est"
+  }, {
+    "description" : "Finnish",
+    "twoLetterCode" : "fi",
+    "threeLetterCode" : "fin"
+  }, {
+    "description" : "French",
+    "twoLetterCode" : "fr",
+    "threeLetterCode" : "fra"
+  }, {
+    "description" : "Irish",
+    "twoLetterCode" : "ga",
+    "threeLetterCode" : "gle"
+  }, {
+    "description" : "Croatian",
+    "twoLetterCode" : "hr",
+    "threeLetterCode" : "hrv"
+  }, {
+    "description" : "Hungarian",
+    "twoLetterCode" : "hu",
+    "threeLetterCode" : "hun"
+  }, {
+    "description" : "Italian",
+    "twoLetterCode" : "it",
+    "threeLetterCode" : "ita"
+  }, {
+    "description" : "Lithuanian",
+    "twoLetterCode" : "lt",
+    "threeLetterCode" : "lit"
+  }, {
+    "description" : "Latvian",
+    "twoLetterCode" : "lv",
+    "threeLetterCode" : "lav"
+  }, {
+    "description" : "Maltese",
+    "twoLetterCode" : "mt",
+    "threeLetterCode" : "mlt"
+  }, {
+    "description" : "Dutch",
+    "twoLetterCode" : "nl",
+    "threeLetterCode" : "nld"
+  }, {
+    "description" : "Polish",
+    "twoLetterCode" : "pl",
+    "threeLetterCode" : "pol"
+  }, {
+    "description" : "Portuguese",
+    "twoLetterCode" : "pt",
+    "threeLetterCode" : "por"
+  }, {
+    "description" : "Romanian",
+    "twoLetterCode" : "ro",
+    "threeLetterCode" : "ron"
+  }, {
+    "description" : "Slovak",
+    "twoLetterCode" : "sk",
+    "threeLetterCode" : "slk"
+  }, {
+    "description" : "Slovenian",
+    "twoLetterCode" : "sl",
+    "threeLetterCode" : "slv"
+  }, {
+    "description" : "Swedish",
+    "twoLetterCode" : "sv",
+    "threeLetterCode" : "swe"
+  } ]
+}

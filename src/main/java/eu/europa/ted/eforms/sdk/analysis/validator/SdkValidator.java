@@ -54,13 +54,15 @@ public class SdkValidator implements Validator {
         .setDocumentTypes(factsLoader.loadDocumentTypes())
         .setFieldsAndNodesMetadata(factsLoader.loadFieldsAndNodesMetadata())
         .setFields(factsLoader.loadFields())
+        .setBusinessEntities(factsLoader.loadBusinessEntities())
         .setNodes(factsLoader.loadNodes())
         .setNoticeTypes(factsLoader.loadNoticeTypes())
         .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
         .setLabels(factsLoader.loadLabels())
         .setViewTemplates(factsLoader.loadViewTemplates())
         .setXmlNotices(factsLoader.loadXmlNotices())
-        .setSvrlReports(factsLoader.loadSvrlReports());
+        .setSvrlReports(factsLoader.loadSvrlReports())
+        .setSchematrons(factsLoader.loadSchematrons());
 
     fireAllRules();
     return this;

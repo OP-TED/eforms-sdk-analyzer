@@ -17,11 +17,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * but we may not need that.
  * </p>
  */
-@JsonPropertyOrder({"id", "parentNodeId", "name", "btId", "xpathAbsolute", "xpathRelative", "type",
+@JsonPropertyOrder({"id", "parentNodeId", "name", "btId",
+    "xpathAbsolute", "xpathRelative", "xsdSequenceOrder",
+    "type",
     "attributeName", "attributeOf", "attributes",
-    "presetValue", "idSchemes", "idScheme", "schemeName", "legalType", "maxLength", "privacy",
-    "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList", "inChangeNotice",
-    "inContinueProcedure", "assert"})
+    "presetValue", "businessEntityId", "idSchemes", "idScheme", "schemeName", "referencedBusinessEntityIds",
+    "legalType", "maxLength", "description",
+    "privacy", "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList",
+    "inChangeNotice", "inContinueProcedure", "assert"})
 public class Field implements Serializable {
   private static final long serialVersionUID = -1387933500392516298L;
 
@@ -47,39 +50,30 @@ public class Field implements Serializable {
   private List<String> attributes;
   private String presetValue;
 
+  private String businessEntityId;
+
   private List<String> idSchemes;
+  private List<String> referencedBusinessEntityIds;
+
   private String idScheme;
   private String schemeName;
 
   private String legalType;
   private Integer maxLength;
 
-  /**
-   * Related to TEDEFO-219.
-   */
   private FieldPrivacy privacy;
 
   private BooleanProperty repeatable;
   private BooleanProperty forbidden;
-  private BooleanProperty mandatory; // Since TEDEFO-433.
+  private BooleanProperty mandatory;
 
   private StringProperty pattern;
   private RangeNumericProperty rangeNumeric;
   private CodeListProperty codeList;
 
-  /**
-   * Since TEDEFO-1090. TEDEFO-1111. Can be null.
-   */
   private ChangeableOrCpProperty inChangeNotice;
-
-  /**
-   * Since TEDEFO-1090. TEDEFO-1111. Can be null.
-   */
   private ChangeableOrCpProperty inContinueProcedure;
 
-  /**
-   * Since TEDEFO-1180.
-   */
   @JsonProperty("assert")
   private StringProperty assertion;
 
@@ -139,8 +133,16 @@ public class Field implements Serializable {
     return presetValue;
   }
 
+  public String getBusinessEntityId() {
+    return businessEntityId;
+  }
+
   public List<String> getIdSchemes() {
     return idSchemes;
+  }
+
+  public List<String> getReferencedBusinessEntityIds() {
+    return referencedBusinessEntityIds;
   }
 
   public String getIdScheme() {

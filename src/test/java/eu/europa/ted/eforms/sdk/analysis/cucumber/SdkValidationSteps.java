@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang3.StringUtils;
@@ -108,6 +108,11 @@ public class SdkValidationSteps {
     sdkValidator.getSdkUnit().setFields(new FactsLoader(testsFolder).loadFields());
   }
 
+  @When("I load all business entities")
+  public void i_load_all_business_entities() throws IOException {
+    sdkValidator.getSdkUnit().setBusinessEntities(new FactsLoader(testsFolder).loadBusinessEntities());
+  }
+
   @When("I load all nodes")
   public void i_load_all_nodes() throws IOException {
     sdkValidator.getSdkUnit().setNodes(new FactsLoader(testsFolder).loadNodes());
@@ -135,6 +140,11 @@ public class SdkValidationSteps {
   public void I_load_all_SVRL_reports()
       throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
     sdkValidator.getSdkUnit().setSvrlReports(new FactsLoader(testsFolder).loadSvrlReports());
+  }
+
+  @When("I load all schematron files")
+  public void I_load_all_Schematron_files() {
+    sdkValidator.getSdkUnit().setSchematrons(new FactsLoader(testsFolder).loadSchematrons());
   }
 
   @When("I load SDK metadata")
