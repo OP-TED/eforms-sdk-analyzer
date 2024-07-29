@@ -1,0 +1,48 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.10.0",
+  "metadataDatabase" : {
+    "version" : "1.10.0",
+    "createdOn" : "2023-11-15T14:00:00"
+  },
+  "noticeId" : "E2",
+  "metadata" : [ {
+    "id" : "BT-02-notice",
+    "contentType" : "field",
+    "displayType" : "COMBOBOX",
+    "description" : "Notice Type",
+    "_label" : "field|name|BT-02-notice",
+    "readOnly" : true
+  } ],
+  "content" : [ {
+    "id" : "GR-Buyer",
+    "contentType" : "group",
+    "displayType" : "SECTION",
+    "description" : "Contracting Party and Provider related Information",
+    "_label" : "group|name|GR-Buyer",
+    "content" : [ {
+      "id" : "GR-ContractingAuthority",
+      "contentType" : "group",
+      "nodeId" : "ND-ContractingParty",
+      "displayType" : "GROUP",
+      "description" : "Contracting Party related Information (URL, Legal Type, Contracting Type, Activity, …)",
+      "_label" : "group|name|ND-ContractingParty",
+      "_repeatable" : true,
+      "content" : [ {
+        "id" : "GR-ContractingAuthority-Buyer",
+        "contentType" : "group",
+        "displayType" : "GROUP",
+        "description" : "Contracting Party related Information (URL, Legal Type, Contracting Type, Activity, …)",
+        "_label" : "group|name|GR-ContractingAuthority-Buyer",
+        "content" : [ {
+          "id" : "OPT-300-Procedure-Buyer",
+          "contentType" : "field",
+          "displayType" : "COMBOBOX",
+          "description" : "Buyer Technical Identifier Reference",
+          "_label" : "field|name|OPT-300-Procedure-Buyer",
+          "_idSchemes" : [ "ORG" ]
+        } ]
+      } ]
+    } ]
+  } ]
+}

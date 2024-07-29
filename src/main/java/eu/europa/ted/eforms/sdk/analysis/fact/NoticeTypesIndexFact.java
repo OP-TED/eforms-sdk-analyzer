@@ -29,7 +29,8 @@ public class NoticeTypesIndexFact implements SdkComponentFact<String> {
           "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
           "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
           "40",
-          "CEI", "T01", "T02", "X01", "X02")
+          "CEI", "T01", "T02", "X01", "X02",
+          "E1", "E2", "E3", "E4", "E5", "E6")
         .collect(Collectors.toSet());
   }
 
