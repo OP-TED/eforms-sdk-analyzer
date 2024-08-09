@@ -6,7 +6,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronAssert;
+import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronDiagnostic;
 import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronFile;
+import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronPattern;
+import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronPhase;
 
 /**
  * Represents a complete set of schematron rules.
@@ -23,6 +26,18 @@ public class SchematronFileFact implements SdkComponentFact<String> {
 
   public List<SchematronAssert> getAsserts() {
     return schematronFile.getAsserts();
+  }
+
+  public List<SchematronDiagnostic> getDiagnostics() {
+    return schematronFile.getDiagnostics();
+  }
+
+  public List<SchematronPhase> getPhases() {
+    return schematronFile.getPhases();
+  }
+
+  public List<SchematronPattern> getPatterns() {
+    return schematronFile.getPatterns();
   }
 
   public List<String> getDuplicateAssertIds() {
