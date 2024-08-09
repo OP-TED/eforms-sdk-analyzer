@@ -33,6 +33,7 @@
 
     <java.version>11</java.version>
 
+    <maven.compiler.release>${java.version}</maven.compiler.release>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
@@ -43,7 +44,7 @@
     <version.commons-collections4>4.4</version.commons-collections4>
     <version.commons-lang3>3.12.0</version.commons-lang3>
     <version.cucumber>7.11.1</version.cucumber>
-    <version.drools>8.44.0.Final</version.drools>
+    <version.drools>8.44.2.Final</version.drools>
     <version.istack>3.0.11</version.istack>
     <version.jackson>2.14.1</version.jackson>
     <version.jaxb-bind-api>4.0.0</version.jaxb-bind-api>
