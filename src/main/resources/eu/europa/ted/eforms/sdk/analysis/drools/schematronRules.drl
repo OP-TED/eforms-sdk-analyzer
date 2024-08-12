@@ -35,8 +35,7 @@ end
 
 rule "Every assert diagnostics is defined in the schematron file"
 when
-  /schematrons[ $sch: this, $schId: id ]/asserts[ $diagnosticId: diagnostics, diagnostics != null ]
-  not (exists /schematrons[ id == $schId ]/diagnostics[ id == $diagnosticId ])
+  $missing : /schematrons[ $sch: this]/missingDiagnostics
 then
-  results.add(new ValidationResult($sch, "Schematron is missing diagnostic definitions for: " + $diagnosticId, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($sch, "Schematron is missing diagnostic definitions for: " + $missing, ValidationStatusEnum.ERROR));
 end

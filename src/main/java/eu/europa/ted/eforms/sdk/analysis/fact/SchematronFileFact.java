@@ -46,6 +46,23 @@ public class SchematronFileFact implements SdkComponentFact<String> {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Returns the list of diagnostic identifiers that are referenced in an assert but not defined by
+   * a diagnostic element.
+   * 
+   * @return List of diagnostic identifiers missing a definition.
+   */
+  public List<String> getMissingDiagnostics() {
+    Set<String> definedDiagnosticIds = getDiagnostics().stream()
+        .map(SchematronDiagnostic::getId)
+        .collect(Collectors.toSet());
+
+    return getAsserts().stream()
+        .map(SchematronAssert::getDiagnostics)
+        .filter(id -> !definedDiagnosticIds.contains(id))
+        .collect(Collectors.toList());
+  }
+
   @Override
   public String getId() {
       return schematronFile.getPath().toString();
