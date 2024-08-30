@@ -262,32 +262,32 @@ public class SdkValidationSteps {
 
   @Then("^I should get (.*) SDK validation errors?$")
   public void i_should_get_sdk_validation_errors(int errorsCount) {
-    assertEquals(errorsCount, sdkValidator.getErrors().length);
+    assertEquals(errorsCount, sdkValidator.getErrors().size());
   }
 
   @Then("^I should get (.*) SDK validation warnings?$")
   public void i_should_get_sdk_validation_warnings(int warningsCount) {
-    assertEquals(warningsCount, sdkValidator.getWarnings().length);
+    assertEquals(warningsCount, sdkValidator.getWarnings().size());
   }
 
   @Then("^I should get (.*) EFX validation errors?$")
   public void i_should_get_efx_validation_errors(int errorsCount) {
-    assertEquals(errorsCount, efxValidator.getErrors().length);
+    assertEquals(errorsCount, efxValidator.getErrors().size());
   }
 
   @Then("^I should get (.*) schema validation errors?$")
   public void i_should_get_schema_validation_errors(int errorsCount) {
-    assertEquals(errorsCount, schemaValidator.getErrors().length);
+    assertEquals(errorsCount, schemaValidator.getErrors().size());
   }
 
   @Then("^I should get (.*) text validation errors?$")
   public void i_should_get_text_validation_errors(int errorsCount) {
-    assertEquals(errorsCount, textValidator.getErrors().length);
+    assertEquals(errorsCount, textValidator.getErrors().size());
   }
 
   @Then("^I should get (.*) schematron validation errors?$")
   public void i_should_get_schematron_validation_errors(int errorsCount) {
-    assertEquals(errorsCount, schematronValidator.getErrors().length);
+    assertEquals(errorsCount, schematronValidator.getErrors().size());
   }
 
   @Then("I should get not found exception for file {string}")
