@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
@@ -24,23 +23,19 @@ public interface Validator {
         .collect(Collectors.toSet());
   }
 
-  default String[] getWarnings() {
-    return getResults(EnumSet.of(ValidationStatusEnum.WARNING)).stream()
-        .map(ValidationResult::toString)
-        .toArray(String[]::new);
+  default Set<ValidationResult> getWarnings() {
+    return getResults(EnumSet.of(ValidationStatusEnum.WARNING));
   }
 
-  default String[] getErrors() {
-    return getResults(EnumSet.of(ValidationStatusEnum.ERROR)).stream()
-        .map(ValidationResult::toString)
-        .toArray(String[]::new);
+  default Set<ValidationResult> getErrors() {
+    return getResults(EnumSet.of(ValidationStatusEnum.ERROR));
   }
 
   default boolean hasWarnings() {
-    return ArrayUtils.isNotEmpty(getWarnings());
+    return CollectionUtils.isNotEmpty(getWarnings());
   }
 
   default boolean hasErrors() {
-    return ArrayUtils.isNotEmpty(getErrors());
+    return CollectionUtils.isNotEmpty(getErrors());
   }
 }
