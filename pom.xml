@@ -53,7 +53,7 @@
     <version.logback>1.4.14</version.logback>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
-    <version.ph-schematron>8.0.0</version.ph-schematron>
+    <version.ph-schematron>8.0.3</version.ph-schematron>
     <version.semver4j>3.1.0</version.semver4j>
     <version.slf4j>2.0.3</version.slf4j>
     <version.xmlschema>2.3.0</version.xmlschema>
