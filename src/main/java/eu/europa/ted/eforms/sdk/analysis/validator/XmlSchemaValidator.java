@@ -104,19 +104,43 @@ public class XmlSchemaValidator implements Validator {
     // If the field's relative XPath has several steps, it's the first that must be repeatable
     final QName fieldQName = buildQName(getFirstElementName(field.getXpathRelative()));
 
+    XmlSchemaElement fieldElement = schemaCollection.getElementByQName(fieldQName);
+    if (fieldElement == null) {
+      results.add(new ValidationResult(new FieldFact(field),
+          "XML element corresponding to the field is not present in the schema", ValidationStatusEnum.ERROR));
+      // We can't check repeatability
+      return;
+    }
+
     if (field.getParentNodeId().equals(ROOT_NODE_ID)) {
       // We don't know in which document root(s) the field can appear, so we look at all roots,
       // and if the element corresponding to the field can appear, it must be repeatable
       documentTypes.stream().forEach(dt -> {
         final QName root = new QName(dt.getNamespace(), dt.getRootElement());
-        if (isDefinedUnder(fieldQName, root) && !canElementBeRepeatedUnder(fieldQName, root)) {
+
+        XmlSchemaElement rootElement = schemaCollection.getElementByQName(root);
+        if (rootElement == null) {
+          results.add(new ValidationResult(new FieldFact(field),
+              "XML element corresponding to the root is not present in the schema", ValidationStatusEnum.ERROR));
+          return;
+        }
+    
+        if (isDefinedUnder(fieldQName, root) && !canElementBeRepeatedUnder(fieldElement, rootElement)) {
           results.add(new ValidationResult(new FieldFact(field),
               "Field is repeatable but this is not allowed by the schema", ValidationStatusEnum.ERROR));
         }
       });
     } else {
-      final QName parent = buildQName(getLastElementName(field.getParentNode().getXpathRelative()));
-      if (!canElementBeRepeatedUnder(fieldQName, parent)) {
+      final QName parentQName = buildQName(getLastElementName(field.getParentNode().getXpathRelative()));
+
+      XmlSchemaElement parentElement = schemaCollection.getElementByQName(parentQName);
+      if (parentElement == null) {
+        results.add(new ValidationResult(new FieldFact(field),
+            "XML element corresponding to the parent is not present in the schema", ValidationStatusEnum.ERROR));
+        return;
+      }
+
+      if (!canElementBeRepeatedUnder(fieldElement, parentElement)) {
         results.add(new ValidationResult(new FieldFact(field),
             "Field is repeatable but this is not allowed by the schema", ValidationStatusEnum.ERROR));
       }
@@ -138,19 +162,43 @@ public class XmlSchemaValidator implements Validator {
     // If the node's relative XPath has several steps, it's the first that must be repeatable
     final QName nodeQName = buildQName(getFirstElementName(node.getXpathRelative()));
 
+    XmlSchemaElement nodeElement = schemaCollection.getElementByQName(nodeQName);
+    if (nodeElement == null) {
+      results.add(new ValidationResult(new NodeFact(node),
+          "XML element corresponding to the node is not present in the schema", ValidationStatusEnum.ERROR));
+      // We can't check repeatability
+      return;
+    }
+
     XmlStructureNode parentNode = node.getParent();
 
     if (parentNode.getId().equals(ROOT_NODE_ID)) {
       documentTypes.stream().forEach(dt -> {
         final QName root = new QName(dt.getNamespace(), dt.getRootElement());
-        if (isDefinedUnder(nodeQName, root) && !canElementBeRepeatedUnder(nodeQName, root)) {
+
+        XmlSchemaElement rootElement = schemaCollection.getElementByQName(root);
+        if (rootElement == null) {
           results.add(new ValidationResult(new NodeFact(node),
-              "Field is repeatable but this is not allowed by the schema", ValidationStatusEnum.ERROR));
+              "XML element corresponding to the root is not present in the schema", ValidationStatusEnum.ERROR));
+          return;
+        }
+
+        if (isDefinedUnder(nodeQName, root) && !canElementBeRepeatedUnder(nodeElement, rootElement)) {
+          results.add(new ValidationResult(new NodeFact(node),
+              "Node is repeatable but this is not allowed by the schema", ValidationStatusEnum.ERROR));
         }
       });
     } else {
       final QName parentQName = buildQName(getLastElementName(parentNode.getXpathRelative()));
-      if (!canElementBeRepeatedUnder(nodeQName, parentQName)) {
+      
+      XmlSchemaElement parentElement = schemaCollection.getElementByQName(parentQName);
+      if (parentElement == null) {
+        results.add(new ValidationResult(new NodeFact(node),
+            "XML element corresponding to the parent is not present in the schema", ValidationStatusEnum.ERROR));
+        return;
+      }
+
+      if (!canElementBeRepeatedUnder(nodeElement, parentElement)) {
         results.add(new ValidationResult(new NodeFact(node),
             "Node is repeatable but this is not allowed by the schema", ValidationStatusEnum.ERROR));
       }
@@ -226,23 +274,23 @@ public class XmlSchemaValidator implements Validator {
     return found;
   }
 
-  /*
-   * Returns true if the elementQName is referenced in the schema somewhere under the type of
-   * parentQName, and this reference has maxOccurs > 1.
+  /**
+   * Returns true if "element" is referenced in the schema somewhere under the type of "parent",
+   * and this reference has maxOccurs > 1.
    * As an element can be at multiple locations in the descendants of a given element, this
-   * will just look at the closest occurence of elementQName.
+   * will just look at the closest occurence of "element".
+   * 
+   * @param element The element to search for.
+   * @param parent  The element under which to search
+   * @return        True if the schema allows "element" to be repeated under "parent"
    */
-  private boolean canElementBeRepeatedUnder(final QName elementQName, final QName parentQName) {
+  private boolean canElementBeRepeatedUnder(final XmlSchemaElement element, final XmlSchemaElement parent) {
     visited = new HashSet<>();
 
-    XmlSchemaElement parent = schemaCollection.getElementByQName(parentQName);
-
-    XmlSchemaElement element = schemaCollection.getElementByQName(elementQName);
-  
     long maxOccurs = findElementMaxOccursUnder(element, parent);
 
     if (maxOccurs < 0) {
-      throw new RuntimeException("Element not found: " + elementQName);
+      throw new RuntimeException("Element not found: " + element.getName());
     }
 
     return (maxOccurs > 1);
