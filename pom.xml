@@ -26,8 +26,6 @@
   </distributionManagement>
 
   <properties>
-    <finalName>${project.artifactId}-${project.version}</finalName>
-
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2024-07-16T09:10:14Z</project.build.outputTimestamp>
 
@@ -384,8 +382,6 @@
   </repositories>
 
   <build>
-    <finalName>${finalName}</finalName>
-
     <pluginManagement>
       <plugins>
         <plugin>
