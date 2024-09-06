@@ -262,10 +262,6 @@
       <groupId>org.drools</groupId>
       <artifactId>drools-ruleunits-engine</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-model-compiler</artifactId>
-    </dependency>
 
     <!-- Jackson -->
     <dependency>
