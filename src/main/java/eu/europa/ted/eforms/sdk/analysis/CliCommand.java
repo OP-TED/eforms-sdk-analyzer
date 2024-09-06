@@ -30,9 +30,15 @@ class CliCommand implements Callable<Integer> {
     return SdkAnalyzer.analyze(sdkRoot);
   }
 
+  @Command(name = "benchmark", mixinStandardHelpOptions = true, 
+      description = "Run benchmark of Schematron rules")
+  public int runBenchmark() throws Exception {
+    return SchematronBenchmark.run(sdkRoot);
+  }
+
   /**
    * {@link IVersionProvider} implementation that returns version information from the
-   * picocli-x.x.jar file's {@code /META-INF/MANIFEST.MF} file.
+   * built JAR file's {@code /META-INF/MANIFEST.MF} file.
    */
   static class ManifestVersionProvider implements IVersionProvider {
     public String[] getVersion() throws Exception {

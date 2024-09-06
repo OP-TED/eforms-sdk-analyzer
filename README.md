@@ -3,6 +3,8 @@
 The eForms SDK Analyzer is a command-line application for the static analysis of the content of the eForms SDK.
 It loads the files from the eForms SDK, and applies various checks and verifications, to try to ensure that their content is correct and consistent.
 
+It can also run a benchmark of the Schematron rules in an eForms SDK, to help detect potential performance issues in those validation rules.
+
 ## Building
 
 Requirements:
@@ -18,7 +20,9 @@ mvn clean package
 
 ## Usage
 
-To run the application, execute the runnable JAR built as described above, indicating the path to the folder containing the eForms-SDK:
+### SDK Analysis
+
+To analyze the content of an eForms SDK, execute the runnable JAR built as described above, indicating the path to the folder containing the eForms SDK:
 
 ```shell
 java -jar target/eforms-sdk-analyzer-1.8.0-SNAPSHOT.jar path/to/eforms-sdk
@@ -27,6 +31,18 @@ java -jar target/eforms-sdk-analyzer-1.8.0-SNAPSHOT.jar path/to/eforms-sdk
 This will return the exit code 0 if no errors are found, and 1 otherwise.
 
 Any error or warning found during the analysis will be logged at the corresponding level. By default, logs go to the standard output.
+
+### Schematron rules benchmark
+
+To run the benchmark of the Schematron rules in an eForms SDK, execute the runnable JAR built as described above, indicating the path to the folder containing the eForms SDK and the command `benchmark`:
+
+```shell
+java -jar target/eforms-sdk-analyzer-1.8.0-SNAPSHOT.jar path/to/eforms-sdk benchmark
+```
+
+This will execute the Schematron rules on a few large XML notices included as resources in this project, with an appropriate warm-up and number of iterations. The results are written to a JSON file.
+
+You can compare those results with the ones from another SDK version, to detect whether the rules have become slower to execute.
 
 ## Contributing
 

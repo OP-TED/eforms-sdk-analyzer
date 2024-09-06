@@ -49,11 +49,12 @@
     <version.jackson>2.14.1</version.jackson>
     <version.jaxb-bind-api>4.0.0</version.jaxb-bind-api>
     <version.jaxb-impl>4.0.4</version.jaxb-impl>
+    <jmh.version>1.37</jmh.version>
     <version.junit>5.9.2</version.junit>
     <version.logback>1.4.14</version.logback>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
-    <version.ph-schematron>8.0.0</version.ph-schematron>
+    <version.ph-schematron>8.0.3</version.ph-schematron>
     <version.semver4j>3.1.0</version.semver4j>
     <version.slf4j>2.0.3</version.slf4j>
     <version.xmlschema>2.3.0</version.xmlschema>
@@ -164,6 +165,17 @@
       </dependency>
 
       <!-- Other -->
+      <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-core</artifactId>
+        <version>${jmh.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-generator-annprocess</artifactId>
+        <version>${jmh.version}</version>
+        <scope>provided</scope>
+      </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
@@ -323,6 +335,14 @@
 
     <!-- Other -->
     <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+    </dependency>
+    <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <scope>runtime</scope>
@@ -411,11 +431,16 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <annotationProcessorPaths>
-            <annotationProcessorPath>
+            <path>
               <groupId>info.picocli</groupId>
               <artifactId>picocli-codegen</artifactId>
               <version>${version.picocli}</version>
-            </annotationProcessorPath>
+            </path>
+            <path>
+              <groupId>org.openjdk.jmh</groupId>
+              <artifactId>jmh-generator-annprocess</artifactId>
+              <version>${version.jmh}</version>
+            </path>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
