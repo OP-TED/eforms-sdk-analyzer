@@ -6,7 +6,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronAssert;
+import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronDiagnostic;
 import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronFile;
+import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronPattern;
+import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronPhase;
 
 /**
  * Represents a complete set of schematron rules.
@@ -25,9 +28,38 @@ public class SchematronFileFact implements SdkComponentFact<String> {
     return schematronFile.getAsserts();
   }
 
+  public List<SchematronDiagnostic> getDiagnostics() {
+    return schematronFile.getDiagnostics();
+  }
+
+  public List<SchematronPhase> getPhases() {
+    return schematronFile.getPhases();
+  }
+
+  public List<SchematronPattern> getPatterns() {
+    return schematronFile.getPatterns();
+  }
+
   public List<String> getDuplicateAssertIds() {
     Set<String> set = new HashSet<String>();
     return getAsserts().stream().map(SchematronAssert::getId).filter(id -> !set.add(id))
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Returns the list of diagnostic identifiers that are referenced in an assert but not defined by
+   * a diagnostic element.
+   * 
+   * @return List of diagnostic identifiers missing a definition.
+   */
+  public List<String> getMissingDiagnostics() {
+    Set<String> definedDiagnosticIds = getDiagnostics().stream()
+        .map(SchematronDiagnostic::getId)
+        .collect(Collectors.toSet());
+
+    return getAsserts().stream()
+        .map(SchematronAssert::getDiagnostics)
+        .filter(id -> !definedDiagnosticIds.contains(id))
         .collect(Collectors.toList());
   }
 

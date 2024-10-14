@@ -4,62 +4,92 @@
 
   <groupId>eu.europa.ted.eforms</groupId>
   <artifactId>eforms-sdk-analyzer</artifactId>
-  <version>1.12.0</version>
+  <version>1.13.0</version>
   <packaging>kjar</packaging>
 
-  <name>eforms-sdk-analyzer</name>
+  <name>eForms SDK Analyzer</name>
+  <description>
+    The eForms SDK Analyzer is a command-line application for the static analysis of the content of the eForms SDK.
+    It loads the files from the eForms SDK, and applies various checks and verifications, to try to ensure that their content is correct and consistent.
+  </description>
+  <url>https://docs.ted.europa.eu/eforms/latest/</url>
+
+  <licenses>
+    <license>
+      <name>European Union Public Licence, Version 1.2</name>
+      <url>https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/2020-03/EUPL-1.2%20EN.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>TED and EU Public Procurement Unit</name>
+      <email>OP-TED-DEVOPS@publications.europa.eu</email>
+      <organization>Publications Office of the European Union</organization>
+      <organizationUrl>https://op.europa.eu/</organizationUrl>
+    </developer>
+  </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/OP-TED/eforms-sdk-analyzer.git</connection>
+    <connection>scm:git:git://github.com/OP-TED/eforms-sdk-analyzer.git</connection>
     <url>https://github.com/OP-TED/eforms-sdk-analyzer</url>
   </scm>
 
   <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://${sonatype.server.url}/content/repositories/snapshots</url>
+    </snapshotRepository>
     <repository>
-      <id>github</id>
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/OP-TED/eforms-sdk-analyzer</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
+      <id>ossrh</id>
+      <url>https://${sonatype.server.url}/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 
   <properties>
-    <finalName>${project.artifactId}-${project.version}</finalName>
-
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.outputTimestamp>2024-06-11T14:03:49Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-10-14T15:54:01Z</project.build.outputTimestamp>
+
+    <sonatype.server.url>s01.oss.sonatype.org</sonatype.server.url>
 
     <java.version>11</java.version>
 
+    <maven.compiler.release>${java.version}</maven.compiler.release>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
-    <version.eforms-core-java>1.4.0-SNAPSHOT</version.eforms-core-java>
-    <version.efx-toolkit>2.0.0-SNAPSHOT</version.efx-toolkit>
+    <version.eforms-core-java>1.4.0</version.eforms-core-java>
+    <version.efx-toolkit>2.0.0-alpha.4</version.efx-toolkit>
 
     <!-- Version - Third-party libraries -->
     <version.commons-collections4>4.4</version.commons-collections4>
     <version.commons-lang3>3.12.0</version.commons-lang3>
     <version.cucumber>7.11.1</version.cucumber>
-    <version.drools>8.44.0.Final</version.drools>
+    <version.drools>8.44.2.Final</version.drools>
     <version.istack>3.0.11</version.istack>
     <version.jackson>2.14.1</version.jackson>
     <version.jaxb-bind-api>4.0.0</version.jaxb-bind-api>
     <version.jaxb-impl>4.0.4</version.jaxb-impl>
+    <version.jmh>1.37</version.jmh>
     <version.junit>5.9.2</version.junit>
     <version.logback>1.4.14</version.logback>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
-    <version.ph-schematron>8.0.0</version.ph-schematron>
+    <version.ph-schematron>8.0.3</version.ph-schematron>
     <version.semver4j>3.1.0</version.semver4j>
     <version.slf4j>2.0.3</version.slf4j>
     <version.xmlschema>2.3.0</version.xmlschema>
 
     <!-- Versions - Plugins -->
-    <version.compiler.version>3.10.1</version.compiler.version>
-    <version.compiler.plugin>3.3.0</version.compiler.plugin>
+    <version.compiler.plugin>3.13.0</version.compiler.plugin>
+    <version.shade.plugin>3.6.0</version.shade.plugin>
+    <version.gpg.plugin>3.2.5</version.gpg.plugin>
+    <version.install.plugin>3.1.3</version.install.plugin>
+    <version.javadoc.plugin>3.10.0</version.javadoc.plugin>
+    <version.source.plugin>3.3.1</version.source.plugin>
+    <version.surefire.plugin>3.2.5</version.surefire.plugin>
+    <version.nexus-staging.plugin>1.6.14</version.nexus-staging.plugin>
   </properties>
 
   <dependencyManagement>
@@ -164,6 +194,17 @@
 
       <!-- Other -->
       <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-core</artifactId>
+        <version>${version.jmh}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-generator-annprocess</artifactId>
+        <version>${version.jmh}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${version.logback}</version>
@@ -216,7 +257,6 @@
     <dependency>
       <groupId>eu.europa.ted.eforms</groupId>
       <artifactId>eforms-core-java</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>eu.europa.ted.eforms</groupId>
@@ -227,12 +267,10 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <optional>true</optional>
     </dependency>
 
     <!-- Cucumber -->
@@ -251,29 +289,20 @@
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-ruleunits-engine</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-model-compiler</artifactId>
-      <optional>true</optional>
     </dependency>
 
     <!-- Jackson -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -317,10 +346,17 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <optional>true</optional>
     </dependency>
 
     <!-- Other -->
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+    </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
@@ -334,7 +370,6 @@
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.helger.schematron</groupId>
@@ -377,24 +412,50 @@
   </repositories>
 
   <build>
-    <finalName>${finalName}</finalName>
-
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>${version.compiler.version}</version>
+          <version>${version.compiler.plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${version.surefire.plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${version.install.plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>${version.compiler.plugin}</version>
+          <version>${version.shade.plugin}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${version.source.plugin}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${version.javadoc.plugin}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${version.gpg.plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.kie</groupId>
           <artifactId>kie-maven-plugin</artifactId>
           <version>${version.drools}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>${version.nexus-staging.plugin}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -405,19 +466,26 @@
         <artifactId>kie-maven-plugin</artifactId>
         <extensions>true</extensions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <annotationProcessorPaths>
-            <annotationProcessorPath>
+            <path>
               <groupId>info.picocli</groupId>
               <artifactId>picocli-codegen</artifactId>
               <version>${version.picocli}</version>
-            </annotationProcessorPath>
+            </path>
+            <path>
+              <groupId>org.openjdk.jmh</groupId>
+              <artifactId>jmh-generator-annprocess</artifactId>
+              <version>${version.jmh}</version>
+            </path>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -430,7 +498,8 @@
             </goals>
             <configuration>
               <createDependencyReducedPom>false</createDependencyReducedPom>
-              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>all</shadedClassifierName>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer" />
@@ -471,4 +540,71 @@
       </plugin>
     </plugins>
   </build>
+
+
+  <profiles>
+    <profile>
+      <!-- Profile "release" caters to the requirements for releasing to Maven Central -->
+      <id>release</id>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <!-- Prevent gpg from using pinentry programs -->
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+          </plugin>
+           <plugin>
+              <groupId>org.sonatype.plugins</groupId>
+              <artifactId>nexus-staging-maven-plugin</artifactId>
+              <extensions>true</extensions>
+              <configuration>
+                <serverId>ossrh</serverId>
+                <nexusUrl>https://${sonatype.server.url}/</nexusUrl>
+                <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              </configuration>
+           </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

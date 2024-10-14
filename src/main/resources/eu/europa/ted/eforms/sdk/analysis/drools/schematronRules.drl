@@ -15,3 +15,27 @@ when
 then
   results.add(new ValidationResult($sch, "Schematron contains duplicate assert ids: " + $duplicates, ValidationStatusEnum.ERROR));
 end
+
+rule "All expected phases are present"
+when
+  /schematrons[ $sch: this, $schId: id ];
+  /noticeTypes[ $expected: id ]
+  not (exists /schematrons[ id == $schId ]/phases[ id == "eforms-" + $expected ])
+then
+  results.add(new ValidationResult($sch, "Schematron is missing phase for: " + $expected, ValidationStatusEnum.ERROR));
+end
+
+rule "Every pattern is part of at least one phase"
+when
+  /schematrons[ $sch: this, $schId: id ]/patterns[ $patternId: id ]
+  not (exists /schematrons[ id == $schId ]/phases[ activePatterns contains $patternId ])
+then
+  results.add(new ValidationResult($sch, "Schematron has pattern that is not part of any phase: " + $patternId, ValidationStatusEnum.ERROR));
+end
+
+rule "Every assert diagnostics is defined in the schematron file"
+when
+  $missing : /schematrons[ $sch: this]/missingDiagnostics
+then
+  results.add(new ValidationResult($sch, "Schematron is missing diagnostic definitions for: " + $missing, ValidationStatusEnum.ERROR));
+end
