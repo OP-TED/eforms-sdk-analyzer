@@ -21,6 +21,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.NoticeTypesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.SchematronFileFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.SvrlReportFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplatesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
@@ -39,6 +40,7 @@ public class SdkUnit implements RuleUnit {
   private DataStore<NodeFact> nodes;
   private DataStore<NoticeTypesIndexFact> noticeTypesIndex;
   private DataStore<NoticeTypeFact> noticeTypes;
+  private DataStore<ViewTemplatesIndexFact> viewTemplatesIndex;
   private DataStore<ViewTemplateFact> viewTemplates;
   private DataStore<SvrlReportFact> svrlReports;
   private DataStore<SchematronFileFact> schematrons;
@@ -150,6 +152,15 @@ public class SdkUnit implements RuleUnit {
 
   public SdkUnit setNoticeTypes(DataStore<NoticeTypeFact> noticeTypes) {
     this.noticeTypes = noticeTypes;
+    return this;
+  }
+
+  public DataStore<ViewTemplatesIndexFact> getViewTemplatesIndex() {
+    return viewTemplatesIndex;
+  }
+
+  public SdkUnit setViewTemplatesIndex(DataStore<ViewTemplatesIndexFact> viewTemplatesIndex) {
+    this.viewTemplatesIndex = viewTemplatesIndex;
     return this;
   }
 
