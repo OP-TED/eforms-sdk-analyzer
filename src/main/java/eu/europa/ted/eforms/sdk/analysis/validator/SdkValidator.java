@@ -60,6 +60,7 @@ public class SdkValidator implements Validator {
         .setNoticeTypesIndex(factsLoader.loadNoticeTypesIndex())
         .setLabels(factsLoader.loadLabels())
         .setViewTemplates(factsLoader.loadViewTemplates())
+        .setViewTemplatesIndex(factsLoader.loadViewTemplatesIndex())
         .setXmlNotices(factsLoader.loadXmlNotices())
         .setSvrlReports(factsLoader.loadSvrlReports())
         .setSchematrons(factsLoader.loadSchematrons());

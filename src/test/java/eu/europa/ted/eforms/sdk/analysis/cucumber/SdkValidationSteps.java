@@ -90,6 +90,12 @@ public class SdkValidationSteps {
   @When("I load the view templates index")
   public void i_load_the_view_templates_index()
       throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    sdkValidator.getSdkUnit().setViewTemplatesIndex(new FactsLoader(testsFolder).loadViewTemplatesIndex());
+  }
+
+  @When("I load the view templates")
+  public void i_load_the_view_templates()
+      throws IOException, JAXBException, SAXException, ParserConfigurationException {
     sdkValidator.getSdkUnit().setViewTemplates(new FactsLoader(testsFolder).loadViewTemplates());
   }
 

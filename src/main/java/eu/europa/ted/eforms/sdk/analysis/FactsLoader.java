@@ -37,6 +37,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.SchematronFileFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.SvrlReportFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.TranslationsIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
+import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplatesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 
 public class FactsLoader {
@@ -143,6 +144,17 @@ public class FactsLoader {
     viewTemplatesIndex.getViewTemplates()
         .forEach((TedefoViewTemplateIndex viewTemplate) -> datastore
             .add(new ViewTemplateFact(viewTemplate)));
+
+    return datastore;
+  }
+
+  public DataStore<ViewTemplatesIndexFact> loadViewTemplatesIndex() throws IOException {
+    logger.debug("Creating facts datastore for view templates index");
+
+    TedefoViewTemplatesIndex viewTemplatesIndex = sdkLoader.getViewTemplatesIndex();
+
+    final DataStore<ViewTemplatesIndexFact> datastore = DataSource.createStore();
+    datastore.add(new ViewTemplatesIndexFact(viewTemplatesIndex));
 
     return datastore;
   }

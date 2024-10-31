@@ -1,0 +1,13 @@
+{
+  "files" : [ {
+    "assetType" : "view",
+    "twoLetterCode" : "en",
+    "threeLetterCode" : "eng",
+    "filename" : "view_en.xml"
+  } ],
+  "languages" : [ {
+    "description" : "English",
+    "twoLetterCode" : "en",
+    "threeLetterCode" : "eng"
+  } ]
+}
