@@ -19,6 +19,8 @@ public enum NoticeLegalBasis implements ILiteral {
 
   _32018R1046("32018R1046"),
 
+  _32024R2509("32024R2509"),
+
   OTHER("other"),
 
   UNKNOWN("unknown");
