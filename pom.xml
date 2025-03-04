@@ -73,7 +73,7 @@
     <version.jaxb-impl>4.0.4</version.jaxb-impl>
     <version.jmh>1.37</version.jmh>
     <version.junit>5.9.2</version.junit>
-    <version.logback>1.4.14</version.logback>
+    <version.logback>1.5.17</version.logback>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
     <version.ph-schematron>8.0.3</version.ph-schematron>
