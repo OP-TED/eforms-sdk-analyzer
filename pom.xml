@@ -4,7 +4,7 @@
 
   <groupId>eu.europa.ted.eforms</groupId>
   <artifactId>eforms-sdk-analyzer</artifactId>
-  <version>1.14.0-SNAPSHOT</version>
+  <version>1.15.0-SNAPSHOT</version>
   <packaging>kjar</packaging>
 
   <name>eForms SDK Analyzer</name>
@@ -38,7 +38,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.outputTimestamp>2024-10-14T16:12:10Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-11-28T08:41:45Z</project.build.outputTimestamp>
 
     <java.version>11</java.version>
 
@@ -60,7 +60,7 @@
     <version.jaxb-impl>4.0.4</version.jaxb-impl>
     <version.jmh>1.37</version.jmh>
     <version.junit>5.9.2</version.junit>
-    <version.logback>1.5.17</version.logback>
+    <version.logback>1.5.21</version.logback>
     <version.maven-model>3.9.1</version.maven-model>
     <version.picocli>4.6.3</version.picocli>
     <version.ph-schematron>8.0.3</version.ph-schematron>
