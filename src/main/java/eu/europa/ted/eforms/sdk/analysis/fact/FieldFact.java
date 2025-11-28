@@ -185,7 +185,7 @@ public class FieldFact implements SdkComponentFact<String> {
    */
   private Stream<AbstractFieldProperty<? extends AbstractConstraint<?>, ?>> getDynamicProperties() {
     return Stream.of(field.getRepeatable(), field.getForbidden(), field.getMandatory(), 
-            field.getCodeList(), field.getPattern(), field.getRangeNumeric(), field.getAssertion(),
+            field.getCodeList(), field.getPattern(), field.getNumericRange(), field.getAssertion(),
             field.getInChangeNotice(), field.getInContinueProcedure());
   }
 

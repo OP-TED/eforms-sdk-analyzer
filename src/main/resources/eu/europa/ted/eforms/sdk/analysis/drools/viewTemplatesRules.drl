@@ -1,0 +1,11 @@
+package eu.europa.ted.eforms.sdk.analysis.drools;
+
+unit SdkUnit;
+
+rule "View templates index references existing labels"
+when
+  $labelId : /viewTemplatesIndex[ $v: this ]/labelIds
+  not (exists /labels[ id == $labelId ])
+then
+  results.add(new ValidationResult($v, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+end

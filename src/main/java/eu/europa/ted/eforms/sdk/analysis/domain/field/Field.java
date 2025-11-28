@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "attributeName", "attributeOf", "attributes",
     "presetValue", "businessEntityId", "idSchemes", "idScheme", "schemeName", "referencedBusinessEntityIds",
     "legalType", "maxLength", "description",
-    "privacy", "repeatable", "forbidden", "mandatory", "pattern", "rangeNumeric", "codeList",
+    "privacy", "repeatable", "forbidden", "mandatory", "pattern", "numericRange", "codeList",
     "inChangeNotice", "inContinueProcedure", "assert"})
 public class Field implements Serializable {
   private static final long serialVersionUID = -1387933500392516298L;
@@ -68,7 +68,7 @@ public class Field implements Serializable {
   private BooleanProperty mandatory;
 
   private StringProperty pattern;
-  private RangeNumericProperty rangeNumeric;
+  private RangeNumericProperty numericRange;
   private CodeListProperty codeList;
 
   private ChangeableOrCpProperty inChangeNotice;
@@ -181,8 +181,8 @@ public class Field implements Serializable {
     return pattern;
   }
 
-  public RangeNumericProperty getRangeNumeric() {
-    return rangeNumeric;
+  public RangeNumericProperty getNumericRange() {
+    return numericRange;
   }
 
   public CodeListProperty getCodeList() {
