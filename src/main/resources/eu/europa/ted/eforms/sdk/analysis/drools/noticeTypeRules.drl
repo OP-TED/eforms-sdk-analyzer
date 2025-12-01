@@ -6,6 +6,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.CodelistFact;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypeContent;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.enums.NoticeTypeContentDisplayType;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 
@@ -203,4 +204,36 @@ when
   not (exists /noticeTypes[ id == $nt.id, nodeIds contains $ancestorIds ])
 then
   results.add(new ValidationResult($nt, "The repeatable ancestor " + $ancestorIds + " of field " + $fieldIds + " should be present", ValidationStatusEnum.WARNING));
+end
+
+rule "The displayType COMBOBOX is consistent with the type of the field"
+when
+  $field : /noticeTypes[ $nt: this  ]/fields[ $fieldId: id, $displayType: displayType, $displayType == NoticeTypeContentDisplayType.COMBOBOX ]
+  exists /fields[ id == $fieldId, type in ('amount', 'date', 'email', 'integer', 'measure', 'number', 'phone', 'text', 'text-multilingual', 'time', 'url') ]
+then
+  results.add(new ValidationResult($nt, "The display type " + $displayType + " of field " + $fieldId + " is not consistent with the field type", ValidationStatusEnum.ERROR));
+end
+
+rule "The displayType RADIO is consistent with the type of the field"
+when
+  $field : /noticeTypes[ $nt: this  ]/fields[ $fieldId: id, $displayType: displayType, $displayType == NoticeTypeContentDisplayType.RADIO ]
+  exists /fields[ id == $fieldId, type in ('amount', 'date', 'email', 'integer', 'measure', 'number', 'phone', 'text', 'text-multilingual', 'time', 'url') ]
+then
+  results.add(new ValidationResult($nt, "The display type " + $displayType + " of field " + $fieldId + " is not consistent with the field type", ValidationStatusEnum.ERROR));
+end
+
+rule "The displayType TEXTAREA is consistent with the type of the field"
+when
+  $field : /noticeTypes[ $nt: this  ]/fields[ $fieldId: id, $displayType: displayType, $displayType == NoticeTypeContentDisplayType.TEXTAREA ]
+  exists /fields[ id == $fieldId, type in ('code', 'date', 'id', 'id-ref', 'indicator', 'integer', 'measure', 'number', 'phone', 'time', 'url ') ]
+then
+  results.add(new ValidationResult($nt, "The display type " + $displayType + " of field " + $fieldId + " is not consistent with the field type", ValidationStatusEnum.ERROR));
+end
+
+rule "The displayType TEXTBOX is consistent with the type of the field"
+when
+  $field : /noticeTypes[ $nt: this  ]/fields[ $fieldId: id, $displayType: displayType, $displayType == NoticeTypeContentDisplayType.TEXTBOX ]
+  exists /fields[ id == $fieldId, type in ('code', 'indicator') ]
+then
+  results.add(new ValidationResult($nt, "The display type " + $displayType + " of field " + $fieldId + " is not consistent with the field type", ValidationStatusEnum.ERROR));
 end
