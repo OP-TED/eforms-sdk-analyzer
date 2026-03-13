@@ -1878,15 +1878,15 @@
       "value" : "{ND-Root} ${TRUE}",
       "severity" : "ERROR",
       "constraints" : [ {
-        "value" : "{ND-Root} ${((BT-01-notice == '32014L0023') and (BT-02-notice in ('pin-cfc-social','cn-standard','veat','can-standard','can-social','can-modif'))) or not(BT-01-notice == '32014L0023')}",
+        "value" : "{ND-Root} ${((BT-01-notice == '32014L0023') and (BT-02-notice in ['pin-cfc-social','cn-standard','veat','can-standard','can-social','can-modif'])) or not(BT-01-notice == '32014L0023')}",
         "severity" : "ERROR",
         "message" : "rule|text|BR-BT-00002-0100"
       }, {
-        "value" : "{ND-Root} ${((OPP-070-notice in ('1','4','7','10','12','16','20','23','25','29','33','36','38') or (OPP-070-notice == 'E5' and BT-01-notice == '32014L0024')) and not(BT-02-notice == 'subco')) or not(OPP-070-notice in ('1','4','7','10','12','16','20','23','25','29','33','36','38') or (OPP-070-notice == 'E5' and BT-01-notice == '32014L0024'))}",
+        "value" : "{ND-Root} ${((OPP-070-notice in ['1','4','7','10','12','16','20','23','25','29','33','36','38'] or (OPP-070-notice == 'E5' and BT-01-notice == '32014L0024')) and not(BT-02-notice == 'subco')) or not(OPP-070-notice in ['1','4','7','10','12','16','20','23','25','29','33','36','38'] or (OPP-070-notice == 'E5' and BT-01-notice == '32014L0024'))}",
         "severity" : "ERROR",
         "message" : "rule|text|BR-BT-00002-0102"
       }, {
-        "value" : "{ND-Root} ${((BT-03-notice == 'bri') and (BT-02-notice in (bri))) or not(BT-03-notice == 'bri')}",
+        "value" : "{ND-Root} ${((BT-03-notice == 'bri') and (BT-02-notice in [bri])) or not(BT-03-notice == 'bri')}",
         "severity" : "ERROR",
         "message" : "rule|text|BR-BT-00002-0103"
       }, {

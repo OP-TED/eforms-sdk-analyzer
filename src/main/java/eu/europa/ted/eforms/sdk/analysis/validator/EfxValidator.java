@@ -37,6 +37,7 @@ import eu.europa.ted.efx.interfaces.ScriptGenerator;
 import eu.europa.ted.efx.interfaces.SymbolResolver;
 import eu.europa.ted.efx.interfaces.TranslatorDependencyFactory;
 import eu.europa.ted.efx.interfaces.TranslatorOptions;
+import eu.europa.ted.efx.interfaces.ValidatorGenerator;
 
 /**
  * Validates EFX expressions and templates 
@@ -67,6 +68,7 @@ public class EfxValidator implements Validator {
     this.sdkLoader = new SdkLoader(Path.of(sdkRoot.toString()));
 
     this.results = new HashSet<>();
+    logger.debug("Initialized for SDK {}", sdkVersion);
   }
 
   @Override
@@ -166,6 +168,12 @@ public class EfxValidator implements Validator {
     @Override
     public BaseErrorListener createErrorListener() {
       return ThrowingErrorListener.INSTANCE;
+    }
+
+    @Override
+    public ValidatorGenerator createValidatorGenerator(String sdkVersion, String qualifier, TranslatorOptions options) {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'createValidatorGenerator'");
     }
   }
 }
