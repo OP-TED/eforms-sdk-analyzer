@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pattern id="EFORMS-validation-stage-1a" xmlns="http://purl.oclc.org/dsdl/schematron">
 	<rule context="/*">
-		<assert id="P-0001" role="ERROR" test="count(ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:NoticeSubType/cbc:SubTypeCode) &gt; 0">
+		<assert id="DUPLICATE" role="ERROR" test="count(ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:NoticeSubType/cbc:SubTypeCode) &gt; 0">
 			rule|text|P-0001
 		</assert>
 		<assert id="P-0002" role="ERROR" test="($noticeSubType = ('1', '2', '3', 'X01', 'X02') and count(cac:ProcurementProjectLot) = 0) or (not(cbc:NoticeTypeCode/text() = ('1', '2', '3', 'X01', 'X02')) and count(cac:ProcurementProjectLot) > 0)">

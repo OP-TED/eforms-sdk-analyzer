@@ -1,7 +1,9 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,9 +42,32 @@ public class SchematronFileFact implements SdkComponentFact<String> {
     return schematronFile.getPatterns();
   }
 
+  /**
+   * Return the list of assert identifiers that appear more than once in the same phase.
+   * 
+   * @return list of duplicate assert ids
+   */
   public List<String> getDuplicateAssertIds() {
-    Set<String> set = new HashSet<String>();
-    return getAsserts().stream().map(SchematronAssert::getId).filter(id -> !set.add(id))
+    // Mpa from the pattern id to the id of the phase it is part of
+    Map<String, String> patternToPhase = new HashMap<>();
+    getPhases().forEach(phase -> {
+      phase.getActivePatterns()
+          .forEach(patternId -> {
+            patternToPhase.put(patternId, phase.getId());
+          });
+    });
+
+    // Map from phase id to the set of assert ids it contains.
+    Map<String, Set<String>> phaseToAssertIds = new HashMap<String, Set<String>>();
+    return getAsserts().stream()
+        .filter(assrt -> {
+          String phaseId = patternToPhase.get(assrt.getPatternId());
+          Set<String> asserts = 
+              phaseToAssertIds.computeIfAbsent(phaseId, k -> new HashSet<String>());
+          // Keep SchematronAssert if its is already present in the same phase
+          return !asserts.add(assrt.getId());
+        })
+        .map(SchematronAssert::getId)
         .collect(Collectors.toList());
   }
 
