@@ -29,6 +29,17 @@ import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplatesIn
  */
 public interface SdkContentSource {
 
+  /**
+   * The kind of source backing this implementation. Drives the rule
+   * applicability framework: rules tagged for one source kind only (e.g.
+   * file-only checks of schema locations or filenames) are skipped when the
+   * source kind does not match.
+   *
+   * <p>Implementations declare their nature; callers do not. This makes
+   * mismatch structurally impossible.
+   */
+  SourceKind getSourceKind();
+
   EFormsTrackableEntity getFieldsAndNodesMetadata() throws IOException;
 
   FieldsAndNodes getFieldsAndNodes() throws IOException;

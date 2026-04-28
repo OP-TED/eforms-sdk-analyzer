@@ -58,6 +58,7 @@ end
 
 // TEDEFO-1818: For every documentType check that the schemaLocation exists in the SDK.
 rule "Document types use existing schemaLocation"
+  @source(FILE)
 when
   /documentTypes[ $dt: this, $schemaLocation: schemaLocation, !schemaLocationExists(sdkRoot) ]
 then
