@@ -2,8 +2,6 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
-import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
 
 public class DocumentTypeFact implements SdkComponentFact<String> {
@@ -16,18 +14,22 @@ public class DocumentTypeFact implements SdkComponentFact<String> {
   }
 
   public String getSchemaLocation() {
-    return documentType.getSchemaLocation();
+    return this.documentType.getSchemaLocation();
   }
 
-  public boolean schemaLocationExists(Path sdkRoot) {
-    return Files
-        .exists(Path.of(Optional.ofNullable(sdkRoot).orElse(Path.of(StringUtils.EMPTY)).toString(),
-            documentType.getSchemaLocation()));
+  public boolean schemaLocationExists(final Path sdkRoot) {
+    // Without a known SDK root (e.g. when running against a content source
+    // that is not file-system backed) we cannot verify the schema location.
+    // The rule is not applicable in that mode.
+    if (sdkRoot == null) {
+      return true;
+    }
+    return Files.exists(Path.of(sdkRoot.toString(), this.documentType.getSchemaLocation()));
   }
 
   @Override
   public String getId() {
-    return documentType.getId();
+    return this.documentType.getId();
   }
 
   @Override

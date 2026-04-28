@@ -18,7 +18,7 @@ public class SdkMetadataParser {
 
   private SdkMetadataParser() {}
 
-  public static SdkMetadata loadSdkMetadata(Path sdkRoot) throws IOException {
+  public static SdkMetadata loadSdkMetadata(final Path sdkRoot) throws IOException {
     return loadSdkMetadataFromPomFile(sdkRoot.resolve("pom.xml"));
   }
 
