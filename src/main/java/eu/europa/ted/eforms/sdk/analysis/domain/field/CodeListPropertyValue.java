@@ -25,14 +25,26 @@ public class CodeListPropertyValue implements Serializable {
   private String parentId;
 
   public String getId() {
-    return id;
+    return this.id;
+  }
+
+  public void setId(final String id) {
+    this.id = id;
   }
 
   public CodeListType getType() {
-    return type;
+    return this.type;
+  }
+
+  public void setType(final CodeListType type) {
+    this.type = type;
   }
 
   public String getParentId() {
-    return parentId;
+    return this.parentId;
+  }
+
+  public void setParentId(final String parentId) {
+    this.parentId = parentId;
   }
 }

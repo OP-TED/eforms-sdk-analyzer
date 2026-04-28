@@ -31,66 +31,106 @@ public class XmlStructureNode implements Serializable {
   private ChangeableOrCpProperty inContinueProcedure;
 
   public String getId() {
-    return id;
+    return this.id;
   }
 
-  public void setId(String id) {
+  public void setId(final String id) {
     this.id = id;
   }
 
   public String getParentId() {
-    return parentId;
+    return this.parentId;
+  }
+
+  public void setParentId(final String parentId) {
+    this.parentId = parentId;
   }
 
   public XmlStructureNode getParent() {
-    return parent;
+    return this.parent;
   }
 
-  public void setParent(XmlStructureNode parent) {
+  public void setParent(final XmlStructureNode parent) {
     this.parent = parent;
   }
 
   public String getName() {
-    return name;
+    return this.name;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
   }
 
   public String getXpathAbsolute() {
-    return xpathAbsolute;
+    return this.xpathAbsolute;
+  }
+
+  public void setXpathAbsolute(final String xpathAbsolute) {
+    this.xpathAbsolute = xpathAbsolute;
   }
 
   public String getXpathRelative() {
-    return xpathRelative;
+    return this.xpathRelative;
+  }
+
+  public void setXpathRelative(final String xpathRelative) {
+    this.xpathRelative = xpathRelative;
   }
 
   public List<XmlElementPosition> getXsdSequenceOrder() {
-    return xsdSequenceOrder;
+    return this.xsdSequenceOrder;
+  }
+
+  public void setXsdSequenceOrder(final List<XmlElementPosition> xsdSequenceOrder) {
+    this.xsdSequenceOrder = xsdSequenceOrder;
   }
 
   public boolean isRepeatable() {
-    return repeatable;
+    return this.repeatable;
   }
 
-  public void setRepeatable(boolean repeatable) {
+  public void setRepeatable(final boolean repeatable) {
     this.repeatable = repeatable;
   }
 
   public String getIdentifierFieldId() {
-    return identifierFieldId;
+    return this.identifierFieldId;
+  }
+
+  public void setIdentifierFieldId(final String identifierFieldId) {
+    this.identifierFieldId = identifierFieldId;
   }
 
   public String getCaptionFieldId() {
-    return captionFieldId;
+    return this.captionFieldId;
+  }
+
+  public void setCaptionFieldId(final String captionFieldId) {
+    this.captionFieldId = captionFieldId;
   }
 
   public String getBusinessEntityId() {
-    return businessEntityId;
+    return this.businessEntityId;
+  }
+
+  public void setBusinessEntityId(final String businessEntityId) {
+    this.businessEntityId = businessEntityId;
   }
 
   public ChangeableOrCpProperty getInChangeNotice() {
-    return inChangeNotice;
+    return this.inChangeNotice;
+  }
+
+  public void setInChangeNotice(final ChangeableOrCpProperty inChangeNotice) {
+    this.inChangeNotice = inChangeNotice;
   }
 
   public ChangeableOrCpProperty getInContinueProcedure() {
-    return inContinueProcedure;
+    return this.inContinueProcedure;
+  }
+
+  public void setInContinueProcedure(final ChangeableOrCpProperty inContinueProcedure) {
+    this.inContinueProcedure = inContinueProcedure;
   }
 }

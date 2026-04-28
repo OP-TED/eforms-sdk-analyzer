@@ -10,11 +10,19 @@ public class XmlElementPosition implements Serializable {
   private Integer elementIndex;
 
   public String getElementName() {
-    return elementName;
+    return this.elementName;
+  }
+
+  public void setElementName(final String elementName) {
+    this.elementName = elementName;
   }
 
   public Integer getElementIndex() {
-    return elementIndex;
+    return this.elementIndex;
+  }
+
+  public void setElementIndex(final Integer elementIndex) {
+    this.elementIndex = elementIndex;
   }
 
   @JsonAnySetter
