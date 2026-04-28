@@ -54,7 +54,7 @@ import eu.europa.ted.eforms.sdk.analysis.util.SchematronParser;
 import eu.europa.ted.eforms.sdk.analysis.util.XmlDataExtractor;
 import eu.europa.ted.eforms.sdk.analysis.util.XmlParser;
 
-public class SdkLoader {
+public class SdkLoader implements SdkContentSource {
   private static final Logger logger = LoggerFactory.getLogger(SdkLoader.class);
 
   // Not in SdkResource, as it is not useful when you use the SDK in an app

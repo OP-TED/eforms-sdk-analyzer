@@ -43,14 +43,18 @@ import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
 public class FactsLoader {
   private static final Logger logger = LoggerFactory.getLogger(FactsLoader.class);
 
-  private SdkLoader sdkLoader;
+  private final SdkContentSource source;
 
   public FactsLoader() {
-    this(null);
+    this((Path) null);
   }
 
-  public FactsLoader(Path sdkRoot) {
-    sdkLoader = new SdkLoader(sdkRoot);
+  public FactsLoader(final Path sdkRoot) {
+    this(new SdkLoader(sdkRoot));
+  }
+
+  public FactsLoader(final SdkContentSource source) {
+    this.source = source;
   }
 
   public DataStore<FieldsAndNodesMetadataFact> loadFieldsAndNodesMetadata() throws IOException {
@@ -58,7 +62,7 @@ public class FactsLoader {
 
     final DataStore<FieldsAndNodesMetadataFact> datastore = DataSource.createStore();
 
-    datastore.add(new FieldsAndNodesMetadataFact(sdkLoader.getFieldsAndNodesMetadata()));
+    datastore.add(new FieldsAndNodesMetadataFact(this.source.getFieldsAndNodesMetadata()));
 
     return datastore;
   }
@@ -68,7 +72,7 @@ public class FactsLoader {
 
     final DataStore<FieldFact> datastore = DataSource.createStore();
 
-    sdkLoader.getFieldsAndNodes().getFields()
+    this.source.getFieldsAndNodes().getFields()
         .forEach((Field field) -> datastore.add(new FieldFact(field)));
 
     return datastore;
@@ -79,7 +83,7 @@ public class FactsLoader {
 
     final DataStore<BusinessEntityFact> datastore = DataSource.createStore();
 
-    sdkLoader.getFieldsAndNodes().getBusinessEntities()
+    this.source.getFieldsAndNodes().getBusinessEntities()
         .forEach((BusinessEntity entity) -> datastore.add(new BusinessEntityFact(entity)));
 
     return datastore;
@@ -89,7 +93,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for nodes");
 
     final DataStore<NodeFact> datastore = DataSource.createStore();
-    List<XmlStructureNode> nodes = sdkLoader.getFieldsAndNodes().getNodes();
+    List<XmlStructureNode> nodes = this.source.getFieldsAndNodes().getNodes();
 
     nodes.forEach((XmlStructureNode node) -> datastore.add(new NodeFact(node)));
 
@@ -100,7 +104,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for notice types");
 
     final DataStore<NoticeTypeFact> datastore = DataSource.createStore();
-    sdkLoader.getNoticeTypes()
+    this.source.getNoticeTypes()
         .forEach((NoticeType noticeType) -> datastore.add(new NoticeTypeFact(noticeType)));
 
     return datastore;
@@ -110,7 +114,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for notice types index");
 
     final DataStore<NoticeTypesIndexFact> datastore = DataSource.createStore();
-    datastore.add(new NoticeTypesIndexFact(sdkLoader.getNoticeTypesForIndex()));
+    datastore.add(new NoticeTypesIndexFact(this.source.getNoticeTypesForIndex()));
 
     return datastore;
   }
@@ -119,7 +123,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for translations index");
 
     final DataStore<TranslationsIndexFact> datastore = DataSource.createStore();
-    datastore.add(new TranslationsIndexFact(sdkLoader.getTranslationsIndex()));
+    datastore.add(new TranslationsIndexFact(this.source.getTranslationsIndex()));
 
     return datastore;
   }
@@ -130,7 +134,7 @@ public class FactsLoader {
 
     final DataStore<LabelFact> datastore = DataSource.createStore();
 
-    sdkLoader.getLabels().forEach((Label label) -> datastore.add(new LabelFact(label)));
+    this.source.getLabels().forEach((Label label) -> datastore.add(new LabelFact(label)));
 
     return datastore;
   }
@@ -138,7 +142,7 @@ public class FactsLoader {
   public DataStore<ViewTemplateFact> loadViewTemplates() throws IOException {
     logger.debug("Creating facts datastore for view templates");
 
-    TedefoViewTemplatesIndex viewTemplatesIndex = sdkLoader.getViewTemplatesIndex();
+    TedefoViewTemplatesIndex viewTemplatesIndex = this.source.getViewTemplatesIndex();
 
     final DataStore<ViewTemplateFact> datastore = DataSource.createStore();
     viewTemplatesIndex.getViewTemplates()
@@ -151,7 +155,7 @@ public class FactsLoader {
   public DataStore<ViewTemplatesIndexFact> loadViewTemplatesIndex() throws IOException {
     logger.debug("Creating facts datastore for view templates index");
 
-    TedefoViewTemplatesIndex viewTemplatesIndex = sdkLoader.getViewTemplatesIndex();
+    TedefoViewTemplatesIndex viewTemplatesIndex = this.source.getViewTemplatesIndex();
 
     final DataStore<ViewTemplatesIndexFact> datastore = DataSource.createStore();
     datastore.add(new ViewTemplatesIndexFact(viewTemplatesIndex));
@@ -163,7 +167,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for document types");
 
     final DataStore<DocumentTypeFact> datastore = DataSource.createStore();
-    sdkLoader.getNoticeTypesForIndex().getDocumentTypes()
+    this.source.getNoticeTypesForIndex().getDocumentTypes()
         .forEach((DocumentType documentType) -> datastore.add(new DocumentTypeFact(documentType)));
 
     return datastore;
@@ -174,7 +178,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for codelists");
 
     final DataStore<CodelistFact> datastore = DataSource.createStore();
-    sdkLoader.getCodelists()
+    this.source.getCodelists()
         .forEach((Codelist codelist) -> datastore.add(new CodelistFact(codelist)));
 
     return datastore;
@@ -184,7 +188,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for codelists index");
 
     final DataStore<CodelistsIndexFact> datastore = DataSource.createStore();
-    datastore.add(new CodelistsIndexFact(sdkLoader.getCodelistsIndex()));
+    datastore.add(new CodelistsIndexFact(this.source.getCodelistsIndex()));
 
     return datastore;
   }
@@ -194,7 +198,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for XML notice examples");
 
     final DataStore<XmlNoticeFact> datastore = DataSource.createStore();
-    sdkLoader.getXmlNotices()
+    this.source.getXmlNotices()
         .forEach((XmlNotice xmlNotice) -> datastore.add(new XmlNoticeFact(xmlNotice)));
 
     return datastore;
@@ -205,7 +209,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for SVRL reports examples");
 
     final DataStore<SvrlReportFact> datastore = DataSource.createStore();
-    sdkLoader.getSvrlReports()
+    this.source.getSvrlReports()
         .forEach((SvrlReport svrlReport) -> datastore.add(new SvrlReportFact(svrlReport)));
 
     return datastore;
@@ -215,7 +219,7 @@ public class FactsLoader {
     logger.debug("Creating facts datastore for Schematron files");
 
     final DataStore<SchematronFileFact> datastore = DataSource.createStore();
-    sdkLoader.getSchematronFiles().forEach(f -> datastore.add(new SchematronFileFact(f)));
+    this.source.getSchematronFiles().forEach(f -> datastore.add(new SchematronFileFact(f)));
 
     return datastore;
   }
