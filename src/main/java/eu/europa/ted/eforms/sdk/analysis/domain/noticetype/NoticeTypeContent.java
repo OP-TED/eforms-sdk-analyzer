@@ -110,6 +110,10 @@ public class NoticeTypeContent {
             .flatMap(NoticeTypeContent::flattened));
   }
 
+  public List<NoticeTypeContent> getContent() {
+    return this.content;
+  }
+
   public void setContent(List<NoticeTypeContent> content) {
     if (content != null) {
       content.forEach((NoticeTypeContent c) -> c.setParent(this));
