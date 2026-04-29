@@ -41,6 +41,7 @@ then
 end
 
 rule "Every codelist has a column for the code"
+  @source(FILE)
 when
   /codelists[ $cl: this ]
   not (exists /codelists[ this == $cl ]/columnDefinitions[ id == "code", use == "required" ])
@@ -64,6 +65,7 @@ then
 end
 
 rule "Every column reference exists in the column definition"
+  @source(FILE)
 when
   $invalidColRef: /codelists[ $cl: this ]/invalidColumnRefs
 then

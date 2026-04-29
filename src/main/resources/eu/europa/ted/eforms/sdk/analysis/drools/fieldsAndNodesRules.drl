@@ -138,6 +138,7 @@ then
 end
 
 rule "Every field has an XSD sequence order"
+  @source(FILE)
 when
   /fields[ $f: this, xsdSequenceOrder == null ]
 then
@@ -145,6 +146,7 @@ then
 end
 
 rule "Every non-root node has an XSD sequence order"
+  @source(FILE)
 when
   /nodes[ $n: this, parentId != null, xsdSequenceOrder == null ]
 then
@@ -152,6 +154,7 @@ then
 end
 
 rule "Every field has XSD sequence order consistent with relative xpath"
+  @source(FILE)
 when
   /fields[ $f: this, xsdSequenceOrderCount != xpathRelativeElementCount ]
 then
@@ -159,6 +162,7 @@ then
 end
 
 rule "Every non-root node has XSD sequence order consistent with relative xpath"
+  @source(FILE)
 when
   /nodes[ $n: this, parentId != null, xsdSequenceOrderCount != xpathRelativeElementCount ]
 then
