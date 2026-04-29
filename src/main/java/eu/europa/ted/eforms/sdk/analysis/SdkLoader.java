@@ -132,6 +132,11 @@ public class SdkLoader implements SdkContentSource {
             }));
   }
 
+  @Override
+  public SourceKind getSourceKind() {
+    return SourceKind.FILE;
+  }
+
   public EFormsTrackableEntity getFieldsAndNodesMetadata() throws IOException {
     // Load fields.json but keep only the metadata, not the fields and nodes
     EFormsTrackableEntity metadata = loadJsonFile(FieldsAndNodes.class,

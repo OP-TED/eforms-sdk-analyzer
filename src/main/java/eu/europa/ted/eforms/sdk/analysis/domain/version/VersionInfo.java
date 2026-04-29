@@ -14,22 +14,42 @@ public final class VersionInfo {
   private LocalDateTime versionUpdatedOn;
 
   public String getUblVersion() {
-    return ublVersion;
+    return this.ublVersion;
+  }
+
+  public void setUblVersion(final String ublVersion) {
+    this.ublVersion = ublVersion;
   }
 
   public String getSdkVersion() {
-    return sdkVersion;
+    return this.sdkVersion;
+  }
+
+  public void setSdkVersion(final String sdkVersion) {
+    this.sdkVersion = sdkVersion;
   }
 
   public String getFullSdkVersion() {
-    return fullSdkVersion;
+    return this.fullSdkVersion;
+  }
+
+  public void setFullSdkVersion(final String fullSdkVersion) {
+    this.fullSdkVersion = fullSdkVersion;
   }
 
   public String getVersionId() {
-    return versionId;
+    return this.versionId;
+  }
+
+  public void setVersionId(final String versionId) {
+    this.versionId = versionId;
   }
 
   public LocalDateTime getVersionUpdatedOn() {
-    return versionUpdatedOn;
+    return this.versionUpdatedOn;
+  }
+
+  public void setVersionUpdatedOn(final LocalDateTime versionUpdatedOn) {
+    this.versionUpdatedOn = versionUpdatedOn;
   }
 }

@@ -18,9 +18,12 @@ public class DocumentTypeFact implements SdkComponentFact<String> {
   }
 
   public boolean schemaLocationExists(final Path sdkRoot) {
-    // Without a known SDK root (e.g. when running against a content source
-    // that is not file-system backed) we cannot verify the schema location.
-    // The rule is not applicable in that mode.
+    // The "Document types use existing schemaLocation" rule that calls this is
+    // tagged @source(FILE) so it is skipped under SourceKind.DATABASE. It can,
+    // however, still fire under a custom FILE source that does not back its
+    // content with a real path (e.g. an in-memory or archive-backed reader),
+    // in which case sdkRoot on SdkUnit is null. Treat that as "not verifiable
+    // here" rather than NPE; the rule is effectively not applicable.
     if (sdkRoot == null) {
       return true;
     }

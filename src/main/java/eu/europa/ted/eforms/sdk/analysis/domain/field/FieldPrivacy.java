@@ -17,22 +17,42 @@ public class FieldPrivacy implements Serializable {
   private String publicationDateFieldId;
 
   public FieldPrivacyCode getCode() {
-    return code;
+    return this.code;
+  }
+
+  public void setCode(final FieldPrivacyCode code) {
+    this.code = code;
   }
 
   public String getUnpublishedFieldId() {
-    return unpublishedFieldId;
+    return this.unpublishedFieldId;
+  }
+
+  public void setUnpublishedFieldId(final String unpublishedFieldId) {
+    this.unpublishedFieldId = unpublishedFieldId;
   }
 
   public String getReasonCodeFieldId() {
-    return reasonCodeFieldId;
+    return this.reasonCodeFieldId;
+  }
+
+  public void setReasonCodeFieldId(final String reasonCodeFieldId) {
+    this.reasonCodeFieldId = reasonCodeFieldId;
   }
 
   public String getReasonDescriptionFieldId() {
-    return reasonDescriptionFieldId;
+    return this.reasonDescriptionFieldId;
+  }
+
+  public void setReasonDescriptionFieldId(final String reasonDescriptionFieldId) {
+    this.reasonDescriptionFieldId = reasonDescriptionFieldId;
   }
 
   public String getPublicationDateFieldId() {
-    return publicationDateFieldId;
+    return this.publicationDateFieldId;
+  }
+
+  public void setPublicationDateFieldId(final String publicationDateFieldId) {
+    this.publicationDateFieldId = publicationDateFieldId;
   }
 }

@@ -3,6 +3,7 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 unit SdkUnit;
 
 rule "Every assert has an id"
+  @source(FILE)
 when
   /schematrons[ $sch: this ]/asserts[ id == null ]
 then
@@ -10,6 +11,7 @@ then
 end
 
 rule "Every assert id is unique in the schematron file"
+  @source(FILE)
 when
   $duplicates : /schematrons[ $sch: this ]/duplicateAssertIds
 then
@@ -17,6 +19,7 @@ then
 end
 
 rule "All expected phases are present"
+  @source(FILE)
 when
   /schematrons[ $sch: this, $schId: id ];
   /noticeTypes[ $expected: id ]
@@ -26,6 +29,7 @@ then
 end
 
 rule "Every pattern is part of at least one phase"
+  @source(FILE)
 when
   /schematrons[ $sch: this, $schId: id ]/patterns[ $patternId: id ]
   not (exists /schematrons[ id == $schId ]/phases[ activePatterns contains $patternId ])
@@ -34,6 +38,7 @@ then
 end
 
 rule "Every assert diagnostics is defined in the schematron file"
+  @source(FILE)
 when
   $missing : /schematrons[ $sch: this]/missingDiagnostics
 then

@@ -8,15 +8,27 @@ public class TranslationLanguage implements Comparable<TranslationLanguage> {
   private String description;
 
   public String getTwoLetterCode() {
-    return twoLetterCode;
+    return this.twoLetterCode;
+  }
+
+  public void setTwoLetterCode(final String twoLetterCode) {
+    this.twoLetterCode = twoLetterCode;
   }
 
   public String getThreeLetterCode() {
-    return threeLetterCode;
+    return this.threeLetterCode;
+  }
+
+  public void setThreeLetterCode(final String threeLetterCode) {
+    this.threeLetterCode = threeLetterCode;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
   }
 
   @Override

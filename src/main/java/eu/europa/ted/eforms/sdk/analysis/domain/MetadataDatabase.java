@@ -10,10 +10,18 @@ public class MetadataDatabase implements Serializable {
   private LocalDateTime createdOn;
 
   public String getVersion() {
-    return version;
+    return this.version;
+  }
+
+  public void setVersion(final String version) {
+    this.version = version;
   }
 
   public LocalDateTime getCreatedOn() {
-    return createdOn;
+    return this.createdOn;
+  }
+
+  public void setCreatedOn(final LocalDateTime createdOn) {
+    this.createdOn = createdOn;
   }
 }

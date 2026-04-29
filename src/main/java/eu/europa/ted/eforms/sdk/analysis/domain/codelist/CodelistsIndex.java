@@ -10,6 +10,6 @@ public class CodelistsIndex extends EFormsTrackableEntity {
   private final List<CodelistsIndexItem> codelists = new ArrayList<>();
 
   public List<CodelistsIndexItem> getCodelists() {
-    return codelists;
+    return this.codelists;
   }
 }

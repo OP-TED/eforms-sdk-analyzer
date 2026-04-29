@@ -25,6 +25,11 @@ class DocumentTypeFactTest {
 
   @Test
   void schemaLocationIsAssumedValidWhenSdkRootIsNull() {
+    // Defensive: the rule that calls schemaLocationExists is tagged @source(FILE)
+    // so it is normally skipped when sdkRoot is null on SdkUnit (DATABASE case).
+    // But a custom FILE-source could still produce a null sdkRoot (in-memory
+    // file-system reader, etc.) — in that case the check is not applicable,
+    // and we must not NPE.
     final DocumentTypeFact fact = new DocumentTypeFact(
         documentTypeWithSchemaLocation("schemas/notice-types/something.xsd"));
 

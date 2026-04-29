@@ -76,19 +76,31 @@ public class NoticeTypeContent {
   private String captionFieldId;
 
   public NoticeTypeContentType getContentTypeEnum() {
-    return contentType;
+    return this.contentType;
   }
 
   public NoticeTypeContentType getContentType() {
-    return contentType;
+    return this.contentType;
+  }
+
+  public void setContentType(final NoticeTypeContentType contentType) {
+    this.contentType = contentType;
   }
 
   public NoticeTypeContentDisplayType getDisplayType() {
-    return displayType;
+    return this.displayType;
+  }
+
+  public void setDisplayType(final NoticeTypeContentDisplayType displayType) {
+    this.displayType = displayType;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
   }
 
   public Stream<NoticeTypeContent> flattened() {
@@ -96,6 +108,10 @@ public class NoticeTypeContent {
         Stream.of(this),
         content.stream()
             .flatMap(NoticeTypeContent::flattened));
+  }
+
+  public List<NoticeTypeContent> getContent() {
+    return this.content;
   }
 
   public void setContent(List<NoticeTypeContent> content) {
@@ -141,59 +157,143 @@ public class NoticeTypeContent {
   }
 
   public String getNodeId() {
-    return nodeId;
+    return this.nodeId;
+  }
+
+  public void setNodeId(final String nodeId) {
+    this.nodeId = nodeId;
   }
 
   public boolean isRepeatable() {
-    return repeatable;
+    return this.repeatable;
   }
 
-  public void setRepeatable(boolean repeatable) {
+  public void setRepeatable(final boolean repeatable) {
     this.repeatable = repeatable;
   }
 
   public String getValueSource() {
-    return valueSource;
+    return this.valueSource;
+  }
+
+  public void setValueSource(final String valueSource) {
+    this.valueSource = valueSource;
   }
 
   public String getLabel() {
-    return label;
+    return this.label;
+  }
+
+  public void setLabel(final String label) {
+    this.label = label;
   }
 
   public boolean isCollapsed() {
-    return collapsed;
+    return this.collapsed;
+  }
+
+  public void setCollapsed(final boolean collapsed) {
+    this.collapsed = collapsed;
   }
 
   public boolean isHidden() {
-    return hidden;
+    return this.hidden;
+  }
+
+  public void setHidden(final boolean hidden) {
+    this.hidden = hidden;
+  }
+
+  public String getPresetValue() {
+    return this.presetValue;
+  }
+
+  public void setPresetValue(final String presetValue) {
+    this.presetValue = presetValue;
   }
 
   public boolean isReadOnly() {
-    return readOnly;
+    return this.readOnly;
+  }
+
+  public void setReadOnly(final boolean readOnly) {
+    this.readOnly = readOnly;
   }
 
   public NoticeTypeContent getParent() {
-    return parent;
+    return this.parent;
   }
 
-  public NoticeTypeContent setParent(NoticeTypeContent parent) {
+  public NoticeTypeContent setParent(final NoticeTypeContent parent) {
     this.parent = parent;
     return this;
   }
 
   public String getUnpublishGroupId() {
-    return unpublishGroupId;
+    return this.unpublishGroupId;
+  }
+
+  public void setUnpublishGroupId(final String unpublishGroupId) {
+    this.unpublishGroupId = unpublishGroupId;
   }
 
   public String getUnpublishFieldId() {
-    return unpublishFieldId;
+    return this.unpublishFieldId;
+  }
+
+  public void setUnpublishFieldId(final String unpublishFieldId) {
+    this.unpublishFieldId = unpublishFieldId;
   }
 
   public String getUnpublishCode() {
-    return unpublishCode;
+    return this.unpublishCode;
+  }
+
+  public void setUnpublishCode(final String unpublishCode) {
+    this.unpublishCode = unpublishCode;
+  }
+
+  public String getIdScheme() {
+    return this.idScheme;
+  }
+
+  public void setIdScheme(final String idScheme) {
+    this.idScheme = idScheme;
+  }
+
+  public String getSchemeName() {
+    return this.schemeName;
+  }
+
+  public void setSchemeName(final String schemeName) {
+    this.schemeName = schemeName;
   }
 
   public String getBusinessEntityId() {
-    return businessEntityId;
+    return this.businessEntityId;
+  }
+
+  public void setBusinessEntityId(final String businessEntityId) {
+    this.businessEntityId = businessEntityId;
+  }
+
+  public String getIdentifierFieldId() {
+    return this.identifierFieldId;
+  }
+
+  public void setIdentifierFieldId(final String identifierFieldId) {
+    this.identifierFieldId = identifierFieldId;
+  }
+
+  public String getCaptionFieldId() {
+    return this.captionFieldId;
+  }
+
+  public void setCaptionFieldId(final String captionFieldId) {
+    this.captionFieldId = captionFieldId;
+  }
+
+  public List<String> getIdSchemes() {
+    return this.idSchemes;
   }
 }

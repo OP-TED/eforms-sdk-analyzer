@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import eu.europa.ted.eforms.sdk.analysis.SdkContentSource;
+import eu.europa.ted.eforms.sdk.analysis.SourceKind;
 import eu.europa.ted.eforms.sdk.analysis.domain.EFormsTrackableEntity;
 import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.analysis.domain.XmlNotice;
@@ -27,6 +28,11 @@ import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplatesIn
  * can iterate without an NPE).
  */
 public class EmptySdkContentSource implements SdkContentSource {
+
+  @Override
+  public SourceKind getSourceKind() {
+    return SourceKind.FILE;
+  }
 
   @Override
   public EFormsTrackableEntity getFieldsAndNodesMetadata() {

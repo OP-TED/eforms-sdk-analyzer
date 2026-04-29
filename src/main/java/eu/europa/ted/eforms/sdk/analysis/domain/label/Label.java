@@ -22,18 +22,22 @@ public class Label implements Serializable {
 
 
   public String getId() {
-    return id;
+    return this.id;
   }
 
   public Map<Language, String> getTranslations() {
-    return translations;
+    return this.translations;
   }
 
-  public void addTranslation(Language language, String text) {
-    translations.put(language, text);
+  public void setTranslations(final Map<Language, String> translations) {
+    this.translations = translations;
   }
 
-  public String getText(Language lang) {
-    return translations.get(lang);
+  public void addTranslation(final Language language, final String text) {
+    this.translations.put(language, text);
+  }
+
+  public String getText(final Language lang) {
+    return this.translations.get(lang);
   }
 }

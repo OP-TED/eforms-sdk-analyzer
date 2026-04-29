@@ -15,6 +15,7 @@ then
 end
 
 rule "Codelist indicated in codelists index exists"
+  @source(FILE)
 when
   /codelistsIndex[ $cli: this ]/indexItems[ $codelistId: id, $filename: filename ]
   not (exists /codelists[ id == $codelistId, filename == $filename ])
@@ -23,6 +24,7 @@ then
 end
 
 rule "Codelist files are indicated in codelists index"
+  @source(FILE)
 when
   /codelists[ $cl: this, $codelistId: id, $filename: filename ]
   not (exists /codelistsIndex/indexItems[ id == $codelistId, filename == $filename ])
@@ -31,6 +33,7 @@ then
 end
 
 rule "Codelist filenames are as expected"
+  @source(FILE)
 when
   /codelists[ $cl: this, $filename: filename, filename != expectedFilename ]
 then
@@ -38,6 +41,7 @@ then
 end
 
 rule "Every codelist has a column for the code"
+  @source(FILE)
 when
   /codelists[ $cl: this ]
   not (exists /codelists[ this == $cl ]/columnDefinitions[ id == "code", use == "required" ])
@@ -61,6 +65,7 @@ then
 end
 
 rule "Every column reference exists in the column definition"
+  @source(FILE)
 when
   $invalidColRef: /codelists[ $cl: this ]/invalidColumnRefs
 then

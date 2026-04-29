@@ -22,14 +22,18 @@ public class NoticeTypeSdk extends EFormsTrackableEntity {
   private final List<NoticeTypeContent> content = new ArrayList<>();
 
   public String getNoticeId() {
-    return noticeId;
+    return this.noticeId;
+  }
+
+  public void setNoticeId(final String noticeId) {
+    this.noticeId = noticeId;
   }
 
   public List<NoticeTypeContent> getMetadata() {
-    return metadata;
+    return this.metadata;
   }
 
   public List<NoticeTypeContent> getContent() {
-    return content;
+    return this.content;
   }
 }

@@ -14,14 +14,26 @@ public class ChangeableOrCpPropertyValue implements Serializable {
   private Boolean canRemove;
 
   public Boolean getCanAdd() {
-    return canAdd;
+    return this.canAdd;
+  }
+
+  public void setCanAdd(final Boolean canAdd) {
+    this.canAdd = canAdd;
   }
 
   public Boolean getCanModify() {
-    return canModify;
+    return this.canModify;
+  }
+
+  public void setCanModify(final Boolean canModify) {
+    this.canModify = canModify;
   }
 
   public Boolean getCanRemove() {
-    return canRemove;
+    return this.canRemove;
+  }
+
+  public void setCanRemove(final Boolean canRemove) {
+    this.canRemove = canRemove;
   }
 }

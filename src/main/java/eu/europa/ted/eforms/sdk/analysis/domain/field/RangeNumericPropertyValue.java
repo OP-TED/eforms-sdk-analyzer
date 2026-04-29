@@ -29,10 +29,18 @@ public class RangeNumericPropertyValue implements Serializable {
   private String maxNumber;
 
   public String getMinNumber() {
-    return minNumber;
+    return this.minNumber;
+  }
+
+  public void setMinNumber(final String minNumber) {
+    this.minNumber = minNumber;
   }
 
   public String getMaxNumber() {
-    return maxNumber;
+    return this.maxNumber;
+  }
+
+  public void setMaxNumber(final String maxNumber) {
+    this.maxNumber = maxNumber;
   }
 }

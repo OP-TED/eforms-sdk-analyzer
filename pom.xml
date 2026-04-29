@@ -277,6 +277,13 @@
       <groupId>org.drools</groupId>
       <artifactId>drools-ruleunits-engine</artifactId>
     </dependency>
+    <dependency>
+      <!-- Test-only: enables runtime DRL compilation in DroolsApplicabilityIntegrationTest,
+           which locks in the Drools metadata-shape assumption used by ApplicabilityFilter. -->
+      <groupId>org.drools</groupId>
+      <artifactId>drools-mvel</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <!-- Jackson -->
     <dependency>

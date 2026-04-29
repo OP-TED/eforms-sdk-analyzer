@@ -28,22 +28,42 @@ public abstract class AbstractConstraint<V extends Serializable> implements Seri
   }
 
   public List<String> getNoticeTypes() {
-    return noticeTypes;
+    return this.noticeTypes;
+  }
+
+  public void setNoticeTypes(final List<String> noticeTypes) {
+    this.noticeTypes = noticeTypes;
   }
 
   public String getCondition() {
-    return condition;
+    return this.condition;
+  }
+
+  public void setCondition(final String condition) {
+    this.condition = condition;
   }
 
   public V getValue() {
-    return value;
+    return this.value;
+  }
+
+  public void setValue(final V value) {
+    this.value = value;
   }
 
   public PropertyOrConstraintSeverity getSeverity() {
-    return severity;
+    return this.severity;
+  }
+
+  public void setSeverity(final PropertyOrConstraintSeverity severity) {
+    this.severity = severity;
   }
 
   public String getMessage() {
-    return message;
+    return this.message;
+  }
+
+  public void setMessage(final String message) {
+    this.message = message;
   }
 }

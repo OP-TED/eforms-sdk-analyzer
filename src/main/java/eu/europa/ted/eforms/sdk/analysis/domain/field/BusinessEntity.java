@@ -17,34 +17,67 @@ public class BusinessEntity {
   private BusinessEntityIdentifier instanceIdentifier;
 
   public String getId() {
-    return id;
+    return this.id;
+  }
+
+  public void setId(final String id) {
+    this.id = id;
   }
 
   public String getName() {
-    return name;
+    return this.name;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
   }
 
   public String getLabelId() {
-    return labelId;
+    return this.labelId;
+  }
+
+  public void setLabelId(final String labelId) {
+    this.labelId = labelId;
   }
 
   public boolean isRepeatable() {
-    return repeatable;
+    return this.repeatable;
+  }
+
+  public void setRepeatable(final boolean repeatable) {
+    this.repeatable = repeatable;
   }
 
   public String getRepeatsWithNodeId() {
-    return repeatsWithNodeId;
+    return this.repeatsWithNodeId;
+  }
+
+  public void setRepeatsWithNodeId(final String repeatsWithNodeId) {
+    this.repeatsWithNodeId = repeatsWithNodeId;
   }
 
   public BusinessEntityChangeIdentification getChangeIdentification() {
-    return changeIdentification;
+    return this.changeIdentification;
+  }
+
+  public void setChangeIdentification(
+      final BusinessEntityChangeIdentification changeIdentification) {
+    this.changeIdentification = changeIdentification;
   }
 
   public BusinessEntityIdentifier getInstanceIdentifier() {
-    return instanceIdentifier;
+    return this.instanceIdentifier;
+  }
+
+  public void setInstanceIdentifier(final BusinessEntityIdentifier instanceIdentifier) {
+    this.instanceIdentifier = instanceIdentifier;
   }
 }
