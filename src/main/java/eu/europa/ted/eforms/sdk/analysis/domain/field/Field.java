@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "xpathAbsolute", "xpathRelative", "xsdSequenceOrder",
     "type",
     "attributeName", "attributeOf", "attributes",
+    "dateFieldId", "timeFieldId",
     "presetValue", "businessEntityId", "idSchemes", "idScheme", "schemeName", "referencedBusinessEntityIds",
     "legalType", "maxLength", "description",
     "privacy", "repeatable", "forbidden", "mandatory", "pattern", "numericRange", "codeList",
@@ -48,6 +49,13 @@ public class Field implements Serializable {
   private String attributeOf;
   private String attributeName;
   private List<String> attributes;
+
+  /** Reference to a sibling field of type {@code date} (set on {@code time} fields only). */
+  private String dateFieldId;
+
+  /** Reference to a sibling field of type {@code time} (set on {@code date} fields only). */
+  private String timeFieldId;
+
   private String presetValue;
 
   private String businessEntityId;
@@ -171,6 +179,22 @@ public class Field implements Serializable {
 
   public void setAttributes(final List<String> attributes) {
     this.attributes = attributes;
+  }
+
+  public String getDateFieldId() {
+    return this.dateFieldId;
+  }
+
+  public void setDateFieldId(final String dateFieldId) {
+    this.dateFieldId = dateFieldId;
+  }
+
+  public String getTimeFieldId() {
+    return this.timeFieldId;
+  }
+
+  public void setTimeFieldId(final String timeFieldId) {
+    this.timeFieldId = timeFieldId;
   }
 
   public String getPresetValue() {
