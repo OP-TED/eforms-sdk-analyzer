@@ -174,7 +174,7 @@ when
   $labelId : /fields[ $f: this ]/allLabelIds
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($f, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, java.util.List.of($labelId)));
 end
 
 rule "Fields corresponding to XML attributes have the expected information"
@@ -227,7 +227,7 @@ when
   /businessEntities[ $b: this, $labelId: labelId ]
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($b, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($b, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, java.util.List.of($labelId)));
 end
 
 rule "Relationships between business entities and nodes are consistent"

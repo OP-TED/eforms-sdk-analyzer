@@ -11,6 +11,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.IVersionProvider;
 import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
 
@@ -25,9 +26,13 @@ class CliCommand implements Callable<Integer> {
   @Parameters(index = "0", description = "SDK resources root folder.")
   private Path sdkRoot;
 
+  @Option(names = {"-v", "--verbose"},
+      description = "Print every individual missing-label error in addition to the summary.")
+  private boolean verbose;
+
   @Override
   public Integer call() throws Exception {
-    return SdkAnalyzer.analyze(sdkRoot);
+    return SdkAnalyzer.analyze(sdkRoot, verbose);
   }
 
   @Command(name = "benchmark", mixinStandardHelpOptions = true, 

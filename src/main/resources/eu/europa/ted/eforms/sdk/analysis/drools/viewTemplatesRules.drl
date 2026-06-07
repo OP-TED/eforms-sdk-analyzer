@@ -7,5 +7,5 @@ when
   $labelId : /viewTemplatesIndex[ $v: this ]/labelIds
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($v, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($v, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, java.util.List.of($labelId)));
 end

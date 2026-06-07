@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import eu.europa.ted.eforms.sdk.analysis.enums.MissingLabelKind;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 /**
@@ -35,5 +36,13 @@ class TextValidatorTest {
         () -> "Expected an error naming expression|name|123, got: " + messages);
     assertTrue(messages.stream().anyMatch(m -> m.contains("field|name|BT-132-Lot")),
         () -> "Expected an error naming field|name|BT-132-Lot, got: " + messages);
+
+    final Set<String> missingLabelIds = errors.stream()
+        .flatMap(error -> error.getMissingLabelIds().stream()).collect(Collectors.toSet());
+
+    assertEquals(Set.of("expression|name|123", "field|name|BT-132-Lot"), missingLabelIds);
+
+    assertTrue(errors.stream().allMatch(e -> e.getMissingLabelKind() == MissingLabelKind.ASSUMED),
+        "Text-detected missing labels should be reported as ASSUMED");
   }
 }

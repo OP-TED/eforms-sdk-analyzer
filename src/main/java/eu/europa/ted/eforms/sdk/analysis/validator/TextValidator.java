@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
 import eu.europa.ted.eforms.sdk.analysis.domain.enums.Language;
 import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
+import eu.europa.ted.eforms.sdk.analysis.enums.MissingLabelKind;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
@@ -83,7 +84,8 @@ public class TextValidator implements Validator {
     if (!ids.isEmpty()) {
       String msg = String.format("Label in %s contains label identifier(s): %s", lang,
           String.join(", ", ids));
-      results.add(new ValidationResult(new LabelFact(l), msg, ValidationStatusEnum.ERROR));
+      results.add(new ValidationResult(new LabelFact(l), msg, ValidationStatusEnum.ERROR, ids,
+          MissingLabelKind.ASSUMED));
     }
   }
 
