@@ -2,6 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +34,7 @@ public class LabelFact implements SdkComponentFact<String> {
 
   public String getNormalizedId() {
     String id = this.label.getId();
-    return id.strip().toLowerCase().replaceAll("[-_\\.]", "");
+    return id.strip().toLowerCase(Locale.ROOT).replaceAll("[-_\\.]", "");
   }
 
   @Override

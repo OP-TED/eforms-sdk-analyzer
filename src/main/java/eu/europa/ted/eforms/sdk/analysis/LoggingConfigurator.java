@@ -34,6 +34,8 @@ public class LoggingConfigurator {
 
     final ConsoleAppender<ILoggingEvent> console = new ConsoleAppender<>();
     console.setContext(context);
+    // Framework logs go to stderr so stdout stays dedicated to the report.
+    console.setTarget("System.err");
     console.setEncoder(encoder(context));
     console.addFilter(thresholdFilter(context, verbose ? Level.INFO : Level.WARN));
     console.start();
@@ -71,7 +73,7 @@ public class LoggingConfigurator {
   private boolean canWriteLogFile() {
     final File logFile = new File(LOG_FILE).getAbsoluteFile();
     if (logFile.exists()) {
-      return logFile.canWrite();
+      return logFile.isFile() && logFile.canWrite();
     }
     final File directory = logFile.getParentFile();
     return directory != null && directory.canWrite();

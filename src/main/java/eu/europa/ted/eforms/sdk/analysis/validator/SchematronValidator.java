@@ -147,7 +147,7 @@ public class SchematronValidator implements Validator {
 
   
   private String formatSaxError(final SAXParseException e) {
-    return String.format("line %d, column %d: %s",
+    return String.format(Locale.ENGLISH, "line %d, column %d: %s",
         e.getLineNumber(), e.getColumnNumber(), e.getMessage());
   }
 
