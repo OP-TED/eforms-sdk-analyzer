@@ -61,7 +61,7 @@ when
   /codelistsIndex[ $cli: this ]/indexItems[ $labelId: labelId ]
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($cli, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($cli, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, java.util.List.of($labelId)));
 end
 
 rule "Every column reference exists in the column definition"

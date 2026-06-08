@@ -33,7 +33,7 @@ when
   $labelId: String() from $nti.labelIds
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($nti, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($nti, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, java.util.List.of($labelId)));
 end
 
 // TEDEFO-1816: Check that the view templates referenced in the notice-types.json file actually exist.
@@ -72,7 +72,7 @@ when
   $labelId: String() from $nt.labelIds
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($nt, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($nt, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, java.util.List.of($labelId)));
 end
 
 // TEDEFO-1820: For every <noticeSubtype>.json file: Check that any entry with contentType="field", has a corresponding field inside fields/fields.json
