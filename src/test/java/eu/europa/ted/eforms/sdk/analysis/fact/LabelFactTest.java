@@ -65,4 +65,11 @@ class LabelFactTest {
     final LabelFact uppercase = labelWith("identifier (RESULT|((RES|TEN|TPA|ORG-XXXX))");
     assertFalse(uppercase.hasLabelIdentifier());
   }
+
+  @Test
+  void handlesNullTranslationWithoutCrashing() {
+    final LabelFact fact = labelWith(null);
+    assertFalse(fact.hasLabelIdentifier());
+    assertFalse(fact.hasInvalidCharacter());
+  }
 }
