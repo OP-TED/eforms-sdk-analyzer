@@ -16,7 +16,6 @@ import eu.europa.ted.eforms.sdk.analysis.enums.MissingLabelKind;
 import eu.europa.ted.eforms.sdk.analysis.validator.EfxValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.SchematronValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.SdkValidator;
-import eu.europa.ted.eforms.sdk.analysis.validator.TextValidator;
 import eu.europa.ted.eforms.sdk.analysis.validator.Validator;
 import eu.europa.ted.eforms.sdk.analysis.validator.XmlSchemaValidator;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
@@ -36,9 +35,10 @@ public class SdkAnalyzer {
     List<ValidationResult> warnings = new ArrayList<>();
     List<ValidationResult> errors = new ArrayList<>();
 
+    // Translation-text checks (invalid characters, label-identifier leaks) now run as drools rules
+    // inside SdkValidator, so TextValidator is no longer part of the list.
     List<Validator> validators = List.of(
         new XmlSchemaValidator(sdkRoot),
-        new TextValidator(sdkRoot),
         new SchematronValidator(sdkRoot),
         new SdkValidator(sdkRoot),
         new EfxValidator(sdkRoot));

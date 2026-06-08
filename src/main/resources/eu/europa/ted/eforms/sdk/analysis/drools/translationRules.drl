@@ -9,3 +9,21 @@ when
 then
   results.add(new ValidationResult($l, "Identifier is similar to " + $otherId, ValidationStatusEnum.ERROR));
 end
+
+// FILE-only: under DATABASE, label text legitimately contains #{...} placeholders whose content
+// matches the identifier pattern. The exporter leaves a bare identifier in file output only when it
+// cannot resolve a label, so this check is meaningful on exported files, not on the live database.
+rule "Label text does not contain label identifiers"
+  @source(FILE)
+when
+  $label : /labels[ hasLabelIdentifier() ]
+then
+  results.addAll($label.labelIdentifierResults());
+end
+
+rule "Label text does not contain invalid characters"
+when
+  $label : /labels[ hasInvalidCharacter() ]
+then
+  results.addAll($label.invalidCharacterResults());
+end
