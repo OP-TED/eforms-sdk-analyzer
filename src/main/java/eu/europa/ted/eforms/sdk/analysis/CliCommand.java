@@ -27,18 +27,21 @@ class CliCommand implements Callable<Integer> {
   private Path sdkRoot;
 
   @Option(names = {"-v", "--verbose"},
-      description = "Print every individual missing-label error in addition to the summary.")
+      description = "List every individual finding and show framework logging (INFO) on the console."
+          + " A full run log is always written to analyzer.log regardless of this flag.")
   private boolean verbose;
 
   @Override
   public Integer call() throws Exception {
-    return SdkAnalyzer.analyze(sdkRoot, verbose);
+    new LoggingConfigurator().configure(this.verbose);
+    return SdkAnalyzer.analyze(this.sdkRoot, this.verbose);
   }
 
-  @Command(name = "benchmark", mixinStandardHelpOptions = true, 
+  @Command(name = "benchmark", mixinStandardHelpOptions = true,
       description = "Run benchmark of Schematron rules")
   public int runBenchmark() throws Exception {
-    return SchematronBenchmark.run(sdkRoot);
+    new LoggingConfigurator().configure(this.verbose);
+    return SchematronBenchmark.run(this.sdkRoot);
   }
 
   /**
