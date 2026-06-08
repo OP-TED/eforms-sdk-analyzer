@@ -53,6 +53,9 @@ class ConsoleReportRendererTest {
     assertTrue(output.contains("in sdkVersion is incorrect"), output);
     assertTrue(output.contains("Total number of validation errors: 3"), output);
     assertTrue(output.contains("--verbose"), output);
+    // Warnings keep their detail in the default report (grouped), not just a count.
+    assertTrue(output.contains("Warnings (1 unique):"), output);
+    assertTrue(output.contains("a warning"), output);
     // The missing-label per-occurrence lines must not be listed individually in the default report.
     assertFalse(output.contains("All validation errors"), output);
   }

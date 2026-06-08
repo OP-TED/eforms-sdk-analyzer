@@ -14,8 +14,9 @@ import ch.qos.logback.core.FileAppender;
 /**
  * Configures logging for the analyzer CLI. Framework logging is kept off the console by default
  * (only warnings and errors show) and raised to INFO with {@code --verbose}, while a full INFO run
- * log is always written to a file for later inspection. The validation report itself is written
- * separately to stdout by {@link eu.europa.ted.eforms.sdk.analysis.report.ConsoleReportRenderer}.
+ * log is written to {@value #LOG_FILE} in the working directory (when it is writable) for later
+ * inspection. The validation report itself is written separately to stdout by
+ * {@link eu.europa.ted.eforms.sdk.analysis.report.ConsoleReportRenderer}.
  *
  * <p>Applied programmatically by the CLI only, so applications that use the analyzer as a library
  * keep their own logging configuration; the library jar ships no {@code logback.xml}.

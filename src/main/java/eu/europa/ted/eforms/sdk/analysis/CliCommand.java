@@ -28,7 +28,8 @@ class CliCommand implements Callable<Integer> {
 
   @Option(names = {"-v", "--verbose"},
       description = "List every individual finding and show framework logging (INFO) on the console."
-          + " A full run log is always written to analyzer.log regardless of this flag.")
+          + " A full INFO run log is written to analyzer.log in the working directory when it is"
+          + " writable, regardless of this flag.")
   private boolean verbose;
 
   @Override

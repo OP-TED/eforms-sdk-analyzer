@@ -47,9 +47,11 @@ public class ConsoleReportRenderer {
     if (results.warningCount() == 0) {
       return;
     }
-    this.out.println("Total number of validation warnings: " + results.warningCount());
     if (verbose) {
+      this.out.println("All validation warnings (" + results.warningCount() + "):");
       results.getWarnings().forEach(warning -> this.out.println("  " + warning));
+    } else {
+      renderGrouped("Warnings", results.getWarnings());
     }
   }
 
@@ -62,7 +64,7 @@ public class ConsoleReportRenderer {
       this.out.println("All validation errors (" + results.errorCount() + "):");
       results.getErrors().forEach(error -> this.out.println("  " + error));
     } else {
-      renderGroupedOtherErrors(results.otherErrors());
+      renderGrouped("Errors", results.otherErrors());
     }
 
     renderMissingLabels(FOUND_TITLE, results.missingLabels(MissingLabelKind.FOUND));
@@ -75,13 +77,13 @@ public class ConsoleReportRenderer {
     }
   }
 
-  private void renderGroupedOtherErrors(final List<ValidationResult> otherErrors) {
-    if (otherErrors.isEmpty()) {
+  private void renderGrouped(final String kind, final List<ValidationResult> results) {
+    if (results.isEmpty()) {
       return;
     }
-    final SortedMap<String, Long> grouped = otherErrors.stream().collect(
+    final SortedMap<String, Long> grouped = results.stream().collect(
         Collectors.groupingBy(ValidationResult::toString, TreeMap::new, Collectors.counting()));
-    this.out.println("Errors (" + grouped.size() + " unique):");
+    this.out.println(kind + " (" + grouped.size() + " unique):");
     grouped.forEach((line, count) ->
         this.out.println(count > 1 ? "  " + line + " (x" + count + ")" : "  " + line));
   }
