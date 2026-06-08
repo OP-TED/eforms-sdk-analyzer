@@ -92,11 +92,12 @@ public class LabelFact implements SdkComponentFact<String> {
 
   private List<ValidationResult> computeInvalidCharacterResults() {
     final List<ValidationResult> found = new ArrayList<>();
+    // Render the code point (U+XXXX), never the raw character: these are control/format/etc.
+    // characters that would otherwise inject non-printable bytes into the report.
     this.label.getTranslations().forEach((lang, text) -> text.codePoints()
         .filter(this::isInvalidCharacter)
-        .mapToObj(Character::toString)
-        .forEach(character -> found.add(new ValidationResult(this,
-            String.format("Label in %s contains invalid character [%s]", lang, character),
+        .forEach(codePoint -> found.add(new ValidationResult(this,
+            String.format("Label in %s contains invalid character [U+%04X]", lang, codePoint),
             ValidationStatusEnum.ERROR))));
     return List.copyOf(found);
   }

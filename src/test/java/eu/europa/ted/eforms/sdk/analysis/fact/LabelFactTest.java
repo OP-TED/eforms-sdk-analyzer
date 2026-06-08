@@ -50,7 +50,8 @@ class LabelFactTest {
     assertTrue(fact.hasInvalidCharacter());
     final List<ValidationResult> results = fact.invalidCharacterResults();
     assertEquals(1, results.size());
-    assertTrue(results.get(0).getMessage().startsWith("Label in EN contains invalid character ["),
+    // The code point is rendered, never the raw (non-printable) character.
+    assertTrue(results.get(0).getMessage().contains("[U+0007]"),
         () -> "unexpected message: " + results.get(0).getMessage());
   }
 

@@ -137,12 +137,9 @@ public class SchematronValidator implements Validator {
 
   private void handleError(IError error, SchematronFileFact schematronFileFact) {
     if (error.getErrorLevel().isError()) {
-      Locale locale = Locale.getDefault();
-      if (locale == null) {
-        locale = new Locale("en");
-      }
+      // Fixed locale: error text feeds the report, which must be stable across CI runners.
       ValidationResult result = new ValidationResult(schematronFileFact,
-          error.getErrorText(locale), ValidationStatusEnum.ERROR);
+          error.getErrorText(Locale.ENGLISH), ValidationStatusEnum.ERROR);
 
       results.add(result);
     }
@@ -175,10 +172,9 @@ public class SchematronValidator implements Validator {
 
   private String describeCollectedErrors(final CollectingPSErrorHandler errorHandler,
       final Exception fallback) {
-    final Locale locale = Locale.getDefault();
     final String detail = errorHandler.getAllErrors().stream()
         .filter(error -> error.getErrorLevel().isError())
-        .map(error -> error.getErrorText(locale))
+        .map(error -> error.getErrorText(Locale.ENGLISH))
         .collect(Collectors.joining("; "));
     if (!detail.isBlank()) {
       return detail;
