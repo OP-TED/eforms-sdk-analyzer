@@ -180,7 +180,12 @@ public class SchematronValidator implements Validator {
         .filter(error -> error.getErrorLevel().isError())
         .map(error -> error.getErrorText(locale))
         .collect(Collectors.joining("; "));
-    return detail.isBlank() ? fallback.getMessage() : detail;
+    if (!detail.isBlank()) {
+      return detail;
+    }
+    // Some exceptions carry no message; fall back to the type+message rather than "null".
+    final String message = fallback.getMessage();
+    return message == null || message.isBlank() ? fallback.toString() : message;
   }
 
   @Override

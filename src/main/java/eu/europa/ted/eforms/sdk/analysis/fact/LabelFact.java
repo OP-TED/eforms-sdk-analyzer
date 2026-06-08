@@ -87,7 +87,7 @@ public class LabelFact implements SdkComponentFact<String> {
             MissingLabelKind.ASSUMED));
       }
     });
-    return found;
+    return List.copyOf(found);
   }
 
   private List<ValidationResult> computeInvalidCharacterResults() {
@@ -98,7 +98,7 @@ public class LabelFact implements SdkComponentFact<String> {
         .forEach(character -> found.add(new ValidationResult(this,
             String.format("Label in %s contains invalid character [%s]", lang, character),
             ValidationStatusEnum.ERROR))));
-    return found;
+    return List.copyOf(found);
   }
 
   private boolean isInvalidCharacter(final int codePoint) {
