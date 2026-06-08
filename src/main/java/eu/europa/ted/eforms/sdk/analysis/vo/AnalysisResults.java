@@ -1,6 +1,7 @@
 package eu.europa.ted.eforms.sdk.analysis.vo;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -69,8 +70,10 @@ public class AnalysisResults {
 
   private static List<ValidationResult> filterByStatus(final Collection<ValidationResult> results,
       final ValidationStatusEnum status) {
+    // Sort for deterministic output: validators return findings in unspecified (set) order.
     return results.stream()
         .filter(result -> result.getStatus() == status)
+        .sorted(Comparator.comparing(ValidationResult::toString))
         .collect(Collectors.toUnmodifiableList());
   }
 }

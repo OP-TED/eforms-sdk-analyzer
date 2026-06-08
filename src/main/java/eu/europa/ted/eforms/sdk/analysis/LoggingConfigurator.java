@@ -1,5 +1,7 @@
 package eu.europa.ted.eforms.sdk.analysis;
 
+import java.io.File;
+
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
@@ -36,22 +38,43 @@ public class LoggingConfigurator {
     console.addFilter(thresholdFilter(context, verbose ? Level.INFO : Level.WARN));
     console.start();
 
+    final Logger root = context.getLogger(ROOT_LOGGER);
+    root.setLevel(Level.INFO);
+    root.addAppender(console);
+
+    // Only attach the run-log file when the working directory is writable, so a read-only
+    // directory does not produce logback start-up errors. The report still goes to stdout.
+    final FileAppender<ILoggingEvent> file = fileAppender(context);
+    if (file != null) {
+      root.addAppender(file);
+    }
+
+    // Keep the noisiest frameworks quiet on both the console and the file.
+    context.getLogger("org.reflections").setLevel(Level.ERROR);
+    context.getLogger("org.drools").setLevel(Level.ERROR);
+    context.getLogger("net.sf.saxon").setLevel(Level.WARN);
+  }
+
+  private FileAppender<ILoggingEvent> fileAppender(final LoggerContext context) {
+    if (!canWriteLogFile()) {
+      return null;
+    }
     final FileAppender<ILoggingEvent> file = new FileAppender<>();
     file.setContext(context);
     file.setFile(LOG_FILE);
     file.setAppend(false);
     file.setEncoder(encoder(context));
     file.start();
+    return file.isStarted() ? file : null;
+  }
 
-    final Logger root = context.getLogger(ROOT_LOGGER);
-    root.setLevel(Level.INFO);
-    root.addAppender(console);
-    root.addAppender(file);
-
-    // Keep the noisiest frameworks quiet on both the console and the file.
-    context.getLogger("org.reflections").setLevel(Level.ERROR);
-    context.getLogger("org.drools").setLevel(Level.ERROR);
-    context.getLogger("net.sf.saxon").setLevel(Level.WARN);
+  private boolean canWriteLogFile() {
+    final File logFile = new File(LOG_FILE).getAbsoluteFile();
+    if (logFile.exists()) {
+      return logFile.canWrite();
+    }
+    final File directory = logFile.getParentFile();
+    return directory != null && directory.canWrite();
   }
 
   private PatternLayoutEncoder encoder(final LoggerContext context) {
