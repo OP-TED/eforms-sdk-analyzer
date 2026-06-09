@@ -1,8 +1,7 @@
 package eu.europa.ted.eforms.sdk.analysis.validator;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.io.FileNotFoundException;
@@ -74,16 +73,22 @@ public class SchematronValidator implements Validator {
 
       IReadableResource schematron = new FileSystemResource(file);
 
-      checkAgainstSchema(schematronFileFact, schematron);
-      checkCanExecute(schematronFileFact, schematron);
+      // Skip the execution check when the file is not even well-formed XML — it would only
+      // produce a redundant parse failure for the same file.
+      if (checkAgainstSchema(schematronFileFact, schematron)) {
+        checkCanExecute(schematronFileFact, schematron);
+      }
     });
 
     return this;
   }
 
-  private void checkAgainstSchema(SchematronFileFact schematronFileFact, IReadableResource schematron) {
+  /** @return true if the file is well-formed XML (so the execution check is worth running). */
+  private boolean checkAgainstSchema(SchematronFileFact schematronFileFact,
+      IReadableResource schematron) {
     // Capture XML well-formedness errors instead of letting the parser log them.
-    final List<String> saxErrors = new ArrayList<>();
+    // A set so the same parse error reported via error() and fatalError() is listed once.
+    final Set<String> saxErrors = new LinkedHashSet<>();
     final SAXReaderSettings saxSettings = new SAXReaderSettings().setErrorHandler(new ErrorHandler() {
       @Override
       public void warning(final SAXParseException e) {
@@ -110,16 +115,16 @@ public class SchematronValidator implements Validator {
           ? "File is not well-formed XML"
           : "File is not well-formed XML: " + String.join("; ", saxErrors);
       results.add(new ValidationResult(schematronFileFact, message, ValidationStatusEnum.ERROR));
-      return;
+      return false;
     }
 
     String resolved = MicroWriter.getNodeAsString(doc);
     if (resolved == null) {
       ValidationResult result = new ValidationResult(schematronFileFact,
           "Resolved schematron could not be processed", ValidationStatusEnum.ERROR);
-      
+
       results.add(result);
-      return;
+      return true;
     }
     Source source = TransformSourceFactory.create(resolved);
     // This will return an empty list if the schematron is valid.
@@ -130,9 +135,10 @@ public class SchematronValidator implements Validator {
     } else {
       ValidationResult result = new ValidationResult(schematronFileFact,
           "Error while validating schematron", ValidationStatusEnum.ERROR);
-      
+
       results.add(result);
     }
+    return true;
   }
 
   private void handleError(IError error, SchematronFileFact schematronFileFact) {
