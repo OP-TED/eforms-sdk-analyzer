@@ -1,8 +1,10 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,7 +82,8 @@ public class LabelFact implements SdkComponentFact<String> {
         return;
       }
       final Matcher matcher = LABEL_ID_PATTERN.matcher(text);
-      final List<String> ids = new ArrayList<>();
+      // A set so an identifier repeated in one translation is listed once.
+      final Set<String> ids = new LinkedHashSet<>();
       while (matcher.find()) {
         ids.add(matcher.group());
       }

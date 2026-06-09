@@ -72,4 +72,17 @@ class LabelFactTest {
     assertFalse(fact.hasLabelIdentifier());
     assertFalse(fact.hasInvalidCharacter());
   }
+
+  @Test
+  void deduplicatesAnIdentifierRepeatedInOneTranslation() {
+    final LabelFact fact = labelWith("when expression|name|906 unless expression|name|906");
+
+    final List<ValidationResult> results = fact.labelIdentifierResults();
+    assertEquals(1, results.size());
+    assertEquals(Set.of("expression|name|906"), results.get(0).getMissingLabelIds());
+
+    final String message = results.get(0).getMessage();
+    assertEquals(message.indexOf("expression|name|906"), message.lastIndexOf("expression|name|906"),
+        () -> "identifier should appear once in the message: " + message);
+  }
 }
