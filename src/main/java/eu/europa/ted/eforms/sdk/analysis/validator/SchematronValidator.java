@@ -1,7 +1,9 @@
 package eu.europa.ted.eforms.sdk.analysis.validator;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.stream.Collectors;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
@@ -15,16 +17,19 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXParseException;
 
 import com.helger.commons.error.IError;
 import com.helger.commons.error.list.IErrorList;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
-import com.helger.schematron.ISchematronResource;
 import com.helger.schematron.SchematronHelper;
 import com.helger.schematron.pure.SchematronResourcePure;
+import com.helger.schematron.pure.errorhandler.CollectingPSErrorHandler;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroWriter;
+import com.helger.xml.serialize.read.SAXReaderSettings;
 import com.helger.xml.transform.TransformSourceFactory;
 
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
@@ -68,33 +73,58 @@ public class SchematronValidator implements Validator {
 
       IReadableResource schematron = new FileSystemResource(file);
 
-      checkAgainstSchema(schematronFileFact, schematron);
-      checkCanExecute(schematronFileFact, schematron);
+      // Skip the execution check when the file is not even well-formed XML — it would only
+      // produce a redundant parse failure for the same file.
+      if (checkAgainstSchema(schematronFileFact, schematron)) {
+        checkCanExecute(schematronFileFact, schematron);
+      }
     });
 
     return this;
   }
 
-  private void checkAgainstSchema(SchematronFileFact schematronFileFact, IReadableResource schematron) {
+  /** @return true if the file is well-formed XML (so the execution check is worth running). */
+  private boolean checkAgainstSchema(SchematronFileFact schematronFileFact,
+      IReadableResource schematron) {
+    // Capture XML well-formedness errors instead of letting the parser log them.
+    // A set so the same parse error reported via error() and fatalError() is listed once.
+    final Set<String> saxErrors = new LinkedHashSet<>();
+    final SAXReaderSettings saxSettings = new SAXReaderSettings().setErrorHandler(new ErrorHandler() {
+      @Override
+      public void warning(final SAXParseException e) {
+        // Warnings are not reported.
+      }
+
+      @Override
+      public void error(final SAXParseException e) {
+        saxErrors.add(formatSaxError(e));
+      }
+
+      @Override
+      public void fatalError(final SAXParseException e) {
+        saxErrors.add(formatSaxError(e));
+      }
+    });
+
     // Resolve all included files, so that they also get validated.
     final IMicroDocument doc = SchematronHelper.getWithResolvedSchematronIncludes(schematron,
-        e -> handleError(e, schematronFileFact));
+        saxSettings, e -> handleError(e, schematronFileFact));
 
     if (doc == null) {
-      ValidationResult result = new ValidationResult(schematronFileFact,
-          "File is not well-formed XML", ValidationStatusEnum.ERROR);
-
-      results.add(result);
-      return;
+      final String message = saxErrors.isEmpty()
+          ? "File is not well-formed XML"
+          : "File is not well-formed XML: " + String.join("; ", saxErrors);
+      results.add(new ValidationResult(schematronFileFact, message, ValidationStatusEnum.ERROR));
+      return false;
     }
 
     String resolved = MicroWriter.getNodeAsString(doc);
     if (resolved == null) {
       ValidationResult result = new ValidationResult(schematronFileFact,
           "Resolved schematron could not be processed", ValidationStatusEnum.ERROR);
-      
+
       results.add(result);
-      return;
+      return true;
     }
     Source source = TransformSourceFactory.create(resolved);
     // This will return an empty list if the schematron is valid.
@@ -105,38 +135,59 @@ public class SchematronValidator implements Validator {
     } else {
       ValidationResult result = new ValidationResult(schematronFileFact,
           "Error while validating schematron", ValidationStatusEnum.ERROR);
-      
+
       results.add(result);
     }
+    return true;
   }
 
   private void handleError(IError error, SchematronFileFact schematronFileFact) {
     if (error.getErrorLevel().isError()) {
-      Locale locale = Locale.getDefault();
-      if (locale == null) {
-        locale = new Locale("en");
-      }
+      // Fixed locale: error text feeds the report, which must be stable across CI runners.
       ValidationResult result = new ValidationResult(schematronFileFact,
-          error.getErrorText(locale), ValidationStatusEnum.ERROR);
+          error.getErrorText(Locale.ENGLISH), ValidationStatusEnum.ERROR);
 
       results.add(result);
     }
   }
 
   
+  private String formatSaxError(final SAXParseException e) {
+    return String.format(Locale.ENGLISH, "line %d, column %d: %s",
+        e.getLineNumber(), e.getColumnNumber(), e.getMessage());
+  }
+
   private void checkCanExecute(SchematronFileFact schematronFileFact, IReadableResource schematron) {
-    ISchematronResource phSchematron = new SchematronResourcePure(schematron);
+    final SchematronResourcePure phSchematron = new SchematronResourcePure(schematron);
+    // Collect the precise pre-compilation errors instead of letting the default
+    // handler log them to the console; report one result per file with the
+    // collected detail in its message.
+    final CollectingPSErrorHandler errorHandler = new CollectingPSErrorHandler();
+    phSchematron.setErrorHandler(errorHandler);
     try {
       // Execute the schematron on a dummy XML.
       // Having an XML that causes all rules to be executed is not possible anyway.
       Source source = new StreamSource(new StringReader("<a></a>"));
       phSchematron.applySchematronValidation(source);
     } catch (Exception e) {
-      ValidationResult result = new ValidationResult(schematronFileFact,
-          "Error during execution: " + e.getMessage(), ValidationStatusEnum.ERROR);
-
-      results.add(result);
+      results.add(new ValidationResult(schematronFileFact,
+          "Error during execution: " + describeCollectedErrors(errorHandler, e),
+          ValidationStatusEnum.ERROR));
     }
+  }
+
+  private String describeCollectedErrors(final CollectingPSErrorHandler errorHandler,
+      final Exception fallback) {
+    final String detail = errorHandler.getAllErrors().stream()
+        .filter(error -> error.getErrorLevel().isError())
+        .map(error -> error.getErrorText(Locale.ENGLISH))
+        .collect(Collectors.joining("; "));
+    if (!detail.isBlank()) {
+      return detail;
+    }
+    // Some exceptions carry no message; fall back to the type+message rather than "null".
+    final String message = fallback.getMessage();
+    return message == null || message.isBlank() ? fallback.toString() : message;
   }
 
   @Override

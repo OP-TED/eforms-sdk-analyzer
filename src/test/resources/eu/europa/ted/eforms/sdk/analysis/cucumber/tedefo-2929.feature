@@ -11,4 +11,5 @@ Feature: Schematron - Check schematron files are well-formed
   Scenario: Some schematron files are not well-formed
     Given A "tedefo-2929" folder with "invalid" files
     When I execute schematron validation
-    Then I should get 6 schematron validation errors
+    # Not-well-formed files report a single parse error; the execution check is skipped for them.
+    Then I should get 4 schematron validation errors

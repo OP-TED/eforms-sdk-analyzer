@@ -1,6 +1,10 @@
 name: Build and run unit tests
 on:
+  # Build on pushes to the trunk only (i.e. merges). Source branches are built
+  # via pull_request, so pushing one with an open PR runs the checks just once.
   push:
+    branches:
+      - develop
   pull_request:
 
   # Allows to run this workflow manually from the Actions tab

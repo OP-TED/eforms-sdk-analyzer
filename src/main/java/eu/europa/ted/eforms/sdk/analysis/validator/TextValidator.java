@@ -3,34 +3,26 @@ package eu.europa.ted.eforms.sdk.analysis.validator;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
-import eu.europa.ted.eforms.sdk.analysis.domain.enums.Language;
 import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
-import eu.europa.ted.eforms.sdk.analysis.enums.MissingLabelKind;
-import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 /**
  * Validates human-readable texts (translations).
+ *
+ * <p>The checks themselves live on {@link LabelFact} so that they can also run as drools rules; this
+ * validator is a thin file-backed driver that delegates to them.
  */
 public class TextValidator implements Validator {
   private static final Logger logger = LoggerFactory.getLogger(TextValidator.class);
-
-  // Match a label identifier token, e.g. "expression|name|906" or "business-entity|name|UBO".
-  private static final Pattern labelIdPattern =
-      Pattern.compile("[a-z][a-z-]*\\|[a-z]+(?:\\|\\S+)?");
 
   private final SdkLoader sdkLoader;
 
@@ -49,62 +41,21 @@ public class TextValidator implements Validator {
 
   public TextValidator validate() throws Exception {
     logger.debug("Loading translations");
-    final Set<Label> translations = sdkLoader.getLabels();
+    final Set<Label> translations = this.sdkLoader.getLabels();
 
-    translations.forEach(l -> {
-      validateLabel(l);
-    });
+    translations.forEach(this::validateLabel);
 
     return this;
   }
 
-  private void validateLabel(Label label) {
-    label.getTranslations().forEach((lang, text) -> {
-      checkCharacters(label, lang, text);
-      checkIdReference(label, lang, text);
-    });
-  }
-
-  private void checkCharacters(Label l, Language lang, String text) {
-    text.codePoints()
-        .filter(c -> isInvalidCharacter(c))
-        .mapToObj(c -> Character.toString(c))
-        .forEach(c -> {
-          String msg = String.format("Label in %s contains invalid character [%s]", lang, c);
-          results.add(new ValidationResult(new LabelFact(l), msg, ValidationStatusEnum.ERROR));
-        });
-  }
-
-  private void checkIdReference(Label l, Language lang, String text) {
-    Matcher matcher = labelIdPattern.matcher(text);
-    List<String> ids = new ArrayList<>();
-    while (matcher.find()) {
-      ids.add(matcher.group());
-    }
-    if (!ids.isEmpty()) {
-      String msg = String.format("Label in %s contains label identifier(s): %s", lang,
-          String.join(", ", ids));
-      results.add(new ValidationResult(new LabelFact(l), msg, ValidationStatusEnum.ERROR, ids,
-          MissingLabelKind.ASSUMED));
-    }
-  }
-
-  private final boolean isInvalidCharacter(int codePoint) {
-    switch (Character.getType(codePoint)) {
-      case Character.CONTROL:
-      case Character.FORMAT:
-      case Character.PRIVATE_USE:
-      case Character.SURROGATE:
-      case Character.UNASSIGNED:
-        return true;
-      default:
-        return false;
-    }
+  private void validateLabel(final Label label) {
+    final LabelFact fact = new LabelFact(label);
+    this.results.addAll(fact.invalidCharacterResults());
+    this.results.addAll(fact.labelIdentifierResults());
   }
 
   @Override
   public Set<ValidationResult> getResults() {
-    return results;
+    return this.results;
   }
-    
 }
