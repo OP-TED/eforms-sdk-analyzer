@@ -1,11 +1,11 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeSubTypeForIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypesForIndex;
@@ -20,8 +20,10 @@ public class NoticeTypesIndexFact implements SdkComponentFact<String> {
   }
 
   /**
-   * Return the set of notice subtypes for which we expect to have a notice type definition.
-   * This is hardcoded here because there is no other place that has this information.
+   * The standard notice subtypes for which a definition is always expected. Hardcoded because the
+   * eForms standard set is not declared anywhere machine-readable. It is the baseline only; the full
+   * set actually required is {@link #getRequiredNoticeSubtypes()}, which also covers whatever the
+   * index lists.
    */
   public Set<String> getExpectedNoticeSubtypes() {
     return Stream.of("1", "2", "3", "4", "5", "6", "7", "8", "9",
@@ -32,6 +34,19 @@ public class NoticeTypesIndexFact implements SdkComponentFact<String> {
           "CEI", "T01", "T02", "X01", "X02",
           "E1", "E2", "E3", "E4", "E5", "E6")
         .collect(Collectors.toSet());
+  }
+
+  /**
+   * Every notice subtype that must have a definition file: the standard set
+   * ({@link #getExpectedNoticeSubtypes()}) together with every subtype the index actually lists. The
+   * union catches both a standard subtype omitted from the index and a listed subtype whose file is
+   * missing — and, being a set, never reports a subtype that is in both twice.
+   */
+  public Set<String> getRequiredNoticeSubtypes() {
+    final Set<String> required = new HashSet<>(getExpectedNoticeSubtypes());
+    noticeTypesForIndex.getNoticeSubTypes()
+        .forEach(subType -> required.add(subType.getSubTypeId()));
+    return required;
   }
 
   public String getSdkVersion() {
@@ -61,7 +76,7 @@ public class NoticeTypesIndexFact implements SdkComponentFact<String> {
 
   @Override
   public String getId() {
-    return StringUtils.EMPTY;
+    return "notice-types/notice-types.json";
   }
 
   @Override

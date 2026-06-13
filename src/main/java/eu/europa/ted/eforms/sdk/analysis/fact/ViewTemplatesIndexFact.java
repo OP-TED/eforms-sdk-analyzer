@@ -3,8 +3,6 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
-
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplatesIndex;
 
@@ -24,7 +22,7 @@ public class ViewTemplatesIndexFact implements SdkComponentFact<String> {
 
   @Override
   public String getId() {
-    return StringUtils.EMPTY;
+    return "view-templates/view-templates.json";
   }
 
   @Override

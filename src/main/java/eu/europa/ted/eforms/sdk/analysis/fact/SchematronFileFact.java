@@ -1,5 +1,6 @@
 package eu.europa.ted.eforms.sdk.analysis.fact;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -90,7 +91,16 @@ public class SchematronFileFact implements SdkComponentFact<String> {
 
   @Override
   public String getId() {
-      return schematronFile.getPath().toString();
+    // Display the path relative to the SDK root. Every schematron lives under <root>/schematrons/,
+    // so the portion from that segment onwards is the SDK-relative path; the absolute path is kept
+    // by the domain object for reading and include resolution.
+    final Path path = schematronFile.getPath();
+    for (int i = 0; i < path.getNameCount(); i++) {
+      if ("schematrons".equals(path.getName(i).toString())) {
+        return path.subpath(i, path.getNameCount()).toString();
+      }
+    }
+    return path.toString();
   }
 
   @Override

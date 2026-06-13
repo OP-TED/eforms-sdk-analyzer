@@ -34,4 +34,9 @@ public class SvrlReportFact implements SdkComponentFact<String> {
   public String getTypeName() {
     return "svrlReport";
   }
+
+  @Override
+  public String getSdkPath() {
+    return "examples/reports/" + svrlReport.getFilename();
+  }
 }

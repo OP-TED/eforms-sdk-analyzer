@@ -2,8 +2,6 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.CodelistsIndex;
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.CodelistsIndexItem;
 
@@ -20,7 +18,7 @@ public class CodelistsIndexFact implements SdkComponentFact<String> {
 
   @Override
   public String getId() {
-    return StringUtils.EMPTY;
+    return "codelists/codelists.json";
   }
   
   @Override

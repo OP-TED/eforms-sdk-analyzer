@@ -17,6 +17,7 @@ import eu.europa.ted.eforms.sdk.analysis.ValidationProfile;
 import eu.europa.ted.eforms.sdk.analysis.drools.RulesRunner;
 import eu.europa.ted.eforms.sdk.analysis.drools.SdkUnit;
 import eu.europa.ted.eforms.sdk.analysis.util.SdkMetadataParser;
+import eu.europa.ted.eforms.sdk.analysis.vo.Finding;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
@@ -103,6 +104,12 @@ public class SdkValidator implements Validator {
   @Override
   public Set<ValidationResult> getResults() {
     return this.sdkUnit.getResults();
+  }
+
+  /** Findings of this run, each paired with the name of the rule (its kind) that produced it. */
+  @Override
+  public List<Finding> getFindings() {
+    return this.sdkUnit.getFindings();
   }
 
   public SdkUnit fireAllRules() {

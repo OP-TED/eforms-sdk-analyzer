@@ -7,10 +7,11 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
-import eu.europa.ted.eforms.sdk.analysis.enums.MissingLabelKind;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
+import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 public class LabelFact implements SdkComponentFact<String> {
@@ -47,7 +48,7 @@ public class LabelFact implements SdkComponentFact<String> {
   /**
    * Translations whose text contains a label identifier — the exporter leaves the identifier in
    * place when it cannot resolve a label, so its presence means the referenced label is missing.
-   * One result per language, carrying the offending identifier(s) as {@link MissingLabelKind#ASSUMED}.
+   * One result per language, carrying the offending identifier(s) as label references.
    */
   public List<ValidationResult> labelIdentifierResults() {
     if (this.labelIdentifierResults == null) {
@@ -90,8 +91,8 @@ public class LabelFact implements SdkComponentFact<String> {
       if (!ids.isEmpty()) {
         final String message = String.format("Label in %s contains label identifier(s): %s", lang,
             String.join(", ", ids));
-        found.add(new ValidationResult(this, message, ValidationStatusEnum.ERROR, ids,
-            MissingLabelKind.ASSUMED));
+        found.add(new ValidationResult(this, message, ValidationStatusEnum.ERROR,
+            ids.stream().map(AssetRef::label).collect(Collectors.toList())));
       }
     });
     return List.copyOf(found);

@@ -25,19 +25,19 @@ mvn clean package
 To analyze the content of an eForms SDK, execute the runnable JAR built as described above, indicating the path to the folder containing the eForms SDK:
 
 ```shell
-java -jar target/eforms-sdk-analyzer-1.8.0-SNAPSHOT.jar path/to/eforms-sdk
+java -jar target/eforms-sdk-analyzer-*-all.jar path/to/eforms-sdk
 ```
 
 This will return the exit code 0 if no errors are found, and 1 otherwise.
 
-Any error or warning found during the analysis will be logged at the corresponding level. By default, logs go to the standard output.
+The analysis writes a report to the standard output: a summary (findings grouped by SDK section and by problem statement) followed by the actionable items. Add `--verbose` to also print the full, unaggregated list of every finding. Add `--skip-efx` to skip the EFX translation pass, which is by far the slowest. Framework logs go to the standard error, and a full INFO log is written to `analyzer.log` in the working directory.
 
 ### Schematron rules benchmark
 
 To run the benchmark of the Schematron rules in an eForms SDK, execute the runnable JAR built as described above, indicating the path to the folder containing the eForms SDK and the command `benchmark`:
 
 ```shell
-java -jar target/eforms-sdk-analyzer-1.8.0-SNAPSHOT.jar path/to/eforms-sdk benchmark
+java -jar target/eforms-sdk-analyzer-*-all.jar path/to/eforms-sdk benchmark
 ```
 
 This will execute the Schematron rules on a few large XML notices included as resources in this project, with an appropriate warm-up and number of iterations. The results are written to a JSON file.
@@ -50,7 +50,7 @@ You can compare those results with the ones from another SDK version, to detect 
 
 The analysis is done by various classes that implement the `Validator` interface.
 
-The bulk of the checks is done by `SdkValidator`, which uses the [Drools rule engine](https://www.drools.org/) to apply the set of rules defined in `src\main\resources\eu\europa\ted\eforms\sdk\analysis\drools`.
+The bulk of the checks is done by `SdkValidator`, which uses the [Drools rule engine](https://www.drools.org/) to apply the set of rules defined in `src/main/resources/eu/europa/ted/eforms/sdk/analysis/drools`.
 
 ### Unit tests
 

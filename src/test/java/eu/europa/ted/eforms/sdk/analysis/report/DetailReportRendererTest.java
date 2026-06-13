@@ -11,23 +11,23 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
-import eu.europa.ted.eforms.sdk.analysis.enums.MissingLabelKind;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.vo.AnalysisResults;
+import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
-class ConsoleReportRendererTest {
+class DetailReportRendererTest {
 
   private final LabelFact fact = new LabelFact(new Label("code|name|x"));
 
   private AnalysisResults sampleResults() {
     final ValidationResult found = new ValidationResult(this.fact,
         "Referenced label business-entity|name|UBO does not exist", ValidationStatusEnum.ERROR,
-        List.of("business-entity|name|UBO"), MissingLabelKind.FOUND);
+        List.of(AssetRef.label("business-entity|name|UBO")));
     final ValidationResult assumed = new ValidationResult(this.fact,
         "Label in EN contains label identifier(s): expression|name|906", ValidationStatusEnum.ERROR,
-        List.of("expression|name|906"), MissingLabelKind.ASSUMED);
+        List.of(AssetRef.label("expression|name|906")));
     final ValidationResult other = new ValidationResult(this.fact,
         "The value eforms-sdk-1.15.0 in sdkVersion is incorrect", ValidationStatusEnum.ERROR);
     final ValidationResult warning = new ValidationResult(this.fact, "a warning",
@@ -37,27 +37,24 @@ class ConsoleReportRendererTest {
 
   private String render(final boolean verbose) {
     final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-    new ConsoleReportRenderer(new PrintStream(buffer, true, StandardCharsets.UTF_8))
+    new DetailReportRenderer(new PrintStream(buffer, true, StandardCharsets.UTF_8))
         .render(sampleResults(), verbose);
     return buffer.toString(StandardCharsets.UTF_8);
   }
 
   @Test
-  void defaultReportSummarisesMissingLabelsAndOtherErrors() {
+  void defaultReportShowsOnlyTheHeadlineAndVerboseHint() {
     final String output = render(false);
 
-    assertTrue(output.contains("referenced by the SDK but not present"), output);
-    assertTrue(output.contains("business-entity|name|UBO (1)"), output);
-    assertTrue(output.contains("identifier left in label text by the exporter"), output);
-    assertTrue(output.contains("expression|name|906 (1)"), output);
-    assertTrue(output.contains("in sdkVersion is incorrect"), output);
+    // The default run leads with the summary and actionable items (rendered by SummaryReportRenderer);
+    // this renderer adds only the closing headline, so no individual finding text appears here.
     assertTrue(output.contains("Total number of validation errors: 3"), output);
     assertTrue(output.contains("--verbose"), output);
-    // Warnings keep their detail in the default report (grouped), not just a count.
-    assertTrue(output.contains("Warnings (1 unique):"), output);
-    assertTrue(output.contains("a warning"), output);
-    // The missing-label per-occurrence lines must not be listed individually in the default report.
+    // No per-finding list and no per-message grouping in the default console output.
     assertFalse(output.contains("All validation errors"), output);
+    assertFalse(output.contains("in sdkVersion is incorrect"), output);
+    assertFalse(output.contains("unique"), output);
+    assertFalse(output.contains("a warning"), output);
   }
 
   @Test
@@ -68,6 +65,9 @@ class ConsoleReportRendererTest {
     assertTrue(output.contains("Referenced label business-entity|name|UBO does not exist"), output);
     assertTrue(output.contains("Label in EN contains label identifier(s): expression|name|906"),
         output);
+    // Warnings are listed in full too, after the errors.
+    assertTrue(output.contains("All validation warnings (1)"), output);
+    assertTrue(output.contains("a warning"), output);
     assertFalse(output.contains("--verbose"), output);
   }
 }

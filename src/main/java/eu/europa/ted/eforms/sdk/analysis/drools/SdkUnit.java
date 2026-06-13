@@ -2,7 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.drools.ruleunits.api.DataStore;
@@ -23,6 +23,7 @@ import eu.europa.ted.eforms.sdk.analysis.fact.SvrlReportFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplateFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.ViewTemplatesIndexFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.XmlNoticeFact;
+import eu.europa.ted.eforms.sdk.analysis.vo.Finding;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
@@ -47,10 +48,61 @@ public class SdkUnit implements RuleUnit {
 
   private SdkMetadata sdkMetadata;
 
-  // Global variable to store validations results
-  private final Set<ValidationResult> results = new HashSet<>();
+  // Global variable to store validation results
+  private final List<Finding> findings = new ArrayList<>();
+  private final Set<ValidationResult> results = new ResultSink();
+  private Rule currentRule;
 
   private final List<Rule> firedRules = new ArrayList<>();
+
+  /**
+   * Output collector the rules add to. Each successful add is stamped with the rule currently firing
+   * (set by {@link #setCurrentRule(Rule)} from the engine's before-match hook), pairing every result
+   * with the name of the rule that produced it as a {@link Finding}. Deduplication is preserved: a
+   * duplicate result is neither stored again nor re-stamped. {@code addAll} routes through
+   * {@code add}, so list-emitting rules are covered too.
+   */
+  private final class ResultSink extends LinkedHashSet<ValidationResult> {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public boolean add(final ValidationResult result) {
+      final boolean added = super.add(result);
+      if (added) {
+        findings.add(new Finding(ruleName(currentRule), ruleProblem(currentRule), result));
+      }
+      return added;
+    }
+  }
+
+  private static String ruleName(final Rule rule) {
+    return rule == null ? null : rule.getName();
+  }
+
+  /**
+   * The rule's {@code @problem} metadata — a human statement of the violation — or {@code null} when
+   * the rule has no such annotation. Read the same way {@code ApplicabilityFilter} reads {@code @source}.
+   */
+  private static String ruleProblem(final Rule rule) {
+    return ruleMetadata(rule, "problem");
+  }
+
+  /** A custom DRL metadata value (read like {@code @source}), with one pair of surrounding quotes stripped. */
+  private static String ruleMetadata(final Rule rule, final String key) {
+    if (rule == null) {
+      return null;
+    }
+    final Object meta = rule.getMetaData().get(key);
+    if (meta == null) {
+      return null;
+    }
+    final String text = String.valueOf(meta).trim();
+    // DRL may surface a string-literal value with its surrounding quotes; strip one pair.
+    if (text.length() >= 2 && text.startsWith("\"") && text.endsWith("\"")) {
+      return text.substring(1, text.length() - 1);
+    }
+    return text;
+  }
 
   public SdkUnit() {
     // Default constructor
@@ -213,6 +265,11 @@ public class SdkUnit implements RuleUnit {
     return results;
   }
 
+  /** Findings collected during the run, each paired with the name of the rule that produced it. */
+  public List<Finding> getFindings() {
+    return findings;
+  }
+
   @Override
   public List<Rule> getFiredRules() {
     return firedRules;
@@ -221,6 +278,12 @@ public class SdkUnit implements RuleUnit {
   @Override
   public SdkUnit addFiredRule(Rule rule) {
     firedRules.add(rule);
+    return this;
+  }
+
+  @Override
+  public SdkUnit setCurrentRule(Rule rule) {
+    this.currentRule = rule;
     return this;
   }
 }

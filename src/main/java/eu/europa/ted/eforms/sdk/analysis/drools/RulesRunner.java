@@ -30,6 +30,14 @@ public class RulesRunner {
 
     rc.getRuleEventListeners().add(new RuleEventListener() {
       @Override
+      public void onBeforeMatchFire(final Match match) {
+        RuleEventListener.super.onBeforeMatchFire(match);
+        // Stamp the unit with the rule about to fire so the result sink can pair every result this
+        // rule's consequence adds with the rule's name (its "kind").
+        unit.setCurrentRule(match.getRule());
+      }
+
+      @Override
       public void onAfterMatchFire(final Match match) {
         RuleEventListener.super.onAfterMatchFire(match);
         unit.addFiredRule(match.getRule());

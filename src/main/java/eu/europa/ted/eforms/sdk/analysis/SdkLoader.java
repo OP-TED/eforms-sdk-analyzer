@@ -118,18 +118,13 @@ public class SdkLoader implements SdkContentSource {
       return null;
     }
 
+    // Tolerate a dangling parent reference: return null instead of throwing, so the rules that
+    // check for a missing parent node ("Every node/field parent ID corresponds to an existing
+    // node") can report it, rather than the whole analysis aborting before any rule runs.
     return nodes.stream()
         .filter((XmlStructureNode n) -> n.getId().equals(nodeId))
-        .collect(Collectors.collectingAndThen(
-            Collectors.toList(),
-            (List<XmlStructureNode> l) -> {
-              if (l.size() != 1) {
-                throw new IllegalArgumentException(
-                    MessageFormat.format("Could not find node with id [{0}]", nodeId));
-              }
-
-              return l.get(0);
-            }));
+        .findFirst()
+        .orElse(null);
   }
 
   @Override
@@ -170,8 +165,16 @@ public class SdkLoader implements SdkContentSource {
     final NoticeTypesForIndex noticeTypesForIndex = getNoticeTypesForIndex();
 
     for (NoticeSubTypeForIndex noticeSubType : noticeTypesForIndex.getNoticeSubTypes()) {
-      result.add(
-          new NoticeType(noticeSubType, getNoticeTypeSdk(noticeSubType.getSubTypeId(), sdkRoot)));
+      try {
+        result.add(
+            new NoticeType(noticeSubType, getNoticeTypeSdk(noticeSubType.getSubTypeId(), sdkRoot)));
+      } catch (final FileNotFoundException e) {
+        // An indexed subtype has no definition file: load the rest and let the rule
+        // "All expected notice subtypes are present" report the missing definition, rather
+        // than aborting the whole analysis before any rule runs.
+        logger.debug("Notice subtype [{}] has no definition file; it will be reported as missing",
+            noticeSubType.getSubTypeId());
+      }
     }
 
     return result;
@@ -359,7 +362,13 @@ public class SdkLoader implements SdkContentSource {
   public Set<SchematronFile> getSchematronFiles() {
     final Set<SchematronFile> result = new HashSet<>();
     for (Path file : getSchematronFilesPaths()) {
-      result.add(SchematronParser.loadSchematronFile(file));
+      final SchematronFile schematronFile = SchematronParser.loadSchematronFile(file);
+      // A file that is not well-formed XML (or that includes one that is not) cannot be parsed into a
+      // fact. The SchematronValidator already reports that as a finding, so we skip it here rather
+      // than wrap a null in a fact and let the structural drools rules fail on it.
+      if (schematronFile != null) {
+        result.add(schematronFile);
+      }
     }
 
     return result;

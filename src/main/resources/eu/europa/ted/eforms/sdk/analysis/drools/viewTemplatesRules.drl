@@ -2,10 +2,13 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
+import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
+
 rule "View templates index references existing labels"
+  @problem("Label is referenced but is missing")
 when
   $labelId : /viewTemplatesIndex[ $v: this ]/labelIds
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($v, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, java.util.List.of($labelId)));
+  results.add(new ValidationResult($v, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, AssetRef.label($labelId)));
 end

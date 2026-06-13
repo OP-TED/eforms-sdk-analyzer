@@ -32,10 +32,16 @@ class CliCommand implements Callable<Integer> {
           + " writable, regardless of this flag.")
   private boolean verbose;
 
+  @Option(names = {"--skip-efx"},
+      description = "Skip the EFX expression validation of view templates. It is the slowest"
+          + " validator and is independent of the rule engine, so skipping it greatly speeds up"
+          + " runs while debugging the rules. Findings from the other validators are unaffected.")
+  private boolean skipEfx;
+
   @Override
   public Integer call() throws Exception {
     new LoggingConfigurator().configure(this.verbose);
-    return SdkAnalyzer.analyze(this.sdkRoot, this.verbose);
+    return SdkAnalyzer.analyze(this.sdkRoot, this.verbose, this.skipEfx);
   }
 
   @Command(name = "benchmark", mixinStandardHelpOptions = true,

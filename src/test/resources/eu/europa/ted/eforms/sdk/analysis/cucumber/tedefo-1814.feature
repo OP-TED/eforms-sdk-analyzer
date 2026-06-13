@@ -10,6 +10,13 @@ Feature: Notice Types Index - Notice type files validation
     Then I should get 0 SDK validation errors
 
   Scenario: Files do not exist for some notice types on the index file
-    Given A "tedefo-1814" folder with "invalid" files
-    When I load all notice types storing the exception
-    Then I should get not found exception for file "3.json"
+    # The loader no longer aborts when an indexed notice subtype has no definition file:
+    # it loads the definitions that are present and lets the rule report the missing one,
+    # instead of throwing before any rule can run.
+    Given The following rules
+      | All expected notice subtypes are present |
+    And A "tedefo-1814" folder with "invalid" files
+    When I load the notice types index
+    And I load all notice types
+    And I execute validation
+    Then Rule "All expected notice subtypes are present" should have been fired
