@@ -267,7 +267,7 @@ public class SdkUnit implements RuleUnit {
 
   /** Findings collected during the run, each paired with the name of the rule that produced it. */
   public List<Finding> getFindings() {
-    return findings;
+    return List.copyOf(findings);
   }
 
   @Override

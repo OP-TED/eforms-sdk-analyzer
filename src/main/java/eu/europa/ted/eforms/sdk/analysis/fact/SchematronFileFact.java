@@ -97,10 +97,15 @@ public class SchematronFileFact implements SdkComponentFact<String> {
     final Path path = schematronFile.getPath();
     for (int i = 0; i < path.getNameCount(); i++) {
       if ("schematrons".equals(path.getName(i).toString())) {
-        return path.subpath(i, path.getNameCount()).toString();
+        return forwardSlashes(path.subpath(i, path.getNameCount()));
       }
     }
-    return path.toString();
+    return forwardSlashes(path);
+  }
+
+  /** SDK-relative paths use "/" regardless of OS, so the report renders consistently everywhere. */
+  private static String forwardSlashes(final Path path) {
+    return path.toString().replace('\\', '/');
   }
 
   @Override
