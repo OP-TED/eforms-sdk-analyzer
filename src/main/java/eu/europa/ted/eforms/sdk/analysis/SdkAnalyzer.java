@@ -27,6 +27,9 @@ import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 public class SdkAnalyzer {
   private static final Logger logger = LoggerFactory.getLogger(SdkAnalyzer.class);
 
+  /** The console summary is also written here (in the working directory), alongside analyzer.log. */
+  private static final String SUMMARY_FILE = "analyzer-summary.txt";
+
   /** The full report is always written here (in the working directory), alongside analyzer.log. */
   private static final String REPORT_FILE = "analyzer-report.txt";
 
@@ -73,22 +76,28 @@ public class SdkAnalyzer {
     new SummaryReportRenderer().render(results);
     new DetailReportRenderer().render(results, verbose);
 
-    // Always write the full report (summary, actionable items and every finding) to a fixed file in
-    // the working directory — like analyzer.log — so CI can upload it as an artifact while the console
-    // keeps the concise summary. A write failure is logged, not fatal — the console report succeeded.
-    writeFullReport(results, Path.of(REPORT_FILE));
+    // Always write the report to fixed files in the working directory — like analyzer.log — so CI can
+    // upload them as artifacts while the console keeps the concise summary: the summary (as shown on
+    // the console) and the full report (with every finding). A write failure is logged, not fatal.
+    writeReport(results, Path.of(SUMMARY_FILE), false);
+    writeReport(results, Path.of(REPORT_FILE), true);
 
     return results.exitCode();
   }
 
-  /** Writes the complete report — summary, actionable items and every finding — to {@code reportFile}. */
-  private static void writeFullReport(final AnalysisResults results, final Path reportFile) {
+  /**
+   * Writes the report to {@code file}: the summary and actionable items, then the per-finding list when
+   * {@code verbose}. The summary file uses {@code verbose=false} (the console view); the full report
+   * file uses {@code verbose=true} (every finding).
+   */
+  private static void writeReport(final AnalysisResults results, final Path file,
+      final boolean verbose) {
     try (PrintStream out =
-        new PrintStream(Files.newOutputStream(reportFile), false, StandardCharsets.UTF_8)) {
+        new PrintStream(Files.newOutputStream(file), false, StandardCharsets.UTF_8)) {
       new SummaryReportRenderer(out).render(results);
-      new DetailReportRenderer(out).render(results, true);
+      new DetailReportRenderer(out).render(results, verbose);
     } catch (final IOException e) {
-      logger.warn("Could not write the report to [{}]: {}", reportFile, e.getMessage());
+      logger.warn("Could not write the report to [{}]: {}", file, e.getMessage());
     }
   }
 
