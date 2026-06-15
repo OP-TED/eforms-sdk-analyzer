@@ -1,7 +1,9 @@
 package eu.europa.ted.eforms.sdk.analysis.validator;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.io.FileNotFoundException;
@@ -36,6 +38,7 @@ import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
 import eu.europa.ted.eforms.sdk.analysis.domain.schematron.SchematronFile;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.SchematronFileFact;
+import eu.europa.ted.eforms.sdk.analysis.vo.Finding;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 /**
@@ -47,7 +50,11 @@ public class SchematronValidator implements Validator {
 
   private final SdkLoader sdkLoader;
   private final Set<ValidationResult> results;
-  
+
+  // Each finding carries a stable category (its Problem) as the report's problem statement, so the
+  // summary groups Schematron failures by category instead of by their per-file, line-specific text.
+  private final List<Finding> findings = new ArrayList<>();
+
   public SchematronValidator(Path sdkRoot) throws IOException {
     Validate.notNull(sdkRoot, "Undefined SDK root path");
     if (!Files.isDirectory(sdkRoot)) {
@@ -108,22 +115,20 @@ public class SchematronValidator implements Validator {
 
     // Resolve all included files, so that they also get validated.
     final IMicroDocument doc = SchematronHelper.getWithResolvedSchematronIncludes(schematron,
-        saxSettings, e -> handleError(e, schematronFileFact));
+        saxSettings, e -> handleError(e, schematronFileFact, Problem.NOT_WELL_FORMED));
 
     if (doc == null) {
       final String message = saxErrors.isEmpty()
           ? "File is not well-formed XML"
           : "File is not well-formed XML: " + String.join("; ", saxErrors);
-      results.add(new ValidationResult(schematronFileFact, message, ValidationStatusEnum.ERROR));
+      record(schematronFileFact, message, Problem.NOT_WELL_FORMED);
       return false;
     }
 
     String resolved = MicroWriter.getNodeAsString(doc);
     if (resolved == null) {
-      ValidationResult result = new ValidationResult(schematronFileFact,
-          "Resolved schematron could not be processed", ValidationStatusEnum.ERROR);
-
-      results.add(result);
+      record(schematronFileFact, "Resolved schematron could not be processed",
+          Problem.PROCESSING_FAILURE);
       return true;
     }
     Source source = TransformSourceFactory.create(resolved);
@@ -131,23 +136,17 @@ public class SchematronValidator implements Validator {
     IErrorList errors = com.helger.schematron.validator.SchematronValidator.validateSchematron(source);
 
     if (errors != null) {
-      errors.forEach(e -> handleError(e, schematronFileFact));
+      errors.forEach(e -> handleError(e, schematronFileFact, Problem.SCHEMA_VIOLATION));
     } else {
-      ValidationResult result = new ValidationResult(schematronFileFact,
-          "Error while validating schematron", ValidationStatusEnum.ERROR);
-
-      results.add(result);
+      record(schematronFileFact, "Error while validating schematron", Problem.PROCESSING_FAILURE);
     }
     return true;
   }
 
-  private void handleError(IError error, SchematronFileFact schematronFileFact) {
+  private void handleError(IError error, SchematronFileFact schematronFileFact, Problem problem) {
     if (error.getErrorLevel().isError()) {
       // Fixed locale: error text feeds the report, which must be stable across CI runners.
-      ValidationResult result = new ValidationResult(schematronFileFact,
-          error.getErrorText(Locale.ENGLISH), ValidationStatusEnum.ERROR);
-
-      results.add(result);
+      record(schematronFileFact, error.getErrorText(Locale.ENGLISH), problem);
     }
   }
 
@@ -170,9 +169,9 @@ public class SchematronValidator implements Validator {
       Source source = new StreamSource(new StringReader("<a></a>"));
       phSchematron.applySchematronValidation(source);
     } catch (Exception e) {
-      results.add(new ValidationResult(schematronFileFact,
+      record(schematronFileFact,
           "Error during execution: " + describeCollectedErrors(errorHandler, e),
-          ValidationStatusEnum.ERROR));
+          Problem.CANNOT_COMPILE);
     }
   }
 
@@ -190,8 +189,51 @@ public class SchematronValidator implements Validator {
     return message == null || message.isBlank() ? fallback.toString() : message;
   }
 
+  /**
+   * Records a Schematron failure: the full, detailed message (which file, which line, which XPath)
+   * goes on the {@link ValidationResult}, shown verbatim only under {@code --verbose}; the
+   * {@link Finding}'s problem is the stable {@link Problem} category, so the summary and actionable
+   * items group failures by category rather than by their unique per-file text.
+   */
+  private void record(final SchematronFileFact fact, final String message, final Problem problem) {
+    final ValidationResult result = new ValidationResult(fact, message, ValidationStatusEnum.ERROR);
+    this.results.add(result);
+    this.findings.add(new Finding(getClass().getSimpleName(), problem.statement(), result));
+  }
+
   @Override
   public Set<ValidationResult> getResults() {
     return results;
-  }    
+  }
+
+  /**
+   * Overrides the default (message-as-problem) behaviour: each finding's problem is its stable
+   * {@link Problem} category set in {@link #record}, so the report groups Schematron failures by
+   * category, not by their raw per-file message.
+   */
+  @Override
+  public List<Finding> getFindings() {
+    return new ArrayList<>(this.findings);
+  }
+
+  /**
+   * The stable categories of Schematron failure this validator reports. The detail (which file, which
+   * line, which XPath) stays on the result message; the category is what the summary groups by.
+   */
+  private enum Problem {
+    NOT_WELL_FORMED("Generated schematron is invalid: not well-formed XML"),
+    SCHEMA_VIOLATION("Generated schematron is invalid: schema violation"),
+    CANNOT_COMPILE("Generated schematron is invalid: compilation failure"),
+    PROCESSING_FAILURE("Generated schematron is invalid: processing failure");
+
+    private final String statement;
+
+    Problem(final String statement) {
+      this.statement = statement;
+    }
+
+    String statement() {
+      return this.statement;
+    }
+  }
 }

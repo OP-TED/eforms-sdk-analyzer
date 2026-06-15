@@ -5,13 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.enums.Language;
 import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
-import eu.europa.ted.eforms.sdk.analysis.enums.MissingLabelKind;
+import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 /**
@@ -28,7 +27,7 @@ class LabelFactTest {
   }
 
   @Test
-  void flagsLeakedLabelIdentifierAsAssumedMissing() {
+  void flagsLeakedLabelIdentifier() {
     final LabelFact fact = labelWith("is mandatory when: expression|name|906");
 
     assertTrue(fact.hasLabelIdentifier());
@@ -36,8 +35,7 @@ class LabelFactTest {
     assertEquals(1, results.size());
 
     final ValidationResult result = results.get(0);
-    assertEquals(MissingLabelKind.ASSUMED, result.getMissingLabelKind());
-    assertEquals(Set.of("expression|name|906"), result.getMissingLabelIds());
+    assertEquals(List.of(AssetRef.label("expression|name|906")), result.getReferences());
     assertTrue(result.getMessage().contains("expression|name|906"),
         () -> "message should name the identifier: " + result.getMessage());
   }
@@ -79,7 +77,7 @@ class LabelFactTest {
 
     final List<ValidationResult> results = fact.labelIdentifierResults();
     assertEquals(1, results.size());
-    assertEquals(Set.of("expression|name|906"), results.get(0).getMissingLabelIds());
+    assertEquals(List.of(AssetRef.label("expression|name|906")), results.get(0).getReferences());
 
     final String message = results.get(0).getMessage();
     assertEquals(message.indexOf("expression|name|906"), message.lastIndexOf("expression|name|906"),

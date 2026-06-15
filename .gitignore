@@ -50,3 +50,6 @@ build/
 ### VS Code ###
 .vscode/
 *.code-workspace
+
+# Generated analyzer report artifacts (throwaway)
+analyzer-*.txt

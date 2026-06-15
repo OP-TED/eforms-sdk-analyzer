@@ -2,8 +2,6 @@ package eu.europa.ted.eforms.sdk.analysis.cucumber;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -44,8 +42,6 @@ public class SdkValidationSteps {
 
   private List<String> testedRules = new ArrayList<>();
 
-  private Exception thrownException = null;
-
   @Given("A {string} folder with {string} files")
   public void a_folder_with_files(String testsFolder, String filesValidity)
       throws URISyntaxException, IOException, JAXBException, SAXException,
@@ -65,15 +61,6 @@ public class SdkValidationSteps {
   @When("I load all notice types")
   public void i_load_all_notice_types() throws IOException {
     sdkValidator.getSdkUnit().setNoticeTypes(new FactsLoader(testsFolder).loadNoticeTypes());
-  }
-
-  @When("I load all notice types storing the exception")
-  public void i_load_all_notice_types_storing_the_exception() {
-    try {
-      i_load_all_notice_types();
-    } catch (Exception e) {
-      thrownException = e;
-    }
   }
 
   @When("I load the notice types index")
@@ -294,11 +281,5 @@ public class SdkValidationSteps {
   @Then("^I should get (.*) schematron validation errors?$")
   public void i_should_get_schematron_validation_errors(int errorsCount) {
     assertEquals(errorsCount, schematronValidator.getErrors().size());
-  }
-
-  @Then("I should get not found exception for file {string}")
-  public void i_should_get_not_found_exception_for_file(String fileName) {
-    assertEquals(FileNotFoundException.class, thrownException.getClass());
-    assertEquals(fileName, new File(thrownException.getMessage()).getName());
   }
 }

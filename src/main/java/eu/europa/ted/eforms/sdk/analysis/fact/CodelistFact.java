@@ -85,4 +85,9 @@ public class CodelistFact implements SdkComponentFact<String> {
   public String getTypeName() {
     return "codelist";
   }
+
+  @Override
+  public String getSdkPath() {
+    return "codelists/" + getFilename();
+  }
 }

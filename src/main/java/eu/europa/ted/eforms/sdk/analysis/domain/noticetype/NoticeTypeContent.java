@@ -1,7 +1,9 @@
 package eu.europa.ted.eforms.sdk.analysis.domain.noticetype;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -134,7 +136,10 @@ public class NoticeTypeContent {
     NoticeTypeContent result = null;
     NoticeTypeContent currentContent = parent;
 
-    while (currentContent != null) {
+    // visited guards against a cycle in the content hierarchy of a malformed notice type, which
+    // would otherwise spin forever walking the parent chain.
+    final Set<NoticeTypeContent> visited = new HashSet<>();
+    while (currentContent != null && visited.add(currentContent)) {
       if (currentContent.isRepeatable()
           && (type == null || currentContent.getContentType().equals(type))) {
         result = currentContent;
