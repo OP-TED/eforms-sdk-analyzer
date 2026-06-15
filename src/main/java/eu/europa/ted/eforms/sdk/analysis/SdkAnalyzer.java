@@ -1,5 +1,9 @@
 package eu.europa.ted.eforms.sdk.analysis;
 
+import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -22,6 +26,9 @@ import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 
 public class SdkAnalyzer {
   private static final Logger logger = LoggerFactory.getLogger(SdkAnalyzer.class);
+
+  /** The full report is always written here (in the working directory), alongside analyzer.log. */
+  private static final String REPORT_FILE = "analyzer-report.txt";
 
   private SdkAnalyzer() {}
 
@@ -66,7 +73,23 @@ public class SdkAnalyzer {
     new SummaryReportRenderer().render(results);
     new DetailReportRenderer().render(results, verbose);
 
+    // Always write the full report (summary, actionable items and every finding) to a fixed file in
+    // the working directory — like analyzer.log — so CI can upload it as an artifact while the console
+    // keeps the concise summary. A write failure is logged, not fatal — the console report succeeded.
+    writeFullReport(results, Path.of(REPORT_FILE));
+
     return results.exitCode();
+  }
+
+  /** Writes the complete report — summary, actionable items and every finding — to {@code reportFile}. */
+  private static void writeFullReport(final AnalysisResults results, final Path reportFile) {
+    try (PrintStream out =
+        new PrintStream(Files.newOutputStream(reportFile), false, StandardCharsets.UTF_8)) {
+      new SummaryReportRenderer(out).render(results);
+      new DetailReportRenderer(out).render(results, true);
+    } catch (final IOException e) {
+      logger.warn("Could not write the report to [{}]: {}", reportFile, e.getMessage());
+    }
   }
 
   /**
