@@ -27,6 +27,9 @@ import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 public class SdkAnalyzer {
   private static final Logger logger = LoggerFactory.getLogger(SdkAnalyzer.class);
 
+  /** The full report is always written here (in the working directory), alongside analyzer.log. */
+  private static final String REPORT_FILE = "analyzer-report.txt";
+
   private SdkAnalyzer() {}
 
   public static int analyze(final Path sdkRoot) throws Exception {
@@ -39,11 +42,6 @@ public class SdkAnalyzer {
 
   public static int analyze(final Path sdkRoot, final boolean verbose, final boolean skipEfx)
       throws Exception {
-    return analyze(sdkRoot, verbose, skipEfx, null);
-  }
-
-  public static int analyze(final Path sdkRoot, final boolean verbose, final boolean skipEfx,
-      final Path reportFile) throws Exception {
     logger.info("Analyzing SDK under folder [{}]", sdkRoot);
 
     // Each validator is built lazily inside the guarded run loop, so a constructor failure (e.g. a
@@ -75,12 +73,10 @@ public class SdkAnalyzer {
     new SummaryReportRenderer().render(results);
     new DetailReportRenderer().render(results, verbose);
 
-    // Also write the full report (summary, actionable items and every finding) to --report-file when
-    // given, so CI can keep a readable console summary and still upload the complete report as an
-    // artifact. A write failure is logged, not fatal — the console report has already succeeded.
-    if (reportFile != null) {
-      writeFullReport(results, reportFile);
-    }
+    // Always write the full report (summary, actionable items and every finding) to a fixed file in
+    // the working directory — like analyzer.log — so CI can upload it as an artifact while the console
+    // keeps the concise summary. A write failure is logged, not fatal — the console report succeeded.
+    writeFullReport(results, Path.of(REPORT_FILE));
 
     return results.exitCode();
   }

@@ -38,16 +38,10 @@ class CliCommand implements Callable<Integer> {
           + " runs while debugging the rules. Findings from the other validators are unaffected.")
   private boolean skipEfx;
 
-  @Option(names = {"--report-file"}, paramLabel = "FILE",
-      description = "Also write the full report (summary, actionable items and every finding) to this"
-          + " file, while the console keeps the concise summary. Useful in CI to upload the complete"
-          + " report as an artifact without flooding the log.")
-  private Path reportFile;
-
   @Override
   public Integer call() throws Exception {
     new LoggingConfigurator().configure(this.verbose);
-    return SdkAnalyzer.analyze(this.sdkRoot, this.verbose, this.skipEfx, this.reportFile);
+    return SdkAnalyzer.analyze(this.sdkRoot, this.verbose, this.skipEfx);
   }
 
   @Command(name = "benchmark", mixinStandardHelpOptions = true,
