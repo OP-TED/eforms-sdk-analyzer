@@ -1,5 +1,9 @@
 package eu.europa.ted.eforms.sdk.analysis;
 
+import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -35,6 +39,11 @@ public class SdkAnalyzer {
 
   public static int analyze(final Path sdkRoot, final boolean verbose, final boolean skipEfx)
       throws Exception {
+    return analyze(sdkRoot, verbose, skipEfx, null);
+  }
+
+  public static int analyze(final Path sdkRoot, final boolean verbose, final boolean skipEfx,
+      final Path reportFile) throws Exception {
     logger.info("Analyzing SDK under folder [{}]", sdkRoot);
 
     // Each validator is built lazily inside the guarded run loop, so a constructor failure (e.g. a
@@ -66,7 +75,25 @@ public class SdkAnalyzer {
     new SummaryReportRenderer().render(results);
     new DetailReportRenderer().render(results, verbose);
 
+    // Also write the full report (summary, actionable items and every finding) to --report-file when
+    // given, so CI can keep a readable console summary and still upload the complete report as an
+    // artifact. A write failure is logged, not fatal — the console report has already succeeded.
+    if (reportFile != null) {
+      writeFullReport(results, reportFile);
+    }
+
     return results.exitCode();
+  }
+
+  /** Writes the complete report — summary, actionable items and every finding — to {@code reportFile}. */
+  private static void writeFullReport(final AnalysisResults results, final Path reportFile) {
+    try (PrintStream out =
+        new PrintStream(Files.newOutputStream(reportFile), false, StandardCharsets.UTF_8)) {
+      new SummaryReportRenderer(out).render(results);
+      new DetailReportRenderer(out).render(results, true);
+    } catch (final IOException e) {
+      logger.warn("Could not write the report to [{}]: {}", reportFile, e.getMessage());
+    }
   }
 
   /**
