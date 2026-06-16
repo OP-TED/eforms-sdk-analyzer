@@ -81,7 +81,7 @@ when ...
 
 ### Report output
 
-`SummaryReportRenderer` groups findings by SDK section and by problem statement; this summary goes to the console and `analyzer-summary.txt`. `DetailReportRenderer` writes the full per-finding list to `analyzer-report.txt`.
+Both the console and the files open with a title banner (SDK version, analyser version, run time in UTC). `SummaryReportRenderer` groups findings by SDK section and by problem statement; this summary goes to the console and `analyzer-summary.txt`. `DetailReportRenderer` writes the full per-finding list to `analyzer-report.txt`.
 
 ## Adding a new rule
 

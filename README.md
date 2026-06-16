@@ -30,7 +30,7 @@ java -jar target/eforms-sdk-analyzer-*-all.jar path/to/eforms-sdk
 
 This will return the exit code 0 if no errors are found, and 1 otherwise.
 
-The analysis writes a summary to the standard output: findings grouped by SDK section and by problem statement, followed by the actionable items. The same summary is also written to `analyzer-summary.txt`, and the full, unaggregated list of every finding to `analyzer-report.txt`, both in the working directory. Add `--skip-efx` to skip the EFX translation pass, which is by far the slowest. Framework logs go to the standard error, and a full INFO log is written to `analyzer.log` in the working directory.
+Each report — on the console and in both files — opens with a title banner showing the SDK version, the analyser's own version, and the run time (UTC). The analysis writes a summary to the standard output: findings grouped by SDK section and by problem statement, followed by the actionable items. The same summary is also written to `analyzer-summary.txt`, and the full, unaggregated list of every finding to `analyzer-report.txt`, both in the working directory. Add `--skip-efx` to skip the EFX translation pass, which is by far the slowest. Framework logs go to the standard error, and a full INFO log is written to `analyzer.log` in the working directory.
 
 ### Schematron rules benchmark
 
