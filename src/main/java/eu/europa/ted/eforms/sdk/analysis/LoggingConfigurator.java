@@ -14,13 +14,11 @@ import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.FileAppender;
 
 /**
- * Configures logging for the analyzer CLI. Framework logging is kept off the console by default
- * (only warnings and errors show) and raised to INFO with {@code --verbose}, while a full INFO run
- * log is written to {@value #LOG_FILE} in the working directory (when it is writable) for later
- * inspection. The validation report itself is written separately to stdout by
- * {@link eu.europa.ted.eforms.sdk.analysis.report.SummaryReportRenderer} (the summary and actionable
- * items) and {@link eu.europa.ted.eforms.sdk.analysis.report.DetailReportRenderer} (the full list
- * under {@code --verbose}).
+ * Configures logging for the analyzer CLI. Framework logging is kept off stdout — only warnings and
+ * errors show, on stderr — while a full INFO run log is written to {@value #LOG_FILE} in the working
+ * directory (when it is writable) for later inspection. The validation report itself goes to stdout
+ * (the summary, via {@link eu.europa.ted.eforms.sdk.analysis.report.SummaryReportRenderer}) and to the
+ * {@code analyzer-summary.txt} / {@code analyzer-report.txt} files, separate from logging.
  *
  * <p>Applied programmatically by the CLI only, so applications that use the analyzer as a library
  * keep their own logging configuration; the library jar ships no {@code logback.xml}.
@@ -30,7 +28,7 @@ public class LoggingConfigurator {
   private static final String LOG_FILE = "analyzer.log";
   private static final String PATTERN = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n";
 
-  public void configure(final boolean verbose) {
+  public void configure() {
     final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
     context.reset();
 
@@ -39,7 +37,7 @@ public class LoggingConfigurator {
     // Framework logs go to stderr so stdout stays dedicated to the report.
     console.setTarget("System.err");
     console.setEncoder(encoder(context));
-    console.addFilter(thresholdFilter(context, verbose ? Level.INFO : Level.WARN));
+    console.addFilter(thresholdFilter(context, Level.WARN));
     console.start();
 
     final Logger root = context.getLogger(ROOT_LOGGER);

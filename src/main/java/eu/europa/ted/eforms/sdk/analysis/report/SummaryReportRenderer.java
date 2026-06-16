@@ -17,9 +17,9 @@ import eu.europa.ted.eforms.sdk.analysis.vo.SdkSection;
  * The report's lead: a per-section summary, then actionable items grouped by SDK section and, within
  * each section, by the <strong>problem statement</strong> (the rule's {@code @problem}, falling back
  * to its name). Grouping by the problem — not the rule — lets rules that report the same thing (e.g. a
- * field and a business entity both referencing a missing label) fuse into one group. The full,
- * unaggregated list of every finding follows this (under {@code --verbose}) via
- * {@link DetailReportRenderer}, which also prints the closing headline total.
+ * field and a business entity both referencing a missing label) fuse into one group. The closing
+ * headline total follows this via {@link DetailReportRenderer}; the full, unaggregated list of every
+ * finding is written separately to {@code analyzer-report.txt}.
  *
  * <p>Each group is a one-line header (problem + the count), then one line per asset to act on: the
  * referenced asset (the thing to add or fix), shown once, with the facts that reference it. When a

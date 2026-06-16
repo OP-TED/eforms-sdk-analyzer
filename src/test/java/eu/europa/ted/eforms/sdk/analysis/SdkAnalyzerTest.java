@@ -1,8 +1,12 @@
 package eu.europa.ted.eforms.sdk.analysis;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +19,7 @@ import eu.europa.ted.eforms.sdk.analysis.domain.label.Label;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.LabelFact;
 import eu.europa.ted.eforms.sdk.analysis.validator.Validator;
+import eu.europa.ted.eforms.sdk.analysis.vo.AnalysisResults;
 import eu.europa.ted.eforms.sdk.analysis.vo.Finding;
 import eu.europa.ted.eforms.sdk.analysis.vo.SdkSection;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
@@ -95,7 +100,7 @@ class SdkAnalyzerTest {
     assertEquals(SdkSection.ANALYZER, SdkSection.forType(crash.getResult().getSubject().getType()));
     assertEquals("ThrowingValidator", crash.getResult().getSubject().getId());
 
-    // The reason (exception type and message) is preserved on the result for the verbose dump.
+    // The reason (exception type and message) is preserved on the result for the detail report.
     final String message = crash.getResult().getMessage();
     assertTrue(message.contains("ThrowingValidator did not complete"), message);
     assertTrue(message.contains("IllegalStateException"), message);
@@ -135,5 +140,33 @@ class SdkAnalyzerTest {
     // ...alongside the crash finding that records the run was incomplete.
     assertTrue(findings.stream().anyMatch(f -> "A validator failed to run".equals(f.getProblem())),
         findings.toString());
+  }
+
+  @Test
+  void theSummaryPointsToTheDetailReportWhenThereAreFindings() {
+    final LabelFact fact = new LabelFact(new Label("code|name|x"));
+    final String pointer = "The full list of findings is in analyzer-report.txt";
+
+    // A warning-only run has no errors (isClean() is true), but the detail report still lists those
+    // warnings — so the summary must point to it.
+    final String warningOnly = summaryOf(new AnalysisResults(
+        List.of(new ValidationResult(fact, "a warning", ValidationStatusEnum.WARNING))));
+    assertTrue(warningOnly.contains(pointer), warningOnly);
+
+    final String withError = summaryOf(new AnalysisResults(
+        List.of(new ValidationResult(fact, "an error", ValidationStatusEnum.ERROR))));
+    assertTrue(withError.contains(pointer), withError);
+
+    // A fully clean run has nothing to investigate, so it gives no pointer.
+    final String clean = summaryOf(new AnalysisResults(List.of()));
+    assertFalse(clean.contains(pointer), clean);
+  }
+
+  /** Renders the console summary to a string, so the detail-report pointer can be asserted. */
+  private static String summaryOf(final AnalysisResults results) {
+    final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    SdkAnalyzer.renderSummary(new PrintStream(buffer, true, StandardCharsets.UTF_8), results,
+        "title", "subtitle");
+    return buffer.toString(StandardCharsets.UTF_8);
   }
 }

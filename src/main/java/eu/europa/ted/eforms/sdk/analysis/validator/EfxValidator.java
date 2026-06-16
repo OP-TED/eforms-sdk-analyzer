@@ -166,7 +166,8 @@ public class EfxValidator implements Validator {
 
   /**
    * Records an EFX failure: the full message goes on the {@link ValidationResult} (shown verbatim only
-   * in {@code --verbose}), while the {@link Finding}'s problem is the failure's <em>category</em>,
+   * in the detail report, {@code analyzer-report.txt}), while the {@link Finding}'s problem is the
+   * failure's <em>category</em>,
    * derived from the exception type — so the summary and actionable items group EFX errors by kind
    * rather than by their unique per-instance text.
    */
@@ -237,7 +238,7 @@ public class EfxValidator implements Validator {
   /**
    * Applies {@code action} to every item — across {@link #threadCount()} worker threads when
    * {@code parallel}, otherwise serially — logging progress at INFO so a run can be watched live (via
-   * {@code analyzer.log} or {@code --verbose}). Each action handles its own errors (recorded as
+   * {@code analyzer.log}). Each action handles its own errors (recorded as
    * findings), so no exception escapes the workers; only an unexpected framework failure surfaces here.
    * The progress counter is the key debugging aid: a climbing count means it is working; a frozen count
    * pinpoints (to within one report step) where it is stuck.

@@ -5,13 +5,11 @@ import java.io.PrintStream;
 import eu.europa.ted.eforms.sdk.analysis.vo.AnalysisResults;
 
 /**
- * Renders the report's headline and, under {@code --verbose}, the full unaggregated list of findings.
- *
- * <p>The summary (per-section and per-problem counts) and the actionable items are produced by
- * {@link SummaryReportRenderer} and printed first. This renderer closes the report: the grand total of
- * errors (or, on a clean run, the all-clear message) and — only when verbose — every individual
- * finding listed in full after the summary. Writing the report here rather than through the logger
- * keeps it free of log decoration and separate from framework logging.
+ * Renders the closing headline — the grand total of errors (or, on a clean run, the all-clear
+ * message) — and, when {@code full}, the complete list of every individual finding. The summary view
+ * uses it without the list (just the headline); the detail file uses it with the full list. Writing
+ * this here rather than through the logger keeps it free of log decoration and separate from framework
+ * logging.
  */
 public class DetailReportRenderer {
   private final PrintStream out;
@@ -24,15 +22,14 @@ public class DetailReportRenderer {
     this.out = out;
   }
 
-  public void render(final AnalysisResults results, final boolean verbose) {
+  public void render(final AnalysisResults results, final boolean full) {
     if (results.isClean() && results.warningCount() == 0) {
       this.out.println("No validation errors or warnings found.");
       return;
     }
 
-    // The default run stops at the summary and actionable items (rendered by SummaryReportRenderer);
-    // verbose adds the full, unaggregated list of every individual finding underneath them.
-    if (verbose) {
+    // The summary view shows only the headline; the detail view (full) lists every individual finding.
+    if (full) {
       listEveryFinding(results);
     }
 
@@ -40,9 +37,6 @@ public class DetailReportRenderer {
     this.out.println();
     if (!results.isClean()) {
       this.out.println("Total number of validation errors: " + results.errorCount());
-    }
-    if (!verbose) {
-      this.out.println("Re-run the analyzer with --verbose to see every individual finding.");
     }
   }
 

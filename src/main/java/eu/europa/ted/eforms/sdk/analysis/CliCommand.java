@@ -26,12 +26,6 @@ class CliCommand implements Callable<Integer> {
   @Parameters(index = "0", description = "SDK resources root folder.")
   private Path sdkRoot;
 
-  @Option(names = {"-v", "--verbose"},
-      description = "List every individual finding and show framework logging (INFO) on the console."
-          + " A full INFO run log is written to analyzer.log in the working directory when it is"
-          + " writable, regardless of this flag.")
-  private boolean verbose;
-
   @Option(names = {"--skip-efx"},
       description = "Skip the EFX expression validation of view templates. It is the slowest"
           + " validator and is independent of the rule engine, so skipping it greatly speeds up"
@@ -40,14 +34,14 @@ class CliCommand implements Callable<Integer> {
 
   @Override
   public Integer call() throws Exception {
-    new LoggingConfigurator().configure(this.verbose);
-    return SdkAnalyzer.analyze(this.sdkRoot, this.verbose, this.skipEfx);
+    new LoggingConfigurator().configure();
+    return SdkAnalyzer.analyze(this.sdkRoot, this.skipEfx);
   }
 
   @Command(name = "benchmark", mixinStandardHelpOptions = true,
       description = "Run benchmark of Schematron rules")
   public int runBenchmark() throws Exception {
-    new LoggingConfigurator().configure(this.verbose);
+    new LoggingConfigurator().configure();
     return SchematronBenchmark.run(this.sdkRoot);
   }
 
