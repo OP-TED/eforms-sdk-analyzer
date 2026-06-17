@@ -1,0 +1,16 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.6.0",
+  "metadataDatabase" : {
+    "version" : "1.0.0",
+    "createdOn" : "2024-01-01T00:00:00"
+  },
+  "noticeId" : "1",
+  "metadata" : [ ],
+  "content" : [ {
+    "id" : "BT-X-Field",
+    "contentType" : "field",
+    "displayType" : "TEXTBOX",
+    "_label" : "field|name|BT-X-Field"
+  } ]
+}

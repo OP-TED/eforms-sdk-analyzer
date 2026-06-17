@@ -1,0 +1,23 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "eforms-sdk-1.6.0",
+  "metadataDatabase" : {
+    "version" : "1.0.0",
+    "createdOn" : "2024-01-01T00:00:00"
+  },
+  "xmlStructure" : [ {
+    "id" : "ND-Root",
+    "xpathAbsolute" : "/*",
+    "xpathRelative" : "/*",
+    "repeatable" : false
+  } ],
+  "fields" : [ {
+    "id" : "BT-X-Field",
+    "parentNodeId" : "ND-Root",
+    "name" : "Test field",
+    "btId" : "BT-Y",
+    "xpathAbsolute" : "/*/cbc:Test",
+    "xpathRelative" : "cbc:Test",
+    "type" : "text"
+  } ]
+}

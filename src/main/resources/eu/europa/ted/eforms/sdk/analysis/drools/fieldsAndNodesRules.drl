@@ -206,6 +206,25 @@ then
   results.add(new ValidationResult($f, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, AssetRef.label($labelId)));
 end
 
+// TEDEMD-90: A field shown in a notice type definition should have a description (tooltip) label —
+// on the field itself, or failing that on its business term. Database-only: a content-completeness
+// check for the metadata editor, not an SDK packaging invariant, so it does not run against an
+// exported SDK.
+rule "Fields used in notice types have a description label"
+  @source(DATABASE)
+  @problem("Field used in a notice type has no description (tooltip) label")
+when
+  $field : /fields[ $fieldId: id ]
+  exists /noticeTypes[ contentFieldIds contains $fieldId ]
+  $fieldLabelId : String() from ("field|description|" + $fieldId)
+  $btLabelId : String() from ("business-term|description|" + $field.btId)
+  not (exists /labels[ id == $fieldLabelId ])
+  not (exists /labels[ id == $btLabelId ])
+then
+  results.add(new ValidationResult($field, "Field " + $fieldId
+      + " is used in a notice type but has no description (tooltip) label", ValidationStatusEnum.ERROR));
+end
+
 rule "Fields corresponding to XML attributes have the expected information"
   @problem("Attribute field is missing attributeName or attributeOf")
 when

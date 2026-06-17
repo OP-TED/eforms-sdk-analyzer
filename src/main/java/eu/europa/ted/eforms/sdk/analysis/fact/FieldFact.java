@@ -322,6 +322,11 @@ public class FieldFact implements SdkComponentFact<String> {
     return field.getId();
   }
 
+  /** The id of the business term this field belongs to (its {@code btId}), or {@code null}. */
+  public String getBtId() {
+    return field.getBtId();
+  }
+
   @Override
   public String getTypeName() {
     return "field";
