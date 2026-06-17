@@ -1,15 +1,17 @@
-@field-tooltip
-Feature: Notice Types - field description (tooltip) labels
-  TEDEMD-90: A field shown in a notice type definition should have a description (tooltip) label,
-  on the field itself or — failing that — on its business term.
-  Test files under "src/test/resources/eforms-sdk-tests/field-tooltip"
+@field-description
+Feature: Notice Types - field description labels
+  TEDEMD-90: A field shown in a notice type definition should have a description label, on the field
+  itself or — failing that — on its business term.
+  (The ticket called this the field "tooltip", which is actually the "hint" label, not "description";
+  the label type to check is still to be confirmed against the original request.)
+  Test files under "src/test/resources/eforms-sdk-tests/field-description"
 
   Background:
     Given The following rules
       | Fields used in notice types have a description label |
 
   Scenario: Fields used in notice types have a description label
-    Given A "field-tooltip" folder with "valid" files
+    Given A "field-description" folder with "valid" files
     When I load all fields
     And I load all notice types
     And I load all labels
@@ -17,7 +19,7 @@ Feature: Notice Types - field description (tooltip) labels
     Then I should get 0 SDK validation errors
 
   Scenario: A field used in a notice type has no description label
-    Given A "field-tooltip" folder with "invalid" files
+    Given A "field-description" folder with "invalid" files
     When I load all fields
     And I load all notice types
     And I load all labels
