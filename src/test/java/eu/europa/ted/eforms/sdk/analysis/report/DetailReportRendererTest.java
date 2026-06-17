@@ -35,21 +35,21 @@ class DetailReportRendererTest {
     return new AnalysisResults(List.of(found, assumed, other, warning));
   }
 
-  private String render(final boolean verbose) {
+  private String render(final boolean full) {
     final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     new DetailReportRenderer(new PrintStream(buffer, true, StandardCharsets.UTF_8))
-        .render(sampleResults(), verbose);
+        .render(sampleResults(), full);
     return buffer.toString(StandardCharsets.UTF_8);
   }
 
   @Test
-  void defaultReportShowsOnlyTheHeadlineAndVerboseHint() {
+  void defaultReportShowsOnlyTheHeadline() {
     final String output = render(false);
 
     // The default run leads with the summary and actionable items (rendered by SummaryReportRenderer);
-    // this renderer adds only the closing headline, so no individual finding text appears here.
+    // this renderer adds only the closing headline — no individual finding text, and no pointer to the
+    // full report (that is added by SdkAnalyzer, which owns the report file).
     assertTrue(output.contains("Total number of validation errors: 3"), output);
-    assertTrue(output.contains("--verbose"), output);
     // No per-finding list and no per-message grouping in the default console output.
     assertFalse(output.contains("All validation errors"), output);
     assertFalse(output.contains("in sdkVersion is incorrect"), output);
@@ -58,7 +58,7 @@ class DetailReportRendererTest {
   }
 
   @Test
-  void verboseReportListsEveryFinding() {
+  void fullReportListsEveryFinding() {
     final String output = render(true);
 
     assertTrue(output.contains("All validation errors (3)"), output);
@@ -68,6 +68,5 @@ class DetailReportRendererTest {
     // Warnings are listed in full too, after the errors.
     assertTrue(output.contains("All validation warnings (1)"), output);
     assertTrue(output.contains("a warning"), output);
-    assertFalse(output.contains("--verbose"), output);
   }
 }

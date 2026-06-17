@@ -191,7 +191,8 @@ public class SchematronValidator implements Validator {
 
   /**
    * Records a Schematron failure: the full, detailed message (which file, which line, which XPath)
-   * goes on the {@link ValidationResult}, shown verbatim only under {@code --verbose}; the
+   * goes on the {@link ValidationResult}, shown verbatim only in the detail report
+   * ({@code analyzer-report.txt}); the
    * {@link Finding}'s problem is the stable {@link Problem} category, so the summary and actionable
    * items group failures by category rather than by their unique per-file text.
    */

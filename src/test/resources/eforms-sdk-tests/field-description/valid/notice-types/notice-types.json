@@ -1,0 +1,13 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "1.6.0",
+  "metadataDatabase" : {
+    "version" : "1.0.0",
+    "createdOn" : "2024-01-01T00:00:00"
+  },
+  "noticeSubTypes" : [ {
+    "subTypeId" : "1",
+    "documentType" : "BRIN",
+    "_label" : "notice|name|1"
+  } ]
+}

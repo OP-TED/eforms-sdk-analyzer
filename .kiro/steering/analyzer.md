@@ -24,11 +24,10 @@ Java 11+, Maven 3.8+. SNAPSHOT dependencies on `eforms-core-java` and `efx-toolk
 ```bash
 java -jar target/eforms-sdk-analyzer-*-all.jar <sdk-folder>
 java -jar target/eforms-sdk-analyzer-*-all.jar <sdk-folder> --skip-efx   # skip slow EFX pass
-java -jar target/eforms-sdk-analyzer-*-all.jar <sdk-folder> --verbose    # full findings list
 java -jar target/eforms-sdk-analyzer-*-all.jar <sdk-folder> benchmark    # schematron perf
 ```
 
-Framework logs go to stderr; the report goes to stdout. A full INFO log is written to `analyzer.log` in the working directory.
+Framework logs go to stderr; the summary goes to stdout. The summary and the full per-finding detail are also written to `analyzer-summary.txt` and `analyzer-report.txt`, and a full INFO log to `analyzer.log` — all in the working directory.
 
 ## Architecture
 
@@ -82,7 +81,7 @@ when ...
 
 ### Report output
 
-`SummaryReportRenderer` groups findings by SDK section and by problem statement. `DetailReportRenderer` adds the full list under `--verbose`.
+Both the console and the files open with a title banner (SDK version, analyser version, run time in UTC). `SummaryReportRenderer` groups findings by SDK section and by problem statement; this summary goes to the console and `analyzer-summary.txt`. `DetailReportRenderer` writes the full per-finding list to `analyzer-report.txt`.
 
 ## Adding a new rule
 
