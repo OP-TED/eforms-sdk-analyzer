@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import eu.europa.ted.eforms.sdk.analysis.domain.SvrlReport;
 import eu.europa.ted.eforms.sdk.analysis.domain.XmlNotice;
 import eu.europa.ted.eforms.sdk.analysis.domain.codelist.Codelist;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeSubTypeForIndex;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeType;
+import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.NoticeTypeSdk;
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
@@ -64,6 +67,29 @@ class FileBackedFactSdkPathTest {
     assertNull(fact.getSdkPath());
     assertEquals(new AssetRef("viewTemplate", "summary"),
         new ValidationResult(fact, "message", ValidationStatusEnum.ERROR).getSubject());
+  }
+
+  @Test
+  void noticeTypeSubjectFallsBackToIdWithoutFilename() {
+    final NoticeTypeSdk sdk = new NoticeTypeSdk();
+    sdk.setNoticeId("16");
+    final NoticeType noticeType = new NoticeType(new NoticeSubTypeForIndex(), sdk);
+
+    final NoticeTypeFact fact = new NoticeTypeFact(noticeType);
+
+    assertNull(fact.getSdkPath());
+    assertEquals(new AssetRef("noticeType", "16"),
+        new ValidationResult(fact, "message", ValidationStatusEnum.ERROR).getSubject());
+  }
+
+  @Test
+  void noticeTypeSdkPathUsesFilenameWhenPresent() {
+    final NoticeTypeSdk sdk = new NoticeTypeSdk();
+    sdk.setNoticeId("16");
+    final NoticeType noticeType = new NoticeType(new NoticeSubTypeForIndex(), sdk);
+    noticeType.setFilename("16.json");
+
+    assertEquals("notice-types/16.json", new NoticeTypeFact(noticeType).getSdkPath());
   }
 
   @Test

@@ -11,9 +11,24 @@ public class NoticeType implements Serializable {
   private final NoticeSubTypeForIndex noticeSubTypeForIndex;
   private final NoticeTypeSdk noticeTypeSdk;
 
+  /**
+   * The name of the file this notice type was read from — set only when the content comes from a
+   * file source; null for sources without files (e.g. a database), where the notice id identifies
+   * the asset instead.
+   */
+  private String filename;
+
   public NoticeType(NoticeSubTypeForIndex noticeSubTypeForIndex, NoticeTypeSdk noticeTypeSdk) {
     this.noticeSubTypeForIndex = noticeSubTypeForIndex;
     this.noticeTypeSdk = noticeTypeSdk;
+  }
+
+  public String getFilename() {
+    return filename;
+  }
+
+  public void setFilename(String filename) {
+    this.filename = filename;
   }
 
   public String getDocumentType() {

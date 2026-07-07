@@ -166,8 +166,10 @@ public class SdkLoader implements SdkContentSource {
 
     for (NoticeSubTypeForIndex noticeSubType : noticeTypesForIndex.getNoticeSubTypes()) {
       try {
-        result.add(
-            new NoticeType(noticeSubType, getNoticeTypeSdk(noticeSubType.getSubTypeId(), sdkRoot)));
+        final NoticeType noticeType =
+            new NoticeType(noticeSubType, getNoticeTypeSdk(noticeSubType.getSubTypeId(), sdkRoot));
+        noticeType.setFilename(noticeSubType.getSubTypeId() + ".json");
+        result.add(noticeType);
       } catch (final FileNotFoundException e) {
         // An indexed subtype has no definition file: load the rest and let the rule
         // "All expected notice subtypes are present" report the missing definition, rather

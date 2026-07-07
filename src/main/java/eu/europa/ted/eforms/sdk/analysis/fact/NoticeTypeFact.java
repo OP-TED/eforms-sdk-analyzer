@@ -93,6 +93,7 @@ public class NoticeTypeFact implements SdkComponentFact<String> {
 
   @Override
   public String getSdkPath() {
-    return "notice-types/" + getId() + ".json";
+    final String filename = noticeType.getFilename();
+    return filename != null ? "notice-types/" + filename : null;
   }
 }
