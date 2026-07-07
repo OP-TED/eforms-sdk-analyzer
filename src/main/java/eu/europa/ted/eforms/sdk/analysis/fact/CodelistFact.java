@@ -88,6 +88,7 @@ public class CodelistFact implements SdkComponentFact<String> {
 
   @Override
   public String getSdkPath() {
-    return "codelists/" + getFilename();
+    final String filename = getFilename();
+    return filename != null ? "codelists/" + filename : null;
   }
 }

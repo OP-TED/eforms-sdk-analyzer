@@ -23,6 +23,7 @@ public class ViewTemplateFact implements SdkComponentFact<String> {
 
   @Override
   public String getSdkPath() {
-    return "view-templates/" + viewTemplate.getFilename();
+    final String filename = viewTemplate.getFilename();
+    return filename != null ? "view-templates/" + filename : null;
   }
 }
