@@ -91,6 +91,7 @@ then
 end
 
 rule "Every code has a label"
+  @source(FILE)
   @problem("Code has no corresponding label")
 when
   $code : /codelists[ $cl: this, $codelistId: id ]/codes
