@@ -22,15 +22,19 @@ public class FieldsAndNodes extends EFormsTrackableEntity {
   private final List<Field> fields = new ArrayList<>();
 
   public List<BusinessEntity> getBusinessEntities() {
-    return businessEntities;
+    return this.businessEntities;
+  }
+
+  public void setBusinessEntities(final List<BusinessEntity> businessEntities) {
+    this.businessEntities = businessEntities;
   }
 
   @JsonProperty("xmlStructure")
   public List<XmlStructureNode> getNodes() {
-    return xmlStructure;
+    return this.xmlStructure;
   }
 
   public List<Field> getFields() {
-    return fields;
+    return this.fields;
   }
 }

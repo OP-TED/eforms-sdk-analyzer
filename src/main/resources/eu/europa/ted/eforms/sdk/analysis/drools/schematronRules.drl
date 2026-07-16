@@ -2,7 +2,11 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
+import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
+
 rule "Every assert has an id"
+  @source(FILE)
+  @problem("Schematron has an assert without an id")
 when
   /schematrons[ $sch: this ]/asserts[ id == null ]
 then
@@ -10,32 +14,40 @@ then
 end
 
 rule "Every assert id is unique in the schematron file"
+  @source(FILE)
+  @problem("Schematron has duplicate assert ids")
 when
   $duplicates : /schematrons[ $sch: this ]/duplicateAssertIds
 then
-  results.add(new ValidationResult($sch, "Schematron contains duplicate assert ids: " + $duplicates, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($sch, "Schematron contains duplicate assert ids: " + $duplicates, ValidationStatusEnum.ERROR, AssetRef.schematronAssert($duplicates)));
 end
 
 rule "All expected phases are present"
+  @source(FILE)
+  @problem("Schematron is missing a phase for a notice subtype")
 when
   /schematrons[ $sch: this, $schId: id ];
   /noticeTypes[ $expected: id ]
   not (exists /schematrons[ id == $schId ]/phases[ id == "eforms-" + $expected ])
 then
-  results.add(new ValidationResult($sch, "Schematron is missing phase for: " + $expected, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($sch, "Schematron is missing phase for: " + $expected, ValidationStatusEnum.ERROR, AssetRef.noticeType($expected)));
 end
 
 rule "Every pattern is part of at least one phase"
+  @source(FILE)
+  @problem("Schematron pattern is not part of any phase")
 when
   /schematrons[ $sch: this, $schId: id ]/patterns[ $patternId: id ]
   not (exists /schematrons[ id == $schId ]/phases[ activePatterns contains $patternId ])
 then
-  results.add(new ValidationResult($sch, "Schematron has pattern that is not part of any phase: " + $patternId, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($sch, "Schematron has pattern that is not part of any phase: " + $patternId, ValidationStatusEnum.ERROR, AssetRef.schematronPattern($patternId)));
 end
 
 rule "Every assert diagnostics is defined in the schematron file"
+  @source(FILE)
+  @problem("Schematron assert has no diagnostic definition")
 when
   $missing : /schematrons[ $sch: this]/missingDiagnostics
 then
-  results.add(new ValidationResult($sch, "Schematron is missing diagnostic definitions for: " + $missing, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($sch, "Schematron is missing diagnostic definitions for: " + $missing, ValidationStatusEnum.ERROR, AssetRef.schematronDiagnostic($missing)));
 end

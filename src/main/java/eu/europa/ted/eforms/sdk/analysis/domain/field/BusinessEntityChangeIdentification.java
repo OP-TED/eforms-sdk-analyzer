@@ -9,14 +9,26 @@ public class BusinessEntityChangeIdentification {
   private String changeIdentifier;
 
   public boolean isIdentifyInChangeNotice() {
-    return identifyInChangeNotice;
+    return this.identifyInChangeNotice;
+  }
+
+  public void setIdentifyInChangeNotice(final boolean identifyInChangeNotice) {
+    this.identifyInChangeNotice = identifyInChangeNotice;
   }
 
   public boolean isUseInstanceIdentifier() {
-    return useInstanceIdentifier;
+    return this.useInstanceIdentifier;
+  }
+
+  public void setUseInstanceIdentifier(final boolean useInstanceIdentifier) {
+    this.useInstanceIdentifier = useInstanceIdentifier;
   }
 
   public String getChangeIdentifier() {
-    return changeIdentifier;
+    return this.changeIdentifier;
+  }
+
+  public void setChangeIdentifier(final String changeIdentifier) {
+    this.changeIdentifier = changeIdentifier;
   }
 }

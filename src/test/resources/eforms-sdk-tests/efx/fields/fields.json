@@ -13241,7 +13241,7 @@
     "xpathAbsolute" : "/*/cac:ProcurementProjectLot[cbc:ID/@schemeName='Lot']/cac:ProcurementProject/cac:PlannedPeriod/cbc:DurationMeasure",
     "xpathRelative" : "cbc:DurationMeasure",
     "xsdSequenceOrder" : [ { "cbc:DurationMeasure" : 6 } ],
-    "type" : "measure",
+    "type" : "duration",
     "legalType" : "DURATION",
     "repeatable" : {
       "value" : false,
@@ -13283,7 +13283,7 @@
     "xpathAbsolute" : "/*/cac:ProcurementProjectLot[cbc:ID/@schemeName='Part']/cac:ProcurementProject/cac:PlannedPeriod/cbc:DurationMeasure",
     "xpathRelative" : "cbc:DurationMeasure",
     "xsdSequenceOrder" : [ { "cbc:DurationMeasure" : 6 } ],
-    "type" : "measure",
+    "type" : "duration",
     "legalType" : "DURATION",
     "repeatable" : {
       "value" : false,

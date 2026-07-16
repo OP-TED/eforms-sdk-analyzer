@@ -54,7 +54,7 @@ import eu.europa.ted.eforms.sdk.analysis.util.SchematronParser;
 import eu.europa.ted.eforms.sdk.analysis.util.XmlDataExtractor;
 import eu.europa.ted.eforms.sdk.analysis.util.XmlParser;
 
-public class SdkLoader {
+public class SdkLoader implements SdkContentSource {
   private static final Logger logger = LoggerFactory.getLogger(SdkLoader.class);
 
   // Not in SdkResource, as it is not useful when you use the SDK in an app
@@ -118,18 +118,18 @@ public class SdkLoader {
       return null;
     }
 
+    // Tolerate a dangling parent reference: return null instead of throwing, so the rules that
+    // check for a missing parent node ("Every node/field parent ID corresponds to an existing
+    // node") can report it, rather than the whole analysis aborting before any rule runs.
     return nodes.stream()
         .filter((XmlStructureNode n) -> n.getId().equals(nodeId))
-        .collect(Collectors.collectingAndThen(
-            Collectors.toList(),
-            (List<XmlStructureNode> l) -> {
-              if (l.size() != 1) {
-                throw new IllegalArgumentException(
-                    MessageFormat.format("Could not find node with id [{0}]", nodeId));
-              }
+        .findFirst()
+        .orElse(null);
+  }
 
-              return l.get(0);
-            }));
+  @Override
+  public SourceKind getSourceKind() {
+    return SourceKind.FILE;
   }
 
   public EFormsTrackableEntity getFieldsAndNodesMetadata() throws IOException {
@@ -165,8 +165,16 @@ public class SdkLoader {
     final NoticeTypesForIndex noticeTypesForIndex = getNoticeTypesForIndex();
 
     for (NoticeSubTypeForIndex noticeSubType : noticeTypesForIndex.getNoticeSubTypes()) {
-      result.add(
-          new NoticeType(noticeSubType, getNoticeTypeSdk(noticeSubType.getSubTypeId(), sdkRoot)));
+      try {
+        result.add(
+            new NoticeType(noticeSubType, getNoticeTypeSdk(noticeSubType.getSubTypeId(), sdkRoot)));
+      } catch (final FileNotFoundException e) {
+        // An indexed subtype has no definition file: load the rest and let the rule
+        // "All expected notice subtypes are present" report the missing definition, rather
+        // than aborting the whole analysis before any rule runs.
+        logger.debug("Notice subtype [{}] has no definition file; it will be reported as missing",
+            noticeSubType.getSubTypeId());
+      }
     }
 
     return result;
@@ -354,7 +362,13 @@ public class SdkLoader {
   public Set<SchematronFile> getSchematronFiles() {
     final Set<SchematronFile> result = new HashSet<>();
     for (Path file : getSchematronFilesPaths()) {
-      result.add(SchematronParser.loadSchematronFile(file));
+      final SchematronFile schematronFile = SchematronParser.loadSchematronFile(file);
+      // A file that is not well-formed XML (or that includes one that is not) cannot be parsed into a
+      // fact. The SchematronValidator already reports that as a finding, so we skip it here rather
+      // than wrap a null in a fact and let the structural drools rules fail on it.
+      if (schematronFile != null) {
+        result.add(schematronFile);
+      }
     }
 
     return result;

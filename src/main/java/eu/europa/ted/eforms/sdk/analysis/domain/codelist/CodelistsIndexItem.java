@@ -14,27 +14,51 @@ public class CodelistsIndexItem implements Comparable<CodelistsIndexItem> {
   private String labelId;
 
   public String getId() {
-    return id;
+    return this.id;
+  }
+
+  public void setId(final String id) {
+    this.id = id;
   }
 
   public String getParentId() {
-    return parentId;
+    return this.parentId;
+  }
+
+  public void setParentId(final String parentId) {
+    this.parentId = parentId;
   }
 
   public String getVersion() {
-    return version;
+    return this.version;
+  }
+
+  public void setVersion(final String version) {
+    this.version = version;
   }
 
   public String getFilename() {
-    return filename;
+    return this.filename;
+  }
+
+  public void setFilename(final String filename) {
+    this.filename = filename;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
   }
 
   public String getLabelId() {
-    return labelId;
+    return this.labelId;
+  }
+
+  public void setLabelId(final String labelId) {
+    this.labelId = labelId;
   }
 
   @Override

@@ -8,4 +8,6 @@ public interface RuleUnit extends RuleUnitData {
   List<Rule> getFiredRules();
 
   RuleUnit addFiredRule(Rule rule);
+
+  RuleUnit setCurrentRule(Rule rule);
 }

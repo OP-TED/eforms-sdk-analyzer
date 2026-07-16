@@ -96,30 +96,44 @@ public class SchematronParser {
     }
     
     // Parse all patterns
-    List<SchematronPattern> patterns = allChildren.stream()
-        .filter(node -> node.isElement() && "pattern".equals(node.getNodeName()))
-        .map(n -> ((IMicroElement)n).getAttributeValue("id"))
-        .map(s -> new SchematronPattern(s))
-        .collect(Collectors.toList());
-
-    schematronFile.setPatterns(patterns);
-
-    // Parse all asserts
+    List<SchematronPattern> patterns = new ArrayList<>();
     List<SchematronAssert> asserts = new ArrayList<>();
     allChildren.stream()
+        .filter(node -> node.isElement() && "pattern".equals(node.getNodeName()))
+        .forEach(patternNode -> {
+          String patternId = ((IMicroElement)patternNode).getAttributeValue("id");
+          SchematronPattern pattern  = new SchematronPattern(patternId);
+          patterns.add(pattern);
+          asserts.addAll(parseAsserts(patternId, patternNode));
+        });
+
+    schematronFile.setPatterns(patterns);
+    schematronFile.setAsserts(asserts);
+
+    return schematronFile;
+  }
+
+  private static List<SchematronAssert> parseAsserts(String patternId, IMicroNode patternNode) {
+    List<SchematronAssert> asserts = new ArrayList<>();
+
+    List<IMicroNode> children = patternNode.getAllChildrenRecursive();
+    if (children == null) {
+      logger.error("Schematron file has unexpected structure in pattern", patternId);
+      // return an empty list, so that the prasing can continue
+      return asserts;
+    }
+
+    children.stream()
         .filter(node -> node.isElement() && "assert".equals(node.getNodeName()))
         .forEach(n -> {
           IMicroElement element = (IMicroElement)n;
-          String id = element.getAttributeValue("id");
-          SchematronAssert schematronAssert = new SchematronAssert(id);
+          String assertId = element.getAttributeValue("id");
+          SchematronAssert schematronAssert = new SchematronAssert(assertId, patternId);
           String diag = element.getAttributeValue("diagnostics");
           schematronAssert.setDiagnostics(diag);
           asserts.add(schematronAssert);
         });
-
-    schematronFile.setAsserts(asserts);
-
-    return schematronFile;
+    return asserts;
   }
 
   private static void handleError(IError error, Path schematronFilePath) {

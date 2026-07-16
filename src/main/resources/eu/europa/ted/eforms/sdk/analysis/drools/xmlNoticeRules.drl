@@ -2,9 +2,12 @@ package eu.europa.ted.eforms.sdk.analysis.drools;
 
 unit SdkUnit;
 
-import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata
+import eu.europa.ted.eforms.sdk.analysis.vo.SdkMetadata;
+import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
 
 rule "Every notice example has correct SDK version"
+  @source(FILE)
+  @problem("Notice example has an incorrect CustomizationID")
 when
   /xmlNotices[ $n: this, customizationId != '' && customizationId != sdkMetadata.customizationId ]
 then
@@ -12,22 +15,28 @@ then
 end
 
 rule "Every notice example has a corresponding validation report"
+  @source(FILE)
+  @problem("Notice example has no validation report")
 when
   /xmlNotices[ $n: this, $exampleId : id ]
   not (exists /svrlReports[ id == $exampleId ])
 then
-  results.add(new ValidationResult($n, "the validation report is missing", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($n, "the validation report is missing", ValidationStatusEnum.ERROR, AssetRef.svrlReport($exampleId)));
 end
 
 rule "Every validation report has a corresponding notice example"
+  @source(FILE)
+  @problem("Validation report has no notice example")
 when
   /svrlReports[ $r: this, $exampleId : id ]
   not (exists /xmlNotices[ id == $exampleId ])
 then
-  results.add(new ValidationResult($r, "the notice example is missing", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($r, "the notice example is missing", ValidationStatusEnum.ERROR, AssetRef.xmlNotice($exampleId)));
 end
 
 rule "Every valid notice example has no errors in the corresponding validation report"
+  @source(FILE)
+  @problem("Validation report of a valid example contains errors")
 when
   /svrlReports[ $r: this, shouldBeValid == true && errorCount > 0 ]
 then

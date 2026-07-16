@@ -25,34 +25,66 @@ public class NoticeSubTypeForIndex implements Serializable {
   private List<String> viewTemplateIds = new ArrayList<>();
 
   public String getLabelId() {
-    return labelId;
+    return this.labelId;
+  }
+
+  public void setLabelId(final String labelId) {
+    this.labelId = labelId;
   }
 
   public List<String> getViewTemplateIds() {
-    return viewTemplateIds;
+    return this.viewTemplateIds;
+  }
+
+  public void setViewTemplateIds(final List<String> viewTemplateIds) {
+    this.viewTemplateIds = viewTemplateIds;
   }
 
   public NoticeLegalBasis getLegalBasis() {
-    return legalBasis;
+    return this.legalBasis;
+  }
+
+  public void setLegalBasis(final NoticeLegalBasis legalBasis) {
+    this.legalBasis = legalBasis;
   }
 
   public String getFormType() {
-    return formType;
+    return this.formType;
+  }
+
+  public void setFormType(final String formType) {
+    this.formType = formType;
   }
 
   public String getType() {
-    return type;
+    return this.type;
+  }
+
+  public void setType(final String type) {
+    this.type = type;
   }
 
   public String getDocumentType() {
-    return documentType;
+    return this.documentType;
+  }
+
+  public void setDocumentType(final String documentType) {
+    this.documentType = documentType;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
   }
 
   public String getSubTypeId() {
-    return subTypeId;
+    return this.subTypeId;
+  }
+
+  public void setSubTypeId(final String subTypeId) {
+    this.subTypeId = subTypeId;
   }
 }

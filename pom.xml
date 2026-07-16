@@ -4,7 +4,7 @@
 
   <groupId>eu.europa.ted.eforms</groupId>
   <artifactId>eforms-sdk-analyzer</artifactId>
-  <version>1.14.0</version>
+  <version>1.15.0</version>
   <packaging>kjar</packaging>
 
   <name>eForms SDK Analyzer</name>
@@ -38,7 +38,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.outputTimestamp>2025-11-28T08:07:06Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-11-28T08:41:45Z</project.build.outputTimestamp>
 
     <java.version>11</java.version>
 
@@ -46,8 +46,8 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
-    <version.eforms-core-java>1.4.0</version.eforms-core-java>
-    <version.efx-toolkit>2.0.0-alpha.4</version.efx-toolkit>
+    <version.eforms-core-java>1.6.0</version.eforms-core-java>
+    <version.efx-toolkit>2.0.0-alpha.6</version.efx-toolkit>
 
     <!-- Version - Third-party libraries -->
     <version.commons-collections4>4.4</version.commons-collections4>
@@ -277,6 +277,13 @@
       <groupId>org.drools</groupId>
       <artifactId>drools-ruleunits-engine</artifactId>
     </dependency>
+    <dependency>
+      <!-- Test-only: enables runtime DRL compilation in DroolsApplicabilityIntegrationTest,
+           which locks in the Drools metadata-shape assumption used by ApplicabilityFilter. -->
+      <groupId>org.drools</groupId>
+      <artifactId>drools-mvel</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <!-- Jackson -->
     <dependency>
@@ -344,15 +351,14 @@
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-generator-annprocess</artifactId>
     </dependency>
+    <!-- compile scope: the CLI configures logback programmatically (LoggingConfigurator). -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>info.picocli</groupId>
@@ -587,6 +593,8 @@
             <configuration>
               <publishingServerId>central</publishingServerId>
               <autoPublish>true</autoPublish>
+              <!-- Name displayed on the Central Portal "Deployments" page -->
+              <deploymentName>${project.artifactId} ${project.version}</deploymentName>
             </configuration>
           </plugin>
         </plugins>

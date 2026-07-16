@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "xpathAbsolute", "xpathRelative", "xsdSequenceOrder",
     "type",
     "attributeName", "attributeOf", "attributes",
+    "dateFieldId", "timeFieldId",
     "presetValue", "businessEntityId", "idSchemes", "idScheme", "schemeName", "referencedBusinessEntityIds",
     "legalType", "maxLength", "description",
     "privacy", "repeatable", "forbidden", "mandatory", "pattern", "numericRange", "codeList",
@@ -48,6 +49,13 @@ public class Field implements Serializable {
   private String attributeOf;
   private String attributeName;
   private List<String> attributes;
+
+  /** Reference to a sibling field of type {@code date} (set on {@code time} fields only). */
+  private String dateFieldId;
+
+  /** Reference to a sibling field of type {@code time} (set on {@code date} fields only). */
+  private String timeFieldId;
+
   private String presetValue;
 
   private String businessEntityId;
@@ -78,126 +86,258 @@ public class Field implements Serializable {
   private StringProperty assertion;
 
   public String getId() {
-    return id;
+    return this.id;
+  }
+
+  public void setId(final String id) {
+    this.id = id;
   }
 
   public String getParentNodeId() {
-    return parentNodeId;
+    return this.parentNodeId;
+  }
+
+  public void setParentNodeId(final String parentNodeId) {
+    this.parentNodeId = parentNodeId;
   }
 
   public XmlStructureNode getParentNode() {
-    return parentNode;
+    return this.parentNode;
   }
 
-  public void setParentNode(XmlStructureNode parentNode) {
+  public void setParentNode(final XmlStructureNode parentNode) {
     this.parentNode = parentNode;
   }
 
   public String getName() {
-    return name;
+    return this.name;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
   }
 
   public String getBtId() {
-    return btId;
+    return this.btId;
+  }
+
+  public void setBtId(final String btId) {
+    this.btId = btId;
   }
 
   public String getXpathAbsolute() {
-    return xpathAbsolute;
+    return this.xpathAbsolute;
+  }
+
+  public void setXpathAbsolute(final String xpathAbsolute) {
+    this.xpathAbsolute = xpathAbsolute;
   }
 
   public String getXpathRelative() {
-    return xpathRelative;
+    return this.xpathRelative;
+  }
+
+  public void setXpathRelative(final String xpathRelative) {
+    this.xpathRelative = xpathRelative;
   }
 
   public List<XmlElementPosition> getXsdSequenceOrder() {
-    return xsdSequenceOrder;
+    return this.xsdSequenceOrder;
+  }
+
+  public void setXsdSequenceOrder(final List<XmlElementPosition> xsdSequenceOrder) {
+    this.xsdSequenceOrder = xsdSequenceOrder;
   }
 
   public String getType() {
-    return type;
+    return this.type;
+  }
+
+  public void setType(final String type) {
+    this.type = type;
   }
 
   public String getAttributeOf() {
-    return attributeOf;
+    return this.attributeOf;
+  }
+
+  public void setAttributeOf(final String attributeOf) {
+    this.attributeOf = attributeOf;
   }
 
   public String getAttributeName() {
-    return attributeName;
+    return this.attributeName;
+  }
+
+  public void setAttributeName(final String attributeName) {
+    this.attributeName = attributeName;
   }
 
   public List<String> getAttributes() {
-    return attributes;
+    return this.attributes;
+  }
+
+  public void setAttributes(final List<String> attributes) {
+    this.attributes = attributes;
+  }
+
+  public String getDateFieldId() {
+    return this.dateFieldId;
+  }
+
+  public void setDateFieldId(final String dateFieldId) {
+    this.dateFieldId = dateFieldId;
+  }
+
+  public String getTimeFieldId() {
+    return this.timeFieldId;
+  }
+
+  public void setTimeFieldId(final String timeFieldId) {
+    this.timeFieldId = timeFieldId;
   }
 
   public String getPresetValue() {
-    return presetValue;
+    return this.presetValue;
+  }
+
+  public void setPresetValue(final String presetValue) {
+    this.presetValue = presetValue;
   }
 
   public String getBusinessEntityId() {
-    return businessEntityId;
+    return this.businessEntityId;
+  }
+
+  public void setBusinessEntityId(final String businessEntityId) {
+    this.businessEntityId = businessEntityId;
   }
 
   public List<String> getIdSchemes() {
-    return idSchemes;
+    return this.idSchemes;
+  }
+
+  public void setIdSchemes(final List<String> idSchemes) {
+    this.idSchemes = idSchemes;
   }
 
   public List<String> getReferencedBusinessEntityIds() {
-    return referencedBusinessEntityIds;
+    return this.referencedBusinessEntityIds;
+  }
+
+  public void setReferencedBusinessEntityIds(final List<String> referencedBusinessEntityIds) {
+    this.referencedBusinessEntityIds = referencedBusinessEntityIds;
   }
 
   public String getIdScheme() {
-    return idScheme;
+    return this.idScheme;
+  }
+
+  public void setIdScheme(final String idScheme) {
+    this.idScheme = idScheme;
   }
 
   public String getSchemeName() {
-    return schemeName;
+    return this.schemeName;
+  }
+
+  public void setSchemeName(final String schemeName) {
+    this.schemeName = schemeName;
   }
 
   public String getLegalType() {
-    return legalType;
+    return this.legalType;
+  }
+
+  public void setLegalType(final String legalType) {
+    this.legalType = legalType;
   }
 
   public Integer getMaxLength() {
-    return maxLength;
+    return this.maxLength;
+  }
+
+  public void setMaxLength(final Integer maxLength) {
+    this.maxLength = maxLength;
   }
 
   public FieldPrivacy getPrivacy() {
-    return privacy;
+    return this.privacy;
+  }
+
+  public void setPrivacy(final FieldPrivacy privacy) {
+    this.privacy = privacy;
   }
 
   public BooleanProperty getRepeatable() {
-    return repeatable;
+    return this.repeatable;
+  }
+
+  public void setRepeatable(final BooleanProperty repeatable) {
+    this.repeatable = repeatable;
   }
 
   public BooleanProperty getForbidden() {
-    return forbidden;
+    return this.forbidden;
+  }
+
+  public void setForbidden(final BooleanProperty forbidden) {
+    this.forbidden = forbidden;
   }
 
   public BooleanProperty getMandatory() {
-    return mandatory;
+    return this.mandatory;
+  }
+
+  public void setMandatory(final BooleanProperty mandatory) {
+    this.mandatory = mandatory;
   }
 
   public StringProperty getPattern() {
-    return pattern;
+    return this.pattern;
+  }
+
+  public void setPattern(final StringProperty pattern) {
+    this.pattern = pattern;
   }
 
   public RangeNumericProperty getNumericRange() {
-    return numericRange;
+    return this.numericRange;
+  }
+
+  public void setNumericRange(final RangeNumericProperty numericRange) {
+    this.numericRange = numericRange;
   }
 
   public CodeListProperty getCodeList() {
-    return codeList;
+    return this.codeList;
+  }
+
+  public void setCodeList(final CodeListProperty codeList) {
+    this.codeList = codeList;
   }
 
   public ChangeableOrCpProperty getInChangeNotice() {
-    return inChangeNotice;
+    return this.inChangeNotice;
+  }
+
+  public void setInChangeNotice(final ChangeableOrCpProperty inChangeNotice) {
+    this.inChangeNotice = inChangeNotice;
   }
 
   public ChangeableOrCpProperty getInContinueProcedure() {
-    return inContinueProcedure;
+    return this.inContinueProcedure;
+  }
+
+  public void setInContinueProcedure(final ChangeableOrCpProperty inContinueProcedure) {
+    this.inContinueProcedure = inContinueProcedure;
   }
 
   public StringProperty getAssertion() {
-    return assertion;
+    return this.assertion;
+  }
+
+  public void setAssertion(final StringProperty assertion) {
+    this.assertion = assertion;
   }
 }

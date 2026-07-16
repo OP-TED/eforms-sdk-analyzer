@@ -19,7 +19,7 @@ Feature: Schematron files - Assert id validation
     When I load all schematron files
     And I execute validation
     Then Rule "<expected rule>" should have been fired
-    And I should get 2 SDK validation errors
+    And I should get 3 SDK validation errors
 
     Examples:
      | expected rule                      |

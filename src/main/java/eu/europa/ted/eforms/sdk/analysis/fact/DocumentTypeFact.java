@@ -2,8 +2,6 @@ package eu.europa.ted.eforms.sdk.analysis.fact;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
-import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentType;
 
 public class DocumentTypeFact implements SdkComponentFact<String> {
@@ -16,18 +14,25 @@ public class DocumentTypeFact implements SdkComponentFact<String> {
   }
 
   public String getSchemaLocation() {
-    return documentType.getSchemaLocation();
+    return this.documentType.getSchemaLocation();
   }
 
-  public boolean schemaLocationExists(Path sdkRoot) {
-    return Files
-        .exists(Path.of(Optional.ofNullable(sdkRoot).orElse(Path.of(StringUtils.EMPTY)).toString(),
-            documentType.getSchemaLocation()));
+  public boolean schemaLocationExists(final Path sdkRoot) {
+    // The "Document types use existing schemaLocation" rule that calls this is
+    // tagged @source(FILE) so it is skipped under SourceKind.DATABASE. It can,
+    // however, still fire under a custom FILE source that does not back its
+    // content with a real path (e.g. an in-memory or archive-backed reader),
+    // in which case sdkRoot on SdkUnit is null. Treat that as "not verifiable
+    // here" rather than NPE; the rule is effectively not applicable.
+    if (sdkRoot == null) {
+      return true;
+    }
+    return Files.exists(Path.of(sdkRoot.toString(), this.documentType.getSchemaLocation()));
   }
 
   @Override
   public String getId() {
-    return documentType.getId();
+    return this.documentType.getId();
   }
 
   @Override

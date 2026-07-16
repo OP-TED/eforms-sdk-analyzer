@@ -14,22 +14,42 @@ public class DocumentType implements Serializable {
   private List<DocumentTypeNamespace> additionalNamespaces;
 
   public String getId() {
-    return id;
+    return this.id;
+  }
+
+  public void setId(final String id) {
+    this.id = id;
   }
 
   public String getNamespace() {
-    return namespace;
+    return this.namespace;
+  }
+
+  public void setNamespace(final String namespace) {
+    this.namespace = namespace;
   }
 
   public String getRootElement() {
-    return rootElement;
+    return this.rootElement;
+  }
+
+  public void setRootElement(final String rootElement) {
+    this.rootElement = rootElement;
   }
 
   public String getSchemaLocation() {
-    return schemaLocation;
+    return this.schemaLocation;
+  }
+
+  public void setSchemaLocation(final String schemaLocation) {
+    this.schemaLocation = schemaLocation;
   }
 
   public List<DocumentTypeNamespace> getAdditionalNamespaces() {
-    return additionalNamespaces;
+    return this.additionalNamespaces;
+  }
+
+  public void setAdditionalNamespaces(final List<DocumentTypeNamespace> additionalNamespaces) {
+    this.additionalNamespaces = additionalNamespaces;
   }
 }

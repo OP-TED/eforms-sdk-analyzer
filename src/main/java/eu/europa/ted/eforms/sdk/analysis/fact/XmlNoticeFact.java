@@ -32,4 +32,9 @@ public class XmlNoticeFact implements SdkComponentFact<String> {
   public String getTypeName() {
     return "xmlNotice";
   }
+
+  @Override
+  public String getSdkPath() {
+    return "examples/notices/" + xmlNotice.getFilename();
+  }
 }

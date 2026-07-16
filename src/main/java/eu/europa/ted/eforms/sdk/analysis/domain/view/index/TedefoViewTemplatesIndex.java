@@ -11,6 +11,10 @@ public class TedefoViewTemplatesIndex extends EFormsTrackableEntity {
   private List<TedefoViewTemplateIndex> viewTemplates;
 
   public List<TedefoViewTemplateIndex> getViewTemplates() {
-    return viewTemplates;
+    return this.viewTemplates;
+  }
+
+  public void setViewTemplates(final List<TedefoViewTemplateIndex> viewTemplates) {
+    this.viewTemplates = viewTemplates;
   }
 }

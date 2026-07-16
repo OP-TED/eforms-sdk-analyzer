@@ -10,14 +10,26 @@ public class DocumentTypeNamespace implements Serializable {
   private String schemaLocation;
 
   public String getPrefix() {
-    return prefix;
+    return this.prefix;
+  }
+
+  public void setPrefix(final String prefix) {
+    this.prefix = prefix;
   }
 
   public String getUri() {
-    return uri;
+    return this.uri;
+  }
+
+  public void setUri(final String uri) {
+    this.uri = uri;
   }
 
   public String getSchemaLocation() {
-    return schemaLocation;
+    return this.schemaLocation;
+  }
+
+  public void setSchemaLocation(final String schemaLocation) {
+    this.schemaLocation = schemaLocation;
   }
 }

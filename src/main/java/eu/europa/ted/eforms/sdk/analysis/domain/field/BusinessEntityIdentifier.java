@@ -15,26 +15,50 @@ public class BusinessEntityIdentifier {
   private String captionFieldId;
 
   public IdentifierSchemeFormatName getFormatName() {
-    return formatName;
+    return this.formatName;
+  }
+
+  public void setFormatName(final IdentifierSchemeFormatName formatName) {
+    this.formatName = formatName;
   }
 
   public String getPrefix() {
-    return prefix;
+    return this.prefix;
+  }
+
+  public void setPrefix(final String prefix) {
+    this.prefix = prefix;
   }
 
   public String getSchemeName() {
-    return schemeName;
+    return this.schemeName;
+  }
+
+  public void setSchemeName(final String schemeName) {
+    this.schemeName = schemeName;
   }
 
   public String getReferencedBusinessEntityId() {
-    return referencedBusinessEntityId;
+    return this.referencedBusinessEntityId;
+  }
+
+  public void setReferencedBusinessEntityId(final String referencedBusinessEntityId) {
+    this.referencedBusinessEntityId = referencedBusinessEntityId;
   }
 
   public String getIdentifierFieldId() {
-    return identifierFieldId;
+    return this.identifierFieldId;
+  }
+
+  public void setIdentifierFieldId(final String identifierFieldId) {
+    this.identifierFieldId = identifierFieldId;
   }
 
   public String getCaptionFieldId() {
-    return captionFieldId;
+    return this.captionFieldId;
+  }
+
+  public void setCaptionFieldId(final String captionFieldId) {
+    this.captionFieldId = captionFieldId;
   }
 }

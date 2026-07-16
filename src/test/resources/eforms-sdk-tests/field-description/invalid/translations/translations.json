@@ -1,0 +1,13 @@
+{
+  "files" : [ {
+    "assetType" : "field",
+    "twoLetterCode" : "en",
+    "threeLetterCode" : "eng",
+    "filename" : "field_en.xml"
+  } ],
+  "languages" : [ {
+    "description" : "English",
+    "twoLetterCode" : "en",
+    "threeLetterCode" : "eng"
+  } ]
+}

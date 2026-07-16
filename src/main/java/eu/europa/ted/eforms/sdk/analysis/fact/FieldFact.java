@@ -53,7 +53,10 @@ public class FieldFact implements SdkComponentFact<String> {
 
     XmlStructureNode currentAncestor = field.getParentNode();
 
-    while (currentAncestor != null) {
+    // visited guards against a cycle in the node hierarchy (a malformed SDK): without it a loop
+    // in the parent chain would spin forever. The cycle itself is reported by the loops rule.
+    final Set<XmlStructureNode> visited = new HashSet<>();
+    while (currentAncestor != null && visited.add(currentAncestor)) {
       if (currentAncestor.getId().equals(ancestorNodeId)) {
         return true;
       }
@@ -317,6 +320,11 @@ public class FieldFact implements SdkComponentFact<String> {
   @Override
   public String getId() {
     return field.getId();
+  }
+
+  /** The id of the business term this field belongs to (its {@code btId}), or {@code null}. */
+  public String getBtId() {
+    return field.getBtId();
   }
 
   @Override

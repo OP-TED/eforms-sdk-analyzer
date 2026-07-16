@@ -4,15 +4,18 @@ unit SdkUnit;
 
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlStructureNode;
+import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
 
 rule "Fields.json has correct SDK version"
+  @problem("SDK version in fields.json does not match the version in pom.xml")
 when
   /fieldsAndNodesMetadata[ $f: this, $version: sdkVersion, $version != "eforms-sdk-" + sdkMetadata.version ]
 then
-  results.add(new ValidationResult($f, "The value " + $version + " in sdkVersion is incorrect", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "fields.json declares sdkVersion '" + $version + "' but the pom.xml version requires '" + "eforms-sdk-" + sdkMetadata.getVersion() + "'", ValidationStatusEnum.ERROR));
 end
 
 rule "Every node has at least one child"
+  @problem("Node has no child node or field")
 when
   /nodes[ $n: this, $nodeId : id ]
   not (exists /nodes[ parentId == $nodeId ] or /fields[ parentId == $nodeId ])
@@ -21,22 +24,25 @@ then
 end
 
 rule "Every node parent ID corresponds to an existing node"
+  @problem("Node's parent node is missing")
 when
   /nodes[ $n: this, $parentId : parentId, parentId != null ]
   not (exists /nodes[ id == $parentId ])
 then
-  results.add(new ValidationResult($n, "Node parent ID " + $parentId + " does not correspond to an existing node", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($n, "Node parent ID " + $parentId + " does not correspond to an existing node", ValidationStatusEnum.ERROR, AssetRef.node($parentId)));
 end
 
 rule "Every field parent ID corresponds to an existing node"
+  @problem("Field's parent node is missing")
 when
   /fields[ $f: this, $parentId : parentId ]
   not (exists /nodes[ id == $parentId ])
 then
-  results.add(new ValidationResult($f, "Field parent ID " + $parentId + " does not correspond to an existing node", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Field parent ID " + $parentId + " does not correspond to an existing node", ValidationStatusEnum.ERROR, AssetRef.node($parentId)));
 end
 
 rule "There are no loops in the node structure"
+  @problem("Node is part of its own ancestors (cycle in the node hierarchy)")
 when
   $ancestorsId : /nodes[ $n: this, $nodeId : id ]/ancestors/id
   exists /nodes[ id == $nodeId, id == $ancestorsId ]
@@ -45,6 +51,7 @@ then
 end
 
 rule "The absolute XPath of every node is consistent with its parent and its relative XPath"
+  @problem("Node's absolute XPath is inconsistent with its parent and relative XPath")
 when
   /nodes[ $n: this, $absoluteXpath : xpathAbsolute, parent != null, $parentXpath : parent.xpathAbsolute, $relativeXpath : xpathRelative, $absoluteXpath != "" + $parentXpath + "/" + $relativeXpath ]
 then
@@ -52,6 +59,7 @@ then
 end
 
 rule "The absolute XPath of every field is consistent with its parent and its relative XPath"
+  @problem("Field's absolute XPath is inconsistent with its parent and relative XPath")
 when
   /fields[ $f: this, $absoluteXpath : xpathAbsolute, parent != null, $parentXpath : parent.xpathAbsolute, $relativeXpath : xpathRelative, $absoluteXpath != "" + $parentXpath + "/" + $relativeXpath ]
 then
@@ -59,71 +67,86 @@ then
 end
 
 rule "The notice subtype referenced in field constraints exists"
+  @problem("Field constraint references a missing notice subtype")
 when
   $noticeType : /fields[ $f: this ]/allNoticeTypes
   not (exists /noticeTypes[ id == $noticeType ])
 then
-  results.add(new ValidationResult($f, "The referenced notice subtype " + $noticeType + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "The referenced notice subtype " + $noticeType + " does not exist", ValidationStatusEnum.ERROR, AssetRef.noticeType($noticeType)));
 end
 
 rule "The codelist referenced in the codelist property exists"
+  @problem("Field references a missing codelist")
 when
   $codelistId : /fields[ $f: this ]/codelistId
   not (exists /codelists[ id == $codelistId ])
 then
-  results.add(new ValidationResult($f, "Codelist " + $codelistId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Codelist " + $codelistId + " does not exist", ValidationStatusEnum.ERROR, AssetRef.codelist($codelistId)));
 end
 
 rule "Field is present in the notice type definitions for which it is mandatory"
+  @problem("Mandatory field is absent from a notice subtype definition")
 when
-  $noticeTypeIds : /fields[ $f: this, $fieldId: id, alwaysMandatoryConstraint != null ]/alwaysMandatoryConstraint.noticeTypes
-  not (exists /noticeTypes[ id == $noticeTypeIds, fieldIds contains $fieldId ])
+  $noticeTypeId : /fields[ $f: this, $fieldId: id, alwaysMandatoryConstraint != null ]/alwaysMandatoryConstraint.noticeTypes
+  // Only flag the field when the notice subtype actually exists but omits it. When the subtype is
+  // missing entirely, that is reported by "The notice subtype referenced in field constraints
+  // exists" and "All expected notice subtypes are present", so we do not pile on here. The subtype is
+  // the subject — it exists, and the fix is to add the field to its definition — so the report groups
+  // by field "@" the notice subtype file(s) that omit it.
+  $nt : /noticeTypes[ id == $noticeTypeId ]
+  not (exists /noticeTypes[ id == $noticeTypeId, fieldIds contains $fieldId ])
 then
-  results.add(new ValidationResult($f, "Field is mandatory for notice subtype " + $noticeTypeIds + " but not present in the notice type definition.", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($nt, "Mandatory field " + $fieldId + " is absent from the definition of notice subtype " + $noticeTypeId + ".", ValidationStatusEnum.ERROR, AssetRef.field($fieldId)));
 end
 
 rule "Fields referenced in privacy property exist"
+  @problem("Field's privacy property references a missing field")
 when
   $fieldReference : /fields[ $f: this ]/referencedPrivacyFieldIds
   not (exists /fields[ id == $fieldReference ])
 then
-  results.add(new ValidationResult($f, "privacy property references non existing field " + $fieldReference, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "privacy property references non existing field " + $fieldReference, ValidationStatusEnum.ERROR, AssetRef.field($fieldReference)));
 end
 
 rule "Code referenced in privacy property is in the expected codelist"
+  @problem("Field's privacy code is not in the expected codelist")
 when
   $privacyCode : /fields[ $f: this ]/privacyCode
   $codelistId : /fields[ id == $f.unpublishedFieldId ]/codelistId
   not (exists /codelists[ id == $codelistId, codes contains $privacyCode ])
 then
-  results.add(new ValidationResult($f, "Privacy code " + $privacyCode + " is not in the codelist " + $codelistId, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Privacy code " + $privacyCode + " is not in the codelist " + $codelistId, ValidationStatusEnum.ERROR, AssetRef.codelist($codelistId)));
 end
 
 rule "Absolute XPath of field is not equal to the absolute XPath of a node"
+  @problem("Field has the same absolute XPath as a node")
 when
   /fields[ $f: this, $xpathAbsoluteField: xpathAbsolute ];
   /nodes[ $nodeId : id, xpathAbsolute == $xpathAbsoluteField ]
 then
-  results.add(new ValidationResult($f, "Absolute XPath is the same as for node " + $nodeId, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Absolute XPath is the same as for node " + $nodeId, ValidationStatusEnum.ERROR, AssetRef.node($nodeId)));
 end
 
 rule "Absolute XPath of field is not equal to the absolute XPath of another field"
+  @problem("Field has the same absolute XPath as another field")
 when
   /fields[ $f: this, $xpathAbsoluteField: xpathAbsolute, !id.startsWith("OPA-") ];
   /fields[ $otherFieldId : id, id < $f.id, !id.startsWith("OPA-"), xpathAbsolute == $xpathAbsoluteField ]
 then
-  results.add(new ValidationResult($f, "Absolute XPath is the same as for field " + $otherFieldId, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Absolute XPath is the same as for field " + $otherFieldId, ValidationStatusEnum.ERROR, AssetRef.field($otherFieldId)));
 end
 
 rule "Absolute XPath of node is not equal to the absolute XPath of another node"
+  @problem("Node has the same absolute XPath as another node")
 when
   /nodes[ $n: this, $xpathAbsoluteNode: xpathAbsolute ];
   /nodes[ $otherNodeId : id, id < $n.id, xpathAbsolute == $xpathAbsoluteNode ]
 then
-  results.add(new ValidationResult($n, "Absolute XPath is the same as for node " + $otherNodeId, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($n, "Absolute XPath is the same as for node " + $otherNodeId, ValidationStatusEnum.ERROR, AssetRef.node($otherNodeId)));
 end
 
 rule "Relative XPath of field does not contain an ascending step"
+  @problem("Field's relative XPath contains an ascending step")
 when
   /fields[ $f: this, $invalidSteps: invalidXpathRelativeSteps, $invalidSteps != null, $invalidSteps.size() > 0 ]
 then
@@ -131,6 +154,7 @@ then
 end
 
 rule "Relative XPath of node does not contain an ascending step"
+  @problem("Node's relative XPath contains an ascending step")
 when
   /nodes[ $n: this, $invalidSteps: invalidXpathRelativeSteps, $invalidSteps != null, $invalidSteps.size() > 0 ]
 then
@@ -138,6 +162,8 @@ then
 end
 
 rule "Every field has an XSD sequence order"
+  @source(FILE)
+  @problem("Field is missing its XSD sequence order")
 when
   /fields[ $f: this, xsdSequenceOrder == null ]
 then
@@ -145,6 +171,8 @@ then
 end
 
 rule "Every non-root node has an XSD sequence order"
+  @source(FILE)
+  @problem("Node is missing its XSD sequence order")
 when
   /nodes[ $n: this, parentId != null, xsdSequenceOrder == null ]
 then
@@ -152,6 +180,8 @@ then
 end
 
 rule "Every field has XSD sequence order consistent with relative xpath"
+  @source(FILE)
+  @problem("Field's XSD sequence order is inconsistent with its relative XPath")
 when
   /fields[ $f: this, xsdSequenceOrderCount != xpathRelativeElementCount ]
 then
@@ -159,6 +189,8 @@ then
 end
 
 rule "Every non-root node has XSD sequence order consistent with relative xpath"
+  @source(FILE)
+  @problem("Node's XSD sequence order is inconsistent with its relative XPath")
 when
   /nodes[ $n: this, parentId != null, xsdSequenceOrderCount != xpathRelativeElementCount ]
 then
@@ -166,14 +198,38 @@ then
 end
 
 rule "The labels referenced in field properties exist"
+  @problem("Label is referenced but is missing")
 when
   $labelId : /fields[ $f: this ]/allLabelIds
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($f, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, AssetRef.label($labelId)));
+end
+
+// TEDEMD-90: a field shown in a notice type definition should have a description label — on the field
+// itself, or failing that on its business term. Database-only: a content-completeness check for the
+// metadata editor, not an SDK packaging invariant, so it does not run against an exported SDK.
+//
+// Checks the "description" label, as the original MDM implementation did. The ticket spoke of the
+// field "tooltip", which is the "hint" label rather than "description" — so whether this should check
+// description or hint is still to be confirmed against the original user request.
+rule "Fields used in notice types have a description label"
+  @source(DATABASE)
+  @problem("Field used in a notice type has no description label")
+when
+  $field : /fields[ $fieldId: id ]
+  exists /noticeTypes[ contentFieldIds contains $fieldId ]
+  $fieldLabelId : String() from ("field|description|" + $fieldId)
+  $btLabelId : String() from ("business-term|description|" + $field.btId)
+  not (exists /labels[ id == $fieldLabelId ])
+  not (exists /labels[ id == $btLabelId ])
+then
+  results.add(new ValidationResult($field, "Field " + $fieldId
+      + " is used in a notice type but has no description label", ValidationStatusEnum.ERROR));
 end
 
 rule "Fields corresponding to XML attributes have the expected information"
+  @problem("Attribute field is missing attributeName or attributeOf")
 when
   /fields[ $f: this, isAttribute == true, attributeName == null || attributeOf == null ]
 then
@@ -181,14 +237,16 @@ then
 end
 
 rule "Relationships between fields for element and attribute are consistent"
+  @problem("Attribute field's relationship with its field is inconsistent")
 when
   /fields[ $f: this, $attributeFieldId: id, $elementFieldId: attributeOf, attributeOf != null ]
   not (exists /fields[ id == $elementFieldId, attributes contains $attributeFieldId ])
 then
-  results.add(new ValidationResult($f, "Relationship with field " + $elementFieldId + " is incorrect", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "Relationship with field " + $elementFieldId + " is incorrect", ValidationStatusEnum.ERROR, AssetRef.field($elementFieldId)));
 end
 
 rule "All fields of type code have a codelist property"
+  @problem("Code field has no codelist property")
 when
   /fields[ $f: this, type == "code", codelistId == null ]
 then
@@ -196,6 +254,7 @@ then
 end
 
 rule "Fields with the schemeName property have a corresponding attribute field with the expected preset value"
+  @problem("schemeName does not match the preset value of its attribute field")
 when
   $attributeFieldId : /fields[ $f: this, $schemeName: schemeName, schemeName != null ]/attributes
   not (exists /fields[ id == $attributeFieldId, attributeName == "schemeName", presetValue == $schemeName ])
@@ -204,6 +263,7 @@ then
 end
 
 rule "Field constraints do not have duplicate notice types identifiers"
+  @problem("Field constraint lists duplicate notice subtypes")
 when
   /fields[ $f: this, $duplicateNoticeTypes: duplicateNoticeTypes, $duplicateNoticeTypes.size() > 0 ]
 then
@@ -211,41 +271,46 @@ then
 end
 
 rule "All fields are part of an existing business entity"
+  @problem("Field's business entity is missing or unset")
 when
   /fields[ $f: this, $businessEntityId: businessEntityId ]
   not (exists /businessEntities[ id == $businessEntityId ])
 then
-  results.add(new ValidationResult($f, "BusinessEntityId is not indicated or does not exist : " + $businessEntityId, ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($f, "BusinessEntityId is not indicated or does not exist : " + $businessEntityId, ValidationStatusEnum.ERROR, AssetRef.businessEntity($businessEntityId)));
 end
 
 rule "Business entities have a correct label identifier"
+  @problem("Label is referenced but is missing")
 when
   /businessEntities[ $b: this, $labelId: labelId ]
   not (exists /labels[ id == $labelId ])
 then
-  results.add(new ValidationResult($b, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($b, "Referenced label " + $labelId + " does not exist", ValidationStatusEnum.ERROR, AssetRef.label($labelId)));
 end
 
 rule "Relationships between business entities and nodes are consistent"
+  @problem("Business entity's node relationship is inconsistent")
 when
   /businessEntities[ $b: this, $businessEntityId: id, $nodeId: repeatsWithNodeId, repeatsWithNodeId != null ]
   not (exists /nodes[ id == $nodeId, businessEntityId == $businessEntityId ])
 then
-  results.add(new ValidationResult($b, "Relationship with node " + $nodeId + " is incorrect", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($b, "Relationship with node " + $nodeId + " is incorrect", ValidationStatusEnum.ERROR, AssetRef.node($nodeId)));
 end
 
 rule "Relationships between business entities and identifier fields are consistent"
+  @problem("Business entity's identifier-field relationship is inconsistent")
 when
   /businessEntities[ $b: this, $businessEntityId: id, $fieldId: identifierFieldId, identifierFieldId != null ]
   not (exists /fields[ id == $fieldId, businessEntityId == $businessEntityId ])
 then
-  results.add(new ValidationResult($b, "Relationship with identifier field " + $fieldId + " is incorrect", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($b, "Relationship with identifier field " + $fieldId + " is incorrect", ValidationStatusEnum.ERROR, AssetRef.field($fieldId)));
 end
 
 rule "Relationships between business entities and caption fields are consistent"
+  @problem("Business entity's caption-field relationship is inconsistent")
 when
   /businessEntities[ $b: this, $businessEntityId: id, $referencedBusinessEntityId: referencedBusinessEntityId, $fieldId: captionFieldId, captionFieldId != null ]
   not (exists /fields[ id == $fieldId, businessEntityId == $businessEntityId || businessEntityId == $referencedBusinessEntityId ])
 then
-  results.add(new ValidationResult($b, "Relationship with caption field " + $fieldId + " is incorrect", ValidationStatusEnum.ERROR));
+  results.add(new ValidationResult($b, "Relationship with caption field " + $fieldId + " is incorrect", ValidationStatusEnum.ERROR, AssetRef.field($fieldId)));
 end

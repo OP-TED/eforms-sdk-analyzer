@@ -131,6 +131,11 @@ public class XmlSchemaValidator implements Validator {
         }
       });
     } else {
+      if (field.getParentNode() == null) {
+        // Parent node is missing (reported by the "Field's parent node is missing" rule);
+        // repeatability cannot be checked without it.
+        return;
+      }
       final QName parentQName = buildQName(getLastElementName(field.getParentNode().getXpathRelative()));
 
       XmlSchemaElement parentElement = schemaCollection.getElementByQName(parentQName);
@@ -171,6 +176,11 @@ public class XmlSchemaValidator implements Validator {
     }
 
     XmlStructureNode parentNode = node.getParent();
+    if (parentNode == null) {
+      // Parent node is missing (reported by the "Node's parent node is missing" rule);
+      // repeatability cannot be checked without it.
+      return;
+    }
 
     if (parentNode.getId().equals(ROOT_NODE_ID)) {
       documentTypes.stream().forEach(dt -> {

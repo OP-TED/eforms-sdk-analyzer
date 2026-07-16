@@ -12,14 +12,26 @@ public class EFormsTrackableEntity implements Serializable {
   private MetadataDatabase metadataDatabase;
 
   public String getUblVersion() {
-    return ublVersion;
+    return this.ublVersion;
+  }
+
+  public void setUblVersion(final String ublVersion) {
+    this.ublVersion = ublVersion;
   }
 
   public String getSdkVersion() {
-    return sdkVersion;
+    return this.sdkVersion;
+  }
+
+  public void setSdkVersion(final String sdkVersion) {
+    this.sdkVersion = sdkVersion;
   }
 
   public MetadataDatabase getMetadataDatabase() {
-    return metadataDatabase;
+    return this.metadataDatabase;
+  }
+
+  public void setMetadataDatabase(final MetadataDatabase metadataDatabase) {
+    this.metadataDatabase = metadataDatabase;
   }
 }

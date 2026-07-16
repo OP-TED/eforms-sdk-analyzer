@@ -11,6 +11,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.IVersionProvider;
 import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
 
@@ -25,15 +26,23 @@ class CliCommand implements Callable<Integer> {
   @Parameters(index = "0", description = "SDK resources root folder.")
   private Path sdkRoot;
 
+  @Option(names = {"--skip-efx"},
+      description = "Skip the EFX expression validation of view templates. It is the slowest"
+          + " validator and is independent of the rule engine, so skipping it greatly speeds up"
+          + " runs while debugging the rules. Findings from the other validators are unaffected.")
+  private boolean skipEfx;
+
   @Override
   public Integer call() throws Exception {
-    return SdkAnalyzer.analyze(sdkRoot);
+    new LoggingConfigurator().configure();
+    return SdkAnalyzer.analyze(this.sdkRoot, this.skipEfx);
   }
 
-  @Command(name = "benchmark", mixinStandardHelpOptions = true, 
+  @Command(name = "benchmark", mixinStandardHelpOptions = true,
       description = "Run benchmark of Schematron rules")
   public int runBenchmark() throws Exception {
-    return SchematronBenchmark.run(sdkRoot);
+    new LoggingConfigurator().configure();
+    return SchematronBenchmark.run(this.sdkRoot);
   }
 
   /**

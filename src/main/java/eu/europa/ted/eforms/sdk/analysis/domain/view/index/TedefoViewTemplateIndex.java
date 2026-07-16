@@ -18,22 +18,42 @@ public class TedefoViewTemplateIndex implements Serializable {
   private List<String> noticeSubtypeIds;
 
   public String getId() {
-    return id;
+    return this.id;
+  }
+
+  public void setId(final String id) {
+    this.id = id;
   }
 
   public String getFilename() {
-    return filename;
+    return this.filename;
+  }
+
+  public void setFilename(final String filename) {
+    this.filename = filename;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
   }
 
   public String getLabelId() {
-    return labelId;
+    return this.labelId;
+  }
+
+  public void setLabelId(final String labelId) {
+    this.labelId = labelId;
   }
 
   public List<String> getNoticeSubtypeIds() {
-    return noticeSubtypeIds;
+    return this.noticeSubtypeIds;
+  }
+
+  public void setNoticeSubtypeIds(final List<String> noticeSubtypeIds) {
+    this.noticeSubtypeIds = noticeSubtypeIds;
   }
 }

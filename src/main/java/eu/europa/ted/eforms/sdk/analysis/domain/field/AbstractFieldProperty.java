@@ -39,19 +39,31 @@ public abstract class AbstractFieldProperty<C extends AbstractConstraint<V>, V e
   private final List<C> constraints = new ArrayList<>();
 
   public V getValue() {
-    return value;
+    return this.value;
+  }
+
+  public void setValue(final V value) {
+    this.value = value;
   }
 
   public PropertyOrConstraintSeverity getSeverity() {
-    return severity;
+    return this.severity;
+  }
+
+  public void setSeverity(final PropertyOrConstraintSeverity severity) {
+    this.severity = severity;
   }
 
   public String getMessage() {
-    return message;
+    return this.message;
+  }
+
+  public void setMessage(final String message) {
+    this.message = message;
   }
 
   public List<C> getConstraints() {
-    return constraints;
+    return this.constraints;
   }
 
   /**
