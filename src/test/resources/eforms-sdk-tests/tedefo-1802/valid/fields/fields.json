@@ -1851,7 +1851,7 @@
     "presetValue" : "CrossBorderLaw",
     "legalType" : "TEXT",
     "privacy" : {
-      "code" : "cro-bor-law",
+      "code" : "eop-info",
       "unpublishedFieldId" : "BT-195(BT-09)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-09)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-09)-Procedure",
@@ -1885,7 +1885,7 @@
     "legalType" : "TEXT",
     "maxLength" : 1000,
     "privacy" : {
-      "code" : "cro-bor-law",
+      "code" : "eop-info",
       "unpublishedFieldId" : "BT-195(BT-09)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-09)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-09)-Procedure",
@@ -1952,7 +1952,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "pro-typ",
+      "code" : "not-fram",
       "unpublishedFieldId" : "BT-195(BT-105)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-105)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-105)-Procedure",
@@ -2053,7 +2053,7 @@
     "type" : "code",
     "legalType" : "INDICATOR",
     "privacy" : {
-      "code" : "pro-acc",
+      "code" : "ori-info",
       "unpublishedFieldId" : "BT-195(BT-106)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-106)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-106)-Procedure",
@@ -2174,7 +2174,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "not-app-val",
+      "code" : "rev-info",
       "unpublishedFieldId" : "BT-195(BT-1118)-NoticeResult",
       "reasonCodeFieldId" : "BT-197(BT-1118)-NoticeResult",
       "reasonDescriptionFieldId" : "BT-196(BT-1118)-NoticeResult",
@@ -2298,7 +2298,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "not-max-val",
+      "code" : "cri-awrd",
       "unpublishedFieldId" : "BT-195(BT-118)-NoticeResult",
       "reasonCodeFieldId" : "BT-197(BT-118)-NoticeResult",
       "reasonDescriptionFieldId" : "BT-196(BT-118)-NoticeResult",
@@ -2583,7 +2583,7 @@
     "type" : "text",
     "legalType" : "IDENTIFIER",
     "privacy" : {
-      "code" : "dir-awa-pre",
+      "code" : "sub-lohi",
       "unpublishedFieldId" : "BT-195(BT-1252)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-1252)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-1252)-Procedure",
@@ -3070,7 +3070,7 @@
     "legalType" : "TEXT",
     "maxLength" : 6000,
     "privacy" : {
-      "code" : "dir-awa-tex",
+      "code" : "sub-stat",
       "unpublishedFieldId" : "BT-195(BT-135)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-135)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-135)-Procedure",
@@ -3100,7 +3100,7 @@
     "legalType" : "TEXT",
     "maxLength" : 4000,
     "privacy" : {
-      "code" : "pro-acc-jus",
+      "code" : "rev-info",
       "unpublishedFieldId" : "BT-195(BT-1351)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-1351)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-1351)-Procedure",
@@ -3129,7 +3129,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "dir-awa-jus",
+      "code" : "sub-info",
       "unpublishedFieldId" : "BT-195(BT-136)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-136)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-136)-Procedure",
@@ -3664,7 +3664,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "win-cho",
+      "code" : "not-valu",
       "unpublishedFieldId" : "BT-195(BT-142)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-142)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-142)-LotResult",
@@ -3709,7 +3709,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "no-awa-rea",
+      "code" : "ori-info",
       "unpublishedFieldId" : "BT-195(BT-144)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-144)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-144)-LotResult",
@@ -4022,7 +4022,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "gro-max-val",
+      "code" : "not-fram",
       "unpublishedFieldId" : "BT-195(BT-156)-NoticeResult",
       "reasonCodeFieldId" : "BT-197(BT-156)-NoticeResult",
       "reasonDescriptionFieldId" : "BT-196(BT-156)-NoticeResult",
@@ -4051,7 +4051,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "gro-ree-val",
+      "code" : "sub-lohi",
       "unpublishedFieldId" : "BT-195(BT-1561)-NoticeResult",
       "reasonCodeFieldId" : "BT-197(BT-1561)-NoticeResult",
       "reasonDescriptionFieldId" : "BT-196(BT-1561)-NoticeResult",
@@ -4148,7 +4148,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "con-rev-buy",
+      "code" : "eop-info",
       "unpublishedFieldId" : "BT-195(BT-160)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-160)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-160)-Tender",
@@ -4177,7 +4177,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "not-val",
+      "code" : "con-esti",
       "unpublishedFieldId" : "BT-195(BT-161)-NoticeResult",
       "reasonCodeFieldId" : "BT-197(BT-161)-NoticeResult",
       "reasonDescriptionFieldId" : "BT-196(BT-161)-NoticeResult",
@@ -4206,7 +4206,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "con-rev-use",
+      "code" : "cri-awrd",
       "unpublishedFieldId" : "BT-195(BT-162)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-162)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-162)-Tender",
@@ -4236,7 +4236,7 @@
     "legalType" : "TEXT",
     "maxLength" : 6000,
     "privacy" : {
-      "code" : "val-con-des",
+      "code" : "not-fram",
       "unpublishedFieldId" : "BT-195(BT-163)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-163)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-163)-Tender",
@@ -4332,7 +4332,7 @@
     "type" : "integer",
     "legalType" : "NUMBER",
     "privacy" : {
-      "code" : "ten-ran",
+      "code" : "sub-info",
       "unpublishedFieldId" : "BT-195(BT-171)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-171)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-171)-Tender",
@@ -4446,7 +4446,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "cou-ori",
+      "code" : "not-valu",
       "unpublishedFieldId" : "BT-195(BT-191)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-191)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-191)-Tender",
@@ -4483,7 +4483,7 @@
     "type" : "indicator",
     "legalType" : "INDICATOR",
     "privacy" : {
-      "code" : "win-ten-var",
+      "code" : "sub-lohi",
       "unpublishedFieldId" : "BT-195(BT-193)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-193)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-193)-Tender",
@@ -15044,7 +15044,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "awa-cri-typ",
+      "code" : "ten-rank",
       "unpublishedFieldId" : "BT-195(BT-539)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-539)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-539)-Lot",
@@ -15108,7 +15108,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "awa-cri-typ",
+      "code" : "ten-rank",
       "unpublishedFieldId" : "BT-195(BT-539)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-539)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-539)-LotsGroup",
@@ -15192,7 +15192,7 @@
     "legalType" : "TEXT",
     "maxLength" : 6000,
     "privacy" : {
-      "code" : "awa-cri-des",
+      "code" : "ten-vari",
       "unpublishedFieldId" : "BT-195(BT-540)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-540)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-540)-Lot",
@@ -15231,7 +15231,7 @@
     "legalType" : "TEXT",
     "maxLength" : 6000,
     "privacy" : {
-      "code" : "awa-cri-des",
+      "code" : "ten-vari",
       "unpublishedFieldId" : "BT-195(BT-540)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-540)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-540)-LotsGroup",
@@ -15269,7 +15269,7 @@
     "type" : "number",
     "legalType" : "NUMBER",
     "privacy" : {
-      "code" : "awa-cri-num",
+      "code" : "not-fram",
       "unpublishedFieldId" : "BT-195(BT-541)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-541)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-541)-Lot",
@@ -15298,7 +15298,7 @@
     "type" : "number",
     "legalType" : "NUMBER",
     "privacy" : {
-      "code" : "awa-cri-num",
+      "code" : "not-fram",
       "unpublishedFieldId" : "BT-195(BT-541)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-541)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-541)-LotsGroup",
@@ -15327,7 +15327,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "awa-cri-wei",
+      "code" : "con-esti",
       "unpublishedFieldId" : "BT-195(BT-5421)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-5421)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-5421)-Lot",
@@ -15373,7 +15373,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "awa-cri-wei",
+      "code" : "con-esti",
       "unpublishedFieldId" : "BT-195(BT-5421)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-5421)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-5421)-LotsGroup",
@@ -15419,7 +15419,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "awa-cri-fix",
+      "code" : "cri-awrd",
       "unpublishedFieldId" : "BT-195(BT-5422)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-5422)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-5422)-Lot",
@@ -15455,7 +15455,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "awa-cri-fix",
+      "code" : "cri-awrd",
       "unpublishedFieldId" : "BT-195(BT-5422)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-5422)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-5422)-LotsGroup",
@@ -15491,7 +15491,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "awa-cri-thr",
+      "code" : "eop-info",
       "unpublishedFieldId" : "BT-195(BT-5423)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-5423)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-5423)-Lot",
@@ -15527,7 +15527,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "awa-cri-thr",
+      "code" : "eop-info",
       "unpublishedFieldId" : "BT-195(BT-5423)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-5423)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-5423)-LotsGroup",
@@ -15564,7 +15564,7 @@
     "legalType" : "TEXT",
     "maxLength" : 1000,
     "privacy" : {
-      "code" : "awa-cri-com",
+      "code" : "not-valu",
       "unpublishedFieldId" : "BT-195(BT-543)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-543)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-543)-Lot",
@@ -15607,7 +15607,7 @@
     "legalType" : "TEXT",
     "maxLength" : 1000,
     "privacy" : {
-      "code" : "awa-cri-com",
+      "code" : "not-valu",
       "unpublishedFieldId" : "BT-195(BT-543)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-543)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-543)-LotsGroup",
@@ -15649,7 +15649,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "sub-val",
+      "code" : "ten-valu",
       "unpublishedFieldId" : "BT-195(BT-553)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-553)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-553)-Tender",
@@ -15679,7 +15679,7 @@
     "legalType" : "TEXT",
     "maxLength" : 6000,
     "privacy" : {
-      "code" : "sub-des",
+      "code" : "con-esti",
       "unpublishedFieldId" : "BT-195(BT-554)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-554)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-554)-Tender",
@@ -15708,7 +15708,7 @@
     "type" : "number",
     "legalType" : "NUMBER",
     "privacy" : {
-      "code" : "sub-per",
+      "code" : "ten-vari",
       "unpublishedFieldId" : "BT-195(BT-555)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-555)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-555)-Tender",
@@ -15738,7 +15738,7 @@
     "idSchemes" : [ "GLO" ],
     "legalType" : "IDENTIFIER",
     "privacy" : {
-      "code" : "gro-max-ide",
+      "code" : "eop-info",
       "unpublishedFieldId" : "BT-195(BT-556)-NoticeResult",
       "reasonCodeFieldId" : "BT-197(BT-556)-NoticeResult",
       "reasonDescriptionFieldId" : "BT-196(BT-556)-NoticeResult",
@@ -16340,7 +16340,7 @@
     "type" : "number",
     "legalType" : "NUMBER",
     "privacy" : {
-      "code" : "buy-rev-cou",
+      "code" : "ten-vari",
       "unpublishedFieldId" : "BT-195(BT-635)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-635)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-635)-LotResult",
@@ -16369,7 +16369,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "buy-rev-typ",
+      "code" : "con-esti",
       "unpublishedFieldId" : "BT-195(BT-636)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-636)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-636)-LotResult",
@@ -16915,7 +16915,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "max-val",
+      "code" : "rev-info",
       "unpublishedFieldId" : "BT-195(BT-709)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-709)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-709)-LotResult",
@@ -17011,7 +17011,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "ten-val-low",
+      "code" : "sub-stat",
       "unpublishedFieldId" : "BT-195(BT-710)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-710)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-710)-LotResult",
@@ -17055,7 +17055,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "ten-val-hig",
+      "code" : "ten-rank",
       "unpublishedFieldId" : "BT-195(BT-711)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-711)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-711)-LotResult",
@@ -17084,7 +17084,7 @@
     "type" : "code",
     "legalType" : "NUMBER",
     "privacy" : {
-      "code" : "rev-req",
+      "code" : "ten-valu",
       "unpublishedFieldId" : "BT-195(BT-712)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-712)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-712)-LotResult",
@@ -17120,7 +17120,7 @@
     "type" : "number",
     "legalType" : "NUMBER",
     "privacy" : {
-      "code" : "rev-req",
+      "code" : "ten-valu",
       "unpublishedFieldId" : "BT-195(BT-712)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-712)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-712)-LotResult",
@@ -17236,7 +17236,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "win-ten-val",
+      "code" : "rev-info",
       "unpublishedFieldId" : "BT-195(BT-720)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-720)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-720)-Tender",
@@ -17628,7 +17628,7 @@
     "type" : "indicator",
     "legalType" : "INDICATOR",
     "privacy" : {
-      "code" : "sub-val-kno",
+      "code" : "sub-stat",
       "unpublishedFieldId" : "BT-195(BT-730)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-730)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-730)-Tender",
@@ -17657,7 +17657,7 @@
     "type" : "indicator",
     "legalType" : "INDICATOR",
     "privacy" : {
-      "code" : "sub-per-kno",
+      "code" : "ten-rank",
       "unpublishedFieldId" : "BT-195(BT-731)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-731)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-731)-Tender",
@@ -17710,7 +17710,7 @@
     "legalType" : "TEXT",
     "maxLength" : 6000,
     "privacy" : {
-      "code" : "awa-cri-ord",
+      "code" : "ori-info",
       "unpublishedFieldId" : "BT-195(BT-733)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-733)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-733)-Lot",
@@ -17740,7 +17740,7 @@
     "legalType" : "TEXT",
     "maxLength" : 6000,
     "privacy" : {
-      "code" : "awa-cri-ord",
+      "code" : "ori-info",
       "unpublishedFieldId" : "BT-195(BT-733)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-733)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-733)-LotsGroup",
@@ -17770,7 +17770,7 @@
     "legalType" : "TEXT",
     "maxLength" : 400,
     "privacy" : {
-      "code" : "awa-cri-nam",
+      "code" : "ten-valu",
       "unpublishedFieldId" : "BT-195(BT-734)-Lot",
       "reasonCodeFieldId" : "BT-197(BT-734)-Lot",
       "reasonDescriptionFieldId" : "BT-196(BT-734)-Lot",
@@ -17800,7 +17800,7 @@
     "legalType" : "TEXT",
     "maxLength" : 400,
     "privacy" : {
-      "code" : "awa-cri-nam",
+      "code" : "ten-valu",
       "unpublishedFieldId" : "BT-195(BT-734)-LotsGroup",
       "reasonCodeFieldId" : "BT-197(BT-734)-LotsGroup",
       "reasonDescriptionFieldId" : "BT-196(BT-734)-LotsGroup",
@@ -18714,7 +18714,7 @@
     "type" : "number",
     "legalType" : "NUMBER",
     "privacy" : {
-      "code" : "rec-sub-cou",
+      "code" : "sub-info",
       "unpublishedFieldId" : "BT-195(BT-759)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-759)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-759)-LotResult",
@@ -18766,7 +18766,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "rec-sub-typ",
+      "code" : "sub-lohi",
       "unpublishedFieldId" : "BT-195(BT-760)-LotResult",
       "reasonCodeFieldId" : "BT-197(BT-760)-LotResult",
       "reasonDescriptionFieldId" : "BT-196(BT-760)-LotResult",
@@ -19221,7 +19221,7 @@
     "type" : "code",
     "legalType" : "CODE",
     "privacy" : {
-      "code" : "sub-con",
+      "code" : "cri-awrd",
       "unpublishedFieldId" : "BT-195(BT-773)-Tender",
       "reasonCodeFieldId" : "BT-197(BT-773)-Tender",
       "reasonDescriptionFieldId" : "BT-196(BT-773)-Tender",
@@ -20102,7 +20102,7 @@
     "legalType" : "TEXT",
     "maxLength" : 6000,
     "privacy" : {
-      "code" : "pro-fea",
+      "code" : "not-valu",
       "unpublishedFieldId" : "BT-195(BT-88)-Procedure",
       "reasonCodeFieldId" : "BT-197(BT-88)-Procedure",
       "reasonDescriptionFieldId" : "BT-196(BT-88)-Procedure",
