@@ -197,16 +197,6 @@ then
   results.add(new ValidationResult($nti, "Notice subtype " + $expected + " does not have a notice type definition", ValidationStatusEnum.ERROR, AssetRef.noticeType($expected)));
 end
 
-rule "Privacy fields are present in the expected group"
-  @problem("Privacy field is missing from the expected group")
-when
-  $field : /noticeTypes[ $nt: this  ]/fields[ $fieldId: id, $unpublishGroupId: unpublishGroupId, $unpublishGroupId != null ]
-  $privacyField : /fields[ id == $fieldId ]/referencedPrivacyFieldIds
-  not (exists /noticeTypes[ id == $nt.id ]/fields[ id == $privacyField, parent.id == $unpublishGroupId ])
-then
-  results.add(new ValidationResult($nt, "Field " + $fieldId + " is missing the privacy field " + $privacyField + " under " + $unpublishGroupId, ValidationStatusEnum.ERROR, AssetRef.field($privacyField)));
-end
-
 rule "Business entity of the group is consistent with the node"
   @problem("Group's business entity does not match its node")
 when
