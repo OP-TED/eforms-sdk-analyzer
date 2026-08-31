@@ -228,7 +228,7 @@ public class FieldFact implements SdkComponentFact<String> {
 
   public String getPrivacyCode() {
     if (field.getPrivacy() != null) {
-      return field.getPrivacy().getCode().getLiteral();
+      return field.getPrivacy().getCode();
     } else {
       return null;
     }
