@@ -248,7 +248,7 @@ public class FieldFact implements SdkComponentFact<String> {
    */
   public String getWithholdingCondition() {
     if (field.getPrivacy() != null) {
-      return field.getPrivacy().getCondition();
+      return field.getPrivacy().getWithholdingCondition();
     } else {
       return null;
     }
@@ -260,7 +260,7 @@ public class FieldFact implements SdkComponentFact<String> {
    */
   public String getWithholdingSelector() {
     if (field.getPrivacy() != null) {
-      return field.getPrivacy().getSelector();
+      return field.getPrivacy().getUndisclosedFieldSelector();
     } else {
       return null;
     }

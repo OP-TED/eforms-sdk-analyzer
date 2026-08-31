@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.europa.ted.eforms.sdk.analysis.domain.mdd.enums.FieldPrivacyCode;
 
 @JsonPropertyOrder({"code", "unpublishedFieldId", "reasonCodeFieldId", "reasonDescriptionFieldId",
-    "publicationDateFieldId", "condition", "selector"})
+    "publicationDateFieldId", "withholdingCondition", "undisclosedFieldSelector"})
 public class FieldPrivacy implements Serializable {
   private static final long serialVersionUID = -1318408566061305451L;
 
@@ -19,16 +19,16 @@ public class FieldPrivacy implements Serializable {
   /**
    * Optional EFX condition under which the field is withheld (TEDEFO-5128), evaluated in the
    * context of the field itself: {@code {fieldId} $&#123;conditionEfx&#125;}. Null when the field
-   * is withheld unconditionally. Goes together with {@link #selector}.
+   * is withheld unconditionally. Goes together with {@link #undisclosedFieldSelector}.
    */
-  private String condition;
+  private String withholdingCondition;
 
   /**
    * Optional EFX selector locating the withheld field from the document root, with the condition
    * as a predicate. The {@code ND-Root} context is always present. Null when the field is
-   * withheld unconditionally. Goes together with {@link #condition}.
+   * withheld unconditionally. Goes together with {@link #withholdingCondition}.
    */
-  private String selector;
+  private String undisclosedFieldSelector;
 
   public FieldPrivacyCode getCode() {
     return this.code;
@@ -38,20 +38,20 @@ public class FieldPrivacy implements Serializable {
     this.code = code;
   }
 
-  public String getCondition() {
-    return this.condition;
+  public String getWithholdingCondition() {
+    return this.withholdingCondition;
   }
 
-  public void setCondition(final String condition) {
-    this.condition = condition;
+  public void setWithholdingCondition(final String withholdingCondition) {
+    this.withholdingCondition = withholdingCondition;
   }
 
-  public String getSelector() {
-    return this.selector;
+  public String getUndisclosedFieldSelector() {
+    return this.undisclosedFieldSelector;
   }
 
-  public void setSelector(final String selector) {
-    this.selector = selector;
+  public void setUndisclosedFieldSelector(final String undisclosedFieldSelector) {
+    this.undisclosedFieldSelector = undisclosedFieldSelector;
   }
 
   public String getUnpublishedFieldId() {
