@@ -112,3 +112,19 @@ When the existing facts do not cover the data your rule needs:
 ## Branch model
 
 Gitflow: feature branches → PR to `develop` → merge to `main` for release.
+
+## Cross-repo compatibility with mdm-lib (avoid breaking the MDM build)
+
+`mdm-lib` (eforms-metadata-manager) depends on this project as a library for two distinct purposes — keep them straight when changing analyzer code:
+
+1. **`analyse sdk`** (the normal, correct flow): MDM exports an SDK folder, then hands it to this analyzer's file-backed validators (`SdkLoader`, `SourceKind.FILE`). MDM never touches analyzer domain objects directly here.
+2. **`analyse emd`** (a diagnostic shortcut, `eu.europa.ted.mdc.service.analysis.emd.*` in mdm-lib): constructs this project's domain objects (`FieldsAndNodes`, `Field`, `FieldPrivacy`, `NoticeTypeContent`, `Codelist`, `Label`, etc.) directly from the live database, bypassing the SDK export, so Drools rules can run against the DB before export. This is the fragile path — any change to a class/enum/setter in `domain.*` that mdm-lib's converters construct or call can break mdm-lib's build.
+
+**What went wrong (TEDEFO-5153, TEDEFO-5145):**
+- `NoticeTypeContent.setUnpublishGroupId/setUnpublishFieldId/setUnpublishCode` were removed from this project (the old per-field withholding scheme was dead), but `mdm-lib`'s `NoticeTypesConverter` still called them — a real cross-repo compile break, only caught in CI.
+- A `FieldPrivacyCode` enum was added to `domain.mdd.enums` on a feature branch and referenced from mdm-lib's `FieldsAndNodesConverter`, but never merged/published to a stable snapshot. mdm-lib's `pom.xml` pins a *floating* SNAPSHOT version (`1.16.0-SNAPSHOT`), so whether the build succeeds depended on which snapshot CI happened to resolve — not deterministic, and broke unpredictably. The type also duplicated validation mdm-lib's own DB-backed `FieldPrivacyCode` (JOOQ enum) already guaranteed — never add an analyzer-side enum purely so mdm-lib can re-validate a value that's already constrained upstream.
+
+**Before removing or renaming anything in `domain.*` (fields it exposes, setters, enum values):**
+- Grep `eforms-metadata-manager/src/mdm-lib/src/main/java/eu/europa/ted/mdc/service/analysis/emd/` for usages of the type/method you're changing.
+- If it's used there and the underlying feature is genuinely dead (as with `unpublishGroupId` et al.), remove the corresponding mdm-lib code in the same change/PR pair — don't leave mdm-lib broken for someone else to discover via a failed CI build.
+- Prefer plain types (`String`, not a bespoke enum) on domain classes that mdm-lib constructs, unless the analyzer's own rules need the stronger type. Every additional analyzer-side type is another thing mdm-lib has to stay in lockstep with across two independently-versioned repos.
