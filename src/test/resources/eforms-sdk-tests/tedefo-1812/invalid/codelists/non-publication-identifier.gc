@@ -3821,5 +3821,101 @@
             <SimpleValue>Anbudet är ett alternativt anbud (BT-193)</SimpleValue>
          </Value>
       </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>con-esti</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>con-esti</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>cri-awrd</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>cri-awrd</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>eop-info</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>eop-info</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>not-fram</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>not-fram</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>not-valu</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>not-valu</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>ori-info</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>ori-info</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>sub-info</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>sub-info</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>sub-lohi</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>sub-lohi</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>sub-stat</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>sub-stat</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>ten-rank</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>ten-rank</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>ten-valu</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>ten-valu</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value ColumnRef="code">
+            <SimpleValue>ten-vari</SimpleValue>
+         </Value>
+         <Value ColumnRef="Name">
+            <SimpleValue>ten-vari</SimpleValue>
+         </Value>
+      </Row>
    </SimpleCodeList>
 </gc:CodeList>
