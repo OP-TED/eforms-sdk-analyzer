@@ -1,0 +1,38 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "eforms-sdk-1.21.0-SNAPSHOT",
+  "metadataDatabase" : {
+    "version" : "1.12.0",
+    "createdOn" : "2024-06-01T00:00:00"
+  },
+  "businessEntities" : [ {
+    "id" : "BuyerOrganisation",
+    "name" : "Buyer organisation",
+    "description" : "An organisation acting as a buyer",
+    "labelId" : "business-entity|name|BuyerOrganisation",
+    "repeatable" : true,
+    "repeatsWithNodeId" : "ND-Organization"
+  }, {
+    "id" : "EconomicOperator",
+    "name" : "Economic operator",
+    "description" : "An organisation acting as an economic operator",
+    "labelId" : "business-entity|name|EconomicOperator",
+    "repeatable" : true,
+    "repeatsWithNodeId" : "ND-Organization"
+  } ],
+  "xmlStructure" : [ {
+    "id" : "ND-Root",
+    "xpathAbsolute" : "/*",
+    "xpathRelative" : "/*",
+    "repeatable" : false
+  }, {
+    "id" : "ND-Organization",
+    "parentId" : "ND-Root",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:Organizations/efac:Organization",
+    "xpathRelative" : "efac:Organization",
+    "xsdSequenceOrder" : [ { "efac:Organization" : 1 } ],
+    "repeatable" : true,
+    "businessEntityId" : "Organisation"
+  } ],
+  "fields" : [ ]
+}
