@@ -242,30 +242,6 @@ public class FieldFact implements SdkComponentFact<String> {
     }
   }
 
-  /**
-   * @return the EFX condition under which the field is withheld (TEDEFO-5128), or null when the
-   *         field is not withheld, or withheld unconditionally.
-   */
-  public String getWithholdingCondition() {
-    if (field.getPrivacy() != null) {
-      return field.getPrivacy().getWithholdingCondition();
-    } else {
-      return null;
-    }
-  }
-
-  /**
-   * @return the EFX selector locating the withheld field, or null when the field is not withheld,
-   *         or withheld unconditionally.
-   */
-  public String getWithholdingSelector() {
-    if (field.getPrivacy() != null) {
-      return field.getPrivacy().getUndisclosedFieldSelector();
-    } else {
-      return null;
-    }
-  }
-
   /*
    * Return the various field identifiers indicated in the "privacy" property.
    */

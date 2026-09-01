@@ -25,22 +25,6 @@ public class FieldPrivacy implements Serializable {
     this.code = code;
   }
 
-  public String getWithholdingCondition() {
-    return this.withholdingCondition;
-  }
-
-  public void setWithholdingCondition(final String withholdingCondition) {
-    this.withholdingCondition = withholdingCondition;
-  }
-
-  public String getUndisclosedFieldSelector() {
-    return this.undisclosedFieldSelector;
-  }
-
-  public void setUndisclosedFieldSelector(final String undisclosedFieldSelector) {
-    this.undisclosedFieldSelector = undisclosedFieldSelector;
-  }
-
   public String getUnpublishedFieldId() {
     return this.unpublishedFieldId;
   }
@@ -71,5 +55,21 @@ public class FieldPrivacy implements Serializable {
 
   public void setPublicationDateFieldId(final String publicationDateFieldId) {
     this.publicationDateFieldId = publicationDateFieldId;
+  }
+
+  public String getWithholdingCondition() {
+    return this.withholdingCondition;
+  }
+
+  public void setWithholdingCondition(final String withholdingCondition) {
+    this.withholdingCondition = withholdingCondition;
+  }
+
+  public String getUndisclosedFieldSelector() {
+    return this.undisclosedFieldSelector;
+  }
+
+  public void setUndisclosedFieldSelector(final String undisclosedFieldSelector) {
+    this.undisclosedFieldSelector = undisclosedFieldSelector;
   }
 }
