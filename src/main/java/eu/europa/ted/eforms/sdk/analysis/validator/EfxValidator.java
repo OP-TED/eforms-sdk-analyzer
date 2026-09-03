@@ -7,7 +7,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
@@ -17,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.apache.commons.lang3.Validate;
@@ -28,8 +30,9 @@ import eu.europa.ted.eforms.sdk.SdkConstants.SdkResource;
 import eu.europa.ted.eforms.sdk.SdkVersion;
 import eu.europa.ted.eforms.sdk.analysis.SdkAnalyzerSymbolResolver;
 import eu.europa.ted.eforms.sdk.analysis.SdkLoader;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.AbstractFieldProperty;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
-import eu.europa.ted.eforms.sdk.analysis.domain.field.StringConstraint;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldPrivacy;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.StringProperty;
 import eu.europa.ted.eforms.sdk.analysis.domain.view.index.TedefoViewTemplateIndex;
 import eu.europa.ted.eforms.sdk.analysis.efx.mock.MarkupGeneratorMock;
@@ -153,11 +156,12 @@ public class EfxValidator implements Validator {
   }
 
   private void validateFieldExpressions(final Field field) {
-    getExpressions(field).forEach((String expression) -> {
-      logger.debug("Translating expression [{}] of assertion constraint of field [{}]", expression,
-          field.getId());
+    getExpressions(field).forEach((FieldExpression fieldExpression) -> {
+      logger.debug("Translating {} [{}] of field [{}]", fieldExpression.getKind(),
+          fieldExpression.getExpression(), field.getId());
       try {
-        EfxTranslator.translateExpression(dependencyFactory, sdkVersion, expression);
+        EfxTranslator.translateExpression(dependencyFactory, sdkVersion,
+            fieldExpression.getExpression());
       } catch (final Exception e) {
         record(new FieldFact(field), e);
       }
@@ -289,14 +293,118 @@ public class EfxValidator implements Validator {
     return Math.max(1, Runtime.getRuntime().availableProcessors());
   }
 
-  private Set<String> getExpressions(final Field field) {
-    return Optional.ofNullable(field)
-        .map(Field::getAssertion)
-        .map(StringProperty::getConstraints)
-        .map((List<StringConstraint> constraints) -> constraints.stream()
-            .map(StringConstraint::getValue)
-            .collect(Collectors.toSet()))
-        .orElse(Collections.emptySet());
+  /**
+   * Every EFX expression a field carries, tagged with what it is. A field expresses EFX in three
+   * ways, and all three must compile:
+   *
+   * <ul>
+   * <li>the {@link EfxKind#ASSERTION} — the assert test itself (the property value and the value of
+   * each of its constraints);</li>
+   * <li>a {@link EfxKind#CONDITION} — the {@code WHEN} of any rule, i.e. the condition of every
+   * constraint on any property, plus the privacy withholding condition;</li>
+   * <li>the {@link EfxKind#SELECTOR} — the privacy undisclosed-field selector.</li>
+   * </ul>
+   *
+   * <p>Historically only the assertion values were compiled, so broken conditions and selectors
+   * reached a release unreported (TEDEFO-5162).
+   */
+  private Set<FieldExpression> getExpressions(final Field field) {
+    if (field == null) {
+      return Collections.emptySet();
+    }
+    final Set<FieldExpression> expressions = new LinkedHashSet<>();
+
+    // Assertion: the assert test itself — the property default value and each constraint value.
+    final StringProperty assertion = field.getAssertion();
+    if (assertion != null) {
+      add(expressions, assertion.getValue(), EfxKind.ASSERTION);
+      assertion.getConstraints()
+          .forEach(constraint -> add(expressions, constraint.getValue(), EfxKind.ASSERTION));
+    }
+
+    // Condition: the WHEN of any rule — the condition of every constraint on any property.
+    fieldProperties(field)
+        .flatMap(property -> property.getConstraints().stream())
+        .forEach(constraint -> add(expressions, constraint.getCondition(), EfxKind.CONDITION));
+
+    // Privacy: the withholding condition (a condition) and the undisclosed-field selector.
+    final FieldPrivacy privacy = field.getPrivacy();
+    if (privacy != null) {
+      add(expressions, privacy.getWithholdingCondition(), EfxKind.CONDITION);
+      add(expressions, privacy.getUndisclosedFieldSelector(), EfxKind.SELECTOR);
+    }
+
+    return expressions;
+  }
+
+  /** Every field property that can carry constraints — and therefore conditions. */
+  private static Stream<AbstractFieldProperty<?, ?>> fieldProperties(final Field field) {
+    return Stream
+        .<AbstractFieldProperty<?, ?>>of(field.getAssertion(), field.getForbidden(),
+            field.getMandatory(), field.getRepeatable(), field.getPattern(),
+            field.getNumericRange(), field.getCodeList(), field.getInChangeNotice(),
+            field.getInContinueProcedure())
+        .filter(Objects::nonNull);
+  }
+
+  /** Adds a non-blank expression tagged with its kind; null and blank expressions are ignored. */
+  private static void add(final Set<FieldExpression> target, final String expression,
+      final EfxKind kind) {
+    if (expression != null && !expression.isBlank()) {
+      target.add(new FieldExpression(expression, kind));
+    }
+  }
+
+  /** The three ways a field expresses EFX. */
+  private enum EfxKind {
+    ASSERTION("assertion"), CONDITION("condition"), SELECTOR("selector");
+
+    private final String label;
+
+    EfxKind(final String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return this.label;
+    }
+  }
+
+  /** An EFX expression carried by a field, tagged with {@link EfxKind what it is}. */
+  private static final class FieldExpression {
+    private final String expression;
+    private final EfxKind kind;
+
+    FieldExpression(final String expression, final EfxKind kind) {
+      this.expression = expression;
+      this.kind = kind;
+    }
+
+    String getExpression() {
+      return this.expression;
+    }
+
+    EfxKind getKind() {
+      return this.kind;
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+      if (this == other) {
+        return true;
+      }
+      if (!(other instanceof FieldExpression)) {
+        return false;
+      }
+      final FieldExpression that = (FieldExpression) other;
+      return this.kind == that.kind && this.expression.equals(that.expression);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.expression, this.kind);
+    }
   }
 
   @Override

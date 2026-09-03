@@ -7,7 +7,7 @@ Feature: Fields and Nodes - Validate EFX-2 expressions
   Scenario: Some EFX-2 expressions are invalid
     Given A "efx-2" folder with "" files
     When I execute EFX "expressions" validation
-    Then I should get 1 EFX validation errors
+    Then I should get 7 EFX validation errors
 
   Scenario: Some EFX-2 templates are invalid
     Given A "efx-2" folder with "" files
