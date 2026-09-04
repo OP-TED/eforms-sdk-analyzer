@@ -377,8 +377,8 @@ public class EfxValidator implements Validator {
     private final EfxKind kind;
 
     FieldExpression(final String expression, final EfxKind kind) {
-      this.expression = expression;
-      this.kind = kind;
+      this.expression = Objects.requireNonNull(expression, "expression");
+      this.kind = Objects.requireNonNull(kind, "kind");
     }
 
     String getExpression() {
