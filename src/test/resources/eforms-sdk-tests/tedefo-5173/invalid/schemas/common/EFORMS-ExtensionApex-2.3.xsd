@@ -5,6 +5,10 @@
   fields.json, so the apex contributes no finding for them: those come from inside the aggregates.
   efac:NoticeSubType is deliberately NOT a node - it is reached only through a two-step relative
   path, the way OPP-070-notice reaches it in the real SDK.
+
+  efac:BusinessPartyGroup appears here as well as under the notice root, so the elements inside it
+  have two possible locations: that is what tells the "several locations" finding apart from the
+  "single location" one.
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns="http://data.europa.eu/p27/eforms-ubl-extensions/1"
@@ -17,6 +21,7 @@
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element ref="efac:Appeals" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="efac:BusinessPartyGroup" minOccurs="0" maxOccurs="unbounded"/>
 				<xsd:element ref="efac:NoticeSubType" minOccurs="0" maxOccurs="1"/>
 				<xsd:element ref="efac:TenderSubcontractingRequirements" minOccurs="0" maxOccurs="1"/>
 			</xsd:sequence>

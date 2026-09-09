@@ -56,6 +56,16 @@ public class XmlSchemaValidator implements Validator {
    */
   private static final Set<String> EXTENSION_PREFIXES = Set.of("efac", "efbc");
 
+  /** The aggregate half of the extension: these elements hold other elements, efbc: ones are leaves. */
+  private static final String AGGREGATE_PREFIX = "efac";
+
+  /**
+   * How deep to descend into an aggregate the metadata does not model. Two levels are enough for the
+   * shapes in the extension today and keep the finding close to the branch that has to be modelled
+   * first; the type-based cycle guard already stops the self-recursive ones.
+   */
+  private static final int MAX_BRANCH_DEPTH = 2;
+
   /** Separates the two halves of a "parent element to child element" key. */
   private static final String PAIR_SEPARATOR = ">";
 
@@ -165,9 +175,26 @@ public class XmlSchemaValidator implements Validator {
     fields.forEach(field -> collectInspectedElements(inspected, field.getParentNode(),
         field.getXpathRelative()));
 
+    // Every extension element name the metadata mentions anywhere, at any placement. Used by the
+    // companion check below, which is about elements modelled nowhere at all rather than about a
+    // particular placement.
+    final Set<String> coveredNames = new HashSet<>();
+    covered.forEach(pair -> {
+      final int separator = pair.indexOf(PAIR_SEPARATOR);
+      coveredNames.add(pair.substring(separator + 1));
+    });
+    inspected.keySet().forEach(coveredNames::add);
+
     // One finding per "parent element > child element" pair: the document root resolves to several
     // root elements, and an element can be reachable from more than one place.
     final Set<String> reported = new HashSet<>();
+
+    // Aggregates the metadata does not model: where this check stops and the companion one starts.
+    final List<InspectedElement> unmodelledBranches = new ArrayList<>();
+
+    // Element names this check reports. The companion check leaves them alone, so that between the two
+    // an element is reported by one or the other, never both.
+    final Set<String> reportedNames = new HashSet<>();
 
     for (final Map.Entry<String, InspectedElement> entry : inspected.entrySet()) {
       final String parentElementName = entry.getKey();
@@ -191,12 +218,123 @@ public class XmlSchemaValidator implements Validator {
           continue;
         }
 
+        final String childXpath = place.xpathAbsolute + "/" + childElementName;
+        reportedNames.add(childElementName);
+
+        if (AGGREGATE_PREFIX.equals(prefix)) {
+          unmodelledBranches.add(new InspectedElement(childXpath, place.subject, childElementName));
+        }
+
         results.add(new ValidationResult(new NodeFact(place.subject),
             "eForms extension element allowed by the schemas is covered by no field and no node",
             ValidationStatusEnum.WARNING,
-            AssetRef.xmlElement(place.xpathAbsolute + "/" + childElementName)));
+            AssetRef.xmlElement(childXpath)));
       }
     }
+
+    // Anything already named above is that check's finding, not the companion's.
+    coveredNames.addAll(reportedNames);
+    checkContentsOfUnmodelledBranches(unmodelledBranches, coveredNames);
+  }
+
+  /*
+   * Invariant: no eForms extension element is left entirely unmodelled inside a branch the metadata
+   * does not reach.
+   *
+   * The companion of the check above, for what it cannot see. That one stops at an aggregate the
+   * metadata does not model, because a field needs a parent node and there is none yet. This one
+   * carries on into that aggregate and reports what is inside, so a whole branch is not summarised by
+   * a single finding.
+   *
+   * Only elements whose name appears NOWHERE in the metadata are reported. An element modelled at
+   * some other placement is a placement question, which belongs to the check above; here the question
+   * is whether the element is known at all.
+   *
+   * Findings are split by how many places the element can occupy, because that changes what has to be
+   * decided:
+   *
+   * - one location: the element has a single home in the schemas, so the absolute XPath is the answer
+   *   and the field can be written straight away.
+   * - several locations: the element is reachable through several branches (efbc:FieldIdentifierCode
+   *   sits inside every efac:FieldsPrivacy, and that aggregate appears in a dozen places). One
+   *   finding lists them all, because the first decision is which placement is canonical, not how to
+   *   write a field.
+   */
+  private void checkContentsOfUnmodelledBranches(final List<InspectedElement> branches,
+      final Set<String> coveredNames) {
+
+    // Element name -> every place inside an unmodelled branch where the schemas allow it.
+    final Map<String, List<InspectedElement>> occurrences = new HashMap<>();
+    for (final InspectedElement branch : branches) {
+      collectBranchContents(branch, coveredNames, occurrences, new HashSet<>(), 1);
+    }
+
+    for (final Map.Entry<String, List<InspectedElement>> entry : occurrences.entrySet()) {
+      final List<InspectedElement> places = entry.getValue();
+      places.sort((left, right) -> left.xpathAbsolute.compareTo(right.xpathAbsolute));
+
+      final List<AssetRef> references = places.stream()
+          .map(place -> AssetRef.xmlElement(place.xpathAbsolute)).collect(Collectors.toList());
+
+      final String message = places.size() == 1
+          ? "eForms extension element inside an unmodelled branch is covered by no field and no node,"
+              + " and the schemas allow it in a single location"
+          : "eForms extension element inside an unmodelled branch is covered by no field and no node,"
+              + " and the schemas allow it in several locations";
+
+      results.add(new ValidationResult(new NodeFact(places.get(0).subject), message,
+          ValidationStatusEnum.WARNING, references));
+    }
+  }
+
+  /*
+   * Walk down an unmodelled aggregate, recording every extension element the schemas allow inside it
+   * whose name the metadata never mentions. Bounded twice over: by MAX_BRANCH_DEPTH, and by the types
+   * already on the current path, since an aggregate can contain itself (efac:SubordinateCriterion is
+   * of CriterionType, the type of the aggregate that holds it).
+   */
+  private void collectBranchContents(final InspectedElement parent, final Set<String> coveredNames,
+      final Map<String, List<InspectedElement>> occurrences, final Set<String> typesOnPath,
+      final int depth) {
+
+    if (depth > MAX_BRANCH_DEPTH || !typesOnPath.add(typeKeyOf(parent.elementName))) {
+      return;
+    }
+
+    for (final XmlSchemaElement childRef : childElementRefsOf(parent.elementName)) {
+      final XmlSchemaElement target = childRef.getRef().getTarget();
+      if (target == null) {
+        continue;
+      }
+
+      final String prefix = namespaceUriToPrefix.get(target.getQName().getNamespaceURI());
+      if (prefix == null || !EXTENSION_PREFIXES.contains(prefix)) {
+        continue;
+      }
+
+      final String childElementName = prefix + ":" + target.getQName().getLocalPart();
+      final InspectedElement child = new InspectedElement(
+          parent.xpathAbsolute + "/" + childElementName, parent.subject, childElementName);
+
+      if (!coveredNames.contains(childElementName)) {
+        occurrences.computeIfAbsent(childElementName, name -> new ArrayList<>()).add(child);
+      }
+
+      if (AGGREGATE_PREFIX.equals(prefix)) {
+        collectBranchContents(child, coveredNames, occurrences, new HashSet<>(typesOnPath),
+            depth + 1);
+      }
+    }
+  }
+
+  /** The type of an element, or its own name when the type is anonymous: the cycle-guard key. */
+  private String typeKeyOf(final String elementName) {
+    final XmlSchemaElement element = schemaCollection.getElementByQName(buildQName(elementName));
+    if (element == null || element.getSchemaType() == null
+        || element.getSchemaType().getName() == null) {
+      return elementName;
+    }
+    return element.getSchemaType().getName();
   }
 
   /**
@@ -292,7 +430,7 @@ public class XmlSchemaValidator implements Validator {
     if (elementName == null || xpathAbsolute == null || subject == null) {
       return;
     }
-    inspected.merge(elementName, new InspectedElement(xpathAbsolute, subject),
+    inspected.merge(elementName, new InspectedElement(xpathAbsolute, subject, elementName),
         (kept, fresh) -> fresh.xpathAbsolute.length() < kept.xpathAbsolute.length() ? fresh : kept);
   }
 
@@ -322,14 +460,17 @@ public class XmlSchemaValidator implements Validator {
     return stepText != null && stepText.contains(":") ? stepText : null;
   }
 
-  /** Where an inspected element sits, and the node a finding about it is reported against. */
+  /** Where an element sits, its name, and the node a finding about it is reported against. */
   private static final class InspectedElement {
     private final String xpathAbsolute;
     private final XmlStructureNode subject;
+    private final String elementName;
 
-    InspectedElement(final String xpathAbsolute, final XmlStructureNode subject) {
+    InspectedElement(final String xpathAbsolute, final XmlStructureNode subject,
+        final String elementName) {
       this.xpathAbsolute = xpathAbsolute;
       this.subject = subject;
+      this.elementName = elementName;
     }
   }
 

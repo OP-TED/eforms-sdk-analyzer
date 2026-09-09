@@ -11,20 +11,23 @@ Feature: Schemas - Every eForms extension element allowed by the schemas is cove
     Then I should get 0 schema validation warnings
     And I should get 0 schema validation errors
 
-  Scenario: Four elements are not covered, one per way of reaching them
-    # 1. under a node:              efac:AppealProcessingParty has a field for the Code
-    #                               (BT-799-ReviewBody) but not for the Description
-    # 2. under a node:              efac:TenderSubcontractingRequirements, same shape (BT-651-Lot)
-    # 3. under an intermediate:     efac:NoticeSubType has no node of its own, it is reached only
-    #                               through OPP-070-notice's two-step relative path, and its
-    #                               efbc:SubTypeDescription is uncovered
-    # 4. under the notice root:     efac:BusinessPartyGroup is referenced straight from
-    #                               ContractNoticeType, outside ext:UBLExtensions, and is unmodelled
+  Scenario: Seven elements are not covered, one per way of reaching them
+    # Inside a parent the metadata reaches - the first check:
+    #  1. under a node:             efac:AppealProcessingParty has a field for the Code
+    #                              (BT-799-ReviewBody) but not for the Description
+    #  2. under a node:             efac:TenderSubcontractingRequirements, same shape (BT-651-Lot)
+    #  3. under an intermediate:    efac:NoticeSubType has no node of its own, it is reached only
+    #                              through OPP-070-notice's two-step relative path, and its
+    #                              efbc:SubTypeDescription is uncovered
+    #  4. under the notice root:    efac:BusinessPartyGroup is referenced straight from
+    #                              ContractNoticeType, outside ext:UBLExtensions, and is unmodelled
+    #  5. under the extension:      the same efac:BusinessPartyGroup, at its second placement
     #
-    # Note what is deliberately NOT reported: efbc:GroupTypeCode and efbc:GroupType inside
-    # efac:BusinessPartyGroup. Their parent has no node, so there is nowhere to hang them yet -
-    # the parent is reported instead, and they surface once it is modelled.
+    # Inside a branch the metadata does not reach - the companion check, one finding per element
+    # rather than per location:
+    #  6. efbc:GroupTypeCode        several locations (both placements of efac:BusinessPartyGroup)
+    #  7. efbc:GroupType            several locations, likewise
     Given A "tedefo-5173" folder with "invalid" files
     When I execute schema validation
-    Then I should get 4 schema validation warnings
+    Then I should get 7 schema validation warnings
     And I should get 0 schema validation errors

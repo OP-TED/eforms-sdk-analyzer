@@ -46,6 +46,12 @@
     "xpathAbsolute" : "/*/efac:BusinessPartyGroup",
     "xpathRelative" : "efac:BusinessPartyGroup",
     "repeatable" : false
+  }, {
+    "id" : "ND-BusinessPartyGroupExtension",
+    "parentId" : "ND-RootExtension",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:BusinessPartyGroup",
+    "xpathRelative" : "efac:BusinessPartyGroup",
+    "repeatable" : false
   } ],
   "fields" : [ {
     "id" : "BT-799-ReviewBody",
