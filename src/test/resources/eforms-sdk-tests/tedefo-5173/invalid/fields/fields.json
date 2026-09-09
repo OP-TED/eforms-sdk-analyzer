@@ -40,6 +40,12 @@
     "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:TenderSubcontractingRequirements",
     "xpathRelative" : "efac:TenderSubcontractingRequirements",
     "repeatable" : false
+  }, {
+    "id" : "ND-BlankXpath",
+    "parentId" : "ND-Root",
+    "xpathAbsolute" : "",
+    "xpathRelative" : "ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension",
+    "repeatable" : false
   } ],
   "fields" : [ {
     "id" : "BT-799-ReviewBody",

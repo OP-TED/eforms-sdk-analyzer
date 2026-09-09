@@ -200,18 +200,13 @@ public class XmlSchemaValidator implements Validator {
       final String parentElementName = entry.getKey();
       final InspectedElement place = entry.getValue();
 
-      for (final XmlSchemaElement childRef : childElementRefsOf(parentElementName)) {
-        final XmlSchemaElement target = childRef.getRef().getTarget();
-        if (target == null) {
-          continue;
-        }
-
-        final String prefix = namespaceUriToPrefix.get(target.getQName().getNamespaceURI());
+      for (final QName childQName : childElementNamesOf(parentElementName)) {
+        final String prefix = namespaceUriToPrefix.get(childQName.getNamespaceURI());
         if (prefix == null || !EXTENSION_PREFIXES.contains(prefix)) {
           continue;
         }
 
-        final String childElementName = prefix + ":" + target.getQName().getLocalPart();
+        final String childElementName = prefix + ":" + childQName.getLocalPart();
         final String pair = parentElementName + PAIR_SEPARATOR + childElementName;
 
         if (covered.contains(pair) || !reported.add(pair)) {
@@ -301,18 +296,13 @@ public class XmlSchemaValidator implements Validator {
       return;
     }
 
-    for (final XmlSchemaElement childRef : childElementRefsOf(parent.elementName)) {
-      final XmlSchemaElement target = childRef.getRef().getTarget();
-      if (target == null) {
-        continue;
-      }
-
-      final String prefix = namespaceUriToPrefix.get(target.getQName().getNamespaceURI());
+    for (final QName childQName : childElementNamesOf(parent.elementName)) {
+      final String prefix = namespaceUriToPrefix.get(childQName.getNamespaceURI());
       if (prefix == null || !EXTENSION_PREFIXES.contains(prefix)) {
         continue;
       }
 
-      final String childElementName = prefix + ":" + target.getQName().getLocalPart();
+      final String childElementName = prefix + ":" + childQName.getLocalPart();
       final InspectedElement child = new InspectedElement(
           parent.xpathAbsolute + "/" + childElementName, parent.subject, childElementName);
 
@@ -329,7 +319,9 @@ public class XmlSchemaValidator implements Validator {
 
   /** The type of an element, or its own name when the type is anonymous: the cycle-guard key. */
   private String typeKeyOf(final String elementName) {
-    final XmlSchemaElement element = schemaCollection.getElementByQName(buildQName(elementName));
+    final QName qname = prefixedQNameOf(elementName);
+    final XmlSchemaElement element =
+        qname == null ? null : schemaCollection.getElementByQName(qname);
     if (element == null || element.getSchemaType() == null
         || element.getSchemaType().getName() == null) {
       return elementName;
@@ -338,26 +330,74 @@ public class XmlSchemaValidator implements Validator {
   }
 
   /**
-   * The element references inside the named element. The document root is not a named element: every
-   * notice type has its own root, so the union of their children is used — an element allowed by any
-   * of them needs metadata. BRIN reaches {@code efac:} elements that way, outside ext:UBLExtensions.
+   * The names of the elements the schemas allow directly inside the named element. The document root
+   * is not a named element: every notice type has its own root, so the union of their children is
+   * used — an element allowed by any of them needs metadata. BRIN reaches {@code efac:} elements that
+   * way, outside ext:UBLExtensions.
    */
-  private List<XmlSchemaElement> childElementRefsOf(final String elementName) {
+  private List<QName> childElementNamesOf(final String elementName) {
     if (DOCUMENT_ROOT.equals(elementName)) {
-      final List<XmlSchemaElement> refs = new ArrayList<>();
+      final List<QName> names = new ArrayList<>();
       for (final DocumentType documentType : documentTypes) {
         final XmlSchemaElement root = schemaCollection.getElementByQName(
             new QName(documentType.getNamespace(), documentType.getRootElement()));
         if (root != null) {
-          refs.addAll(getChildElementRefs(root));
+          names.addAll(resolvedNamesOf(getChildElementRefs(root)));
         }
       }
-      return refs;
+      return names;
     }
 
-    final XmlSchemaElement element = schemaCollection.getElementByQName(buildQName(elementName));
+    final QName qname = prefixedQNameOf(elementName);
+    if (qname == null) {
+      return Collections.emptyList();
+    }
+    final XmlSchemaElement element = schemaCollection.getElementByQName(qname);
     // A null element is already reported by the repeatability checks above.
-    return element == null ? Collections.emptyList() : getChildElementRefs(element);
+    return element == null ? Collections.emptyList()
+        : resolvedNamesOf(getChildElementRefs(element));
+  }
+
+  /** The names of the elements the given particles stand for, skipping any that cannot be named. */
+  private List<QName> resolvedNamesOf(final List<XmlSchemaElement> particles) {
+    return particles.stream().map(this::resolvedElementName)
+        .filter(qname -> qname != null && StringUtils.isNotBlank(qname.getLocalPart()))
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * The name of the element a particle stands for. The extension schemas declare children by
+   * {@code ref=} throughout, so the resolved target is the normal case; the two fallbacks matter
+   * because this check is about absences, and a particle it cannot name is an element it silently
+   * stops examining. A {@code ref=} that resolves to nothing still yields the referenced name (a
+   * dangling reference is the schemas' problem, not a reason to stop), and a child declared inline
+   * rather than by reference carries its own name.
+   */
+  private QName resolvedElementName(final XmlSchemaElement particle) {
+    final XmlSchemaElement target = particle.getRef().getTarget();
+    if (target != null && target.getQName() != null) {
+      return target.getQName();
+    }
+    final QName referenced = particle.getRef().getTargetQName();
+    return referenced != null ? referenced : particle.getQName();
+  }
+
+  /**
+   * The qualified name of a prefixed element name such as {@code efbc:SubTypeCode}, or null when the
+   * name is not one. Unlike {@link #buildQName(String)} this does not throw: the names reach it from
+   * the metadata's XPaths, and a malformed one should leave this check silent — the XPath itself is
+   * reported by the field and node rules — rather than abort the whole analysis. An unknown prefix
+   * yields a name in no namespace, which resolves to no element and is equally silent.
+   */
+  private QName prefixedQNameOf(final String elementName) {
+    if (elementName == null) {
+      return null;
+    }
+    final String[] parts = elementName.split(":");
+    if (parts.length != 2 || StringUtils.isBlank(parts[0]) || StringUtils.isBlank(parts[1])) {
+      return null;
+    }
+    return new QName(namespacePrefixToUri.get(parts[0]), parts[1], parts[0]);
   }
 
   /*
@@ -399,7 +439,7 @@ public class XmlSchemaValidator implements Validator {
   private void collectInspectedElements(final Map<String, InspectedElement> inspected,
       final XmlStructureNode parentNode, final String xpathRelative) {
     if (parentNode == null || StringUtils.isBlank(xpathRelative)
-        || parentNode.getXpathAbsolute() == null) {
+        || StringUtils.isBlank(parentNode.getXpathAbsolute())) {
       return;
     }
 
@@ -424,10 +464,13 @@ public class XmlSchemaValidator implements Validator {
    * an element (efext:EformsExtension is the element of the notice-root extension and of the extension
    * under every value estimate, cac:RequestedTenderTotal included); since coverage is judged per
    * element, the reader should be shown the primary placement rather than whichever came first.
+   *
+   * A blank XPath is dropped rather than kept: being the shortest of all, it would win every
+   * comparison and leave the findings under that element pointing at a truncated path.
    */
   private void rememberInspected(final Map<String, InspectedElement> inspected,
       final String elementName, final String xpathAbsolute, final XmlStructureNode subject) {
-    if (elementName == null || xpathAbsolute == null || subject == null) {
+    if (elementName == null || StringUtils.isBlank(xpathAbsolute) || subject == null) {
       return;
     }
     inspected.merge(elementName, new InspectedElement(xpathAbsolute, subject, elementName),

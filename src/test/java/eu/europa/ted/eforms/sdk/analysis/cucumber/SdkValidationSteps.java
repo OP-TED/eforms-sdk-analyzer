@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import jakarta.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -276,6 +277,20 @@ public class SdkValidationSteps {
   @Then("^I should get (.*) schema validation warnings?$")
   public void i_should_get_schema_validation_warnings(int warningsCount) {
     assertEquals(warningsCount, schemaValidator.getWarnings().size());
+  }
+
+  @Then("Schema validation should reference the XML element {string}")
+  public void schema_validation_should_reference_the_xml_element(String absoluteXpath) {
+    final boolean referenced = schemaValidator.getResults().stream()
+        .flatMap(result -> result.getReferences().stream())
+        .anyMatch(reference -> "xmlElement".equals(reference.getType())
+            && absoluteXpath.equals(reference.getId()));
+
+    assertTrue(referenced, MessageFormat.format(
+        "No schema validation finding references the XML element [{0}]. References found: {1}",
+        absoluteXpath,
+        schemaValidator.getResults().stream().flatMap(result -> result.getReferences().stream())
+            .map(Object::toString).sorted().collect(Collectors.toList())));
   }
 
   @Then("^I should get (.*) text validation errors?$")

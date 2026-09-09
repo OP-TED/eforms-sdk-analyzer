@@ -31,3 +31,8 @@ Feature: Schemas - Every eForms extension element allowed by the schemas is cove
     When I execute schema validation
     Then I should get 7 schema validation warnings
     And I should get 0 schema validation errors
+    # Several nodes can stand for the same element, and the one with the shortest absolute XPath is
+    # the placement a finding names. ND-BlankXpath stands for efext:EformsExtension with an empty
+    # absolute XPath: shorter than any real one, so it must be dropped rather than win the comparison
+    # and leave finding 5 pointing at "/efac:BusinessPartyGroup".
+    And Schema validation should reference the XML element "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:BusinessPartyGroup"
