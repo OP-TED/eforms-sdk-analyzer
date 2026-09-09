@@ -1,5 +1,5 @@
 @tedefo-5173
-Feature: Schemas - Report XML elements not covered by any field or node
+Feature: Schemas - Every eForms extension element allowed by the schemas is covered by a field or a node
   TEDEFO-5173: an element the eForms extension schemas allow, but which no field and no node
   covers, can appear in a notice while being invisible to the metadata.
   Reported as a warning: it may be a deliberate omission, and adding a field is a metadata decision.

@@ -112,18 +112,32 @@ public class XmlSchemaValidator implements Validator {
       checkNodeRepeatability(node);
     });
 
-    checkUncoveredExtensionElements(fields, nodes);
+    checkExtensionElementsAreCovered(fields, nodes);
 
     return this;
   }
 
   /*
-   * Report every eForms extension element the schemas allow under a modelled node, but which no field
-   * and no node covers. Such an element can legitimately appear in a notice while being invisible to
-   * the metadata, so nothing can validate, translate or display it.
+   * Invariant: every eForms extension element allowed by the schemas is covered by a field or a node.
+   *
+   * An element the schemas allow but no field and no node covers can legitimately appear in a notice
+   * while being invisible to the metadata, so nothing can validate, translate or display it.
    *
    * Reported as a WARNING: the finding says an element is unmodelled, which may well be deliberate,
    * and the decision to add a field belongs to the metadata owners.
+   *
+   * Scope, in two parts.
+   *
+   * Only the efac: and efbc: namespaces are considered. The UBL schemas are the untailored OASIS
+   * ones, so "allowed by the schema" carries no eForms meaning there: an element being absent from
+   * the metadata is the normal case for the vast majority of UBL, not a finding.
+   *
+   * Only elements inside a parent the metadata reaches are examined — an element a node stands for,
+   * an element a relative path passes through, or a notice root. So the invariant is enforced a
+   * little more narrowly than its wording: the children of an aggregate that has no node AND appears
+   * in no relative path are not examined, because there is no node to hang a field on yet. Such an
+   * aggregate is itself reported, so every gap is either reported or has its parent reported; model
+   * the parent and the children surface on the next run.
    *
    * Coverage is compared at ELEMENT-NAME level ("is efbc:X ever a child of efac:Y?") rather than by
    * full XPath. The schemas permit the same aggregate in several places while the SDK models one
@@ -131,7 +145,7 @@ public class XmlSchemaValidator implements Validator {
    * noise, not findings. The trade-off is that an element covered at one legitimate placement but
    * absent at another is not reported.
    */
-  private void checkUncoveredExtensionElements(final List<Field> fields,
+  private void checkExtensionElementsAreCovered(final List<Field> fields,
       final List<XmlStructureNode> nodes) {
 
     // What the metadata covers, as "parent element > child element" pairs.
@@ -178,7 +192,7 @@ public class XmlSchemaValidator implements Validator {
         }
 
         results.add(new ValidationResult(new NodeFact(place.subject),
-            "XML element allowed by the schema under this node is not covered by any field or node",
+            "eForms extension element allowed by the schemas is covered by no field and no node",
             ValidationStatusEnum.WARNING,
             AssetRef.xmlElement(place.xpathAbsolute + "/" + childElementName)));
       }
