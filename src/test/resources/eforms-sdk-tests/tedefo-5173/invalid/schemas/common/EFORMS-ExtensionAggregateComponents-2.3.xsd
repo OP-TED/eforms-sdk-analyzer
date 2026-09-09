@@ -2,9 +2,14 @@
 <!--
   Minimal stand-in for the eForms extension aggregate components, for TEDEFO-5173.
 
-  Two aggregates, each holding a code element and its free-text counterpart. The fixture's
-  fields.json covers the code in both cases; whether it also covers the description is what
-  the valid and invalid variants differ on.
+  Four aggregates, each holding a code element and its free-text counterpart:
+
+  - AppealProcessingParty and TenderSubcontractingRequirements are modelled as nodes, so the
+    check inspects them directly.
+  - NoticeSubType is not a node: it is reached only as an intermediate step of a relative path,
+    which is what the "covered but never inspected" fix is about.
+  - BusinessPartyGroup hangs off the notice root rather than the extension, which is what the
+    "document root is skipped" fix is about.
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns="http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1"
@@ -19,6 +24,8 @@
 	<xsd:element name="AppealInformation" type="AppealInformationType"/>
 	<xsd:element name="AppealProcessingParty" type="AppealProcessingPartyType"/>
 	<xsd:element name="TenderSubcontractingRequirements" type="TenderSubcontractingRequirementsType"/>
+	<xsd:element name="NoticeSubType" type="NoticeSubTypeType"/>
+	<xsd:element name="BusinessPartyGroup" type="BusinessPartyGroupType"/>
 	<!-- ===== Type Definitions ===== -->
 	<xsd:complexType name="AppealsType">
 		<xsd:sequence>
@@ -40,6 +47,18 @@
 		<xsd:sequence>
 			<xsd:element ref="efbc:TenderSubcontractingRequirementsCode" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="efbc:TenderSubcontractingRequirementsDescription" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="NoticeSubTypeType">
+		<xsd:sequence>
+			<xsd:element ref="efbc:SubTypeCode" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="efbc:SubTypeDescription" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BusinessPartyGroupType">
+		<xsd:sequence>
+			<xsd:element ref="efbc:GroupTypeCode" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="efbc:GroupType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>

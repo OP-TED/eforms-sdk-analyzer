@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Minimal stand-in for the eForms extension apex, for TEDEFO-5173.
-  Both aggregates below are modelled by a node in the fixture's fields.json, so the apex
-  itself contributes no finding: the findings come from inside the two aggregates.
+  efac:Appeals and efac:TenderSubcontractingRequirements are modelled by a node in the fixture's
+  fields.json, so the apex contributes no finding for them: those come from inside the aggregates.
+  efac:NoticeSubType is deliberately NOT a node - it is reached only through a two-step relative
+  path, the way OPP-070-notice reaches it in the real SDK.
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns="http://data.europa.eu/p27/eforms-ubl-extensions/1"
@@ -15,6 +17,7 @@
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element ref="efac:Appeals" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="efac:NoticeSubType" minOccurs="0" maxOccurs="1"/>
 				<xsd:element ref="efac:TenderSubcontractingRequirements" minOccurs="0" maxOccurs="1"/>
 			</xsd:sequence>
 		</xsd:complexType>

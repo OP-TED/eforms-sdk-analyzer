@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +58,12 @@ public class XmlSchemaValidator implements Validator {
 
   /** Separates the two halves of a "parent element to child element" key. */
   private static final String PAIR_SEPARATOR = ">";
+
+  /**
+   * Stands for the notice root in place of an element name. The root node's relative XPath is "/*",
+   * which names no element: each notice type has its own root element, resolved per document type.
+   */
+  private static final String DOCUMENT_ROOT = "/*";
 
   private final SdkLoader sdkLoader;
 
@@ -133,36 +140,26 @@ public class XmlSchemaValidator implements Validator {
     fields.forEach(field -> collectCoveredPairs(field.getParentNode(), field.getXpathRelative(),
         covered));
 
-    // Several nodes can share one element (efext:EformsExtension is the element of the notice-root
-    // extension and of the extension under every value estimate, cac:RequestedTenderTotal included).
-    // Since coverage is judged per element, report each element once, against its shortest absolute
-    // XPath: the reader gets the primary placement rather than whichever node happened to come first.
-    final Map<String, XmlStructureNode> nodeByElementName = new HashMap<>();
+    // Which elements to look inside. Not only the ones a node stands for: an aggregate reached solely
+    // through a multi-step relative path has no node of its own, yet the elements it contains still
+    // need metadata, so it has to be inspected too.
+    final Map<String, InspectedElement> inspected = new HashMap<>();
     for (final XmlStructureNode node : nodes) {
-      final String elementName = prefixedLastElementName(node.getXpathRelative());
-      if (elementName == null) {
-        // The document root, or a node whose XPath we cannot resolve to a named element.
-        continue;
-      }
-      nodeByElementName.merge(elementName, node, (kept, candidate) -> {
-        final String keptXpath = StringUtils.defaultString(kept.getXpathAbsolute());
-        final String candidateXpath = StringUtils.defaultString(candidate.getXpathAbsolute());
-        return candidateXpath.length() < keptXpath.length() ? candidate : kept;
-      });
+      rememberInspected(inspected, elementNameOfNode(node), node.getXpathAbsolute(), node);
+      collectInspectedElements(inspected, node.getParent(), node.getXpathRelative());
     }
+    fields.forEach(field -> collectInspectedElements(inspected, field.getParentNode(),
+        field.getXpathRelative()));
 
-    for (final Map.Entry<String, XmlStructureNode> entry : nodeByElementName.entrySet()) {
+    // One finding per "parent element > child element" pair: the document root resolves to several
+    // root elements, and an element can be reachable from more than one place.
+    final Set<String> reported = new HashSet<>();
+
+    for (final Map.Entry<String, InspectedElement> entry : inspected.entrySet()) {
       final String parentElementName = entry.getKey();
-      final XmlStructureNode node = entry.getValue();
+      final InspectedElement place = entry.getValue();
 
-      final XmlSchemaElement parentElement =
-          schemaCollection.getElementByQName(buildQName(parentElementName));
-      if (parentElement == null) {
-        // Already reported by the repeatability checks above.
-        continue;
-      }
-
-      for (final XmlSchemaElement childRef : getChildElementRefs(parentElement)) {
+      for (final XmlSchemaElement childRef : childElementRefsOf(parentElementName)) {
         final XmlSchemaElement target = childRef.getRef().getTarget();
         if (target == null) {
           continue;
@@ -174,17 +171,41 @@ public class XmlSchemaValidator implements Validator {
         }
 
         final String childElementName = prefix + ":" + target.getQName().getLocalPart();
+        final String pair = parentElementName + PAIR_SEPARATOR + childElementName;
 
-        if (covered.contains(parentElementName + PAIR_SEPARATOR + childElementName)) {
+        if (covered.contains(pair) || !reported.add(pair)) {
           continue;
         }
 
-        results.add(new ValidationResult(new NodeFact(node),
+        results.add(new ValidationResult(new NodeFact(place.subject),
             "XML element allowed by the schema under this node is not covered by any field or node",
             ValidationStatusEnum.WARNING,
-            AssetRef.xmlElement(node.getXpathAbsolute() + "/" + childElementName)));
+            AssetRef.xmlElement(place.xpathAbsolute + "/" + childElementName)));
       }
     }
+  }
+
+  /**
+   * The element references inside the named element. The document root is not a named element: every
+   * notice type has its own root, so the union of their children is used — an element allowed by any
+   * of them needs metadata. BRIN reaches {@code efac:} elements that way, outside ext:UBLExtensions.
+   */
+  private List<XmlSchemaElement> childElementRefsOf(final String elementName) {
+    if (DOCUMENT_ROOT.equals(elementName)) {
+      final List<XmlSchemaElement> refs = new ArrayList<>();
+      for (final DocumentType documentType : documentTypes) {
+        final XmlSchemaElement root = schemaCollection.getElementByQName(
+            new QName(documentType.getNamespace(), documentType.getRootElement()));
+        if (root != null) {
+          refs.addAll(getChildElementRefs(root));
+        }
+      }
+      return refs;
+    }
+
+    final XmlSchemaElement element = schemaCollection.getElementByQName(buildQName(elementName));
+    // A null element is already reported by the repeatability checks above.
+    return element == null ? Collections.emptyList() : getChildElementRefs(element);
   }
 
   /*
@@ -199,8 +220,7 @@ public class XmlSchemaValidator implements Validator {
       return;
     }
 
-    String parentElementName =
-        parentNode == null ? null : prefixedLastElementName(parentNode.getXpathRelative());
+    String parentElementName = parentNode == null ? null : elementNameOfNode(parentNode);
 
     for (final XPathStep step : XPathProcessor.parse(xpathRelative).getSteps()) {
       final String stepText = step.getStepText();
@@ -215,9 +235,66 @@ public class XmlSchemaValidator implements Validator {
     }
   }
 
+  /*
+   * Register every element a relative XPath passes through on its way down, except the last step,
+   * which is the field or node itself. Without this, an aggregate that only ever appears as an
+   * intermediate step is never looked inside: efac:NoticeSubType is reached only by OPP-070-notice's
+   * "efac:NoticeSubType/cbc:SubTypeCode", so efbc:SubTypeDescription beside it stayed invisible.
+   *
+   * The accumulated XPath is built from the parent node's absolute XPath plus the steps walked, so it
+   * carries the parent's predicates but not any on the intermediate steps themselves.
+   */
+  private void collectInspectedElements(final Map<String, InspectedElement> inspected,
+      final XmlStructureNode parentNode, final String xpathRelative) {
+    if (parentNode == null || StringUtils.isBlank(xpathRelative)
+        || parentNode.getXpathAbsolute() == null) {
+      return;
+    }
+
+    final StringBuilder xpath = new StringBuilder(parentNode.getXpathAbsolute());
+    final List<XPathStep> steps = XPathProcessor.parse(xpathRelative).getSteps();
+
+    for (int i = 0; i < steps.size(); i++) {
+      final String stepText = steps.get(i).getStepText();
+      if (stepText == null || !stepText.contains(":")) {
+        // An attribute or an unnamed step: nothing below it can be inspected.
+        return;
+      }
+      xpath.append('/').append(stepText);
+      if (i < steps.size() - 1) {
+        rememberInspected(inspected, stepText, xpath.toString(), parentNode);
+      }
+    }
+  }
+
+  /*
+   * Keep one place per element name, the one with the shortest absolute XPath. Several nodes can share
+   * an element (efext:EformsExtension is the element of the notice-root extension and of the extension
+   * under every value estimate, cac:RequestedTenderTotal included); since coverage is judged per
+   * element, the reader should be shown the primary placement rather than whichever came first.
+   */
+  private void rememberInspected(final Map<String, InspectedElement> inspected,
+      final String elementName, final String xpathAbsolute, final XmlStructureNode subject) {
+    if (elementName == null || xpathAbsolute == null || subject == null) {
+      return;
+    }
+    inspected.merge(elementName, new InspectedElement(xpathAbsolute, subject),
+        (kept, fresh) -> fresh.xpathAbsolute.length() < kept.xpathAbsolute.length() ? fresh : kept);
+  }
+
+  /**
+   * The element a node stands for: the last step of its relative XPath, or the document-root sentinel
+   * for the root node, whose relative XPath is "/*" and names no element.
+   */
+  private String elementNameOfNode(final XmlStructureNode node) {
+    final String xpathRelative = StringUtils.trim(node.getXpathRelative());
+    return DOCUMENT_ROOT.equals(xpathRelative) ? DOCUMENT_ROOT
+        : prefixedLastElementName(xpathRelative);
+  }
+
   /**
    * The prefixed name of the last element of an XPath (predicates removed), or null when the XPath has
-   * no such element — the document root "/*" being the case that matters.
+   * no such element.
    */
   private String prefixedLastElementName(final String xpath) {
     if (StringUtils.isBlank(xpath)) {
@@ -229,6 +306,17 @@ public class XmlSchemaValidator implements Validator {
     }
     final String stepText = steps.get(steps.size() - 1).getStepText();
     return stepText != null && stepText.contains(":") ? stepText : null;
+  }
+
+  /** Where an inspected element sits, and the node a finding about it is reported against. */
+  private static final class InspectedElement {
+    private final String xpathAbsolute;
+    private final XmlStructureNode subject;
+
+    InspectedElement(final String xpathAbsolute, final XmlStructureNode subject) {
+      this.xpathAbsolute = xpathAbsolute;
+      this.subject = subject;
+    }
   }
 
   /**

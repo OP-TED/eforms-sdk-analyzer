@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Minimal stand-in for the UBL Contract Notice main document, for TEDEFO-5173.
-  Only what the "uncovered extension element" check needs: a notice root that leads
-  into the eForms extension. Deliberately tiny so the expected number of findings is
-  exact and does not move when the real SDK schemas change.
+  Only what the "uncovered extension element" check needs: a notice root that leads into the
+  eForms extension, plus one efac: element referenced straight from the root, the way BRIN
+  references efac:BusinessPartyGroup outside ext:UBLExtensions. Deliberately tiny so the
+  expected number of findings is exact and does not move when the real SDK schemas change.
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns="urn:oasis:names:specification:ubl:schema:xsd:ContractNotice-2"
             xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+            xmlns:efac="http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1"
             targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:ContractNotice-2"
             elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.3">
 	<xsd:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
 	            schemaLocation="../common/UBL-CommonExtensionComponents-2.3.xsd"/>
+	<xsd:import namespace="http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1"
+	            schemaLocation="../common/EFORMS-ExtensionAggregateComponents-2.3.xsd"/>
 	<xsd:element name="ContractNotice" type="ContractNoticeType"/>
 	<xsd:complexType name="ContractNoticeType">
 		<xsd:sequence>
 			<xsd:element ref="ext:UBLExtensions" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="efac:BusinessPartyGroup" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>

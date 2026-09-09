@@ -67,5 +67,18 @@
       "value" : false,
       "severity" : "ERROR"
     }
+  }, {
+    "id" : "OPP-070-notice",
+    "parentNodeId" : "ND-RootExtension",
+    "name" : "Notice Subtype",
+    "btId" : "OPP-070",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:NoticeSubType/efbc:SubTypeCode",
+    "xpathRelative" : "efac:NoticeSubType/efbc:SubTypeCode",
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
   } ]
 }

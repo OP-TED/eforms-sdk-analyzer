@@ -11,4 +11,8 @@
 	<xsd:element name="AppealProcessingPartyTypeDescription" type="xsd:string"/>
 	<xsd:element name="TenderSubcontractingRequirementsCode" type="xsd:string"/>
 	<xsd:element name="TenderSubcontractingRequirementsDescription" type="xsd:string"/>
+	<xsd:element name="SubTypeCode" type="xsd:string"/>
+	<xsd:element name="SubTypeDescription" type="xsd:string"/>
+	<xsd:element name="GroupTypeCode" type="xsd:string"/>
+	<xsd:element name="GroupType" type="xsd:string"/>
 </xsd:schema>

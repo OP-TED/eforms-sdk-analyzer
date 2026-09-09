@@ -40,6 +40,12 @@
     "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:TenderSubcontractingRequirements",
     "xpathRelative" : "efac:TenderSubcontractingRequirements",
     "repeatable" : false
+  }, {
+    "id" : "ND-BusinessPartyGroup",
+    "parentId" : "ND-Root",
+    "xpathAbsolute" : "/*/efac:BusinessPartyGroup",
+    "xpathRelative" : "efac:BusinessPartyGroup",
+    "repeatable" : false
   } ],
   "fields" : [ {
     "id" : "BT-799-ReviewBody",
@@ -48,19 +54,6 @@
     "btId" : "BT-799",
     "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:Appeals/efac:AppealInformation/efac:AppealProcessingParty/efbc:AppealProcessingPartyTypeCode",
     "xpathRelative" : "efbc:AppealProcessingPartyTypeCode",
-    "type" : "code",
-    "legalType" : "CODE",
-    "repeatable" : {
-      "value" : false,
-      "severity" : "ERROR"
-    }
-  }, {
-    "id" : "BT-651-Lot",
-    "parentNodeId" : "ND-SubcontractingIndication",
-    "name" : "Subcontracting Tender Indication",
-    "btId" : "BT-651",
-    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:TenderSubcontractingRequirements/efbc:TenderSubcontractingRequirementsCode",
-    "xpathRelative" : "efbc:TenderSubcontractingRequirementsCode",
     "type" : "code",
     "legalType" : "CODE",
     "repeatable" : {
@@ -81,12 +74,77 @@
       "severity" : "ERROR"
     }
   }, {
+    "id" : "BT-651-Lot",
+    "parentNodeId" : "ND-SubcontractingIndication",
+    "name" : "Subcontracting Tender Indication",
+    "btId" : "BT-651",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:TenderSubcontractingRequirements/efbc:TenderSubcontractingRequirementsCode",
+    "xpathRelative" : "efbc:TenderSubcontractingRequirementsCode",
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  }, {
     "id" : "OPT-335-Lot",
     "parentNodeId" : "ND-SubcontractingIndication",
     "name" : "Subcontracting Tender Indication Description",
     "btId" : "OPT-335",
     "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:TenderSubcontractingRequirements/efbc:TenderSubcontractingRequirementsDescription",
     "xpathRelative" : "efbc:TenderSubcontractingRequirementsDescription",
+    "type" : "text",
+    "legalType" : "TEXT",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  }, {
+    "id" : "OPP-070-notice",
+    "parentNodeId" : "ND-RootExtension",
+    "name" : "Notice Subtype",
+    "btId" : "OPP-070",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:NoticeSubType/efbc:SubTypeCode",
+    "xpathRelative" : "efac:NoticeSubType/efbc:SubTypeCode",
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  }, {
+    "id" : "OPP-132-notice",
+    "parentNodeId" : "ND-RootExtension",
+    "name" : "Notice Subtype Description",
+    "btId" : "OPP-132",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:NoticeSubType/efbc:SubTypeDescription",
+    "xpathRelative" : "efac:NoticeSubType/efbc:SubTypeDescription",
+    "type" : "text",
+    "legalType" : "TEXT",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  }, {
+    "id" : "OPT-340-Business",
+    "parentNodeId" : "ND-BusinessPartyGroup",
+    "name" : "Business Party Group Type",
+    "btId" : "OPT-340",
+    "xpathAbsolute" : "/*/efac:BusinessPartyGroup/efbc:GroupTypeCode",
+    "xpathRelative" : "efbc:GroupTypeCode",
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  }, {
+    "id" : "OPT-341-Business",
+    "parentNodeId" : "ND-BusinessPartyGroup",
+    "name" : "Business Party Group Type Description",
+    "btId" : "OPT-341",
+    "xpathAbsolute" : "/*/efac:BusinessPartyGroup/efbc:GroupType",
+    "xpathRelative" : "efbc:GroupType",
     "type" : "text",
     "legalType" : "TEXT",
     "repeatable" : {
