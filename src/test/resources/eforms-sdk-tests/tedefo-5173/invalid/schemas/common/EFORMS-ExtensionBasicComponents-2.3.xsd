@@ -15,4 +15,6 @@
 	<xsd:element name="SubTypeDescription" type="xsd:string"/>
 	<xsd:element name="GroupTypeCode" type="xsd:string"/>
 	<xsd:element name="GroupType" type="xsd:string"/>
+	<xsd:element name="CriterionDescription" type="xsd:string"/>
+	<xsd:element name="StatisticsCode" type="xsd:string"/>
 </xsd:schema>

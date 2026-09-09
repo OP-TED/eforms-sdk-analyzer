@@ -8,7 +8,9 @@
 
   efac:BusinessPartyGroup appears here as well as under the notice root, so the elements inside it
   have two possible locations: that is what tells the "several locations" finding apart from the
-  "single location" one.
+  "single location" one. efac:SelectionCriteria and efac:NoticeResult appear here only, so what is
+  inside them has a single location; they also carry the two shapes the descent has to survive, a
+  self-recursive type and a chain deeper than the cap.
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns="http://data.europa.eu/p27/eforms-ubl-extensions/1"
@@ -22,7 +24,9 @@
 			<xsd:sequence>
 				<xsd:element ref="efac:Appeals" minOccurs="0" maxOccurs="1"/>
 				<xsd:element ref="efac:BusinessPartyGroup" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="efac:NoticeResult" minOccurs="0" maxOccurs="1"/>
 				<xsd:element ref="efac:NoticeSubType" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="efac:SelectionCriteria" minOccurs="0" maxOccurs="unbounded"/>
 				<xsd:element ref="efac:TenderSubcontractingRequirements" minOccurs="0" maxOccurs="1"/>
 			</xsd:sequence>
 		</xsd:complexType>

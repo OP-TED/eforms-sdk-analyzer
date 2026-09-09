@@ -26,6 +26,11 @@
 	<xsd:element name="TenderSubcontractingRequirements" type="TenderSubcontractingRequirementsType"/>
 	<xsd:element name="NoticeSubType" type="NoticeSubTypeType"/>
 	<xsd:element name="BusinessPartyGroup" type="BusinessPartyGroupType"/>
+	<xsd:element name="SelectionCriteria" type="SelectionCriteriaType"/>
+	<xsd:element name="SubordinateCriterion" type="SelectionCriteriaType"/>
+	<xsd:element name="NoticeResult" type="NoticeResultType"/>
+	<xsd:element name="LotResult" type="LotResultType"/>
+	<xsd:element name="ReceivedSubmissionsStatistics" type="StatisticsType"/>
 	<!-- ===== Type Definitions ===== -->
 	<xsd:complexType name="AppealsType">
 		<xsd:sequence>
@@ -59,6 +64,38 @@
 		<xsd:sequence>
 			<xsd:element ref="efbc:GroupTypeCode" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="efbc:GroupType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--
+	  Self-recursive, as efac:SelectionCriteria is in the real schemas: efac:SubordinateCriterion is
+	  of the very type that holds it. The descent must stop on the second visit to the type rather
+	  than follow it forever, and the "single location" finding for efbc:CriterionDescription is what
+	  proves it did: were the type visited twice, the leaf would be found at two locations.
+	-->
+	<xsd:complexType name="SelectionCriteriaType">
+		<xsd:sequence>
+			<xsd:element ref="efbc:CriterionDescription" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="efac:SubordinateCriterion" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--
+	  Three aggregates in a row, to reach past the depth the descent is capped at:
+	  efac:NoticeResult holds efac:LotResult holds efac:ReceivedSubmissionsStatistics holds
+	  efbc:StatisticsCode. The first three are reported, the leaf is not.
+	-->
+	<xsd:complexType name="NoticeResultType">
+		<xsd:sequence>
+			<xsd:element ref="efac:LotResult" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LotResultType">
+		<xsd:sequence>
+			<xsd:element ref="efac:ReceivedSubmissionsStatistics" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StatisticsType">
+		<xsd:sequence>
+			<xsd:element ref="efbc:StatisticsCode" minOccurs="0" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>

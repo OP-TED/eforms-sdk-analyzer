@@ -279,6 +279,13 @@ public class SdkValidationSteps {
     assertEquals(warningsCount, schemaValidator.getWarnings().size());
   }
 
+  @Then("^I should get (\\d+) schema validation warnings? about \"(.*)\"$")
+  public void i_should_get_schema_validation_warnings_about(int warningsCount,
+      String messageFragment) {
+    assertEquals(warningsCount, schemaValidator.getWarnings().stream()
+        .filter(result -> StringUtils.contains(result.getMessage(), messageFragment)).count());
+  }
+
   @Then("Schema validation should reference the XML element {string}")
   public void schema_validation_should_reference_the_xml_element(String absoluteXpath) {
     final boolean referenced = schemaValidator.getResults().stream()
