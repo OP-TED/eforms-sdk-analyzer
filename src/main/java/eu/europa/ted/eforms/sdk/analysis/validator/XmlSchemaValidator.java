@@ -40,8 +40,45 @@ import eu.europa.ted.eforms.xpath.XPathProcessor;
 import eu.europa.ted.eforms.xpath.XPathStep;
 
 /**
- * Validates the content of the XSD files in the SDK, and their consistency with other files.
- * It does not validate XML files against a schema.
+ * Validates the content of the XSD files in the SDK, and their consistency with other files. It does
+ * not validate XML files against a schema.
+ *
+ * <p>Two families of check live here.
+ *
+ * <p><b>Repeatability</b> (errors). A field or node declared repeatable must be allowed to repeat by
+ * the schemas: see {@link #checkFieldRepeatability(Field)} and
+ * {@link #checkNodeRepeatability(XmlStructureNode)}.
+ *
+ * <p><b>Coverage of the eForms extension</b> (warnings), added by TEDEFO-5173, as two disjoint
+ * invariants:
+ *
+ * <ol>
+ * <li>every eForms extension element the schemas allow is covered by a field or a node — see
+ * {@link #checkExtensionElementsAreCovered(List, List)};
+ * <li>no eForms extension element is left entirely unmodelled inside a branch the metadata does not
+ * reach — see {@link #checkContentsOfUnmodelledBranches(List, Set)}.
+ * </ol>
+ *
+ * <p>An element the schemas allow but nothing covers can legitimately appear in a notice while being
+ * invisible to the metadata, so nothing can validate, translate or display it. The two invariants
+ * exist separately because the first has to stop where the metadata does: a field needs a parent
+ * node, so an aggregate with no node is reported rather than descended into, and the second picks up
+ * from there.
+ *
+ * <p>Coverage findings are warnings, not errors, on two grounds: an unmodelled element may be a
+ * deliberate omission, and adding a field is a metadata decision taken elsewhere (TEDEMD-474). Since
+ * {@code AnalysisResults} counts errors only, the SDK's own analysis job is not made to fail by
+ * pre-existing gaps.
+ *
+ * <p>Why these checks are here rather than in a {@code .drl}: this class already holds the
+ * {@link XmlSchemaCollection}, the prefix-to-namespace maps and the fields and nodes, and its remit
+ * is precisely the consistency of the XSDs with the rest of the SDK. A drools rule would need a new
+ * fact, a {@code DataStore} and an XSD accessor on {@code SdkContentSource}, which has none — the
+ * schemas are never in the database. Being constructed from a {@link Path}, this validator is
+ * inherently file-backed, which is why no {@code @source} restriction is needed.
+ *
+ * <p>Only the {@code efac:} and {@code efbc:} namespaces are considered by the coverage checks; see
+ * {@link #EXTENSION_PREFIXES} for why the UBL ones cannot be treated the same way.
  */
 public class XmlSchemaValidator implements Validator {
   private static final Logger logger = LoggerFactory.getLogger(XmlSchemaValidator.class);
@@ -79,6 +116,12 @@ public class XmlSchemaValidator implements Validator {
 
   private List<DocumentType> documentTypes;
   private Map<String, String> namespacePrefixToUri = new HashMap<>();
+
+  /**
+   * The reverse of {@link #namespacePrefixToUri}. The schemas identify an element by namespace URI,
+   * while findings have to name it the way the metadata does, with a prefix. Built with
+   * {@code putIfAbsent}, so were two prefixes ever to share a URI the first one seen would win.
+   */
   private Map<String, String> namespaceUriToPrefix = new HashMap<>();
   private XmlSchemaCollection schemaCollection;
 
@@ -127,33 +170,30 @@ public class XmlSchemaValidator implements Validator {
     return this;
   }
 
-  /*
+  /**
    * Invariant: every eForms extension element allowed by the schemas is covered by a field or a node.
    *
-   * An element the schemas allow but no field and no node covers can legitimately appear in a notice
-   * while being invisible to the metadata, so nothing can validate, translate or display it.
+   * <p>The walk is anchored in the metadata rather than in the schemas. Instead of descending from an
+   * apex, it takes each element the metadata reaches and asks the schemas what may sit inside it.
+   * Three things count as reached: the element a node stands for, every element a relative XPath
+   * passes through ({@link #collectInspectedElements}), and each notice root
+   * ({@link #childElementNamesOf}). Descending from the apex instead produced some 150 findings,
+   * nearly all of them alternative placements the SDK deliberately does not model.
    *
-   * Reported as a WARNING: the finding says an element is unmodelled, which may well be deliberate,
-   * and the decision to add a field belongs to the metadata owners.
+   * <p>The invariant is therefore enforced slightly more narrowly than its wording: the children of an
+   * aggregate that has no node AND appears in no relative XPath are not examined here, because there
+   * is no node yet to hang a field on. Such an aggregate is itself reported, and
+   * {@link #checkContentsOfUnmodelledBranches} takes over inside it, so every gap is either reported
+   * or has its parent reported. Model the parent and the children surface on the next run.
    *
-   * Scope, in two parts.
+   * <p>Coverage is compared at ELEMENT-NAME level ("is efbc:X ever a child of efac:Y?") rather than by
+   * full XPath, for the same reason: the schemas permit the same aggregate in several places while the
+   * SDK models one canonical placement, so comparing full paths reports every alternative placement as
+   * missing — noise, not findings. The trade-off is that an element covered at one legitimate
+   * placement but absent at another is not reported.
    *
-   * Only the efac: and efbc: namespaces are considered. The UBL schemas are the untailored OASIS
-   * ones, so "allowed by the schema" carries no eForms meaning there: an element being absent from
-   * the metadata is the normal case for the vast majority of UBL, not a finding.
-   *
-   * Only elements inside a parent the metadata reaches are examined — an element a node stands for,
-   * an element a relative path passes through, or a notice root. So the invariant is enforced a
-   * little more narrowly than its wording: the children of an aggregate that has no node AND appears
-   * in no relative path are not examined, because there is no node to hang a field on yet. Such an
-   * aggregate is itself reported, so every gap is either reported or has its parent reported; model
-   * the parent and the children surface on the next run.
-   *
-   * Coverage is compared at ELEMENT-NAME level ("is efbc:X ever a child of efac:Y?") rather than by
-   * full XPath. The schemas permit the same aggregate in several places while the SDK models one
-   * canonical placement, so comparing full paths reports every alternative placement as missing —
-   * noise, not findings. The trade-off is that an element covered at one legitimate placement but
-   * absent at another is not reported.
+   * @param fields every field in the SDK, serving both as coverage and as a way into the schemas
+   * @param nodes every XML structure node, likewise
    */
   private void checkExtensionElementsAreCovered(final List<Field> fields,
       final List<XmlStructureNode> nodes) {
@@ -232,28 +272,34 @@ public class XmlSchemaValidator implements Validator {
     checkContentsOfUnmodelledBranches(unmodelledBranches, coveredNames);
   }
 
-  /*
+  /**
    * Invariant: no eForms extension element is left entirely unmodelled inside a branch the metadata
    * does not reach.
    *
-   * The companion of the check above, for what it cannot see. That one stops at an aggregate the
-   * metadata does not model, because a field needs a parent node and there is none yet. This one
-   * carries on into that aggregate and reports what is inside, so a whole branch is not summarised by
-   * a single finding.
+   * <p>The companion of {@link #checkExtensionElementsAreCovered}, for what that one cannot see. It
+   * stops at an aggregate the metadata does not model, because a field needs a parent node and there
+   * is none yet; this one carries on into that aggregate and reports what is inside, so a whole branch
+   * is not summarised by a single finding.
    *
-   * Only elements whose name appears NOWHERE in the metadata are reported. An element modelled at
-   * some other placement is a placement question, which belongs to the check above; here the question
-   * is whether the element is known at all.
+   * <p>Only elements whose name appears NOWHERE in the metadata are reported, which is what keeps the
+   * two invariants disjoint. An element modelled at some other placement raises a placement question,
+   * and that belongs to the other check; here the question is whether the element is known at all.
    *
-   * Findings are split by how many places the element can occupy, because that changes what has to be
-   * decided:
+   * <p>Findings are split by how many places the element can occupy, because that changes what has to
+   * be decided:
    *
-   * - one location: the element has a single home in the schemas, so the absolute XPath is the answer
-   *   and the field can be written straight away.
-   * - several locations: the element is reachable through several branches (efbc:FieldIdentifierCode
-   *   sits inside every efac:FieldsPrivacy, and that aggregate appears in a dozen places). One
-   *   finding lists them all, because the first decision is which placement is canonical, not how to
-   *   write a field.
+   * <ul>
+   * <li><b>one location</b> — the element has a single home in the schemas, so the absolute XPath is
+   * the answer and the field can be written as it stands.
+   * <li><b>several locations</b> — the element is reachable through several branches
+   * ({@code efbc:FieldIdentifierCode} sits inside every {@code efac:FieldsPrivacy}, and that
+   * aggregate appears fourteen times). One finding lists every location, because the first decision
+   * is which placement is canonical, not how to write a field.
+   * </ul>
+   *
+   * @param branches the aggregates {@link #checkExtensionElementsAreCovered} reported as unmodelled
+   * @param coveredNames every extension element name the metadata mentions at any placement, plus the
+   *        names the other check has already reported; both are left alone here
    */
   private void checkContentsOfUnmodelledBranches(final List<InspectedElement> branches,
       final Set<String> coveredNames) {
@@ -282,11 +328,25 @@ public class XmlSchemaValidator implements Validator {
     }
   }
 
-  /*
-   * Walk down an unmodelled aggregate, recording every extension element the schemas allow inside it
-   * whose name the metadata never mentions. Bounded twice over: by MAX_BRANCH_DEPTH, and by the types
-   * already on the current path, since an aggregate can contain itself (efac:SubordinateCriterion is
-   * of CriterionType, the type of the aggregate that holds it).
+  /**
+   * Walks down an unmodelled aggregate, recording every extension element the schemas allow inside it
+   * whose name the metadata never mentions.
+   *
+   * <p>Bounded twice over: by {@link #MAX_BRANCH_DEPTH}, and by the types already on the current path,
+   * since an aggregate can contain itself ({@code efac:SubordinateCriterion} is of
+   * {@code CriterionType}, the type of the aggregate that holds it — without the type guard the
+   * descent would keep finding the same elements one level deeper until the depth cap stopped it, and
+   * report them at several locations rather than one).
+   *
+   * @param parent the aggregate to look inside
+   * @param coveredNames element names to leave alone, as in
+   *        {@link #checkContentsOfUnmodelledBranches}
+   * @param occurrences accumulator, element name to every place inside an unmodelled branch where the
+   *        schemas allow it; added to in place
+   * @param typesOnPath the types already visited on the way here, the cycle guard. Callers pass a
+   *        fresh copy per branch, so an aggregate reachable through two branches is still recorded
+   *        twice — which is exactly what the several-locations finding reports
+   * @param depth 1 for the children of an unmodelled aggregate, incremented on each descent
    */
   private void collectBranchContents(final InspectedElement parent, final Set<String> coveredNames,
       final Map<String, List<InspectedElement>> occurrences, final Set<String> typesOnPath,
@@ -317,7 +377,14 @@ public class XmlSchemaValidator implements Validator {
     }
   }
 
-  /** The type of an element, or its own name when the type is anonymous: the cycle-guard key. */
+  /**
+   * The type of an element, or its own name when the type is anonymous: the cycle-guard key.
+   *
+   * @param elementName the prefixed element name
+   * @return the schema type name, or {@code elementName} itself when the element has no named type or
+   *         is unknown to the schemas. Either way the key is stable for a given element, which is all
+   *         the guard needs
+   */
   private String typeKeyOf(final String elementName) {
     final QName qname = prefixedQNameOf(elementName);
     final XmlSchemaElement element =
@@ -334,6 +401,11 @@ public class XmlSchemaValidator implements Validator {
    * is not a named element: every notice type has its own root, so the union of their children is
    * used — an element allowed by any of them needs metadata. BRIN reaches {@code efac:} elements that
    * way, outside ext:UBLExtensions.
+   *
+   * @param elementName the prefixed element name, or {@link #DOCUMENT_ROOT} for the notice root
+   * @return the names of the child elements, in schema order and with duplicates left in when a name
+   *         is allowed by several notice roots. Empty when the element holds no child element, or when
+   *         the schemas do not declare it at all — which the repeatability checks already report
    */
   private List<QName> childElementNamesOf(final String elementName) {
     if (DOCUMENT_ROOT.equals(elementName)) {
@@ -358,7 +430,12 @@ public class XmlSchemaValidator implements Validator {
         : resolvedNamesOf(getChildElementRefs(element));
   }
 
-  /** The names of the elements the given particles stand for, skipping any that cannot be named. */
+  /**
+   * The names of the elements the given particles stand for, skipping any that cannot be named.
+   *
+   * @param particles element particles taken from a complex type's sequence or choice
+   * @return their resolved names, in the order given
+   */
   private List<QName> resolvedNamesOf(final List<XmlSchemaElement> particles) {
     return particles.stream().map(this::resolvedElementName)
         .filter(qname -> qname != null && StringUtils.isNotBlank(qname.getLocalPart()))
@@ -372,6 +449,9 @@ public class XmlSchemaValidator implements Validator {
    * stops examining. A {@code ref=} that resolves to nothing still yields the referenced name (a
    * dangling reference is the schemas' problem, not a reason to stop), and a child declared inline
    * rather than by reference carries its own name.
+   *
+   * @param particle an element particle from a complex type's sequence or choice
+   * @return the name of the element it stands for, or null if it cannot be named at all
    */
   private QName resolvedElementName(final XmlSchemaElement particle) {
     final XmlSchemaElement target = particle.getRef().getTarget();
@@ -388,6 +468,9 @@ public class XmlSchemaValidator implements Validator {
    * the metadata's XPaths, and a malformed one should leave this check silent — the XPath itself is
    * reported by the field and node rules — rather than abort the whole analysis. An unknown prefix
    * yields a name in no namespace, which resolves to no element and is equally silent.
+   *
+   * @param elementName a prefixed element name such as {@code efbc:SubTypeCode}
+   * @return the qualified name, or null when the argument is not a single prefix and local part
    */
   private QName prefixedQNameOf(final String elementName) {
     if (elementName == null) {
@@ -400,11 +483,17 @@ public class XmlSchemaValidator implements Validator {
     return new QName(namespacePrefixToUri.get(parts[0]), parts[1], parts[0]);
   }
 
-  /*
-   * Record the "parent element > child element" pair for every step of a relative XPath, walking down
-   * from the parent node. A relative XPath can have several steps (a field's can be
-   * "efac:NoticeSubType/cbc:SubTypeCode"), and each step covers its own parent, so the intermediate
-   * elements count as covered even though no node of their own exists for them.
+  /**
+   * Records the {@code parent element > child element} pair for every step of a relative XPath,
+   * walking down from the parent node.
+   *
+   * <p>A relative XPath can have several steps (a field's can be
+   * {@code efac:NoticeSubType/cbc:SubTypeCode}), and each step covers its own parent, so the
+   * intermediate elements count as covered even though no node of their own exists for them.
+   *
+   * @param parentNode the node the XPath is relative to; nothing is recorded when it is absent
+   * @param xpathRelative the relative XPath of a field or node
+   * @param covered accumulator of covered pairs, added to in place
    */
   private void collectCoveredPairs(final XmlStructureNode parentNode, final String xpathRelative,
       final Set<String> covered) {
@@ -427,14 +516,22 @@ public class XmlSchemaValidator implements Validator {
     }
   }
 
-  /*
-   * Register every element a relative XPath passes through on its way down, except the last step,
-   * which is the field or node itself. Without this, an aggregate that only ever appears as an
-   * intermediate step is never looked inside: efac:NoticeSubType is reached only by OPP-070-notice's
-   * "efac:NoticeSubType/cbc:SubTypeCode", so efbc:SubTypeDescription beside it stayed invisible.
+  /**
+   * Registers every element a relative XPath passes through on its way down, except the last step,
+   * which is the field or node itself.
    *
-   * The accumulated XPath is built from the parent node's absolute XPath plus the steps walked, so it
-   * carries the parent's predicates but not any on the intermediate steps themselves.
+   * <p>Without this, an aggregate that only ever appears as an intermediate step is never looked
+   * inside: {@code efac:NoticeSubType} is reached only by OPP-070-notice's
+   * {@code efac:NoticeSubType/cbc:SubTypeCode}, so {@code efbc:SubTypeDescription} beside it stayed
+   * invisible.
+   *
+   * <p>The accumulated XPath is built from the parent node's absolute XPath plus the steps walked, so
+   * it carries the parent's predicates but not any on the intermediate steps themselves.
+   *
+   * @param inspected accumulator of elements to look inside, added to in place
+   * @param parentNode the node the XPath is relative to; nothing is registered without it, or without
+   *        an absolute XPath on it to build on
+   * @param xpathRelative the relative XPath of a field or node
    */
   private void collectInspectedElements(final Map<String, InspectedElement> inspected,
       final XmlStructureNode parentNode, final String xpathRelative) {
@@ -459,14 +556,21 @@ public class XmlSchemaValidator implements Validator {
     }
   }
 
-  /*
-   * Keep one place per element name, the one with the shortest absolute XPath. Several nodes can share
-   * an element (efext:EformsExtension is the element of the notice-root extension and of the extension
-   * under every value estimate, cac:RequestedTenderTotal included); since coverage is judged per
-   * element, the reader should be shown the primary placement rather than whichever came first.
+  /**
+   * Keeps one place per element name, the one with the shortest absolute XPath.
    *
-   * A blank XPath is dropped rather than kept: being the shortest of all, it would win every
+   * <p>Several nodes can share an element ({@code efext:EformsExtension} is the element of the
+   * notice-root extension and of the extension under every value estimate,
+   * {@code cac:RequestedTenderTotal} included). Since coverage is judged per element, the reader
+   * should be shown the primary placement rather than whichever came first.
+   *
+   * <p>A blank XPath is dropped rather than kept: being the shortest of all, it would win every
    * comparison and leave the findings under that element pointing at a truncated path.
+   *
+   * @param inspected accumulator of elements to look inside, added to in place
+   * @param elementName the prefixed element name, or {@link #DOCUMENT_ROOT} for the notice root
+   * @param xpathAbsolute where this occurrence of the element sits
+   * @param subject the node a finding about anything inside this element is reported against
    */
   private void rememberInspected(final Map<String, InspectedElement> inspected,
       final String elementName, final String xpathAbsolute, final XmlStructureNode subject) {
@@ -480,6 +584,10 @@ public class XmlSchemaValidator implements Validator {
   /**
    * The element a node stands for: the last step of its relative XPath, or the document-root sentinel
    * for the root node, whose relative XPath is "/*" and names no element.
+   *
+   * @param node the node whose element is wanted
+   * @return the prefixed element name, {@link #DOCUMENT_ROOT} for the root node, or null when the
+   *         node's relative XPath ends in something that is not a named element
    */
   private String elementNameOfNode(final XmlStructureNode node) {
     final String xpathRelative = StringUtils.trim(node.getXpathRelative());
@@ -488,8 +596,11 @@ public class XmlSchemaValidator implements Validator {
   }
 
   /**
-   * The prefixed name of the last element of an XPath (predicates removed), or null when the XPath has
-   * no such element.
+   * The prefixed name of the last element of an XPath, predicates removed.
+   *
+   * @param xpath any XPath, absolute or relative
+   * @return the prefixed element name, or null when the XPath is blank, has no steps, or ends in
+   *         something other than a named element (an attribute, for instance)
    */
   private String prefixedLastElementName(final String xpath) {
     if (StringUtils.isBlank(xpath)) {
@@ -503,10 +614,30 @@ public class XmlSchemaValidator implements Validator {
     return stepText != null && stepText.contains(":") ? stepText : null;
   }
 
-  /** Where an element sits, its name, and the node a finding about it is reported against. */
+  /**
+   * An element the coverage checks look inside, or report on: where it sits, what it is called, and
+   * which node a finding about it is attributed to.
+   */
   private static final class InspectedElement {
+    /**
+     * The absolute XPath of this occurrence of the element, used as the reference of a finding. Built
+     * from a node's absolute XPath, so it carries that node's predicates but none on the steps below
+     * it.
+     */
     private final String xpathAbsolute;
+
+    /**
+     * The node a finding is reported against. Not necessarily the node this element belongs to: an
+     * uncovered element has no fact of its own, so findings are attributed to the nearest node the
+     * metadata does have — which is the closest thing to a place a reader can go and fix it.
+     */
     private final XmlStructureNode subject;
+
+    /**
+     * The prefixed element name, or {@link XmlSchemaValidator#DOCUMENT_ROOT} for the notice root.
+     * Doubles as the key
+     * coverage is judged by, since the checks compare names rather than full paths.
+     */
     private final String elementName;
 
     InspectedElement(final String xpathAbsolute, final XmlStructureNode subject,
@@ -518,8 +649,12 @@ public class XmlSchemaValidator implements Validator {
   }
 
   /**
-   * The element references directly inside the type of the given element, or an empty list when the
-   * type holds no child element (a simple type, or simple content such as a code or a text).
+   * The element particles directly inside the type of the given element. Only a sequence or a choice
+   * is looked at, which is all the eForms extension schemas use.
+   *
+   * @param element the element whose type is to be inspected
+   * @return the child element particles, or an empty list when the type holds no child element (a
+   *         simple type, or simple content such as a code or a text)
    */
   private List<XmlSchemaElement> getChildElementRefs(final XmlSchemaElement element) {
     if (!(element.getSchemaType() instanceof XmlSchemaComplexType)) {
