@@ -1,0 +1,41 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "eforms-sdk-2.0.0",
+  "metadataDatabase" : {
+    "version" : "2.0.0",
+    "createdOn" : "2026-09-08T12:00:00"
+  },
+  "noticeSubTypes" : [ {
+    "documentType" : "CN",
+    "legalBasis" : "32014L0024",
+    "formType" : "competition",
+    "type" : "cn-standard",
+    "description" : "Contract notice, used only to test the uncovered-element check",
+    "subTypeId" : "16",
+    "_label" : "notice|name|16",
+    "viewTemplateIds" : [ "16" ]
+  } ],
+  "documentTypes" : [ {
+    "id" : "CN",
+    "namespace" : "urn:oasis:names:specification:ubl:schema:xsd:ContractNotice-2",
+    "rootElement" : "ContractNotice",
+    "schemaLocation" : "schemas/maindoc/UBL-ContractNotice-2.3.xsd",
+    "additionalNamespaces" : [ {
+      "prefix" : "ext",
+      "uri" : "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2",
+      "schemaLocation" : "schemas/common/UBL-CommonExtensionComponents-2.3.xsd"
+    }, {
+      "prefix" : "efext",
+      "uri" : "http://data.europa.eu/p27/eforms-ubl-extensions/1",
+      "schemaLocation" : "schemas/common/EFORMS-ExtensionApex-2.3.xsd"
+    }, {
+      "prefix" : "efac",
+      "uri" : "http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1",
+      "schemaLocation" : "schemas/common/EFORMS-ExtensionAggregateComponents-2.3.xsd"
+    }, {
+      "prefix" : "efbc",
+      "uri" : "http://data.europa.eu/p27/eforms-ubl-extension-basic-components/1",
+      "schemaLocation" : "schemas/common/EFORMS-ExtensionBasicComponents-2.3.xsd"
+    } ]
+  } ]
+}

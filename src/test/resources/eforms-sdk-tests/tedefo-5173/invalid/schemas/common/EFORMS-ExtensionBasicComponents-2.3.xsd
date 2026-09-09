@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal stand-in for the eForms extension basic components, for TEDEFO-5173.
+  Leaf elements only: they carry no child element, so they are never a parent in the check.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://data.europa.eu/p27/eforms-ubl-extension-basic-components/1"
+            targetNamespace="http://data.europa.eu/p27/eforms-ubl-extension-basic-components/1"
+            elementFormDefault="qualified">
+	<xsd:element name="AppealProcessingPartyTypeCode" type="xsd:string"/>
+	<xsd:element name="AppealProcessingPartyTypeDescription" type="xsd:string"/>
+	<xsd:element name="TenderSubcontractingRequirementsCode" type="xsd:string"/>
+	<xsd:element name="TenderSubcontractingRequirementsDescription" type="xsd:string"/>
+</xsd:schema>

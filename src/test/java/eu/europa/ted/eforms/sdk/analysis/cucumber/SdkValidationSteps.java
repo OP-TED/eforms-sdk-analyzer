@@ -273,6 +273,11 @@ public class SdkValidationSteps {
     assertEquals(errorsCount, schemaValidator.getErrors().size());
   }
 
+  @Then("^I should get (.*) schema validation warnings?$")
+  public void i_should_get_schema_validation_warnings(int warningsCount) {
+    assertEquals(warningsCount, schemaValidator.getWarnings().size());
+  }
+
   @Then("^I should get (.*) text validation errors?$")
   public void i_should_get_text_validation_errors(int errorsCount) {
     assertEquals(errorsCount, textValidator.getErrors().size());

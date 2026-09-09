@@ -80,6 +80,15 @@ public final class AssetRef implements Comparable<AssetRef> {
     return new AssetRef("schematronDiagnostic", id);
   }
 
+  /**
+   * An XML element declared by the schemas, identified by its absolute XPath. Reference-only: such an
+   * element has no fact of its own precisely because no field or node covers it — that absence is what
+   * makes it worth reporting.
+   */
+  public static AssetRef xmlElement(final String absoluteXpath) {
+    return new AssetRef("xmlElement", absoluteXpath);
+  }
+
   public static AssetRef businessEntity(final String id) {
     return new AssetRef("businessEntity", id);
   }

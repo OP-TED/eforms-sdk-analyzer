@@ -1,0 +1,71 @@
+{
+  "ublVersion" : "2.3",
+  "sdkVersion" : "eforms-sdk-2.0.0",
+  "metadataDatabase" : {
+    "version" : "2.0.0",
+    "createdOn" : "2026-09-08T12:00:00"
+  },
+  "xmlStructure" : [ {
+    "id" : "ND-Root",
+    "xpathAbsolute" : "/*",
+    "xpathRelative" : "/*",
+    "repeatable" : false
+  }, {
+    "id" : "ND-RootExtension",
+    "parentId" : "ND-Root",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension",
+    "xpathRelative" : "ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension",
+    "repeatable" : false
+  }, {
+    "id" : "ND-ReviewRequests",
+    "parentId" : "ND-RootExtension",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:Appeals",
+    "xpathRelative" : "efac:Appeals",
+    "repeatable" : false
+  }, {
+    "id" : "ND-ReviewStatus",
+    "parentId" : "ND-ReviewRequests",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:Appeals/efac:AppealInformation",
+    "xpathRelative" : "efac:AppealInformation",
+    "repeatable" : false
+  }, {
+    "id" : "ND-AppealProcessingParty",
+    "parentId" : "ND-ReviewStatus",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:Appeals/efac:AppealInformation/efac:AppealProcessingParty",
+    "xpathRelative" : "efac:AppealProcessingParty",
+    "repeatable" : false
+  }, {
+    "id" : "ND-SubcontractingIndication",
+    "parentId" : "ND-RootExtension",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:TenderSubcontractingRequirements",
+    "xpathRelative" : "efac:TenderSubcontractingRequirements",
+    "repeatable" : false
+  } ],
+  "fields" : [ {
+    "id" : "BT-799-ReviewBody",
+    "parentNodeId" : "ND-AppealProcessingParty",
+    "name" : "Review Body Type",
+    "btId" : "BT-799",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:Appeals/efac:AppealInformation/efac:AppealProcessingParty/efbc:AppealProcessingPartyTypeCode",
+    "xpathRelative" : "efbc:AppealProcessingPartyTypeCode",
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  }, {
+    "id" : "BT-651-Lot",
+    "parentNodeId" : "ND-SubcontractingIndication",
+    "name" : "Subcontracting Tender Indication",
+    "btId" : "BT-651",
+    "xpathAbsolute" : "/*/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/efext:EformsExtension/efac:TenderSubcontractingRequirements/efbc:TenderSubcontractingRequirementsCode",
+    "xpathRelative" : "efbc:TenderSubcontractingRequirementsCode",
+    "type" : "code",
+    "legalType" : "CODE",
+    "repeatable" : {
+      "value" : false,
+      "severity" : "ERROR"
+    }
+  } ]
+}

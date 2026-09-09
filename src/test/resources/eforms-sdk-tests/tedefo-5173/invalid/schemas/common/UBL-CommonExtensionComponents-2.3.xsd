@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal stand-in for the UBL common extension components, for TEDEFO-5173.
+  Provides the UBLExtensions / UBLExtension / ExtensionContent chain that leads to the
+  eForms extension apex.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+            xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+            xmlns:efext="http://data.europa.eu/p27/eforms-ubl-extensions/1"
+            targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+            elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.3">
+	<xsd:import namespace="http://data.europa.eu/p27/eforms-ubl-extensions/1"
+	            schemaLocation="EFORMS-ExtensionApex-2.3.xsd"/>
+	<xsd:element name="UBLExtensions" type="UBLExtensionsType"/>
+	<xsd:element name="UBLExtension" type="UBLExtensionType"/>
+	<xsd:element name="ExtensionContent" type="ExtensionContentType"/>
+	<xsd:complexType name="UBLExtensionsType">
+		<xsd:sequence>
+			<xsd:element ref="ext:UBLExtension" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UBLExtensionType">
+		<xsd:sequence>
+			<xsd:element ref="ext:ExtensionContent" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ExtensionContentType">
+		<xsd:sequence>
+			<xsd:element ref="efext:EformsExtension" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

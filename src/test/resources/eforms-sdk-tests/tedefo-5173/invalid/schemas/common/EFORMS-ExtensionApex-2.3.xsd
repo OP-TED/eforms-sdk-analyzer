@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal stand-in for the eForms extension apex, for TEDEFO-5173.
+  Both aggregates below are modelled by a node in the fixture's fields.json, so the apex
+  itself contributes no finding: the findings come from inside the two aggregates.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://data.europa.eu/p27/eforms-ubl-extensions/1"
+            xmlns:efac="http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1"
+            targetNamespace="http://data.europa.eu/p27/eforms-ubl-extensions/1"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1"
+	            schemaLocation="EFORMS-ExtensionAggregateComponents-2.3.xsd"/>
+	<xsd:element name="EformsExtension">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="efac:Appeals" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="efac:TenderSubcontractingRequirements" minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal stand-in for the eForms extension aggregate components, for TEDEFO-5173.
+
+  Two aggregates, each holding a code element and its free-text counterpart. The fixture's
+  fields.json covers the code in both cases; whether it also covers the description is what
+  the valid and invalid variants differ on.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1"
+            xmlns:efac="http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1"
+            xmlns:efbc="http://data.europa.eu/p27/eforms-ubl-extension-basic-components/1"
+            targetNamespace="http://data.europa.eu/p27/eforms-ubl-extension-aggregate-components/1"
+            elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.3">
+	<xsd:import namespace="http://data.europa.eu/p27/eforms-ubl-extension-basic-components/1"
+	            schemaLocation="EFORMS-ExtensionBasicComponents-2.3.xsd"/>
+	<!-- ===== Element Declarations ===== -->
+	<xsd:element name="Appeals" type="AppealsType"/>
+	<xsd:element name="AppealInformation" type="AppealInformationType"/>
+	<xsd:element name="AppealProcessingParty" type="AppealProcessingPartyType"/>
+	<xsd:element name="TenderSubcontractingRequirements" type="TenderSubcontractingRequirementsType"/>
+	<!-- ===== Type Definitions ===== -->
+	<xsd:complexType name="AppealsType">
+		<xsd:sequence>
+			<xsd:element ref="efac:AppealInformation" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AppealInformationType">
+		<xsd:sequence>
+			<xsd:element ref="efac:AppealProcessingParty" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AppealProcessingPartyType">
+		<xsd:sequence>
+			<xsd:element ref="efbc:AppealProcessingPartyTypeCode" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="efbc:AppealProcessingPartyTypeDescription" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TenderSubcontractingRequirementsType">
+		<xsd:sequence>
+			<xsd:element ref="efbc:TenderSubcontractingRequirementsCode" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="efbc:TenderSubcontractingRequirementsDescription" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

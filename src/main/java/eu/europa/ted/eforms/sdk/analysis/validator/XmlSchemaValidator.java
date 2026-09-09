@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.ws.commons.schema.XmlSchemaChoice;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
@@ -31,6 +33,7 @@ import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.DocumentTypeNamespace
 import eu.europa.ted.eforms.sdk.analysis.enums.ValidationStatusEnum;
 import eu.europa.ted.eforms.sdk.analysis.fact.FieldFact;
 import eu.europa.ted.eforms.sdk.analysis.fact.NodeFact;
+import eu.europa.ted.eforms.sdk.analysis.vo.AssetRef;
 import eu.europa.ted.eforms.sdk.analysis.vo.ValidationResult;
 import eu.europa.ted.eforms.xpath.XPathProcessor;
 import eu.europa.ted.eforms.xpath.XPathStep;
@@ -44,10 +47,22 @@ public class XmlSchemaValidator implements Validator {
 
   private static final String ROOT_NODE_ID = "ND-Root";
 
+  /**
+   * The namespace prefixes of the eForms extension, the only ones whose schemas are authored for
+   * eForms and therefore tailored to it. The UBL schemas are the untailored OASIS ones, so "declared
+   * in the schema" says nothing about eForms there: an element being absent from the metadata is the
+   * normal case for the vast majority of UBL, not a finding.
+   */
+  private static final Set<String> EXTENSION_PREFIXES = Set.of("efac", "efbc");
+
+  /** Separates the two halves of a "parent element to child element" key. */
+  private static final String PAIR_SEPARATOR = ">";
+
   private final SdkLoader sdkLoader;
 
   private List<DocumentType> documentTypes;
   private Map<String, String> namespacePrefixToUri = new HashMap<>();
+  private Map<String, String> namespaceUriToPrefix = new HashMap<>();
   private XmlSchemaCollection schemaCollection;
 
   private final Set<ValidationResult> results;
@@ -68,6 +83,10 @@ public class XmlSchemaValidator implements Validator {
           DocumentTypeNamespace::getPrefix, DocumentTypeNamespace::getUri)));
     });
 
+    // The schema gives us an element's namespace URI; findings have to name it the way the metadata
+    // does, with a prefix, so we need the reverse lookup too.
+    namespacePrefixToUri.forEach((prefix, uri) -> namespaceUriToPrefix.putIfAbsent(uri, prefix));
+
     logger.debug("Loading XML schemas");
     this.schemaCollection = sdkLoader.getXmlSchemas();
 
@@ -86,7 +105,157 @@ public class XmlSchemaValidator implements Validator {
       checkNodeRepeatability(node);
     });
 
+    checkUncoveredExtensionElements(fields, nodes);
+
     return this;
+  }
+
+  /*
+   * Report every eForms extension element the schemas allow under a modelled node, but which no field
+   * and no node covers. Such an element can legitimately appear in a notice while being invisible to
+   * the metadata, so nothing can validate, translate or display it.
+   *
+   * Reported as a WARNING: the finding says an element is unmodelled, which may well be deliberate,
+   * and the decision to add a field belongs to the metadata owners.
+   *
+   * Coverage is compared at ELEMENT-NAME level ("is efbc:X ever a child of efac:Y?") rather than by
+   * full XPath. The schemas permit the same aggregate in several places while the SDK models one
+   * canonical placement, so comparing full paths reports every alternative placement as missing —
+   * noise, not findings. The trade-off is that an element covered at one legitimate placement but
+   * absent at another is not reported.
+   */
+  private void checkUncoveredExtensionElements(final List<Field> fields,
+      final List<XmlStructureNode> nodes) {
+
+    // What the metadata covers, as "parent element > child element" pairs.
+    final Set<String> covered = new HashSet<>();
+    nodes.forEach(node -> collectCoveredPairs(node.getParent(), node.getXpathRelative(), covered));
+    fields.forEach(field -> collectCoveredPairs(field.getParentNode(), field.getXpathRelative(),
+        covered));
+
+    // Several nodes can share one element (efext:EformsExtension is the element of the notice-root
+    // extension and of the extension under every value estimate, cac:RequestedTenderTotal included).
+    // Since coverage is judged per element, report each element once, against its shortest absolute
+    // XPath: the reader gets the primary placement rather than whichever node happened to come first.
+    final Map<String, XmlStructureNode> nodeByElementName = new HashMap<>();
+    for (final XmlStructureNode node : nodes) {
+      final String elementName = prefixedLastElementName(node.getXpathRelative());
+      if (elementName == null) {
+        // The document root, or a node whose XPath we cannot resolve to a named element.
+        continue;
+      }
+      nodeByElementName.merge(elementName, node, (kept, candidate) -> {
+        final String keptXpath = StringUtils.defaultString(kept.getXpathAbsolute());
+        final String candidateXpath = StringUtils.defaultString(candidate.getXpathAbsolute());
+        return candidateXpath.length() < keptXpath.length() ? candidate : kept;
+      });
+    }
+
+    for (final Map.Entry<String, XmlStructureNode> entry : nodeByElementName.entrySet()) {
+      final String parentElementName = entry.getKey();
+      final XmlStructureNode node = entry.getValue();
+
+      final XmlSchemaElement parentElement =
+          schemaCollection.getElementByQName(buildQName(parentElementName));
+      if (parentElement == null) {
+        // Already reported by the repeatability checks above.
+        continue;
+      }
+
+      for (final XmlSchemaElement childRef : getChildElementRefs(parentElement)) {
+        final XmlSchemaElement target = childRef.getRef().getTarget();
+        if (target == null) {
+          continue;
+        }
+
+        final String prefix = namespaceUriToPrefix.get(target.getQName().getNamespaceURI());
+        if (prefix == null || !EXTENSION_PREFIXES.contains(prefix)) {
+          continue;
+        }
+
+        final String childElementName = prefix + ":" + target.getQName().getLocalPart();
+
+        if (covered.contains(parentElementName + PAIR_SEPARATOR + childElementName)) {
+          continue;
+        }
+
+        results.add(new ValidationResult(new NodeFact(node),
+            "XML element allowed by the schema under this node is not covered by any field or node",
+            ValidationStatusEnum.WARNING,
+            AssetRef.xmlElement(node.getXpathAbsolute() + "/" + childElementName)));
+      }
+    }
+  }
+
+  /*
+   * Record the "parent element > child element" pair for every step of a relative XPath, walking down
+   * from the parent node. A relative XPath can have several steps (a field's can be
+   * "efac:NoticeSubType/cbc:SubTypeCode"), and each step covers its own parent, so the intermediate
+   * elements count as covered even though no node of their own exists for them.
+   */
+  private void collectCoveredPairs(final XmlStructureNode parentNode, final String xpathRelative,
+      final Set<String> covered) {
+    if (StringUtils.isBlank(xpathRelative)) {
+      return;
+    }
+
+    String parentElementName =
+        parentNode == null ? null : prefixedLastElementName(parentNode.getXpathRelative());
+
+    for (final XPathStep step : XPathProcessor.parse(xpathRelative).getSteps()) {
+      final String stepText = step.getStepText();
+      if (stepText == null || !stepText.contains(":")) {
+        // An attribute, or a step we cannot name: neither can be a parent of anything.
+        continue;
+      }
+      if (parentElementName != null) {
+        covered.add(parentElementName + PAIR_SEPARATOR + stepText);
+      }
+      parentElementName = stepText;
+    }
+  }
+
+  /**
+   * The prefixed name of the last element of an XPath (predicates removed), or null when the XPath has
+   * no such element — the document root "/*" being the case that matters.
+   */
+  private String prefixedLastElementName(final String xpath) {
+    if (StringUtils.isBlank(xpath)) {
+      return null;
+    }
+    final List<XPathStep> steps = XPathProcessor.parse(xpath).getSteps();
+    if (steps.isEmpty()) {
+      return null;
+    }
+    final String stepText = steps.get(steps.size() - 1).getStepText();
+    return stepText != null && stepText.contains(":") ? stepText : null;
+  }
+
+  /**
+   * The element references directly inside the type of the given element, or an empty list when the
+   * type holds no child element (a simple type, or simple content such as a code or a text).
+   */
+  private List<XmlSchemaElement> getChildElementRefs(final XmlSchemaElement element) {
+    if (!(element.getSchemaType() instanceof XmlSchemaComplexType)) {
+      return Collections.emptyList();
+    }
+    final XmlSchemaComplexType type = (XmlSchemaComplexType) element.getSchemaType();
+    if (type.getContentModel() instanceof XmlSchemaSimpleContent) {
+      return Collections.emptyList();
+    }
+
+    final XmlSchemaParticle particle = type.getParticle();
+    if (particle instanceof XmlSchemaSequence) {
+      return ((XmlSchemaSequence) particle).getItems().stream()
+          .filter(XmlSchemaElement.class::isInstance).map(XmlSchemaElement.class::cast)
+          .collect(Collectors.toList());
+    }
+    if (particle instanceof XmlSchemaChoice) {
+      return ((XmlSchemaChoice) particle).getItems().stream()
+          .filter(XmlSchemaElement.class::isInstance).map(XmlSchemaElement.class::cast)
+          .collect(Collectors.toList());
+    }
+    return Collections.emptyList();
   }
 
   /*
