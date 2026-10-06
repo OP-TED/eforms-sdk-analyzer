@@ -193,6 +193,21 @@ public class FieldFact implements SdkComponentFact<String> {
   }
 
   /**
+   * Return a stream of the dynamic properties that resolve to a single value per notice subtype.
+   *
+   * <p>The assertion property is excluded on purpose: it holds the co-constraint and lawfulness
+   * rules, and a field regularly has several of those for the same notice subtype because they
+   * check different things (see TEDEFO-5254). For the properties listed here a notice subtype
+   * appearing in two constraints is a genuine contradiction, since the field is either mandatory
+   * for that subtype or it is not.
+   */
+  private Stream<AbstractFieldProperty<? extends AbstractConstraint<?>, ?>> getSingleValuedDynamicProperties() {
+    return Stream.of(field.getRepeatable(), field.getForbidden(), field.getMandatory(),
+            field.getCodeList(), field.getPattern(), field.getNumericRange(),
+            field.getInChangeNotice(), field.getInContinueProcedure());
+  }
+
+  /**
    * Return the notices types referenced in all properties of the field.
    */
   public Set<String> getAllNoticeTypes() {
@@ -211,12 +226,14 @@ public class FieldFact implements SdkComponentFact<String> {
 
   /**
    * Return the notices types that appear more than once in the same property.
+   *
+   * <p>Only the single-valued properties are considered; co-constraint rules are exempt.
    */
   public Set<String> getDuplicateNoticeTypes() {
     Set<String> noticeTypes = new HashSet<>();
     
-    // Go over all dynamic properties and collect duplicate notice types
-    getDynamicProperties()
+    // Go over the single-valued dynamic properties and collect duplicate notice types
+    getSingleValuedDynamicProperties()
         .forEach(property -> {
           if (property != null) {
             noticeTypes.addAll(property.getDuplicateNoticeTypeIds());
