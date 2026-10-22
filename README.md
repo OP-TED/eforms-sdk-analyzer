@@ -9,7 +9,7 @@ It can also run a benchmark of the Schematron rules in an eForms SDK, to help de
 
 Requirements:
 
-* Java 11 or higher
+* Java 21 or higher
 * Maven 3.8, other versions probably also work
 
 Run the following in the root folder of this project to create a runnable JAR of the application:

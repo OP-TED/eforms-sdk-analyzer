@@ -17,7 +17,7 @@ mvn clean package                                    # build + run all tests
 mvn test -Dcucumber.filter.tags="@tedefo-XXXX"       # run tests for one Jira ticket
 ```
 
-Java 11+, Maven 3.8+. SNAPSHOT dependencies on `eforms-core-java` and `efx-toolkit-java` must be available in the local Maven repo (install them first if they are not published).
+Java 21+, Maven 3.8+. SNAPSHOT dependencies on `eforms-core-java` and `efx-toolkit-java` must be available in the local Maven repo (install them first if they are not published).
 
 ## Running the analyzer
 
