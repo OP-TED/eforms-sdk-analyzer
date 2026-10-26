@@ -10,6 +10,8 @@ It is also used as a library by the Metadata Manager (MDM) and its CLI to valida
 
 The analyzer version tracks the SDK version: SDK X.Y.Z is validated by analyzer X.Y.Z, even when the analyzer code itself has not changed.
 
+Starting with Analyzer 1.16.0, Java 21 or later is required, both for the CLI and for applications using the Analyzer as a library. Earlier Analyzer versions targeted Java 11.
+
 ## Build & test
 
 ```bash

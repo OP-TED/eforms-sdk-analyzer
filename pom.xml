@@ -42,7 +42,7 @@
 
     <maven.compiler.release>21</maven.compiler.release>
 
-    <version.eforms-core-java>1.10.0-SNAPSHOT</version.eforms-core-java>
+    <version.eforms-core-java>2.0.0-SNAPSHOT</version.eforms-core-java>
     <version.efx-toolkit>2.0.0-SNAPSHOT</version.efx-toolkit>
 
     <!-- Version - Third-party libraries -->

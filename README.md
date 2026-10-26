@@ -12,6 +12,8 @@ Requirements:
 * Java 21 or higher
 * Maven 3.8, other versions probably also work
 
+Analyzer versions track SDK versions. Starting with Analyzer 1.16.0, Java 21 or later is required, both for the CLI and for applications using the Analyzer as a library.
+
 Run the following in the root folder of this project to create a runnable JAR of the application:
 
 ```shell
