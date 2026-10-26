@@ -40,13 +40,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2025-11-28T08:41:45Z</project.build.outputTimestamp>
 
-    <java.version>11</java.version>
+    <maven.compiler.release>21</maven.compiler.release>
 
-    <maven.compiler.release>${java.version}</maven.compiler.release>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-
-    <version.eforms-core-java>1.10.0-SNAPSHOT</version.eforms-core-java>
+    <version.eforms-core-java>2.0.0-SNAPSHOT</version.eforms-core-java>
     <version.efx-toolkit>2.0.0-SNAPSHOT</version.efx-toolkit>
 
     <!-- Version - Third-party libraries -->
