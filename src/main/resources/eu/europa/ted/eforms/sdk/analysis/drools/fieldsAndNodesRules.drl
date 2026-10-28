@@ -291,8 +291,8 @@ end
 rule "Relationships between business entities and nodes are consistent"
   @problem("Business entity's node relationship is inconsistent")
 when
-  /businessEntities[ $b: this, $businessEntityId: id, $nodeId: repeatsWithNodeId, repeatsWithNodeId != null ]
-  not (exists /nodes[ id == $nodeId, businessEntityId == $businessEntityId ])
+  /businessEntities[ $b: this, $nodeId: repeatsWithNodeId, repeatsWithNodeId != null ]
+  not (exists /nodes[ id == $nodeId ])
 then
   results.add(new ValidationResult($b, "Relationship with node " + $nodeId + " is incorrect", ValidationStatusEnum.ERROR, AssetRef.node($nodeId)));
 end
