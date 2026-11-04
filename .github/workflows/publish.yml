@@ -32,7 +32,15 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Publish to the Maven Central Repository
-        run: mvn --batch-mode deploy -Prelease
+        # maven.repository.credentialScope=id is required for snapshot deployment.
+        # Recent Maven scopes a server's credentials to the origins of its id, and
+        # the id 'central' carries the origin of Maven's built-in central
+        # repository (https://repo.maven.apache.org). The snapshot repository is
+        # https://central.sonatype.com/repository/maven-snapshots, so the origins
+        # do not match, the credentials are withheld and the upload gets HTTP 401.
+        # Release publication is unaffected: it goes through the Central Portal
+        # API, not a Maven repository transfer.
+        run: mvn --batch-mode deploy -Dmaven.repository.credentialScope=id -Prelease
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
