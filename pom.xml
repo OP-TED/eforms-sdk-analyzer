@@ -4,7 +4,7 @@
 
   <groupId>eu.europa.ted.eforms</groupId>
   <artifactId>eforms-sdk-analyzer</artifactId>
-  <version>1.16.0-SNAPSHOT</version>
+  <version>1.17.0-SNAPSHOT</version>
   <packaging>kjar</packaging>
 
   <name>eForms SDK Analyzer</name>
@@ -38,7 +38,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.outputTimestamp>2026-11-04T08:14:11Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-11-04T13:40:42Z</project.build.outputTimestamp>
 
     <java.version>11</java.version>
 
