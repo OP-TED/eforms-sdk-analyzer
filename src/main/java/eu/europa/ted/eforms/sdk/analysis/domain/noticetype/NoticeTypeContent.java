@@ -23,7 +23,6 @@ import eu.europa.ted.eforms.sdk.analysis.domain.noticetype.enums.NoticeTypeConte
     "_identifierFieldId", "_captionFieldId",
     "readOnly",
     "_repeatable", "_presetValue", "hidden", "collapsed",
-    "unpublishGroupId", "unpublishFieldId", "unpublishCode",
     "content"})
 public class NoticeTypeContent {
   private String id;
@@ -44,10 +43,6 @@ public class NoticeTypeContent {
 
   @JsonProperty("_presetValue")
   private String presetValue;
-
-  private String unpublishGroupId;
-  private String unpublishFieldId;
-  private String unpublishCode;
 
   private boolean readOnly;
 
@@ -232,30 +227,6 @@ public class NoticeTypeContent {
   public NoticeTypeContent setParent(final NoticeTypeContent parent) {
     this.parent = parent;
     return this;
-  }
-
-  public String getUnpublishGroupId() {
-    return this.unpublishGroupId;
-  }
-
-  public void setUnpublishGroupId(final String unpublishGroupId) {
-    this.unpublishGroupId = unpublishGroupId;
-  }
-
-  public String getUnpublishFieldId() {
-    return this.unpublishFieldId;
-  }
-
-  public void setUnpublishFieldId(final String unpublishFieldId) {
-    this.unpublishFieldId = unpublishFieldId;
-  }
-
-  public String getUnpublishCode() {
-    return this.unpublishCode;
-  }
-
-  public void setUnpublishCode(final String unpublishCode) {
-    this.unpublishCode = unpublishCode;
   }
 
   public String getIdScheme() {

@@ -2,25 +2,26 @@ package eu.europa.ted.eforms.sdk.analysis.domain.field;
 
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import eu.europa.ted.eforms.sdk.analysis.domain.mdd.enums.FieldPrivacyCode;
 
 @JsonPropertyOrder({"code", "unpublishedFieldId", "reasonCodeFieldId", "reasonDescriptionFieldId",
-    "publicationDateFieldId"})
+    "publicationDateFieldId", "withholdingCondition", "undisclosedFieldSelector"})
 public class FieldPrivacy implements Serializable {
   private static final long serialVersionUID = -1318408566061305451L;
 
-  private FieldPrivacyCode code;
+  private String code;
 
   private String unpublishedFieldId;
   private String reasonCodeFieldId;
   private String reasonDescriptionFieldId;
   private String publicationDateFieldId;
+  private String withholdingCondition;
+  private String undisclosedFieldSelector;
 
-  public FieldPrivacyCode getCode() {
+  public String getCode() {
     return this.code;
   }
 
-  public void setCode(final FieldPrivacyCode code) {
+  public void setCode(final String code) {
     this.code = code;
   }
 
@@ -54,5 +55,21 @@ public class FieldPrivacy implements Serializable {
 
   public void setPublicationDateFieldId(final String publicationDateFieldId) {
     this.publicationDateFieldId = publicationDateFieldId;
+  }
+
+  public String getWithholdingCondition() {
+    return this.withholdingCondition;
+  }
+
+  public void setWithholdingCondition(final String withholdingCondition) {
+    this.withholdingCondition = withholdingCondition;
+  }
+
+  public String getUndisclosedFieldSelector() {
+    return this.undisclosedFieldSelector;
+  }
+
+  public void setUndisclosedFieldSelector(final String undisclosedFieldSelector) {
+    this.undisclosedFieldSelector = undisclosedFieldSelector;
   }
 }

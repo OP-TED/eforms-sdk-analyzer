@@ -1866,7 +1866,7 @@
     "type" : "amount",
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "not-app-val",
+      "code" : "rev-info",
       "unpublishedFieldId" : "BT-195(BT-1118)-NoticeResult",
       "reasonCodeFieldId" : "BT-197(BT-1118)-NoticeResult",
       "reasonDescriptionFieldId" : "BT-196(BT-1118)-NoticeResult",
@@ -1930,7 +1930,7 @@
     "attributes" : [ "BT-118-BAD" ],
     "legalType" : "VALUE",
     "privacy" : {
-      "code" : "not-max-val",
+      "code" : "cri-awrd",
       "unpublishedFieldId" : "BT-195(BT-118)-NoticeResult",
       "reasonCodeFieldId" : "BT-197(BT-118)-NoticeResult",
       "reasonDescriptionFieldId" : "BT-196(BT-118)-NoticeResult",

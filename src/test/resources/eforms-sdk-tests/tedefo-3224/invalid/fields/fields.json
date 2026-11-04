@@ -155,7 +155,7 @@
     "description" : "Information on a tendering party",
     "labelId" : "business-entity|name|tenderingParty",
     "repeatable" : true,
-    "repeatsWithNodeId" : "ND-TenderingParty",
+    "repeatsWithNodeId" : "ND-TenderingPartyBAD",
     "changeIdentification" : {
       "identifyInChangeNotice" : true,
       "useInstanceIdentifier" : true
@@ -1139,7 +1139,7 @@
     "repeatable" : true,
     "identifierFieldId" : "OPT-210-Tenderer",
     "captionFieldId" : "OPT-211-Tenderer",
-    "businessEntityId" : "tender"
+    "businessEntityId" : "tenderingParty"
   }, {
     "id" : "ND-SubContractor",
     "parentId" : "ND-TenderingParty",
