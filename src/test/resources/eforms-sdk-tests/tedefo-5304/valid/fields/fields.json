@@ -1,0 +1,105 @@
+{
+  "ublVersion": "2.3",
+  "sdkVersion": "eforms-sdk-1.17.0",
+  "metadataDatabase": {
+    "version": "1.0.0",
+    "createdOn": "2026-01-01T00:00:00"
+  },
+  "xmlStructure": [
+    {
+      "id": "ND-Root",
+      "xpathAbsolute": "/*",
+      "xpathRelative": "/*",
+      "repeatable": false
+    }
+  ],
+  "fields": [
+    {
+      "id": "BT-764-Lot",
+      "parentNodeId": "ND-Root",
+      "name": "BT-764-Lot",
+      "type": "code",
+      "attributes": [
+        "BT-764-Lot-List"
+      ],
+      "xpathAbsolute": "/*/cbc:BT-764-Lot",
+      "xpathRelative": "cbc:BT-764-Lot",
+      "codeList": {
+        "value": {
+          "id": "ecatalog-submission",
+          "type": "flat"
+        },
+        "severity": "ERROR"
+      }
+    },
+    {
+      "id": "OPP-035-Tender",
+      "parentNodeId": "ND-Root",
+      "name": "OPP-035-Tender",
+      "type": "code",
+      "attributes": [
+        "OPP-035-Tender-List"
+      ],
+      "xpathAbsolute": "/*/cbc:OPP-035-Tender",
+      "xpathRelative": "cbc:OPP-035-Tender",
+      "codeList": {
+        "value": {
+          "id": "revenue-allocation",
+          "type": "flat",
+          "parentId": "contract-detail"
+        },
+        "severity": "ERROR"
+      }
+    },
+    {
+      "id": "BT-02-notice",
+      "parentNodeId": "ND-Root",
+      "name": "BT-02-notice",
+      "type": "code",
+      "attributes": [
+        "BT-03-notice"
+      ],
+      "xpathAbsolute": "/*/cbc:BT-02-notice",
+      "xpathRelative": "cbc:BT-02-notice",
+      "codeList": {
+        "value": {
+          "id": "notice-type",
+          "type": "flat"
+        },
+        "severity": "ERROR"
+      }
+    },
+    {
+      "id": "BT-764-Lot-List",
+      "parentNodeId": "ND-Root",
+      "name": "BT-764-Lot-List",
+      "type": "id",
+      "attributeOf": "BT-764-Lot",
+      "attributeName": "listName",
+      "xpathAbsolute": "/*/cbc:BT-764-Lot/@listName",
+      "xpathRelative": "@listName",
+      "presetValue": "ecatalog-submission"
+    },
+    {
+      "id": "OPP-035-Tender-List",
+      "parentNodeId": "ND-Root",
+      "name": "OPP-035-Tender-List",
+      "type": "id",
+      "attributeOf": "OPP-035-Tender",
+      "attributeName": "listName",
+      "xpathAbsolute": "/*/cbc:OPP-035-Tender/@listName",
+      "xpathRelative": "@listName",
+      "presetValue": "contract-detail"
+    },
+    {
+      "id": "BT-03-notice",
+      "parentNodeId": "ND-Root",
+      "name": "BT-03-notice",
+      "type": "id",
+      "attributeOf": "BT-02-notice",
+      "attributeName": "listName",
+      "xpathAbsolute": "/*/cbc:BT-02-notice/@listName",
+      "xpathRelative": "@listName"
+    }
+  ]
+}

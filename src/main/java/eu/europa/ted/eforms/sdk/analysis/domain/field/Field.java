@@ -2,6 +2,7 @@ package eu.europa.ted.eforms.sdk.analysis.domain.field;
 
 import java.io.Serializable;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "type",
     "attributeName", "attributeOf", "attributes",
     "dateFieldId", "timeFieldId",
-    "presetValue", "businessEntityId", "idSchemes", "idScheme", "schemeName", "referencedBusinessEntityIds",
+    "presetValue", "calculatedValue", "businessEntityId", "idSchemes", "idScheme", "schemeName", "referencedBusinessEntityIds",
     "legalType", "maxLength", "description",
     "privacy", "repeatable", "forbidden", "mandatory", "pattern", "numericRange", "codeList",
     "inChangeNotice", "inContinueProcedure", "assert"})
@@ -58,6 +59,11 @@ public class Field implements Serializable {
 
   private String presetValue;
 
+  /**
+   * SDK 2: EFX expression computing the value of the field. It replaces {@code presetValue}.
+   */
+  private String calculatedValue;
+
   private String businessEntityId;
 
   private List<String> idSchemes;
@@ -77,6 +83,8 @@ public class Field implements Serializable {
 
   private StringProperty pattern;
   private RangeNumericProperty numericRange;
+  /** SDK 2 renames the property from {@code codeList} to {@code codelist} (TEDEFO-5240). */
+  @JsonAlias("codelist")
   private CodeListProperty codeList;
 
   private ChangeableOrCpProperty inChangeNotice;
@@ -203,6 +211,14 @@ public class Field implements Serializable {
 
   public void setPresetValue(final String presetValue) {
     this.presetValue = presetValue;
+  }
+
+  public String getCalculatedValue() {
+    return this.calculatedValue;
+  }
+
+  public void setCalculatedValue(final String calculatedValue) {
+    this.calculatedValue = calculatedValue;
   }
 
   public String getBusinessEntityId() {

@@ -24,6 +24,11 @@ public class CodeListPropertyValue implements Serializable {
    */
   private String parentId;
 
+  /**
+   * SDK 2: the {@code listName} written in the notice XML (replaces {@code parentId}, TEDEFO-1522).
+   */
+  private String listName;
+
   public String getId() {
     return this.id;
   }
@@ -46,5 +51,13 @@ public class CodeListPropertyValue implements Serializable {
 
   public void setParentId(final String parentId) {
     this.parentId = parentId;
+  }
+
+  public String getListName() {
+    return this.listName;
+  }
+
+  public void setListName(final String listName) {
+    this.listName = listName;
   }
 }
