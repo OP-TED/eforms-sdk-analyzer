@@ -262,6 +262,26 @@ then
   results.add(new ValidationResult($f, "SchemeName does not match preset value of a corresponding attribute field", ValidationStatusEnum.ERROR));
 end
 
+rule "The preset value of a listName attribute field is the listName of its element"
+  @sdkMajor(1)
+  @problem("Preset value of a listName attribute field is missing or differs from the listName of its element")
+when
+  $element : /fields[ $elementId: id, $expected: effectiveListNames, $expected.size() > 0 ]
+  $attribute : /fields[ $f: this, attributeOf == $elementId, listNameAttributeField == true, presetValueMatches($expected) == false ]
+then
+  results.add(new ValidationResult($f, "Preset value " + ($f.getPresetValue() == null ? "(missing)" : "'" + $f.getPresetValue() + "'") + " of field " + $f.getId() + " does not match the listName " + $expected + " given by the codelist property of field " + $elementId, ValidationStatusEnum.ERROR, AssetRef.field($elementId)));
+end
+
+rule "The calculated value of a listName attribute field computes the listName of its element"
+  @sdkMajor(2)
+  @problem("Calculated value of a listName attribute field is missing or computes another listName than its element")
+when
+  $element : /fields[ $elementId: id, $expected: effectiveListNames, $expected.size() > 0 ]
+  $attribute : /fields[ $f: this, attributeOf == $elementId, listNameAttributeField == true, calculatedValueMatches($expected) == false ]
+then
+  results.add(new ValidationResult($f, "Calculated value " + ($f.getCalculatedValue() == null ? "(missing)" : "'" + $f.getCalculatedValue() + "'") + " of field " + $f.getId() + " does not compute the listName " + $expected + " given by the codelist property of field " + $elementId, ValidationStatusEnum.ERROR, AssetRef.field($elementId)));
+end
+
 rule "Field constraints do not have duplicate notice types identifiers"
   @problem("Field constraint lists duplicate notice subtypes")
 when
