@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.AbstractConstraint;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.AbstractFieldProperty;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.BooleanConstraint;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.CodeListProperty;
+import eu.europa.ted.eforms.sdk.analysis.domain.field.CodeListPropertyValue;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.Field;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.FieldPrivacy;
 import eu.europa.ted.eforms.sdk.analysis.domain.field.XmlElementPosition;
@@ -177,6 +181,64 @@ public class FieldFact implements SdkComponentFact<String> {
 
   public String getPresetValue() {
     return field.getPresetValue();
+  }
+
+  public String getCalculatedValue() {
+    return field.getCalculatedValue();
+  }
+
+  /**
+   * True for a "-List" attribute field: the {@code listName} attribute of a code element, whose
+   * value is derived from the codelist (TEDEFO-2411). A {@code listName} attribute field whose id
+   * does not end in "-List" is a business field filled by the user (e.g. BT-03-notice).
+   */
+  public boolean isListNameAttributeField() {
+    return "listName".equals(field.getAttributeName()) && field.getAttributeOf() != null
+        && field.getId() != null && field.getId().endsWith("-List");
+  }
+
+  /**
+   * The listNames the element must have according to its codelist property: for the default value
+   * and for each constraint, the SDK 2 {@code listName}, else the SDK 1 {@code parentId}, else the
+   * codelist {@code id} (contract of TEDEFO-1522).
+   */
+  public Set<String> getEffectiveListNames() {
+    final Set<String> listNames = new TreeSet<>();
+    final CodeListProperty codeList = field.getCodeList();
+    if (codeList == null) {
+      return listNames;
+    }
+    addEffectiveListName(listNames, codeList.getValue());
+    codeList.getConstraints().forEach(c -> addEffectiveListName(listNames, c.getValue()));
+    return listNames;
+  }
+
+  private static void addEffectiveListName(final Set<String> listNames,
+      final CodeListPropertyValue value) {
+    if (value == null) {
+      return;
+    }
+    final String listName = StringUtils.firstNonBlank(value.getListName(), value.getParentId(),
+        value.getId());
+    if (listName != null) {
+      listNames.add(listName);
+    }
+  }
+
+  /** True if the preset value is present and equal to every one of the expected listNames. */
+  public boolean presetValueMatches(final Set<String> expectedListNames) {
+    return expectedListNames.stream().allMatch(n -> n.equals(field.getPresetValue()));
+  }
+
+  /**
+   * True if the calculated value is present and computes every one of the expected listNames,
+   * i.e. is of the form {@code WITH ND-Root COMPUTE 'listName'}.
+   */
+  public boolean calculatedValueMatches(final Set<String> expectedListNames) {
+    final String efx = field.getCalculatedValue();
+    return !StringUtils.isBlank(efx) && expectedListNames.stream().allMatch(
+        n -> Pattern.compile("\\bCOMPUTE\\s+['\"]" + Pattern.quote(n) + "['\"]\\s*$")
+            .matcher(efx.trim()).find());
   }
 
   public String getBusinessEntityId() {
