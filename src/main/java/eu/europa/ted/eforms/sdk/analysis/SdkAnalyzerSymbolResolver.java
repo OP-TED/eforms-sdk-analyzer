@@ -64,11 +64,9 @@ public class SdkAnalyzerSymbolResolver extends SdkSymbolResolver {
 
     // Load nodes first (fields depend on nodes for parent wiring)
     this.nodeById = new SdkNodeRepository(sdkVersion, jsonPath);
-    this.nodeByAlias = indexNodesByAlias();
 
     // Load fields with parent node wiring
     this.fieldById = new SdkFieldRepository(sdkVersion, jsonPath, this.nodeById);
-    this.fieldByAlias = indexFieldsByAlias();
 
     this.noticeTypesById = new SdkNoticeTypeRepository(sdkVersion, noticeTypesPath);
     this.dataTypeById = SdkDataTypeRepository.createDefault();
