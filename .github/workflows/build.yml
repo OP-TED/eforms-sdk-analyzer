@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop
+      - esa-2
   pull_request:
 
   # Allows to run this workflow manually from the Actions tab

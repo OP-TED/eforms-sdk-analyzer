@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'develop'
+      - 'esa-2'
 
   release:
     types: [published]
