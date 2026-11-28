@@ -76,6 +76,8 @@ public class SchematronBenchmark {
                 .include(SchematronBenchmark.class.getSimpleName())
                 .param("sdkRootPath", sdkRoot.toString())
                 .resultFormat(ResultFormatType.JSON)
+                // Stop with an error when a benchmark fails, instead of leaving it out of the results
+                .shouldFailOnError(true)
                 .build();
              
     new Runner(opt).run();
@@ -98,6 +100,12 @@ public class SchematronBenchmark {
     String phase = PHASE_PREFIX + readNoticeSubType();
     logger.info("Validating notice [{}] with phase [{}]", noticeFilename, phase);
     phSchematron.setPhase(phase);
+
+    // ph-schematron only warns about an unknown phase and then applies all the rules
+    if (phSchematron.getOrCreateBoundSchema().getOriginalSchema().getPhaseOfID(phase) == null) {
+      throw new IllegalStateException(
+          MessageFormat.format("No phase [{0}] in the Schematron file [{1}]", phase, file));
+    }
   }
 
   @Benchmark
